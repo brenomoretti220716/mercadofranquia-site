@@ -13,7 +13,7 @@ export class DownloadService {
 
   constructor(private configService: ConfigService) {
     this.uploadPath = this.configService.get('UPLOAD_PATH') || './uploads';
-    this.baseUrl = this.configService.get('API_URL') || '';
+    this.baseUrl = this.configService.get('BASE_URL') || '';
 
     void this.ensureDownloadDirectory();
   }

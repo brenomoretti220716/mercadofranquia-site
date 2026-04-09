@@ -14,10 +14,7 @@ export class UploadService {
   constructor(private configService: ConfigService) {
     // Configuração para ambiente local
     this.uploadPath = this.configService.get('UPLOAD_PATH') || './uploads';
-    this.baseUrl =
-      this.configService.get('BASE_URL') ||
-      process.env.API_URL ||
-      'https://apifranchise.mindconsulting.com.br';
+    this.baseUrl = this.configService.get('BASE_URL') || '';
 
     // Criar diretório de upload se não existir
     void this.ensureUploadDirectory();

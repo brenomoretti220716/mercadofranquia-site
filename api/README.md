@@ -40,8 +40,7 @@ cp .env.example .env
 | `SMTP_PASS` | Sim | - | Senha/app password SMTP. |
 | `SMTP_FROM` | Nao | `"Sistema de Franquias <email>"` | Remetente padrao dos emails. |
 | `UPLOAD_PATH` | Nao | `./uploads` | Diretorio local de uploads. |
-| `BASE_URL` | Nao | `http://localhost:4000` | URL base para montar links publicos. |
-| `API_URL` | Nao | `http://localhost:4000` | URL base usada em alguns servicos de upload/download. |
+| `BASE_URL` | Nao | `http://localhost:4000` | URL base da API para montar links publicos (uploads, downloads, scraping). |
 | `GROQ_API_KEY` | Nao | vazio | Chave da integracao Groq (scraping/IA). |
 | `PUBLIC_ENVIRONMENT` | Nao | `development` | Flag usada por schedulers/fluxos de scraping. |
 | `PUPPETEER_EXECUTABLE_PATH` | Nao | vazio | Caminho customizado do binario do Chromium. |
