@@ -10,6 +10,8 @@ import { FranchiseOldScraper } from './scrapers/franchise-old.scraper.service';
 import { SitemapParserService } from './sitemap/sitemap-parser.service';
 import { SitemapReaderService } from './sitemap/sitemap-reader.service';
 import { CsvGeneratorService } from './storage/csv-generator.service';
+import { FranchiseImagesBackfillService } from './franchise-images-backfill.service';
+import type { FranchiseImagesSyncResult } from './franchise-images-backfill.service';
 
 export interface FranchisePage {
   url: string;
@@ -36,7 +38,19 @@ export class ScrapingService {
     private readonly csvGenerator: CsvGeneratorService,
     private readonly importService: FranchiseImportService,
     private readonly prisma: PrismaService,
+    private readonly franchiseImagesBackfill: FranchiseImagesBackfillService,
   ) {}
+
+  /**
+   * Backfill de imagens (Cheerio + Puppeteer, sem LLM). Nao usa ensureScrapingEnabled.
+   */
+  syncFranchiseImagesFromPortal(options?: {
+    concurrency?: number;
+    franchiseIds?: string[];
+    force?: boolean;
+  }): Promise<FranchiseImagesSyncResult> {
+    return this.franchiseImagesBackfill.syncFranchiseImagesFromPortal(options);
+  }
 
   private ensureScrapingEnabled(): void {
     if (process.env.PUBLIC_ENVIRONMENT === 'development') {

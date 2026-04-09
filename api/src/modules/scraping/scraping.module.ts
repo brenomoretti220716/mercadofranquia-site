@@ -8,6 +8,7 @@ import { ModelRotator } from './llm-models/rotator.service';
 import { ScrapingSchedulerService } from './schedulers/scraping-scheduler.service';
 import { FranchiseNewScraper } from './scrapers/franchise-new.scraper.service';
 import { FranchiseOldScraper } from './scrapers/franchise-old.scraper.service';
+import { FranchiseImagesBackfillService } from './franchise-images-backfill.service';
 import { ScrapingController } from './scraping.controller';
 import { ScrapingService } from './scraping.service';
 import { SitemapParserService } from './sitemap/sitemap-parser.service';
@@ -23,6 +24,7 @@ import { CsvGeneratorService } from './storage/csv-generator.service';
     LlmService,
     ModelRotator,
     ScrapingService,
+    FranchiseImagesBackfillService,
     ScrapingSchedulerService,
     FranchiseOldScraper,
     FranchiseNewScraper,

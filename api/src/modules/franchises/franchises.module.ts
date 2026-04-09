@@ -19,7 +19,12 @@ import { BusinessModelController } from './business-models/business-model.contro
 import { BusinessModelService } from './business-models/business-model.service';
 
 @Module({
-  exports: [FranchiseImportService, FranchiseMonthlyUnitsService],
+  exports: [
+    FranchiseImportService,
+    FranchiseMonthlyUnitsService,
+    FranchisePersistenceService,
+    ImageProcessorService,
+  ],
   imports: [
     GuardsModule,
     UploadModule,

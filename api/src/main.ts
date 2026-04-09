@@ -6,6 +6,7 @@ import { existsSync, readdirSync } from 'fs';
 import { networkInterfaces } from 'os';
 import { join } from 'path';
 import { AppModule } from './app.module';
+import { FranchiseImagesBackfillService } from './modules/scraping/franchise-images-backfill.service';
 
 function getLocalIPv4(): string | undefined {
   const nets = networkInterfaces();
@@ -113,6 +114,10 @@ async function bootstrap(): Promise<void> {
     const hostIp = getLocalIPv4() || 'unknown';
     console.log(`Server running on ip: ${hostIp} port: ${port}`);
   });
+
+  app
+    .get(FranchiseImagesBackfillService)
+    .scheduleStartupImageBackfill();
 }
 
 bootstrap().catch((error) => {
