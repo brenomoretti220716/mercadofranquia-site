@@ -1,0 +1,133 @@
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: franchise_mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-franchise_db}
+      MYSQL_USER: ${MYSQL_USER:-franchise_user}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-franchise_password}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-root_password}
+    ports:
+      - "${MYSQL_PORT:-3306}:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -uroot -p$$MYSQL_ROOT_PASSWORD --silent"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+
+  redis:
+    image: redis:7-alpine
+    container_name: franchise_redis
+    restart: unless-stopped
+    command: >
+      sh -c '
+      if [ -n "$$REDIS_PASSWORD" ]; then
+        redis-server --appendonly yes --requirepass "$$REDIS_PASSWORD";
+      else
+        redis-server --appendonly yes;
+      fi
+      '
+    environment:
+      REDIS_PASSWORD: ${REDIS_PASSWORD:-}
+    ports:
+      - "${REDIS_PORT_EXTERNAL:-6379}:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD-SHELL", "if [ -n \"$$REDIS_PASSWORD\" ]; then redis-cli -a \"$$REDIS_PASSWORD\" ping; else redis-cli ping; fi"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+
+  prisma-db-push:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+      args:
+        PORT: ${API_PORT:-4000}
+    container_name: franchise_prisma_db_push
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      # Montar URL aqui evita DATABASE_URL no .env com ${MYSQL_PASSWORD} sem interpolacao.
+      DATABASE_URL: mysql://${MYSQL_USER:-franchise_user}:${MYSQL_PASSWORD:-franchise_password}@mysql:3306/${MYSQL_DATABASE:-franchise_db}
+    command: ["npx", "prisma", "db", "push"]
+    restart: "no"
+
+  api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+      args:
+        PORT: ${API_PORT:-4000}
+    container_name: franchise_api
+    restart: unless-stopped
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      prisma-db-push:
+        condition: service_completed_successfully
+    environment:
+      NODE_ENV: ${NODE_ENV:-development}
+      PORT: ${API_PORT:-4000}
+      DATABASE_URL: mysql://${MYSQL_USER:-franchise_user}:${MYSQL_PASSWORD:-franchise_password}@mysql:3306/${MYSQL_DATABASE:-franchise_db}
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      REDIS_PASSWORD: ${REDIS_PASSWORD:-}
+      REDIS_TTL: ${REDIS_TTL:-300}
+      JWT_SECRET: ${JWT_SECRET:-change_me_super_secret_key}
+      JWT_EXPIRES_IN: ${JWT_EXPIRES_IN:-1h}
+      SMTP_HOST: ${SMTP_HOST:-smtp.gmail.com}
+      SMTP_PORT: ${SMTP_PORT:-587}
+      SMTP_SECURE: ${SMTP_SECURE:-false}
+      SMTP_USER: ${SMTP_USER:-}
+      SMTP_PASS: ${SMTP_PASS:-}
+      SMTP_FROM: ${SMTP_FROM:-Sistema de Franquias <no-reply@example.com>}
+      UPLOAD_PATH: ${UPLOAD_PATH:-./uploads}
+      BASE_URL: ${BASE_URL:-http://localhost:${API_PORT:-4000}}
+      API_URL: ${API_URL:-http://localhost:${API_PORT:-4000}}
+      GROQ_API_KEY: ${GROQ_API_KEY:-}
+      LLM_SERVICE: ${LLM_SERVICE:-ollama}
+      OLLAMA_BASE_URL: ${OLLAMA_BASE_URL:-http://localhost:11434}
+      OLLAMA_MODEL: ${OLLAMA_MODEL:-llama3.1:8b}
+      PUBLIC_ENVIRONMENT: ${PUBLIC_ENVIRONMENT:-development}
+      RUN_SCRAPING_INTEGRATION_TESTS: ${RUN_SCRAPING_INTEGRATION_TESTS:-false}
+      # Em Alpine, o binario do Chromium instalado via apk fica neste caminho.
+      PUPPETEER_EXECUTABLE_PATH: ${PUPPETEER_EXECUTABLE_PATH:-/usr/bin/chromium-browser}
+      PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: ${PUPPETEER_SKIP_CHROMIUM_DOWNLOAD:-true}
+    ports:
+      - "${API_PORT:-4000}:${API_PORT:-4000}"
+    volumes:
+      - ./api/uploads:/app/uploads
+
+  web:
+    build:
+      context: ./web
+      dockerfile: Dockerfile
+      args:
+        PORT: ${WEB_PORT:-3000}
+    container_name: franchise_web
+    restart: unless-stopped
+    depends_on:
+      api:
+        condition: service_started
+    environment:
+      NODE_ENV: ${NODE_ENV:-development}
+      PORT: ${WEB_PORT:-3000}
+      NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:${API_PORT:-4000}}
+      NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:-http://localhost:${WEB_PORT:-3000}}
+      ANALYZE: ${ANALYZE:-false}
+    ports:
+      - "${WEB_PORT:-3000}:${WEB_PORT:-3000}"
+
+volumes:
+  mysql_data:
+  redis_data:
