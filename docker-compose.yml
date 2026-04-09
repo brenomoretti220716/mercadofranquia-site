@@ -57,7 +57,13 @@ services:
     environment:
       # Montar URL aqui evita DATABASE_URL no .env com ${MYSQL_PASSWORD} sem interpolacao.
       DATABASE_URL: mysql://${MYSQL_USER:-franchise_user}:${MYSQL_PASSWORD:-franchise_password}@mysql:3306/${MYSQL_DATABASE:-franchise_db}
-    command: ["npx", "prisma", "db", "push"]
+    # Healthcheck do MySQL pode passar antes de aceitar TCP de outros containers; espera a porta.
+    command:
+      [
+        "sh",
+        "-c",
+        "node scripts/wait-for-mysql-tcp.cjs && npx prisma db push",
+      ]
     restart: "no"
 
   mysql-import:
@@ -114,8 +120,8 @@ services:
       SMTP_PASS: ${SMTP_PASS:-}
       SMTP_FROM: ${SMTP_FROM:-Sistema de Franquias <no-reply@example.com>}
       UPLOAD_PATH: ${UPLOAD_PATH:-./uploads}
-      BASE_URL: ${BASE_URL:-http://localhost:${API_PORT:-4000}}
-      API_URL: ${API_URL:-http://localhost:${API_PORT:-4000}}
+      # Mesma URL publica do front (NEXT_PUBLIC_*): links gravados no banco / job de imagens usam BASE_URL via DownloadService.
+      BASE_URL: ${BASE_URL:-${NEXT_PUBLIC_API_URL:-http://localhost:${API_PORT:-4000}}}
       GROQ_API_KEY: ${GROQ_API_KEY:-}
       LLM_SERVICE: ${LLM_SERVICE:-ollama}
       OLLAMA_BASE_URL: ${OLLAMA_BASE_URL:-http://localhost:11434}
@@ -125,6 +131,10 @@ services:
       # Em Alpine, o binario do Chromium instalado via apk fica neste caminho.
       PUPPETEER_EXECUTABLE_PATH: ${PUPPETEER_EXECUTABLE_PATH:-/usr/bin/chromium-browser}
       PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: ${PUPPETEER_SKIP_CHROMIUM_DOWNLOAD:-true}
+      # Repassadas do .env da raiz (Compose nao injeta .env no container automaticamente)
+      IMAGE_BACKFILL_SENTINEL_SLUG: ${IMAGE_BACKFILL_SENTINEL_SLUG:-}
+      IMAGE_BACKFILL_SENTINEL_SKU: ${IMAGE_BACKFILL_SENTINEL_SKU:-}
+      DISABLE_IMAGE_BACKFILL: ${DISABLE_IMAGE_BACKFILL:-0}
     ports:
       - "${API_PORT:-4000}:${API_PORT:-4000}"
     volumes:
@@ -136,6 +146,8 @@ services:
       dockerfile: Dockerfile
       args:
         PORT: ${WEB_PORT:-3000}
+        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:${API_PORT:-4000}}
+        NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:-http://localhost:${WEB_PORT:-3000}}
     container_name: franchise_web
     restart: unless-stopped
     depends_on:
