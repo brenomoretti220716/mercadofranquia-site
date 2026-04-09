@@ -110,6 +110,7 @@ model News {
 model Franchise {
   id                        String                  @id @default(cuid())
   name                      String
+  sku                       String?
   slug                      String?                 @unique
   headquarterState          String?
   segment                   String?
