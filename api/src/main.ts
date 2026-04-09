@@ -66,6 +66,7 @@ async function bootstrap(): Promise<void> {
       'http://162.215.10.70:3516',
       'http://localhost:3000',
       'https://franchise.mindconsulting.com.br',
+      'http://72.60.152.10:3050',
     ],
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
@@ -115,9 +116,7 @@ async function bootstrap(): Promise<void> {
     console.log(`Server running on ip: ${hostIp} port: ${port}`);
   });
 
-  app
-    .get(FranchiseImagesBackfillService)
-    .scheduleStartupImageBackfill();
+  app.get(FranchiseImagesBackfillService).scheduleStartupImageBackfill();
 }
 
 bootstrap().catch((error) => {
