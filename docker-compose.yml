@@ -60,6 +60,26 @@ services:
     command: ["npx", "prisma", "db", "push"]
     restart: "no"
 
+  mysql-import:
+    image: mysql:8.0
+    container_name: franchise_mysql_import
+    depends_on:
+      prisma-db-push:
+        condition: service_completed_successfully
+    environment:
+      MYSQL_HOST: mysql
+      MYSQL_USER: ${MYSQL_USER:-franchise_user}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-franchise_password}
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-franchise_db}
+      MYSQL_SEED_CHECK_TABLE: ${MYSQL_SEED_CHECK_TABLE:-User}
+      SKIP_MYSQL_IMPORT: ${SKIP_MYSQL_IMPORT:-0}
+      MYSQL_DUMP_FILE: /dump.sql
+    volumes:
+      - ${MYSQL_DUMP_HOST_PATH:-./api/dump-dados-20260408.sql}:/dump.sql:ro
+      - ./scripts/mysql-import-if-empty.sh:/import.sh:ro
+    entrypoint: ["/bin/bash", "/import.sh"]
+    restart: "no"
+
   api:
     build:
       context: ./api
@@ -74,6 +94,8 @@ services:
       redis:
         condition: service_healthy
       prisma-db-push:
+        condition: service_completed_successfully
+      mysql-import:
         condition: service_completed_successfully
     environment:
       NODE_ENV: ${NODE_ENV:-development}

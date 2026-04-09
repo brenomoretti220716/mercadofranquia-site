@@ -34,4 +34,15 @@ docker compose up -d --build
 docker compose logs -f api web
 ```
 
-O `docker compose up` ja executa automaticamente `npx prisma db push` (servico `prisma-db-push`) antes de subir a API.
+O `docker compose up` ja executa automaticamente `npx prisma db push` (servico `prisma-db-push`) e, em seguida, o servico `mysql-import`.
+
+### Importacao opcional do dump MySQL
+
+- Coloque o arquivo `.sql` no host (por padrao o compose espera `./api/dump-dados-20260408.sql`).
+- Apos o schema existir, o script conta linhas na tabela `User` (configuravel). Se `COUNT > 0`, **nao importa de novo**.
+- Variaveis opcionais no `.env`:
+  - `MYSQL_DUMP_HOST_PATH` — caminho do arquivo `.sql` no host (default `./api/dump-dados-20260408.sql`).
+  - `MYSQL_SEED_CHECK_TABLE` — tabela usada para decidir se ja ha dados (default `User`).
+  - `SKIP_MYSQL_IMPORT=1` — nunca importa o dump.
+
+Se o arquivo de dump nao existir ou estiver vazio, o import e ignorado sem erro.
