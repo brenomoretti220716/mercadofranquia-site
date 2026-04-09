@@ -20,6 +20,12 @@ ENV NEXT_PRIVATE_STANDALONE true
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
+# next.config.ts usa NEXT_PUBLIC_API_URL em images.remotePatterns; precisa existir no build.
+ARG NEXT_PUBLIC_API_URL=http://localhost:4000
+ARG NEXT_PUBLIC_SITE_URL=http://localhost:3000
+ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
+ENV NEXT_PUBLIC_SITE_URL=$NEXT_PUBLIC_SITE_URL
+
 # Next.js collects completely anonymous telemetry data about general usage.
 # Learn more here: https://nextjs.org/telemetry
 # Uncomment the following line in case you want to disable telemetry during the build.
