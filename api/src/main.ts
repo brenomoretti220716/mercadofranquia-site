@@ -60,8 +60,13 @@ async function bootstrap(): Promise<void> {
         </html>`);
   });
 
+  const corsOrigins = (process.env.CORS_ORIGINS ?? process.env.BASE_URL ?? '')
+    .split(',')
+    .map((s) => s.trim())
+    .filter(Boolean);
+
   app.enableCors({
-    origin: [process.env.BASE_URL ?? ''],
+    origin: corsOrigins,
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],

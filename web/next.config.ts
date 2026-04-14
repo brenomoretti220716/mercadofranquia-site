@@ -67,6 +67,12 @@ const nextConfig = {
       },
       {
         protocol: "http",
+        hostname: "192.168.15.190",
+        port: "4000",
+        pathname: "/uploads/**",
+      },
+      {
+        protocol: "http",
         hostname: "host.docker.internal",
         port: "4000",
         pathname: "/uploads/**",
@@ -96,6 +102,20 @@ const nextConfig = {
       "sonner",
       "zod",
     ],
+  },
+
+  async rewrites() {
+    const internalUrl = process.env.API_INTERNAL_URL || 'http://host.docker.internal:4000'
+    return {
+      beforeFiles: [
+        {
+          source: '/uploads/:path*',
+          destination: `${internalUrl}/uploads/:path*`,
+        },
+      ],
+      afterFiles: [],
+      fallback: [],
+    }
   },
 
   // Headers for caching and compression

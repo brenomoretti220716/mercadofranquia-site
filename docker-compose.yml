@@ -122,6 +122,8 @@ services:
       UPLOAD_PATH: ${UPLOAD_PATH:-./uploads}
       # Mesma URL publica do front (NEXT_PUBLIC_*): links gravados no banco / job de imagens usam BASE_URL via DownloadService.
       BASE_URL: ${BASE_URL:-${NEXT_PUBLIC_API_URL:-http://localhost:${API_PORT:-4000}}}
+      CORS_ORIGINS: ${CORS_ORIGINS:-}
+      API_INTERNAL_URL: ${API_INTERNAL_URL:-http://host.docker.internal:4000}
       GROQ_API_KEY: ${GROQ_API_KEY:-}
       LLM_SERVICE: ${LLM_SERVICE:-ollama}
       OLLAMA_BASE_URL: ${OLLAMA_BASE_URL:-http://localhost:11434}
@@ -148,6 +150,7 @@ services:
         PORT: ${WEB_PORT:-3050}
         NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:${API_PORT:-4000}}
         NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:-http://localhost:${WEB_PORT:-3050}}
+        API_INTERNAL_URL: ${API_INTERNAL_URL:-http://host.docker.internal:4000}
     container_name: franchise_web
     restart: unless-stopped
     depends_on:
@@ -158,7 +161,10 @@ services:
       PORT: ${WEB_PORT:-3050}
       NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:${API_PORT:-4000}} 
       NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:-http://localhost:${WEB_PORT:-3050}}
+      API_INTERNAL_URL: ${API_INTERNAL_URL:-http://host.docker.internal:4000}
       ANALYZE: ${ANALYZE:-false}
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     ports:
       - "${WEB_PORT:-3050}:${WEB_PORT:-3050}"
 
