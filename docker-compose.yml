@@ -45,11 +45,7 @@ services:
       start_period: 10s
 
   prisma-db-push:
-    build:
-      context: ./api
-      dockerfile: Dockerfile
-      args:
-        PORT: ${API_PORT:-4000}
+    image: franchise-final-api
     container_name: franchise_prisma_db_push
     depends_on:
       mysql:
@@ -86,7 +82,23 @@ services:
     entrypoint: ["/bin/bash", "/import.sh"]
     restart: "no"
 
+  api-fix-image-urls:
+    image: franchise-final-api
+    container_name: franchise_api_fix_image_urls
+    depends_on:
+      mysql:
+        condition: service_healthy
+      mysql-import:
+        condition: service_completed_successfully
+    environment:
+      NODE_ENV: ${NODE_ENV:-development}
+      DATABASE_URL: mysql://${MYSQL_USER:-franchise_user}:${MYSQL_PASSWORD:-franchise_password}@mysql:3306/${MYSQL_DATABASE:-franchise_db}
+      BASE_URL: ${BASE_URL:-${NEXT_PUBLIC_API_URL:-http://localhost:${API_PORT:-4000}}}
+    command: ["yarn", "normalize-image-urls"]
+    restart: "no"
+
   api:
+    image: franchise-final-api
     build:
       context: ./api
       dockerfile: Dockerfile
@@ -102,6 +114,8 @@ services:
       prisma-db-push:
         condition: service_completed_successfully
       mysql-import:
+        condition: service_completed_successfully
+      api-fix-image-urls:
         condition: service_completed_successfully
     environment:
       NODE_ENV: ${NODE_ENV:-development}
