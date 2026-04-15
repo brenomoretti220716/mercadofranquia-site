@@ -1,10 +1,4 @@
-import { Global, Module } from '@nestjs/common';
-import { LlmService } from '../scraping/llm-models/groq.service';
-import { SegmentAiClassifierService } from './segment-ai-classifier.service';
+import { Module } from '@nestjs/common';
 
-@Global()
-@Module({
-  providers: [LlmService, SegmentAiClassifierService],
-  exports: [SegmentAiClassifierService],
-})
+@Module({})
 export class SegmentsModule {}

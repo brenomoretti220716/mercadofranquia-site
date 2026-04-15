@@ -16,7 +16,6 @@ import { QuizModule } from './modules/quiz/quiz.module';
 import { RankingBigNumbersModule } from './modules/ranking-big-numbers/ranking-big-numbers.module';
 import { ReviewsModule } from './modules/reviews/reviews.module';
 import { ScrapingModule } from './modules/scraping/scraping.module';
-import { SegmentsModule } from './modules/segments/segments.module';
 import { StatisticsModule } from './modules/statistics/statistics.module';
 import { UploadModule } from './modules/upload/upload.module';
 import { UsersModule } from './modules/users/users.module';
@@ -39,7 +38,6 @@ import { UsersModule } from './modules/users/users.module';
     QuizModule,
     RankingBigNumbersModule,
     ReviewsModule,
-    SegmentsModule,
     ScrapingModule,
     StatisticsModule,
     NotificationsModule,

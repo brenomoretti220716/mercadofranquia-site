@@ -1,8 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import * as cheerio from 'cheerio';
-import { SegmentAiClassifierService } from '../../segments/segment-ai-classifier.service';
 import { BrowserPoolService } from '../browser/browser-pool.service';
-import { LlmService } from '../llm-models/groq.service';
 import { FranchiseData } from '../schemas/franchise-schema';
 import { FranchisePage } from '../scraping.service';
 import {
@@ -13,25 +11,11 @@ import {
   parseROIRange,
 } from '../utils/numeric-parser.util';
 
-interface AiFields {
-  businessType: string | null;
-  segment: string | null;
-  subsegment: string | null;
-  brandFoundationYear: string | null;
-  franchiseStartYear: string | null;
-  abfSince: string | null;
-  isAbfAssociated: boolean;
-}
-
 @Injectable()
 export class FranchiseNewScraper {
   private readonly logger = new Logger(FranchiseNewScraper.name);
 
-  constructor(
-    private readonly browserPool: BrowserPoolService,
-    private readonly llmService: LlmService,
-    private readonly segmentAiClassifier: SegmentAiClassifierService,
-  ) {}
+  constructor(private readonly browserPool: BrowserPoolService) {}
 
   async scrapePages(pages: FranchisePage[]): Promise<FranchiseData[]> {
     this.logger.log(
@@ -120,25 +104,14 @@ export class FranchiseNewScraper {
         scrapedWebsite: page.url,
         lastScrapedAt: new Date(page.lastmod),
 
-        // IA (chama apenas uma vez) + classificação final de segmento/subsegmento
-        ...(await (async () => {
-          const ai = await this.extractAiFields($);
-          const fullDescription = this.fullDescription($);
-          const classified = await this.segmentAiClassifier.classify({
-            rawSegment: ai?.segment ?? null,
-            rawSubsegment: ai?.subsegment ?? null,
-            description: fullDescription,
-          });
-          return {
-            businessType: ai?.businessType ?? null,
-            segment: classified.segment ?? ai?.segment ?? null,
-            subsegment: classified.subsegment ?? ai?.subsegment ?? null,
-            brandFoundationYear: ai?.brandFoundationYear ?? null,
-            franchiseStartYear: ai?.franchiseStartYear ?? null,
-            abfSince: ai?.abfSince ?? null,
-            isAbfAssociated: ai?.isAbfAssociated ?? false,
-          };
-        })()),
+        // Campos que antes eram extraídos via LLM (removido)
+        businessType: null,
+        segment: null,
+        subsegment: null,
+        brandFoundationYear: null,
+        franchiseStartYear: null,
+        abfSince: null,
+        isAbfAssociated: false,
       };
 
       this.logger.log(`✅ Extraído: ${franchiseData.name}`);
@@ -463,89 +436,4 @@ export class FranchiseNewScraper {
     }
   }
 
-  //IA
-
-  private fullDescription($: cheerio.CheerioAPI): string | null {
-    const descriptionFirstSection = $('h1:contains("FRANQUIA")');
-    const descriptionFinalSection = $(
-      'p:contains("Comunicado Importante ABF")',
-    );
-
-    const fullDescriptionText = descriptionFirstSection
-      .nextUntil(descriptionFinalSection)
-      .text()
-      .replace(/\s+/g, ' ')
-      .trim();
-
-    return fullDescriptionText || null;
-  }
-
-  private async extractAiFields($: cheerio.CheerioAPI): Promise<AiFields> {
-    try {
-      const fullDescription = this.fullDescription($);
-
-      const prompt = `Analise a descrição da franquia abaixo e retorne APENAS um objeto JSON válido com as seguintes chaves. Não inclua texto explicativo, não use markdown, retorne diretamente o JSON começando com { e terminando com }.
-
-Chaves obrigatórias:
-- businessType (string ou null)
-- segment (string ou null)
-- subsegment (string ou null)
-- brandFoundationYear (string ou null)
-- franchiseStartYear (string ou null)
-- abfSince (string ou null)
-- isAbfAssociated (boolean)
-
-Exemplo de formato esperado:
-{"businessType":"Comercio varejista","segment":"Alimentos","subsegment":"Doces","brandFoundationYear":"2025","franchiseStartYear":"2025","abfSince":"2025","isAbfAssociated":true}
-
-Descrição da franquia:
-${fullDescription}
-
-Retorne APENAS o JSON, sem texto adicional.`;
-
-      const response = await this.llmService.ask(prompt);
-      this.logger.log(`Resposta IA: ${response}`);
-
-      // Função para extrair JSON de uma string que pode conter texto adicional
-      const extractJson = (text: string): string => {
-        // Remove markdown code blocks
-        const cleaned = text
-          .replace(/```json\s*/gi, '')
-          .replace(/```\s*/g, '')
-          .trim();
-
-        // Tenta encontrar JSON entre chaves {}
-        const jsonMatch = cleaned.match(/\{[\s\S]*\}/);
-        if (jsonMatch) {
-          return jsonMatch[0];
-        }
-
-        // Se não encontrou, tenta parse direto (pode já ser JSON puro)
-        return cleaned;
-      };
-
-      const jsonString = extractJson(response);
-
-      try {
-        const jsonResponse = JSON.parse(jsonString) as AiFields;
-        return jsonResponse;
-      } catch (parseError) {
-        this.logger.error(
-          `Erro ao fazer parse do JSON. Resposta recebida: ${response.substring(0, 200)}`,
-        );
-        throw parseError;
-      }
-    } catch (error) {
-      this.logger.error(`Erro ao extrair campos IA:`, error);
-      return {
-        businessType: null,
-        segment: null,
-        subsegment: null,
-        brandFoundationYear: null,
-        franchiseStartYear: null,
-        abfSince: null,
-        isAbfAssociated: false,
-      };
-    }
-  }
 }

@@ -1,6 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
 import * as cheerio from 'cheerio';
-import { SegmentAiClassifierService } from '../../segments/segment-ai-classifier.service';
 import { BrowserPoolService } from '../browser/browser-pool.service';
 import { FranchiseData } from '../schemas/franchise-schema';
 import { FranchisePage } from '../scraping.service';
@@ -10,10 +9,7 @@ import { parseInvestmentRange } from '../utils/numeric-parser.util';
 export class FranchiseOldScraper {
   private readonly logger = new Logger(FranchiseOldScraper.name);
 
-  constructor(
-    private readonly browserPool: BrowserPoolService,
-    private readonly segmentAiClassifier: SegmentAiClassifierService,
-  ) {}
+  constructor(private readonly browserPool: BrowserPoolService) {}
 
   async scrapePages(pages: FranchisePage[]): Promise<FranchiseData[]> {
     this.logger.log(
@@ -56,17 +52,11 @@ export class FranchiseOldScraper {
       const rawSegment = this.extractSegment($);
       const rawSubsegment = this.extractSubsegment($);
       const description = this.extractDescription($);
-      const classified = await this.segmentAiClassifier.classify({
-        rawSegment,
-        rawSubsegment,
-        description,
-      });
-
       const franchiseData: FranchiseData = {
         name: this.extractFranchiseName($),
         businessType: this.extractBusinessType($),
-        segment: classified.segment ?? rawSegment,
-        subsegment: classified.subsegment ?? rawSubsegment,
+        segment: rawSegment,
+        subsegment: rawSubsegment,
         description,
 
         // Midias
