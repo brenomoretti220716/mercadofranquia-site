@@ -13,9 +13,6 @@ interface SponsoredFranchisesTableProps {
   onClick: (franchiseId: string) => void
 }
 
-export const sponsoredBadgeClassName =
-  'inline-flex shrink-0 items-center gap-1 whitespace-nowrap px-2 py-0.5 rounded-full text-xs font-semibold bg-orange-400/20 text-orange-700 dark:bg-orange-500/20 dark:text-orange-300'
-
 const SponsoredFranchisesTable = ({
   franchises,
   onClick,
@@ -79,9 +76,6 @@ const SponsoredFranchisesTable = ({
                           <span className="inline-flex items-center gap-1.5 whitespace-nowrap">
                             <span className="font-medium text-foreground text-sm">
                               {franchise.name}
-                            </span>
-                            <span className={sponsoredBadgeClassName}>
-                              ⭐ Patrocinado
                             </span>
                           </span>
                         </Marquee>
@@ -186,9 +180,6 @@ const SponsoredFranchisesTable = ({
                             <span className="inline-flex items-center gap-1.5 whitespace-nowrap">
                               <span className="font-medium text-foreground text-base">
                                 {franchise.name}
-                              </span>
-                              <span className={sponsoredBadgeClassName}>
-                                ⭐ Patrocinado
                               </span>
                             </span>
                           </Marquee>

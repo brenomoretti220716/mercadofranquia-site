@@ -19,8 +19,8 @@ export async function login(credentials: LoginInput) {
     const data = await response.json()
 
     // Store token in cookie
-    if (data.token) {
-      setClientAuthCookie(data.token)
+    if (data.access_token) {
+      setClientAuthCookie(data.access_token)
     }
 
     return data

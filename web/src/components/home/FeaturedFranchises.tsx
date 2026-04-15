@@ -12,9 +12,7 @@ import DollarSignIcon from '../icons/dollarSignIcon'
 import StarIcon from '../icons/starIcon'
 import Marquee from '../ui/Marquee'
 import ViewModeToggle from '../ranking/ViewModeToggle'
-import SponsoredFranchisesTable, {
-  sponsoredBadgeClassName,
-} from './SponsoredFranchisesTable'
+import SponsoredFranchisesTable from './SponsoredFranchisesTable'
 
 const formatCurrency = (value: number | null | undefined) => {
   if (value === null || value === undefined || isNaN(Number(value))) {
@@ -145,9 +143,6 @@ const FeaturedFranchises = () => {
                         <span className="inline-flex items-center gap-2 whitespace-nowrap">
                           <span className="text-lg font-bold text-foreground">
                             {franchise.name}
-                          </span>
-                          <span className={sponsoredBadgeClassName}>
-                            ⭐ Patrocinado
                           </span>
                         </span>
                       </Marquee>
