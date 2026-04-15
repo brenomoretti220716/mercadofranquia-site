@@ -11,9 +11,7 @@ export interface DecodedToken {
 }
 
 export function setClientAuthCookie(token: string) {
-  document.cookie = `${AUTH_COOKIE_NAME}=${token}; path=/; max-age=${60 * 60 * 24}; ${
-    ''
-  } samesite=strict`
+  document.cookie = `${AUTH_COOKIE_NAME}=${token}; path=/; max-age=${60 * 60 * 24}; samesite=strict`
 }
 
 export function getClientAuthCookie(): string | null {
