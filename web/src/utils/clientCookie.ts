@@ -12,7 +12,7 @@ export interface DecodedToken {
 
 export function setClientAuthCookie(token: string) {
   document.cookie = `${AUTH_COOKIE_NAME}=${token}; path=/; max-age=${60 * 60 * 24}; ${
-    process.env.NODE_ENV === 'production' ? 'secure;' : ''
+    ''
   } samesite=strict`
 }
 
