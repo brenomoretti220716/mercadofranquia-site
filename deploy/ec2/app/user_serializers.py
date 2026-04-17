@@ -66,6 +66,113 @@ def serialize_franchisee_summary(franchise: Any) -> dict[str, Any]:
     }
 
 
+def serialize_franchise_admin_summary(franchise: Any) -> dict[str, Any]:
+    """Wider Franchise summary used in admin listings (members + franchisors).
+
+    Mirrors the Prisma `select` blocks in NestJS MembersService and
+    FranchisorsService — includes investment range and headquarter state.
+    """
+    def _decimal(v: Any) -> Optional[float]:
+        return float(v) if v is not None else None
+
+    return {
+        "id": franchise.id,
+        "name": franchise.name,
+        "segment": franchise.segment,
+        "subsegment": franchise.subsegment,
+        "minimumInvestment": _decimal(franchise.minimumInvestment),
+        "maximumInvestment": _decimal(franchise.maximumInvestment),
+        "totalUnits": franchise.totalUnits,
+        "headquarterState": franchise.headquarterState,
+    }
+
+
+def serialize_franchisor_request_for_franchisor_listing(
+    r: Optional["FranchisorRequest"],
+) -> Optional[dict[str, Any]]:
+    """Subset shape of FranchisorRequest as included alongside a Franchisor user
+    in the admin listing — matches the NestJS Prisma `select` in
+    FranchisorsService.findFranchisorsPaginated."""
+    if r is None:
+        return None
+    reviewer = None
+    # The reviewer relationship isn't preloaded in this snapshot; routers can
+    # populate `reviewer` separately if eager-loaded. Fall back to bare id.
+    return {
+        "id": r.id,
+        "status": r.status,
+        "rejectionReason": r.rejectionReason,
+        "reviewedBy": r.reviewedBy,
+        "reviewedAt": _iso(r.reviewedAt),
+        "createdAt": _iso(r.createdAt),
+        "updatedAt": _iso(r.updatedAt),
+        "cnpj": r.cnpj,
+        "streamName": r.streamName,
+        "commercialEmail": r.commercialEmail,
+        "commercialPhone": r.commercialPhone,
+        "cnpjCardPath": r.cnpjCardPath,
+        "socialContractPath": r.socialContractPath,
+        "reviewer": reviewer,
+    }
+
+
+def serialize_user_admin_member(u: User) -> dict[str, Any]:
+    """User shape returned in `GET /admin/members` listings."""
+    return {
+        "id": u.id,
+        "name": u.name,
+        "email": u.email,
+        "role": u.role,
+        "isActive": bool(u.isActive),
+        "cpf": u.cpf,
+        "phone": u.phone,
+        "createdAt": _iso(u.createdAt),
+        "updatedAt": _iso(u.updatedAt),
+        "profile": serialize_user_profile(getattr(u, "profile", None)),
+        "franchiseeOf": [
+            serialize_franchise_admin_summary(f)
+            for f in (getattr(u, "franchises_as_franchisee", []) or [])
+        ],
+    }
+
+
+def serialize_user_admin_franchisor(u: User) -> dict[str, Any]:
+    """User shape returned in `GET /admin/franchisors` listings."""
+    return {
+        "id": u.id,
+        "name": u.name,
+        "email": u.email,
+        "role": u.role,
+        "isActive": bool(u.isActive),
+        "cpf": u.cpf,
+        "phone": u.phone,
+        "createdAt": _iso(u.createdAt),
+        "updatedAt": _iso(u.updatedAt),
+        "franchisorRequest": serialize_franchisor_request_for_franchisor_listing(
+            getattr(u, "franchisor_request", None)
+        ),
+        "ownedFranchises": [
+            serialize_franchise_admin_summary(f)
+            for f in (getattr(u, "franchises_owned", []) or [])
+        ],
+    }
+
+
+def serialize_user_admin_admin(u: User) -> dict[str, Any]:
+    """User shape returned in `GET /admin` (admins listing) and findById."""
+    return {
+        "id": u.id,
+        "name": u.name,
+        "email": u.email,
+        "role": u.role,
+        "isActive": bool(u.isActive),
+        "cpf": u.cpf,
+        "phone": u.phone,
+        "createdAt": _iso(u.createdAt),
+        "updatedAt": _iso(u.updatedAt),
+    }
+
+
 def serialize_user(
     u: User,
     *,

@@ -15,13 +15,14 @@ from __future__ import annotations
 import json
 import logging
 import random
+import re
 import uuid
 from datetime import datetime, timedelta
 from typing import Any, Literal, Optional
 
 from fastapi import APIRouter, Depends, HTTPException, status
 from pydantic import BaseModel, EmailStr, Field, field_validator
-from sqlalchemy import select
+from sqlalchemy import and_, func, or_, select
 from sqlalchemy.orm import Session, selectinload
 
 from app.db import get_db
@@ -32,12 +33,24 @@ from app.security import (
     get_current_user,
     hash_password,
     issue_token,
+    require_role,
 )
-from app.user_serializers import serialize_user
+from app.user_serializers import (
+    serialize_user,
+    serialize_user_admin_admin,
+    serialize_user_admin_franchisor,
+    serialize_user_admin_member,
+)
 from app.validators import strip_non_digits, validate_cpf, validate_phone_digits
 
 router = APIRouter(prefix="/users", tags=["users"])
+admin_router = APIRouter(prefix="/admin", tags=["admin-users"])
 logger = logging.getLogger("mf-api.users")
+
+# Roles considered "members" in admin listings (mirrors MembersService.findMembersPaginated).
+MEMBER_ROLES = ("FRANCHISEE", "CANDIDATE", "ENTHUSIAST", "MEMBER")
+# Subset used for active/inactive counters (MEMBER excluded — matches NestJS).
+MEMBER_ROLES_FOR_COUNTERS = ("FRANCHISEE", "CANDIDATE", "ENTHUSIAST")
 
 ROLE_LITERAL = Literal["FRANCHISEE", "CANDIDATE", "ENTHUSIAST", "FRANCHISOR"]
 
@@ -513,3 +526,505 @@ def update_profile(
             "roleChanged": True,
         }
     return {"message": "Profile updated successfully", "roleChanged": False}
+
+
+# ===========================================================================
+# Admin endpoints — mounted under /admin (separate router)
+#
+#   POST /admin                         createAdmin
+#   GET  /admin                         findAllUsers (admins listing)
+#   GET  /admin/members                 paginated members
+#   GET  /admin/franchisors             paginated franchisors
+#   PUT  /admin/franchisors/:id         update a franchisor
+#   GET  /admin/users/:id               get user by id
+#   PUT  /admin/users/:id               update user basic info (admin)
+#   PUT  /admin/users/:id/profile       update user profile (admin)
+#
+# All endpoints require role == ADMIN — enforced via `require_role("ADMIN")`.
+# Paths mirror the NestJS controllers exactly so the frontend works unchanged.
+# ===========================================================================
+
+
+def _strong_password(v: str) -> str:
+    if not re.search(r"[A-Z]", v):
+        raise ValueError("Password must contain at least one uppercase letter")
+    if not re.search(r"[0-9]", v):
+        raise ValueError("Password must contain at least one number")
+    return v
+
+
+class CreateAdminBody(BaseModel):
+    name: str = Field(min_length=1)
+    email: EmailStr
+    password: str = Field(min_length=6)
+    phone: str
+    cpf: str
+
+    @field_validator("password")
+    @classmethod
+    def _password(cls, v: str) -> str:
+        return _strong_password(v)
+
+    @field_validator("phone")
+    @classmethod
+    def _phone(cls, v: str) -> str:
+        if not validate_phone_digits(v):
+            raise ValueError("Phone must have 10 or 11 digits")
+        return strip_non_digits(v)
+
+    @field_validator("cpf")
+    @classmethod
+    def _cpf(cls, v: str) -> str:
+        digits = strip_non_digits(v)
+        if len(digits) != 11:
+            raise ValueError("CPF must have exactly 11 digits")
+        if not validate_cpf(v):
+            raise ValueError("Invalid CPF")
+        return digits
+
+
+class UpdateFranchisorBody(BaseModel):
+    name: Optional[str] = Field(default=None, min_length=1)
+    email: Optional[EmailStr] = None
+    phone: Optional[str] = None
+    password: Optional[str] = Field(default=None, min_length=6)
+    isActive: Optional[bool] = None
+    ownedFranchises: Optional[list[str]] = None
+
+    @field_validator("password")
+    @classmethod
+    def _password(cls, v: Optional[str]) -> Optional[str]:
+        if v is None:
+            return v
+        return _strong_password(v)
+
+    @field_validator("phone")
+    @classmethod
+    def _phone(cls, v: Optional[str]) -> Optional[str]:
+        if v is None:
+            return v
+        if not validate_phone_digits(v):
+            raise ValueError("Phone must have 10 or 11 digits")
+        return strip_non_digits(v)
+
+    @field_validator("ownedFranchises")
+    @classmethod
+    def _of_min(cls, v: Optional[list[str]]) -> Optional[list[str]]:
+        if v is not None and len(v) < 1:
+            raise ValueError("At least one franchise is required")
+        return v
+
+
+def _search_clause(search: Optional[str]) -> Optional[Any]:
+    """Returns an ilike OR(name, email) clause, or None if search is empty."""
+    if not search or not search.strip():
+        return None
+    pat = f"%{search.strip()}%"
+    return or_(User.name.ilike(pat), User.email.ilike(pat))
+
+
+# ---------------------------------------------------------------------------
+# POST /admin  — create a new ADMIN user
+# ---------------------------------------------------------------------------
+
+@admin_router.post("", summary="Cria novo usuário ADMIN")
+def create_admin(
+    body: CreateAdminBody,
+    _admin: JwtPayload = Depends(require_role("ADMIN")),
+    db: Session = Depends(get_db),
+) -> dict[str, Any]:
+    if db.scalar(select(User).where(User.email == body.email)) is not None:
+        raise HTTPException(status.HTTP_409_CONFLICT, "Email already exists")
+    if db.scalar(select(User).where(User.phone == body.phone)) is not None:
+        raise HTTPException(status.HTTP_409_CONFLICT, "Phone already exists")
+    if db.scalar(select(User).where(User.cpf == body.cpf)) is not None:
+        raise HTTPException(status.HTTP_409_CONFLICT, "CPF already exists")
+
+    user = User(
+        id=uuid.uuid4().hex,
+        name=body.name,
+        email=body.email,
+        password=hash_password(body.password),
+        phone=body.phone,
+        cpf=body.cpf,
+        role="ADMIN",
+        isActive=True,
+    )
+    db.add(user)
+    db.commit()
+    db.refresh(user)
+    return {"user": serialize_user_admin_admin(user)}
+
+
+# ---------------------------------------------------------------------------
+# GET /admin  — paginated admins listing
+# ---------------------------------------------------------------------------
+
+@admin_router.get("", summary="Lista admins paginada")
+def find_all_admins(
+    page: int = 1,
+    limit: int = 10,
+    search: Optional[str] = None,
+    _admin: JwtPayload = Depends(require_role("ADMIN")),
+    db: Session = Depends(get_db),
+) -> dict[str, Any]:
+    page = max(page, 1)
+    limit = max(limit, 1)
+    skip = (page - 1) * limit
+
+    where_role = User.role == "ADMIN"
+    search_clause = _search_clause(search)
+    where = and_(where_role, search_clause) if search_clause is not None else where_role
+
+    items = db.scalars(
+        select(User).where(where).offset(skip).limit(limit)
+    ).all()
+    total = db.scalar(select(func.count()).select_from(User).where(where)) or 0
+    total_active = (
+        db.scalar(
+            select(func.count()).select_from(User).where(
+                and_(User.role == "ADMIN", User.isActive.is_(True))
+            )
+        )
+        or 0
+    )
+    total_inactive = (
+        db.scalar(
+            select(func.count()).select_from(User).where(
+                and_(User.role == "ADMIN", User.isActive.is_(False))
+            )
+        )
+        or 0
+    )
+
+    return {
+        "data": [serialize_user_admin_admin(u) for u in items],
+        "total": total,
+        "totalActive": total_active,
+        "totalInactive": total_inactive,
+        "page": page,
+        "lastPage": max(1, (total + limit - 1) // limit),
+    }
+
+
+# ---------------------------------------------------------------------------
+# GET /admin/members
+# ---------------------------------------------------------------------------
+
+@admin_router.get("/members", summary="Lista membros paginada")
+def get_members(
+    page: int = 1,
+    limit: int = 10,
+    search: Optional[str] = None,
+    _admin: JwtPayload = Depends(require_role("ADMIN")),
+    db: Session = Depends(get_db),
+) -> dict[str, Any]:
+    page = max(page, 1)
+    limit = max(limit, 1)
+    skip = (page - 1) * limit
+
+    where_role = User.role.in_(MEMBER_ROLES)
+    search_clause = _search_clause(search)
+    where = and_(where_role, search_clause) if search_clause is not None else where_role
+
+    items = db.scalars(
+        select(User)
+        .where(where)
+        .offset(skip)
+        .limit(limit)
+        .options(
+            selectinload(User.profile),
+            selectinload(User.franchises_as_franchisee),
+        )
+    ).all()
+    total = db.scalar(select(func.count()).select_from(User).where(where)) or 0
+    total_active = (
+        db.scalar(
+            select(func.count()).select_from(User).where(
+                and_(
+                    User.role.in_(MEMBER_ROLES_FOR_COUNTERS),
+                    User.isActive.is_(True),
+                )
+            )
+        )
+        or 0
+    )
+    total_inactive = (
+        db.scalar(
+            select(func.count()).select_from(User).where(
+                and_(
+                    User.role.in_(MEMBER_ROLES_FOR_COUNTERS),
+                    User.isActive.is_(False),
+                )
+            )
+        )
+        or 0
+    )
+
+    return {
+        "data": [serialize_user_admin_member(u) for u in items],
+        "total": total,
+        "totalActive": total_active,
+        "totalInactive": total_inactive,
+        "page": page,
+        "lastPage": max(1, (total + limit - 1) // limit),
+    }
+
+
+# ---------------------------------------------------------------------------
+# GET /admin/franchisors
+# ---------------------------------------------------------------------------
+
+@admin_router.get("/franchisors", summary="Lista franqueadores paginada")
+def get_all_franchisors(
+    page: int = 1,
+    limit: int = 10,
+    search: Optional[str] = None,
+    _admin: JwtPayload = Depends(require_role("ADMIN")),
+    db: Session = Depends(get_db),
+) -> dict[str, Any]:
+    page = max(page, 1)
+    limit = max(limit, 1)
+    skip = (page - 1) * limit
+
+    where_role = User.role == "FRANCHISOR"
+    search_clause = _search_clause(search)
+    where = and_(where_role, search_clause) if search_clause is not None else where_role
+
+    items = db.scalars(
+        select(User)
+        .where(where)
+        .offset(skip)
+        .limit(limit)
+        .options(
+            selectinload(User.franchisor_request),
+            selectinload(User.franchises_owned),
+        )
+    ).all()
+    total = db.scalar(select(func.count()).select_from(User).where(where)) or 0
+    total_active = (
+        db.scalar(
+            select(func.count()).select_from(User).where(
+                and_(User.role == "FRANCHISOR", User.isActive.is_(True))
+            )
+        )
+        or 0
+    )
+    total_inactive = (
+        db.scalar(
+            select(func.count()).select_from(User).where(
+                and_(User.role == "FRANCHISOR", User.isActive.is_(False))
+            )
+        )
+        or 0
+    )
+
+    return {
+        "data": [serialize_user_admin_franchisor(u) for u in items],
+        "total": total,
+        "totalActive": total_active,
+        "totalInactive": total_inactive,
+        "page": page,
+        "lastPage": max(1, (total + limit - 1) // limit),
+    }
+
+
+# ---------------------------------------------------------------------------
+# PUT /admin/franchisors/:id  — update a FRANCHISOR user
+# ---------------------------------------------------------------------------
+
+@admin_router.put("/franchisors/{user_id}", summary="Atualiza franqueador")
+def update_franchisor(
+    user_id: str,
+    body: UpdateFranchisorBody,
+    _admin: JwtPayload = Depends(require_role("ADMIN")),
+    db: Session = Depends(get_db),
+) -> dict[str, Any]:
+    franchisor = db.scalar(
+        select(User).where(User.id == user_id, User.role == "FRANCHISOR")
+    )
+    if franchisor is None:
+        raise HTTPException(status.HTTP_404_NOT_FOUND, "Franchisor not found")
+
+    if body.email is not None and body.email != franchisor.email:
+        if db.scalar(
+            select(User).where(User.email == body.email, User.id != user_id)
+        ) is not None:
+            raise HTTPException(status.HTTP_409_CONFLICT, "Email already in use by another user")
+    if body.phone is not None and body.phone != franchisor.phone:
+        if db.scalar(
+            select(User).where(User.phone == body.phone, User.id != user_id)
+        ) is not None:
+            raise HTTPException(status.HTTP_409_CONFLICT, "Phone already in use by another user")
+
+    if body.ownedFranchises is not None:
+        franchises = db.scalars(
+            select(Franchise)
+            .where(Franchise.id.in_(body.ownedFranchises))
+            .options(selectinload(Franchise.owner))
+        ).all()
+        found_ids = {f.id for f in franchises}
+        missing = [fid for fid in body.ownedFranchises if fid not in found_ids]
+        if missing:
+            raise HTTPException(
+                status.HTTP_400_BAD_REQUEST,
+                f"Franchises with IDs {', '.join(missing)} do not exist",
+            )
+        conflicts = [
+            f for f in franchises if f.owner is not None and f.owner.id != user_id
+        ]
+        if conflicts:
+            raise HTTPException(
+                status.HTTP_409_CONFLICT,
+                {
+                    "message": "One or more franchises are already owned by other franchisors",
+                    "conflicts": [
+                        f"Franchise \"{f.name}\" (ID: {f.id}) is already owned by "
+                        f"{f.owner.name} ({f.owner.email})"
+                        for f in conflicts
+                    ],
+                    "takenFranchises": [f.id for f in conflicts],
+                },
+            )
+
+    if body.name is not None:
+        franchisor.name = body.name
+    if body.email is not None:
+        franchisor.email = body.email
+    if body.phone is not None:
+        franchisor.phone = body.phone
+    if body.password is not None:
+        # NestJS's updateFranchisor stores the raw password string (bug). FastAPI hashes it.
+        franchisor.password = hash_password(body.password)
+    if body.isActive is not None:
+        franchisor.isActive = body.isActive
+
+    if body.ownedFranchises is not None:
+        # NOTE: matches NestJS behavior — only sets ownerId on the new list,
+        # does NOT unlink previously owned franchises that aren't in the new list.
+        for f in franchises:
+            f.ownerId = user_id
+
+    db.commit()
+    return {"message": "Franchisor updated successfully"}
+
+
+# ---------------------------------------------------------------------------
+# GET /admin/users/:id  — fetch any user by id (returns null if not found,
+# matching NestJS behavior)
+# ---------------------------------------------------------------------------
+
+@admin_router.get("/users/{user_id}", summary="Get user by id (admin)")
+def find_user_by_id(
+    user_id: str,
+    _admin: JwtPayload = Depends(require_role("ADMIN")),
+    db: Session = Depends(get_db),
+) -> Optional[dict[str, Any]]:
+    user = db.scalar(select(User).where(User.id == user_id))
+    if user is None:
+        return None
+    return serialize_user_admin_admin(user)
+
+
+# ---------------------------------------------------------------------------
+# PUT /admin/users/:id  — update basic info as admin
+# ---------------------------------------------------------------------------
+
+@admin_router.put("/users/{user_id}", summary="Atualiza dados básicos (admin)")
+def admin_update_user_basic_info(
+    user_id: str,
+    body: UpdateBasicInfoBody,
+    _admin: JwtPayload = Depends(require_role("ADMIN")),
+    db: Session = Depends(get_db),
+) -> dict[str, Any]:
+    user = _load_full_user(db, user_id)
+    if user is None:
+        raise HTTPException(status.HTTP_404_NOT_FOUND, "User not found")
+
+    if body.phone is not None and body.phone != user.phone:
+        if db.scalar(
+            select(User).where(User.phone == body.phone, User.id != user.id)
+        ) is not None:
+            raise HTTPException(status.HTTP_409_CONFLICT, "Phone already in use")
+    if body.cpf is not None and body.cpf != user.cpf:
+        if db.scalar(
+            select(User).where(User.cpf == body.cpf, User.id != user.id)
+        ) is not None:
+            raise HTTPException(status.HTTP_409_CONFLICT, "CPF already in use")
+
+    if body.name is not None:
+        user.name = body.name
+    if body.phone is not None:
+        user.phone = body.phone
+    if body.cpf is not None:
+        user.cpf = body.cpf
+    if body.isActive is not None:
+        user.isActive = body.isActive
+
+    db.commit()
+    db.refresh(user)
+    return {"user": serialize_user(user)}
+
+
+# ---------------------------------------------------------------------------
+# PUT /admin/users/:id/profile  — update profile (city, role, franchiseeOf)
+# ---------------------------------------------------------------------------
+
+@admin_router.put("/users/{user_id}/profile", summary="Atualiza perfil (admin)")
+def admin_update_user_profile(
+    user_id: str,
+    body: UpdateProfileBody,
+    _admin: JwtPayload = Depends(require_role("ADMIN")),
+    db: Session = Depends(get_db),
+) -> dict[str, Any]:
+    user = _load_full_user(db, user_id)
+    if user is None:
+        raise HTTPException(status.HTTP_404_NOT_FOUND, "User not found")
+    if user.profile is None:
+        raise HTTPException(status.HTTP_404_NOT_FOUND, "User profile not found")
+    if body.franchiseeOf:
+        _validate_franchises_exist(db, body.franchiseeOf)
+
+    role_changed = body.role is not None and body.role != user.role
+    final_role = body.role or user.role
+
+    if body.city is not None:
+        user.profile.city = body.city
+    if body.interestSectors is not None:
+        user.profile.interestSectors = body.interestSectors
+    if body.interestRegion is not None:
+        user.profile.interestRegion = body.interestRegion
+    if body.investmentRange is not None:
+        user.profile.investmentRange = body.investmentRange
+
+    if body.role is not None:
+        user.role = body.role
+
+    if final_role == "FRANCHISEE" and body.franchiseeOf is not None:
+        franchises = db.scalars(
+            select(Franchise).where(Franchise.id.in_(body.franchiseeOf))
+        ).all()
+        user.franchises_as_franchisee = list(franchises)
+    elif final_role != "FRANCHISEE":
+        user.franchises_as_franchisee = []
+
+    db.commit()
+    db.refresh(user)
+
+    if role_changed:
+        # Mirrors NestJS — emits a token reflecting the target user's new role.
+        # The admin's own token is unchanged; the frontend's useAdminUpdateProfile
+        # ignores access_token, so this is informational only.
+        token = issue_token({
+            "id": user.id,
+            "email": user.email,
+            "name": user.name,
+            "role": user.role,
+            "isActive": user.isActive,
+        })
+        return {
+            "roleChanged": True,
+            "updatedUser": serialize_user(user),
+            "access_token": token,
+        }
+    return {"roleChanged": False}

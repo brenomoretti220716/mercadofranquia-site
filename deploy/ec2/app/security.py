@@ -213,3 +213,39 @@ def get_optional_user(
     if payload is None or payload.isActive is False:
         return None
     return payload
+
+
+# ---------------------------------------------------------------------------
+# Role-based access — dependency factories. Use as:
+#
+#   @router.get("/admin/things")
+#   def list_things(user: JwtPayload = Depends(require_role("ADMIN"))): ...
+#
+#   @router.post("/business-models")
+#   def create_bm(user: JwtPayload = Depends(require_any_role("ADMIN", "FRANCHISOR"))):
+#       ...
+# ---------------------------------------------------------------------------
+
+def require_role(required_role: str):
+    """401 if no/expired token, 403 if role does not match."""
+    def _check(user: JwtPayload = Depends(get_current_user)) -> JwtPayload:
+        if user.role != required_role:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail=f"Insufficient permissions: requires {required_role}",
+            )
+        return user
+    return _check
+
+
+def require_any_role(*allowed_roles: str):
+    """401 if no/expired token, 403 if role not in allowed_roles."""
+    allowed = tuple(allowed_roles)
+    def _check(user: JwtPayload = Depends(get_current_user)) -> JwtPayload:
+        if user.role not in allowed:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail=f"Insufficient permissions: requires one of {', '.join(allowed)}",
+            )
+        return user
+    return _check
