@@ -1,2 +1,36 @@
 .env
 api/uploads/
+
+# ===== Adicionado 2026-04-17 =====
+
+# Dependencies
+node_modules/
+**/node_modules/
+
+# Environment files (todos os backups e variantes)
+.env
+.env.*
+!.env.example
+**/.env
+**/.env.*
+!**/.env.example
+
+# Scraper runtime artifacts
+scraper-progress.json
+
+# IDE / OS
+.DS_Store
+.vscode/
+.idea/
+
+# Build artifacts
+.next/
+dist/
+build/
+*.log
+
+# Python
+__pycache__/
+*.pyc
+venv/
+.venv/
