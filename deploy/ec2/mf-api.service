@@ -1,0 +1,62 @@
+[Unit]
+Description=Mercado Franquia FastAPI (uvicorn)
+Documentation=https://fastapi.tiangolo.com
+After=network-online.target postgresql.service
+Wants=network-online.target
+Requires=postgresql.service
+
+[Service]
+Type=simple
+User=ubuntu
+Group=ubuntu
+WorkingDirectory=/home/ubuntu/mercadofranquia-api
+
+# Environment — edit DATABASE_URL if credentials change.
+Environment=PYTHONUNBUFFERED=1
+Environment=PYTHONDONTWRITEBYTECODE=1
+Environment=DATABASE_URL=postgresql+psycopg://mf_user:mf_senha_forte_2026@localhost:5432/mercadofranquia
+# Must match the NestJS backend so both can issue/verify the same JWTs while
+# the migration is in progress. Rotate once the NestJS backend is retired.
+Environment=JWT_SECRET=948c7b88aa2a98699aa7ddf903ce671bbb990306cfa7fb8a69d0f7463211e6b1
+Environment=JWT_EXPIRES_IN=1h
+# Comma-separated origins allowed to call the API. Widen when adding domains.
+Environment=CORS_ORIGINS=*
+
+# If you keep secrets in an .env file, uncomment:
+# EnvironmentFile=/home/ubuntu/mercadofranquia-api/.env
+
+# Bind to loopback; nginx proxies externally.
+ExecStart=/home/ubuntu/mf-api/bin/uvicorn app.main:app \
+  --host 127.0.0.1 \
+  --port 4000 \
+  --workers 2 \
+  --proxy-headers \
+  --forwarded-allow-ips=127.0.0.1 \
+  --log-level info
+
+Restart=on-failure
+RestartSec=3
+StartLimitBurst=5
+StartLimitIntervalSec=60
+
+# Hardening
+NoNewPrivileges=yes
+PrivateTmp=yes
+ProtectSystem=full
+ProtectHome=read-only
+ReadWritePaths=/home/ubuntu/mercadofranquia-api
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+ProtectControlGroups=yes
+RestrictSUIDSGID=yes
+LockPersonality=yes
+
+# Resource limits
+LimitNOFILE=65535
+
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=mf-api
+
+[Install]
+WantedBy=multi-user.target
