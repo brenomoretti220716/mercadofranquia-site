@@ -249,3 +249,27 @@ def require_any_role(*allowed_roles: str):
             )
         return user
     return _check
+
+
+# ---------------------------------------------------------------------------
+# Ownership checks — for resources scoped to a Franchise.
+# ---------------------------------------------------------------------------
+
+def assert_franchise_owner(user: JwtPayload, owner_id: Optional[str]) -> None:
+    """Raises 403 unless the user is ADMIN, or is FRANCHISOR matching `owner_id`.
+
+    Designed to be called AFTER a `require_any_role("ADMIN", "FRANCHISOR")`
+    dependency has already gated the endpoint — assumes the caller has one of
+    those two roles. Use:
+
+        franchise = db.scalar(...)
+        assert_franchise_owner(user, franchise.ownerId)
+    """
+    if user.role == "ADMIN":
+        return
+    if user.role == "FRANCHISOR" and owner_id is not None and owner_id == user.id:
+        return
+    raise HTTPException(
+        status_code=status.HTTP_403_FORBIDDEN,
+        detail="Você não tem permissão para esta operação",
+    )

@@ -11,17 +11,30 @@ Response shapes are kept compatible with what the Next.js client consumes in
 """
 from __future__ import annotations
 
+import csv
+import io
 import logging
+import re
+import uuid
+from decimal import Decimal, InvalidOperation
 from math import ceil
 from typing import Any, Literal, Optional
 
-from fastapi import APIRouter, Depends, HTTPException, Query, status
+from fastapi import (
+    APIRouter,
+    Depends,
+    File,
+    HTTPException,
+    Query,
+    UploadFile,
+    status,
+)
 from pydantic import BaseModel
 from sqlalchemy import func, or_, select
 from sqlalchemy.orm import Session, selectinload
 
 from app.db import get_db
-from app.models import Franchise, Review
+from app.models import ContactInfo, Franchise, Review
 from app.security import JwtPayload, require_role
 from app.serializers import serialize_franchise
 
@@ -578,3 +591,439 @@ def get_franchise(slug: str, db: Session = Depends(get_db)):
     if franchise is None:
         raise HTTPException(status_code=404, detail="Franchise not found")
     return {"data": serialize_franchise(franchise, include_relations=True)}
+
+
+# ===========================================================================
+# CSV import — admin endpoints
+#
+#   POST /franchises/import/csv               bulk create
+#   POST /franchises/import/csv/update/{id}   single update
+#
+# Both accept multipart/form-data with a `file` field. Headers are translated
+# PT→EN per the same map used by the NestJS importer. Numeric fields accept
+# Brazilian formatting ("R$ 1.500,00"), booleans accept true/false/sim/não.
+#
+# Out of scope for this port (caveats):
+#   - External image URL download (logoUrl/thumbnailUrl saved as-is)
+#   - Per-row image-processing errors that NestJS captured separately
+#   - Slug auto-generation (rows without `slug` are stored with slug=NULL;
+#     admin must fill it in via a follow-up update if they want pretty URLs)
+# ===========================================================================
+
+
+CSV_HEADER_PT_TO_EN: dict[str, str] = {
+    "nome": "name",
+    "descrição": "description",
+    "descricao": "description",
+    "segmento": "segment",
+    "investimento_mínimo": "minimumInvestment",
+    "investimento_minimo": "minimumInvestment",
+    "investimento_máximo": "maximumInvestment",
+    "investimento_maximo": "maximumInvestment",
+    "cidade": "headquarter",
+    "estado": "headquarterState",
+    "site": "website",
+    "e-mail": "email",
+    "email": "email",
+    "telefone": "phone",
+    "total_unidades": "totalUnits",
+}
+
+# Field groups used for type coercion and ContactInfo split.
+_FRANCHISE_INT_FIELDS = (
+    "totalUnits", "totalUnitsInBrazil", "minimumReturnOnInvestment",
+    "maximumReturnOnInvestment", "storeArea", "brandFoundationYear",
+    "franchiseStartYear", "abfSince",
+)
+_FRANCHISE_DECIMAL_FIELDS = (
+    "minimumInvestment", "maximumInvestment", "franchiseFee",
+    "averageMonthlyRevenue", "royalties", "advertisingFee",
+    "setupCapital", "workingCapital",
+)
+_FRANCHISE_BOOL_FIELDS = ("isActive", "isSponsored", "isReview", "isAbfAssociated")
+_FRANCHISE_STR_FIELDS = (
+    "name", "sku", "slug", "segment", "subsegment", "businessType",
+    "headquarter", "headquarterState", "description", "detailedDescription",
+    "logoUrl", "thumbnailUrl", "videoUrl", "scrapedWebsite",
+    "calculationBaseAdFee", "calculationBaseRoyaltie", "unitsEvolution",
+)
+_CONTACT_FIELDS = ("phone", "email", "website")
+_KNOWN_FIELDS = frozenset(
+    _FRANCHISE_INT_FIELDS
+    + _FRANCHISE_DECIMAL_FIELDS
+    + _FRANCHISE_BOOL_FIELDS
+    + _FRANCHISE_STR_FIELDS
+    + _CONTACT_FIELDS
+)
+
+
+def _translate_row(raw: dict[str, Any]) -> dict[str, Any]:
+    """PT→EN headers, with whitespace stripped from keys."""
+    out: dict[str, Any] = {}
+    for k, v in raw.items():
+        if k is None:
+            continue
+        key = CSV_HEADER_PT_TO_EN.get(k.strip(), k.strip())
+        out[key] = v
+    return out
+
+
+def _coerce_str(v: Any) -> Optional[str]:
+    if v is None:
+        return None
+    s = str(v).strip()
+    return s if s else None
+
+
+_NUMBER_CLEAN_RE = re.compile(r"[R$\s]")
+
+
+def _coerce_number_str(v: Any) -> Optional[str]:
+    """Strip R$/spaces, normalize BR notation `1.500,00` → `1500.00`."""
+    if v is None:
+        return None
+    s = str(v).strip()
+    if not s:
+        return None
+    s = _NUMBER_CLEAN_RE.sub("", s)
+    # If both `.` and `,` present, BR style — `.` is thousands sep, `,` is decimal.
+    if "," in s and "." in s:
+        s = s.replace(".", "").replace(",", ".")
+    elif "," in s:
+        # Only comma → treat as decimal separator.
+        s = s.replace(",", ".")
+    return s or None
+
+
+def _coerce_int(v: Any) -> Optional[int]:
+    s = _coerce_number_str(v)
+    if s is None:
+        return None
+    try:
+        return int(float(s))
+    except (TypeError, ValueError):
+        raise ValueError(f"Valor inteiro inválido: {v!r}")
+
+
+def _coerce_decimal(v: Any) -> Optional[Decimal]:
+    s = _coerce_number_str(v)
+    if s is None:
+        return None
+    try:
+        return Decimal(s)
+    except (InvalidOperation, ValueError):
+        raise ValueError(f"Valor decimal inválido: {v!r}")
+
+
+def _coerce_bool(v: Any) -> Optional[bool]:
+    if v is None:
+        return None
+    s = str(v).strip().lower()
+    if not s:
+        return None
+    if s in ("true", "1", "sim", "yes", "y", "t"):
+        return True
+    if s in ("false", "0", "não", "nao", "no", "n", "f"):
+        return False
+    raise ValueError(f"Valor booleano inválido: {v!r}")
+
+
+def _parse_csv(text: str) -> list[dict[str, Any]]:
+    """Returns a list of header→value dicts. Empty rows skipped."""
+    try:
+        reader = csv.DictReader(io.StringIO(text))
+        rows: list[dict[str, Any]] = []
+        for row in reader:
+            # Drop entirely-empty rows
+            if not any((str(v).strip() if v is not None else "") for v in row.values()):
+                continue
+            rows.append(row)
+        return rows
+    except csv.Error as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"Failed to parse CSV: {e}",
+        )
+
+
+def _validate_row(translated: dict[str, Any], *, require_name: bool) -> dict[str, Any]:
+    """Coerce + validate a translated row. Returns a clean dict of typed values
+    ready to apply to ORM objects. Raises ValueError on bad cells."""
+    cleaned: dict[str, Any] = {}
+
+    # Strings
+    for f in _FRANCHISE_STR_FIELDS:
+        if f in translated:
+            v = _coerce_str(translated[f])
+            if v is not None:
+                cleaned[f] = v
+
+    # Integers
+    for f in _FRANCHISE_INT_FIELDS:
+        if f in translated:
+            v = _coerce_int(translated[f])
+            if v is not None:
+                cleaned[f] = v
+
+    # Decimals
+    for f in _FRANCHISE_DECIMAL_FIELDS:
+        if f in translated:
+            v = _coerce_decimal(translated[f])
+            if v is not None:
+                cleaned[f] = v
+
+    # Booleans
+    for f in _FRANCHISE_BOOL_FIELDS:
+        if f in translated:
+            v = _coerce_bool(translated[f])
+            if v is not None:
+                cleaned[f] = v
+
+    # Contact (kept separate — applied to ContactInfo, not Franchise)
+    contact: dict[str, Any] = {}
+    for f in _CONTACT_FIELDS:
+        if f in translated:
+            v = _coerce_str(translated[f])
+            if v is not None:
+                contact[f] = v
+    if contact:
+        cleaned["__contact"] = contact
+
+    if require_name and not cleaned.get("name"):
+        raise ValueError("Coluna `name` (ou `nome`) é obrigatória")
+
+    return cleaned
+
+
+def _apply_to_franchise(franchise: Franchise, cleaned: dict[str, Any]) -> None:
+    """Apply cleaned CSV values to a Franchise ORM object (excluding contact)."""
+    for k, v in cleaned.items():
+        if k == "__contact":
+            continue
+        setattr(franchise, k, v)
+
+
+def _apply_contact(
+    db: Session, franchise: Franchise, contact: dict[str, Any]
+) -> None:
+    """Create or update the franchise's ContactInfo row using cleaned contact
+    fields. Mirrors NestJS franchisorUpdateFranchise contact handling: missing
+    required fields default to empty string."""
+    if not contact:
+        return
+    if franchise.contact is not None:
+        if "phone" in contact:
+            franchise.contact.phone = contact["phone"]
+        if "email" in contact:
+            franchise.contact.email = contact["email"]
+        if "website" in contact:
+            franchise.contact.website = contact["website"]
+        return
+    new_contact = ContactInfo(
+        phone=contact.get("phone", ""),
+        email=contact.get("email", ""),
+        website=contact.get("website", ""),
+    )
+    db.add(new_contact)
+    db.flush()  # need contact.id before linking
+    franchise.contactId = new_contact.id
+
+
+async def _read_csv_file(file: UploadFile) -> str:
+    """Read multipart upload as UTF-8 text; reject empty / non-CSV content."""
+    raw = await file.read()
+    if not raw:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST, detail="No file uploaded"
+        )
+    if file.filename and not file.filename.lower().endswith(".csv"):
+        # Be lenient on mimetype (varies wildly by client), strict on extension.
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Only CSV files are allowed",
+        )
+    try:
+        return raw.decode("utf-8-sig")  # tolerate BOM
+    except UnicodeDecodeError:
+        try:
+            return raw.decode("latin-1")
+        except UnicodeDecodeError:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="CSV must be UTF-8 or Latin-1 encoded",
+            )
+
+
+# ---------------------------------------------------------------------------
+# POST /franchises/import/csv  — bulk create
+# ---------------------------------------------------------------------------
+
+@router.post("/import/csv", summary="Import franchises from CSV (admin)")
+async def import_franchises_csv(
+    file: UploadFile = File(...),
+    _admin: JwtPayload = Depends(require_role("ADMIN")),
+    db: Session = Depends(get_db),
+) -> dict[str, Any]:
+    text = await _read_csv_file(file)
+    raw_rows = _parse_csv(text)
+
+    errors: list[dict[str, Any]] = []
+    success = 0
+
+    for idx, raw in enumerate(raw_rows):
+        row_num = idx + 1
+        try:
+            translated = _translate_row(raw)
+            cleaned = _validate_row(translated, require_name=True)
+        except ValueError as e:
+            errors.append({"row": row_num, "data": raw, "error": str(e)})
+            continue
+
+        contact = cleaned.pop("__contact", None) or {}
+        # SAVEPOINT per row so a single failing row (unique constraint, bad
+        # CheckConstraint, etc.) doesn't abort the rows that already succeeded.
+        try:
+            with db.begin_nested():
+                franchise = Franchise(
+                    id=uuid.uuid4().hex,
+                    sponsorPlacements=[],
+                    **cleaned,
+                )
+                if contact:
+                    new_contact = ContactInfo(
+                        phone=contact.get("phone", ""),
+                        email=contact.get("email", ""),
+                        website=contact.get("website", ""),
+                    )
+                    db.add(new_contact)
+                    db.flush()
+                    franchise.contactId = new_contact.id
+                db.add(franchise)
+                db.flush()
+        except Exception as e:
+            errors.append(
+                {
+                    "row": row_num,
+                    "data": raw,
+                    "error": f"Database error: {e}",
+                }
+            )
+            continue
+        success += 1
+
+    if success > 0:
+        db.commit()
+
+    logger.warning(
+        "[import_franchises_csv] total=%s success=%s failed=%s",
+        len(raw_rows), success, len(errors),
+    )
+
+    return {
+        "total": len(raw_rows),
+        "success": success,
+        "failed": len(errors),
+        "errors": errors,
+    }
+
+
+# ---------------------------------------------------------------------------
+# POST /franchises/import/csv/update/{franchise_id}  — single-row update
+# ---------------------------------------------------------------------------
+
+@router.post(
+    "/import/csv/update/{franchise_id}",
+    summary="Update one franchise from CSV (admin)",
+)
+async def update_franchise_from_csv(
+    franchise_id: str,
+    file: UploadFile = File(...),
+    _admin: JwtPayload = Depends(require_role("ADMIN")),
+    db: Session = Depends(get_db),
+) -> dict[str, Any]:
+    if not franchise_id or not franchise_id.strip():
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Franchise ID is required",
+        )
+
+    text = await _read_csv_file(file)
+    raw_rows = _parse_csv(text)
+    total = len(raw_rows)
+
+    if total == 0:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="CSV file is empty or has no data rows",
+        )
+    if total > 1:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=(
+                f"CSV update only supports single row updates. Found {total} rows. "
+                "Please provide only one row with update data."
+            ),
+        )
+
+    raw = raw_rows[0]
+    try:
+        translated = _translate_row(raw)
+        cleaned = _validate_row(translated, require_name=False)
+    except ValueError as e:
+        return {
+            "total": 1,
+            "success": 0,
+            "failed": 1,
+            "errors": [{"row": 1, "data": raw, "error": str(e)}],
+        }
+
+    if not any(k for k in cleaned if k != "__contact") and "__contact" not in cleaned:
+        return {
+            "total": 1,
+            "success": 0,
+            "failed": 1,
+            "errors": [
+                {
+                    "row": 1,
+                    "data": raw,
+                    "error": "At least one field must be provided for update",
+                }
+            ],
+        }
+
+    franchise = db.scalar(
+        select(Franchise)
+        .where(Franchise.id == franchise_id)
+        .options(selectinload(Franchise.contact))
+    )
+    if franchise is None:
+        return {
+            "total": 1,
+            "success": 0,
+            "failed": 1,
+            "errors": [
+                {"row": 1, "data": raw, "error": f"Franchise {franchise_id} not found"}
+            ],
+        }
+
+    contact = cleaned.pop("__contact", None) or {}
+    _apply_to_franchise(franchise, cleaned)
+    _apply_contact(db, franchise, contact)
+
+    try:
+        db.commit()
+    except Exception as e:
+        db.rollback()
+        return {
+            "total": 1,
+            "success": 0,
+            "failed": 1,
+            "errors": [{"row": 1, "data": raw, "error": f"Database error: {e}"}],
+        }
+
+    logger.warning(
+        "[update_franchise_from_csv] franchise=%s success",
+        franchise_id,
+    )
+
+    return {"total": 1, "success": 1, "failed": 0, "errors": []}

@@ -34,6 +34,7 @@ from app.routers import (
     ranking,
     register,
     reviews,
+    scraping,
     statistics,
     users,
 )
@@ -78,6 +79,7 @@ app.include_router(business_models.router)
 app.include_router(abf_segments.router)
 app.include_router(big_numbers.router)
 app.include_router(statistics.router)
+app.include_router(scraping.router)
 
 
 @app.get("/health", summary="Liveness + DB connectivity check", tags=["meta"])

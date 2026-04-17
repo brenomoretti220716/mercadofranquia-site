@@ -18,9 +18,15 @@ from sqlalchemy import func, select
 from sqlalchemy.orm import Session, selectinload
 
 from app.db import get_db
-from app.models import Franchise, Review, User
+from app.models import Franchise, Review, ReviewResponse, User
 from app.profile_completion import compute_completion
-from app.security import JwtPayload, get_current_user, require_role
+from app.security import (
+    JwtPayload,
+    assert_franchise_owner,
+    get_current_user,
+    require_any_role,
+    require_role,
+)
 
 router = APIRouter(prefix="/reviews", tags=["reviews"])
 logger = logging.getLogger("mf-api.reviews")
@@ -464,3 +470,162 @@ def toggle_review_status(
         ),
         "message": f"Review {'activated' if body.isActive else 'deactivated'} successfully",
     }
+
+
+# ===========================================================================
+# Review-responses — admin/franchisor reply to a review
+#
+#   POST   /reviews/{review_id}/responses    create response (1-per-review)
+#   PUT    /reviews/responses/{response_id}  update (admin OR original author)
+#   DELETE /reviews/responses/{response_id}  delete (admin OR original author)
+# ===========================================================================
+
+
+class CreateReviewResponseBody(BaseModel):
+    content: str = Field(min_length=10, max_length=1000)
+
+
+class UpdateReviewResponseBody(BaseModel):
+    content: Optional[str] = Field(default=None, min_length=10, max_length=1000)
+
+
+def _serialize_response(rr: ReviewResponse, author: Optional[User]) -> dict[str, Any]:
+    return {
+        "id": rr.id,
+        "content": rr.content,
+        "reviewId": rr.reviewId,
+        "authorId": rr.authorId,
+        "createdAt": _iso(rr.createdAt),
+        "updatedAt": _iso(rr.updatedAt),
+        "author": (
+            {"id": author.id, "name": author.name, "role": author.role}
+            if author is not None
+            else None
+        ),
+    }
+
+
+# ---------------------------------------------------------------------------
+# POST /reviews/{review_id}/responses
+# ---------------------------------------------------------------------------
+
+@router.post(
+    "/{review_id}/responses",
+    summary="Cria resposta a uma review (admin/franchisor)",
+    status_code=status.HTTP_201_CREATED,
+)
+def create_review_response(
+    review_id: int,
+    body: CreateReviewResponseBody,
+    user: JwtPayload = Depends(require_any_role("ADMIN", "FRANCHISOR")),
+    db: Session = Depends(get_db),
+) -> dict[str, Any]:
+    review = db.scalar(
+        select(Review)
+        .where(Review.id == review_id)
+        .options(selectinload(Review.franchise))
+    )
+    if review is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="Review não encontrada"
+        )
+
+    franchise = review.franchise
+    owner_id = franchise.ownerId if franchise is not None else None
+    # FRANCHISOR: must own the franchise of this review. ADMIN: bypass.
+    assert_franchise_owner(user, owner_id)
+
+    # NestJS allows only ONE response per review.
+    existing = db.scalar(
+        select(ReviewResponse.id).where(ReviewResponse.reviewId == review_id)
+    )
+    if existing is not None:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Esta avaliação já possui uma resposta",
+        )
+
+    rr = ReviewResponse(
+        content=body.content,
+        reviewId=review_id,
+        authorId=user.id,
+    )
+    db.add(rr)
+    db.commit()
+    db.refresh(rr)
+
+    author = db.scalar(select(User).where(User.id == rr.authorId))
+    return _serialize_response(rr, author)
+
+
+# ---------------------------------------------------------------------------
+# PUT /reviews/responses/{response_id}
+# ---------------------------------------------------------------------------
+
+@router.put(
+    "/responses/{response_id}",
+    summary="Atualiza resposta (admin OU autor da resposta)",
+)
+def update_review_response(
+    response_id: int,
+    body: UpdateReviewResponseBody,
+    user: JwtPayload = Depends(require_any_role("ADMIN", "FRANCHISOR")),
+    db: Session = Depends(get_db),
+) -> dict[str, Any]:
+    rr = db.scalar(
+        select(ReviewResponse).where(ReviewResponse.id == response_id)
+    )
+    if rr is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="Resposta não encontrada"
+        )
+
+    # Per NestJS: ADMIN bypasses; otherwise must be the original author.
+    # NOTE: even a FRANCHISOR who currently owns the franchise CANNOT edit a
+    # response written by another (e.g. the previous owner) — only the author.
+    if user.role != "ADMIN" and rr.authorId != user.id:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Você só pode editar suas próprias respostas",
+        )
+
+    if body.content is not None:
+        rr.content = body.content
+
+    db.commit()
+    db.refresh(rr)
+
+    author = db.scalar(select(User).where(User.id == rr.authorId))
+    return _serialize_response(rr, author)
+
+
+# ---------------------------------------------------------------------------
+# DELETE /reviews/responses/{response_id}
+# ---------------------------------------------------------------------------
+
+@router.delete(
+    "/responses/{response_id}",
+    summary="Apaga resposta (admin OU autor da resposta)",
+)
+def delete_review_response(
+    response_id: int,
+    user: JwtPayload = Depends(require_any_role("ADMIN", "FRANCHISOR")),
+    db: Session = Depends(get_db),
+) -> dict[str, str]:
+    rr = db.scalar(
+        select(ReviewResponse).where(ReviewResponse.id == response_id)
+    )
+    if rr is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="Resposta não encontrada"
+        )
+
+    if user.role != "ADMIN" and rr.authorId != user.id:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Você só pode deletar suas próprias respostas",
+        )
+
+    db.delete(rr)
+    db.commit()
+    return {"message": "Resposta deletada com sucesso"}
