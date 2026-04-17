@@ -2,10 +2,12 @@
 
 import Marquee from '@/src/components/ui/Marquee'
 import { Franchise } from '@/src/schemas/franchises/Franchise'
-import { formatInvestmentRange } from '@/src/utils/formatters'
+import {
+  formatFranchiseName,
+  formatInvestmentRange,
+} from '@/src/utils/formatters'
 import Image from 'next/image'
 import Link from 'next/link'
-import ArrowRightIcon from '../icons/arrowRightIcon'
 import StarIcon from '../icons/starIcon'
 
 interface SponsoredFranchisesTableProps {
@@ -13,234 +15,172 @@ interface SponsoredFranchisesTableProps {
   onClick: (franchiseId: string) => void
 }
 
+function RatingCell({ rating }: { rating: number | null | undefined }) {
+  if (rating === null || rating === undefined) {
+    return <span className="text-[#ccc]">—</span>
+  }
+  return (
+    <div className="flex items-center gap-1">
+      <StarIcon width={14} height={14} color="#facc15" filled={true} />
+      <span className="text-sm font-medium">{rating.toFixed(1)}</span>
+    </div>
+  )
+}
+
 const SponsoredFranchisesTable = ({
   franchises,
   onClick,
 }: SponsoredFranchisesTableProps) => {
   return (
-    <div className="bg-card rounded-2xl border border-border overflow-hidden">
-      {/* Mobile View - Divs instead of table */}
+    <div>
+      {/* Mobile View */}
       <div className="w-full md:hidden">
-        {/* Header */}
-        <div className="flex items-center border-b border-border bg-secondary/50">
-          <div className="w-[15%] p-2 text-center font-semibold text-foreground text-sm">
+        <div className="flex items-center py-2">
+          <div className="w-[12%] px-2 text-[10px] uppercase tracking-[0.5px] text-[#888] font-normal">
             #
           </div>
-          <div className="w-[65%] p-2 font-semibold text-foreground text-sm">
+          <div className="w-[58%] px-2 text-[10px] uppercase tracking-[0.5px] text-[#888] font-normal">
             Franquia
           </div>
-          <div className="w-[25%] p-2 text-left font-semibold text-foreground text-sm">
-            Avaliação
+          <div className="w-[30%] px-2 text-[10px] uppercase tracking-[0.5px] text-[#888] font-normal">
+            Rating
           </div>
         </div>
 
-        {/* Rows */}
-        <div className="divide-y divide-border">
-          {franchises.map((franchise) => {
-            if (!franchise.slug) return null
-            const position = franchise.rankingPosition || 0
+        {franchises.map((franchise) => {
+          if (!franchise.slug) return null
+          const position = franchise.rankingPosition || 0
 
-            // Only render rows for franchises that have a slug available
-            if (!franchise.slug) return null
-
-            return (
-              <div
-                key={franchise.id}
-                onClick={() => onClick(franchise.slug as string)}
-                className="flex items-center cursor-pointer transition-colors hover:bg-secondary/30"
-              >
-                {/* Ranking Number */}
-                <div className="w-[15%] p-2 text-center">
-                  <span className="w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm text-[#626D84] bg-[#E8EAEE]">
-                    {position}
-                  </span>
-                </div>
-
-                {/* Franchise name: logo + marquee + badge on one row (like ranking + label) */}
-                <div className="w-[65%] p-2 overflow-hidden min-w-0">
-                  <div className="flex items-center gap-2 min-w-0 w-full">
-                    {franchise.logoUrl ? (
+          return (
+            <div
+              key={franchise.id}
+              onClick={() => onClick(franchise.slug as string)}
+              className="flex items-center cursor-pointer transition-colors hover:bg-[#fafafa] py-2.5"
+              style={{ borderBottom: '0.5px solid #f0f0f0' }}
+            >
+              <div className="w-[12%] px-2 text-center">
+                <span className="text-sm text-[#888]">{position}</span>
+              </div>
+              <div className="w-[58%] px-2 overflow-hidden min-w-0">
+                <div className="flex items-center gap-2 min-w-0">
+                  {franchise.logoUrl ? (
+                    <div className="w-7 h-7 bg-white rounded flex items-center justify-center shrink-0 p-0.5">
                       <Image
                         src={franchise.logoUrl}
                         alt={franchise.name}
-                        width={24}
-                        height={24}
-                        className="object-contain rounded shrink-0"
+                        width={28}
+                        height={28}
+                        className="object-contain w-full h-full"
                       />
-                    ) : (
-                      <span className="text-xl shrink-0">🏢</span>
-                    )}
-                    <div className="flex min-w-0 flex-1 items-center overflow-hidden">
-                      <div className="min-w-0 flex-1 overflow-hidden w-0">
-                        <Marquee className="min-w-0 flex-1" forceAnimation>
-                          <span className="inline-flex items-center gap-1.5 whitespace-nowrap">
-                            <span className="font-medium text-foreground text-sm">
-                              {franchise.name}
-                            </span>
-                          </span>
-                        </Marquee>
-                      </div>
                     </div>
-                  </div>
-                </div>
-
-                {/* Rating */}
-                <div className="w-[25%] p-2">
-                  <div className="flex items-center gap-1">
-                    <StarIcon
-                      width={20}
-                      height={20}
-                      color="#facc15"
-                      filled={true}
-                    />
-                    <span className="font-semibold text-sm">
-                      {franchise.averageRating?.toFixed(1) || 'N/A'}
-                    </span>
-                  </div>
+                  ) : (
+                    <span className="text-lg shrink-0">🏢</span>
+                  )}
+                  <span className="text-sm font-medium text-foreground truncate">
+                    {formatFranchiseName(franchise.name)}
+                  </span>
                 </div>
               </div>
-            )
-          })}
-        </div>
+              <div className="w-[30%] px-2">
+                <RatingCell rating={franchise.averageRating} />
+              </div>
+            </div>
+          )
+        })}
       </div>
 
-      {/* Desktop View - Table */}
-      <div className="hidden md:block overflow-x-auto">
+      {/* Desktop View */}
+      <div className="hidden md:block">
         <table className="w-full table-fixed">
           <colgroup>
-            <col className="w-[10%]" />
-            <col className="w-[28%]" />
-            <col className="w-[20%]" />
-            <col className="w-[16%]" />
+            <col className="w-[7%]" />
+            <col className="w-[30%]" />
             <col className="w-[18%]" />
-            <col className="w-[8%]" />
+            <col className="w-[14%]" />
+            <col className="w-[20%]" />
+            <col className="w-[11%]" />
           </colgroup>
           <thead>
-            <tr className="border-b border-border bg-secondary/50">
-              <th className="text-left px-6 py-4 font-semibold text-foreground">
+            <tr>
+              <th className="text-left px-4 py-2.5 text-[10px] uppercase tracking-[0.5px] text-[#888] font-normal">
                 #
               </th>
-              <th className="text-left px-6 py-4 font-semibold text-foreground">
+              <th className="text-left px-4 py-2.5 text-[10px] uppercase tracking-[0.5px] text-[#888] font-normal">
                 Franquia
               </th>
-              <th className="text-center px-6 py-4 font-semibold text-foreground">
+              <th className="text-center px-4 py-2.5 text-[10px] uppercase tracking-[0.5px] text-[#888] font-normal">
                 Rating
               </th>
-              <th className="text-center px-6 py-4 font-semibold text-foreground">
+              <th className="text-center px-4 py-2.5 text-[10px] uppercase tracking-[0.5px] text-[#888] font-normal">
                 Unidades
               </th>
-              <th className="text-center px-6 py-4 font-semibold text-foreground">
+              <th className="text-center px-4 py-2.5 text-[10px] uppercase tracking-[0.5px] text-[#888] font-normal">
                 Investimento
               </th>
-              <th className="text-center px-6 py-4 font-semibold text-foreground">
-                {/* No title for Ver column */}
-              </th>
+              <th />
             </tr>
           </thead>
           <tbody>
             {franchises.map((franchise) => {
               if (!franchise.slug) return null
               const position = franchise.rankingPosition || 0
-              // Only render rows for franchises that have a slug available
-              if (!franchise.slug) return null
 
               return (
                 <tr
                   key={franchise.id}
                   onClick={() => onClick(franchise.slug as string)}
-                  className="border-b last:border-0 border-border hover:bg-secondary/30 transition-colors cursor-pointer"
+                  className="cursor-pointer transition-colors hover:bg-[#fafafa]"
+                  style={{ borderBottom: '0.5px solid #f0f0f0' }}
                 >
-                  <td
-                    className="px-6 py-4 overflow-hidden"
-                    style={{ maxWidth: 0 }}
-                  >
-                    <span className="w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm text-[#626D84] bg-[#E8EAEE]">
-                      {position}
-                    </span>
+                  <td className="px-4 py-3">
+                    <span className="text-sm text-[#888]">{position}</span>
                   </td>
                   <td
-                    className="px-6 py-4 overflow-hidden"
+                    className="px-4 py-3 overflow-hidden"
                     style={{ maxWidth: 0 }}
                   >
-                    <div className="flex items-center gap-3 min-w-0 w-full">
+                    <div className="flex items-center gap-3 min-w-0">
                       {franchise.logoUrl ? (
-                        <Image
-                          src={franchise.logoUrl}
-                          alt={franchise.name}
-                          width={32}
-                          height={32}
-                          className="object-contain rounded shrink-0 w-8 h-8"
-                        />
-                      ) : (
-                        <span className="text-2xl shrink-0">🏢</span>
-                      )}
-                      <div className="flex min-w-0 flex-1 items-center overflow-hidden">
-                        <div className="min-w-0 flex-1 overflow-hidden w-0">
-                          <Marquee className="min-w-0 flex-1" forceAnimation>
-                            <span className="inline-flex items-center gap-1.5 whitespace-nowrap">
-                              <span className="font-medium text-foreground text-base">
-                                {franchise.name}
-                              </span>
-                            </span>
-                          </Marquee>
-                        </div>
-                      </div>
-                    </div>
-                  </td>
-                  <td
-                    className="px-6 py-4 text-center overflow-hidden"
-                    style={{ maxWidth: 0 }}
-                  >
-                    <div className="flex items-center justify-center gap-0.5 min-w-0 overflow-hidden">
-                      {Array.from({ length: 5 }).map((_, index) => {
-                        const rating = franchise.averageRating || 0
-                        const isFilled = index < Math.floor(rating)
-                        return (
-                          <StarIcon
-                            key={index}
-                            width={18}
-                            height={18}
-                            color={isFilled ? '#facc15' : '#d1d5db'}
-                            filled={isFilled}
-                            className="shrink-0"
+                        <div className="w-9 h-9 bg-white rounded flex items-center justify-center shrink-0 p-1">
+                          <Image
+                            src={franchise.logoUrl}
+                            alt={franchise.name}
+                            width={36}
+                            height={36}
+                            className="object-contain w-full h-full"
                           />
-                        )
-                      })}
-                      {franchise.averageRating !== null &&
-                        franchise.averageRating !== undefined && (
-                          <span className="font-semibold text-base whitespace-nowrap ml-1">
-                            {franchise.averageRating.toFixed(1)}
-                          </span>
-                        )}
+                        </div>
+                      ) : (
+                        <span className="text-xl shrink-0">🏢</span>
+                      )}
+                      <Marquee className="min-w-0 flex-1">
+                        <span className="text-sm font-medium text-foreground">
+                          {formatFranchiseName(franchise.name)}
+                        </span>
+                      </Marquee>
                     </div>
                   </td>
-                  <td
-                    className="px-6 py-4 text-center text-foreground overflow-hidden"
-                    style={{ width: '16%', maxWidth: '16%' }}
-                  >
-                    <span className="truncate block">
-                      {franchise.totalUnits}
-                    </span>
+                  <td className="px-4 py-3 text-center">
+                    <div className="flex items-center justify-center">
+                      <RatingCell rating={franchise.averageRating} />
+                    </div>
                   </td>
-                  <td
-                    className="px-6 py-4 text-center text-foreground overflow-hidden"
-                    style={{ width: '18%', maxWidth: '18%' }}
-                  >
-                    <span className="inline-block px-3 py-1 bg-primary/20 text-[#265973] rounded-full truncate max-w-full">
-                      {formatInvestmentRange(
-                        franchise.minimumInvestment,
-                        franchise.maximumInvestment,
-                      )}
-                    </span>
+                  <td className="px-4 py-3 text-center text-sm text-foreground">
+                    {franchise.totalUnits?.toLocaleString('pt-BR') ?? '—'}
                   </td>
-                  <td className="px-6 py-4 text-center">
+                  <td className="px-4 py-3 text-center text-sm text-foreground">
+                    {formatInvestmentRange(
+                      franchise.minimumInvestment,
+                      franchise.maximumInvestment,
+                    )}
+                  </td>
+                  <td className="px-4 py-3 text-center">
                     <Link
                       href={`/ranking/${franchise.slug}`}
                       onClick={(e) => e.stopPropagation()}
-                      className="inline-flex items-center gap-1.5 text-primary hover:text-primary/80 transition-colors text-sm font-medium"
+                      className="text-[12px] text-[#E25E3E] font-medium hover:underline"
                     >
-                      <span>Ver</span>
-                      <ArrowRightIcon width={18} height={18} />
+                      Ver →
                     </Link>
                   </td>
                 </tr>
@@ -248,6 +188,22 @@ const SponsoredFranchisesTable = ({
             })}
           </tbody>
         </table>
+      </div>
+
+      {/* Footer */}
+      <div
+        className="flex items-center justify-between pt-3 mt-1"
+        style={{ borderTop: '0.5px solid #e5e5e5' }}
+      >
+        <span className="text-[12px] text-[#888]">
+          Mostrando {franchises.length} de 1.409 franquias
+        </span>
+        <Link
+          href="/ranking"
+          className="text-[12px] text-[#E25E3E] font-medium hover:underline"
+        >
+          Ver ranking completo · 1.409 franquias →
+        </Link>
       </div>
     </div>
   )

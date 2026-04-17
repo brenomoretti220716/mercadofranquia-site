@@ -2,6 +2,7 @@
 
 import Marquee from '@/src/components/ui/Marquee'
 import { Franchise } from '@/src/schemas/franchises/Franchise'
+import { formatFranchiseName } from '@/src/utils/formatters'
 import Image from 'next/image'
 import StarIcon from '../icons/starIcon'
 
@@ -31,8 +32,9 @@ export default function RankingMobileView({
 
       {/* Rows */}
       <div className="divide-y divide-border">
-        {franchises.map((franchise) => {
-          const position = franchise.rankingPosition || 0
+        {franchises.map((franchise, index) => {
+          // TODO: mover cálculo pro backend (rankingPosition vem null do DB)
+          const position = index + 1
 
           return (
             <div
@@ -52,11 +54,12 @@ export default function RankingMobileView({
                 <div className="flex items-center gap-2 min-w-0">
                   {franchise.logoUrl ? (
                     <Image
-                      src={franchise.logoUrl}
+                      src={`${process.env.NEXT_PUBLIC_API_URL ?? ''}${franchise.logoUrl}`}
                       alt={franchise.name}
-                      width={24}
-                      height={24}
-                      className="object-contain rounded shrink-0"
+                      width={32}
+                      height={32}
+                      unoptimized
+                      className="object-contain rounded shrink-0 w-8 h-8"
                     />
                   ) : (
                     <span className="text-xl shrink-0">🏢</span>
@@ -64,7 +67,7 @@ export default function RankingMobileView({
                   <div className="flex-1 min-w-0 overflow-hidden">
                     <Marquee>
                       <span className="font-medium text-foreground text-sm">
-                        {franchise.name}
+                        {formatFranchiseName(franchise.name)}
                       </span>
                     </Marquee>
                   </div>

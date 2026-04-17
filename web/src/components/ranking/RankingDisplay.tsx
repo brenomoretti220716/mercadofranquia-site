@@ -98,8 +98,9 @@ const RankingDisplay = ({
         franchises.length > 0 &&
         viewMode === 'cards' && (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {franchises.map((franchise) => {
-              const position = franchise.rankingPosition || 0
+            {franchises.map((franchise, index) => {
+              // TODO: mover cálculo pro backend (rankingPosition vem null do DB)
+              const position = index + 1
               return (
                 <RankingCard
                   key={franchise.id}

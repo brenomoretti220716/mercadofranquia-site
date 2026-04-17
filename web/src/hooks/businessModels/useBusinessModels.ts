@@ -1,4 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
+import Api from '@/src/api/Api'
 
 export interface BusinessModel {
   id: string
@@ -14,7 +15,7 @@ async function fetchBusinessModelsByFranchise(
   franchiseId: string,
 ): Promise<BusinessModel[]> {
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/business-models/franchise/${franchiseId}`,
+    Api(`/business-models/franchise/${franchiseId}`),
   )
 
   if (!response.ok) {
@@ -35,9 +36,7 @@ export function useBusinessModelsByFranchise(franchiseId: string) {
 export async function fetchBusinessModelById(
   id: string,
 ): Promise<BusinessModel> {
-  const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/business-models/${id}`,
-  )
+  const response = await fetch(Api(`/business-models/${id}`))
 
   if (!response.ok) {
     throw new Error('Failed to fetch business model')

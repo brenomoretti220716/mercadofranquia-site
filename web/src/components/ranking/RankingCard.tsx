@@ -1,7 +1,11 @@
 'use client'
 
 import { Franchise } from '@/src/schemas/franchises/Franchise'
-import { formatInvestmentRange, formatROIRange } from '@/src/utils/formatters'
+import {
+  formatFranchiseName,
+  formatInvestmentRange,
+  formatROIRange,
+} from '@/src/utils/formatters'
 import Image from 'next/image'
 import ClockIcon from '../icons/clockIcon'
 import DollarSignIcon from '../icons/dollarSignIcon'
@@ -17,20 +21,21 @@ const RankingCard = ({ franchise, position, onClick }: RankingCardProps) => {
   return (
     <div
       onClick={() => onClick(franchise.slug ?? franchise.id)}
-      className="rounded-2xl p-6 border-2 border-border bg-card shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg cursor-pointer"
+      className="rounded-[16px] p-6 border border-border bg-white shadow-sm transition-all duration-300 hover:scale-[1.02] hover:shadow-lg cursor-pointer"
     >
       <div className="flex items-start gap-4">
         <div className="w-10 h-10 rounded-full flex items-center justify-center shrink-0 bg-primary/10">
           <span className="font-bold text-primary">#{position}</span>
         </div>
-        <div className="w-14 h-14 bg-secondary rounded-xl flex items-center justify-center shrink-0 overflow-hidden">
+        <div className="w-14 h-14 bg-white rounded-[12px] border border-border/50 flex items-center justify-center shrink-0 p-2">
           {franchise.logoUrl ? (
             <Image
-              src={franchise.logoUrl}
+              src={`${process.env.NEXT_PUBLIC_API_URL ?? ''}${franchise.logoUrl}`}
               alt={franchise.name}
               width={56}
               height={56}
-              className="object-contain"
+              unoptimized
+              className="object-contain w-full h-full"
             />
           ) : (
             <span className="text-2xl">🏢</span>
@@ -39,8 +44,8 @@ const RankingCard = ({ franchise, position, onClick }: RankingCardProps) => {
         <div className="flex-1 min-w-0">
           <div className="flex items-start justify-between gap-2">
             <div className="flex-1 min-w-0">
-              <h3 className="font-bold text-foreground truncate">
-                {franchise.name}
+              <h3 className="font-semibold text-foreground truncate text-[15px]">
+                {formatFranchiseName(franchise.name)}
               </h3>
               <p className="text-sm text-muted-foreground truncate">
                 {franchise.segment}

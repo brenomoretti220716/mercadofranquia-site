@@ -3,7 +3,10 @@
 import Marquee from '@/src/components/ui/Marquee'
 import { useRankingFilters } from '@/src/contexts/RankingContext'
 import { Franchise } from '@/src/schemas/franchises/Franchise'
-import { formatInvestmentRange } from '@/src/utils/formatters'
+import {
+  formatFranchiseName,
+  formatInvestmentRange,
+} from '@/src/utils/formatters'
 import Image from 'next/image'
 import ArrowDownIcon from '../icons/arrowDownIcon'
 import ArrowUpIcon from '../icons/arrowUpIcon'
@@ -112,8 +115,9 @@ const RankingTableView = ({
             </tr>
           </thead>
           <tbody>
-            {franchises.map((franchise) => {
-              const position = franchise.rankingPosition || 0
+            {franchises.map((franchise, index) => {
+              // TODO: mover cálculo pro backend (rankingPosition vem null do DB)
+              const position = index + 1
               return (
                 <tr
                   key={franchise.id}
@@ -135,11 +139,12 @@ const RankingTableView = ({
                     <div className="flex items-center gap-2 md:gap-3 min-w-0 w-full">
                       {franchise.logoUrl ? (
                         <Image
-                          src={franchise.logoUrl}
+                          src={`${process.env.NEXT_PUBLIC_API_URL ?? ''}${franchise.logoUrl}`}
                           alt={franchise.name}
-                          width={32}
-                          height={32}
-                          className="object-contain rounded shrink-0 w-6 h-6 md:w-8 md:h-8"
+                          width={40}
+                          height={40}
+                          unoptimized
+                          className="object-contain rounded shrink-0 w-8 h-8 md:w-10 md:h-10"
                         />
                       ) : (
                         <span className="text-xl md:text-2xl shrink-0">🏢</span>
@@ -147,7 +152,7 @@ const RankingTableView = ({
                       <div className="flex items-center gap-1 md:gap-2 min-w-0 flex-1">
                         <Marquee className="flex-1 min-w-0">
                           <span className="font-medium text-foreground text-sm md:text-base">
-                            {franchise.name}
+                            {formatFranchiseName(franchise.name)}
                           </span>
                         </Marquee>
                       </div>

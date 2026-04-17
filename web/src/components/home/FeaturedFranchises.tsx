@@ -1,7 +1,7 @@
 'use client'
 
 import { franchiseQueries } from '@/src/queries/franchises'
-import { formatROIRange } from '@/src/utils/formatters'
+import { formatFranchiseName, formatROIRange } from '@/src/utils/formatters'
 import { useQuery } from '@tanstack/react-query'
 import { useRouter } from 'next/navigation'
 import { useMemo, useState } from 'react'
@@ -50,20 +50,25 @@ const FeaturedFranchises = () => {
     router.push(`/ranking/${franchiseSlug}`)
   }
   return (
-    <section className="py-8 md:py-16">
+    <section className="py-8 md:py-12 bg-white">
       <div className="container mx-auto px-4">
-        <div className="mb-6 md:mb-12">
-          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-4">
-            <div>
-              <h2 className="text-3xl md:text-4xl font-bold text-[#171726] dark:text-foreground mb-2">
-                Destaques das Melhores Franquias do Brasil
+        <div className="border-t-2 border-[#111] pt-4 mb-6">
+          <div className="flex items-center justify-between">
+            <div className="flex items-baseline gap-3">
+              <h2 className="text-[11px] uppercase tracking-[0.8px] font-medium text-[#111]">
+                Destaques
               </h2>
-              <p className="text-base md:text-xl text-[#6B7280] dark:text-muted-foreground">
-                Oportunidades selecionadas com base em avaliações, potencial de
-                crescimento e satisfação dos franqueados
-              </p>
+              <span className="text-[11px] text-[#888]">
+                Selecionadas pelo painel editorial
+              </span>
             </div>
-            <div className="shrink-0">
+            <div className="flex items-center gap-4">
+              <Link
+                href="/ranking"
+                className="text-[11px] font-medium text-[#E25E3E] hover:underline"
+              >
+                Ver mais →
+              </Link>
               <ViewModeToggle viewMode={viewMode} onChange={setViewMode} />
             </div>
           </div>
@@ -71,8 +76,8 @@ const FeaturedFranchises = () => {
 
         {isLoading ? (
           viewMode === 'table' ? (
-            <div className="bg-card rounded-2xl border border-border overflow-hidden animate-pulse">
-              <div className="h-12 bg-secondary/50 border-b border-border"></div>
+            <div className="animate-pulse">
+              <div className="h-8 bg-secondary/30 mb-1"></div>
               {[1, 2, 3, 4, 5, 6].map((i) => (
                 <div key={i} className="h-16 border-b border-border"></div>
               ))}
@@ -120,18 +125,18 @@ const FeaturedFranchises = () => {
             {sponsoredFranchises.map((franchise) => (
               <div
                 key={franchise.id}
-                className="bg-card rounded-2xl p-6 border border-border shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg group"
+                className="bg-white rounded-[16px] p-6 border border-border shadow-sm transition-all duration-300 hover:scale-[1.02] hover:shadow-lg group"
               >
                 {/* Header */}
                 <div className="flex items-start gap-4 mb-4">
-                  <div className="w-16 h-16 bg-secondary rounded-xl flex items-center justify-center shrink-0 overflow-hidden">
+                  <div className="w-16 h-16 bg-white rounded-[12px] border border-border/50 flex items-center justify-center shrink-0 p-3">
                     {franchise.logoUrl ? (
                       <Image
                         src={franchise.logoUrl}
                         alt={franchise.name}
                         width={64}
                         height={64}
-                        className="object-contain"
+                        className="object-contain w-full h-full"
                       />
                     ) : (
                       <span className="text-3xl">🏢</span>
@@ -139,10 +144,10 @@ const FeaturedFranchises = () => {
                   </div>
                   <div className="flex-1 min-w-0 overflow-hidden">
                     <div className="mb-1 min-w-0 flex items-center">
-                      <Marquee className="min-w-0 flex-1" forceAnimation>
+                      <Marquee className="min-w-0 flex-1">
                         <span className="inline-flex items-center gap-2 whitespace-nowrap">
-                          <span className="text-lg font-bold text-foreground">
-                            {franchise.name}
+                          <span className="text-base font-semibold text-foreground">
+                            {formatFranchiseName(franchise.name)}
                           </span>
                         </span>
                       </Marquee>
