@@ -285,3 +285,29 @@ def update_news(
         delete_uploaded_file(old_photo_url)
 
     return _serialize_news(n)
+
+
+# ---------------------------------------------------------------------------
+# DELETE /news/comments/{comment_id}  — admin moderation
+# ---------------------------------------------------------------------------
+
+@router.delete(
+    "/comments/{comment_id}",
+    summary="Apaga comentário em notícia (admin)",
+)
+def delete_news_comment(
+    comment_id: str,
+    _admin: JwtPayload = Depends(require_role("ADMIN")),
+    db: Session = Depends(get_db),
+) -> dict[str, str]:
+    comment = db.scalar(
+        select(NewsComment).where(NewsComment.id == comment_id)
+    )
+    if comment is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Comentário não encontrado",
+        )
+    db.delete(comment)
+    db.commit()
+    return {"message": "Comentário deletado com sucesso"}

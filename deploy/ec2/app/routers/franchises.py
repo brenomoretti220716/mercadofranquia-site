@@ -119,7 +119,7 @@ def _apply_sorts(stmt, sort_params: dict[str, Optional[str]]):
 def list_franchises(
     db: Session = Depends(get_db),
     page: int = Query(1, ge=1),
-    limit: int = Query(10, ge=1, le=100),
+    limit: int = Query(10, ge=1, le=500),
     search: Optional[str] = None,
     segment: Optional[str] = None,
     subsegment: Optional[str] = None,
@@ -284,7 +284,7 @@ def get_all_franchises_for_admin(
     db: Session = Depends(get_db),
     _admin: JwtPayload = Depends(require_role("ADMIN")),
     page: int = Query(1, ge=1),
-    limit: int = Query(10, ge=1, le=100),
+    limit: int = Query(10, ge=1, le=500),
     search: Optional[str] = None,
     segment: Optional[str] = None,
     subsegment: Optional[str] = None,
