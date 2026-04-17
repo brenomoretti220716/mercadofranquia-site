@@ -9,12 +9,22 @@ GET is public.
 """
 from __future__ import annotations
 
+import logging
 import uuid
 from datetime import datetime
 from math import ceil
 from typing import Any, Optional
 
-from fastapi import APIRouter, Depends, HTTPException, Query, status
+from fastapi import (
+    APIRouter,
+    Depends,
+    File,
+    Form,
+    HTTPException,
+    Query,
+    UploadFile,
+    status,
+)
 from pydantic import BaseModel, Field
 from sqlalchemy import func, or_, select
 from sqlalchemy.orm import Session, selectinload
@@ -22,9 +32,11 @@ from sqlalchemy.orm import Session, selectinload
 from app.db import get_db
 from app.models import News, NewsComment, User
 from app.profile_completion import compute_completion
-from app.security import JwtPayload, get_current_user
+from app.security import JwtPayload, get_current_user, require_role
+from app.storage import delete_uploaded_file, save_image_upload
 
 router = APIRouter(prefix="/news", tags=["news"])
+logger = logging.getLogger("mf-api.news")
 
 
 def _iso(dt: Optional[datetime]) -> Optional[str]:
@@ -170,3 +182,106 @@ def create_comment(
     # load author for response
     db.refresh(comment, attribute_names=["author"])
     return _serialize_comment(comment)
+
+
+# ===========================================================================
+# Admin endpoints — multipart/form-data
+#
+#   POST /news        — create news, photo REQUIRED
+#   PUT  /news/{id}   — update news, photo OPTIONAL
+#
+# Both require role == ADMIN. Photo is uploaded via app.storage; the public
+# URL `/uploads/news/<uuid><ext>` is stored in News.photoUrl.
+# ===========================================================================
+
+
+@router.post("", summary="Cria notícia (admin) — multipart com foto", status_code=status.HTTP_201_CREATED)
+def create_news(
+    title: str = Form(..., min_length=1, max_length=200),
+    category: str = Form(..., min_length=1, max_length=100),
+    summary: str = Form(..., min_length=1, max_length=500),
+    content: str = Form(..., min_length=10, max_length=2000),
+    photo: UploadFile = File(..., description="Imagem (JPEG/PNG/GIF/WebP, ≤5MB)"),
+    _admin: JwtPayload = Depends(require_role("ADMIN")),
+    db: Session = Depends(get_db),
+) -> dict[str, Any]:
+    photo_url = save_image_upload(photo, "news")
+
+    news = News(
+        id=uuid.uuid4().hex,
+        title=title,
+        category=category,
+        summary=summary,
+        content=content,
+        photoUrl=photo_url,
+        isActive=True,
+    )
+    try:
+        db.add(news)
+        db.commit()
+        db.refresh(news)
+    except Exception:
+        # If DB write fails, drop the orphaned upload so we don't leave dead bytes.
+        delete_uploaded_file(photo_url)
+        raise
+
+    return _serialize_news(news)
+
+
+@router.put("/{news_id}", summary="Atualiza notícia (admin) — multipart, foto opcional")
+def update_news(
+    news_id: str,
+    title: Optional[str] = Form(None, min_length=1, max_length=200),
+    category: Optional[str] = Form(None, min_length=1, max_length=100),
+    summary: Optional[str] = Form(None, min_length=1, max_length=500),
+    content: Optional[str] = Form(None, min_length=10, max_length=2000),
+    isActive: Optional[bool] = Form(None),
+    photo: Optional[UploadFile] = File(None),
+    _admin: JwtPayload = Depends(require_role("ADMIN")),
+    db: Session = Depends(get_db),
+) -> dict[str, Any]:
+    n = db.scalar(select(News).where(News.id == news_id))
+    if n is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="Notícia não encontrada"
+        )
+
+    # FastAPI sends an empty UploadFile (filename="") when the field is omitted
+    # in some clients. Treat empty filename as "no photo provided".
+    photo_provided = photo is not None and bool(photo.filename)
+
+    new_photo_url: Optional[str] = None
+    if photo_provided:
+        # Upload first; if upload raises, DB is untouched and old photo stays.
+        new_photo_url = save_image_upload(photo, "news")
+
+    old_photo_url = n.photoUrl
+
+    if title is not None:
+        n.title = title
+    if category is not None:
+        n.category = category
+    if summary is not None:
+        n.summary = summary
+    if content is not None:
+        n.content = content
+    if isActive is not None:
+        n.isActive = isActive
+    if new_photo_url is not None:
+        n.photoUrl = new_photo_url
+
+    try:
+        db.commit()
+        db.refresh(n)
+    except Exception:
+        # Roll back the orphan upload if DB write fails.
+        if new_photo_url:
+            delete_uploaded_file(new_photo_url)
+        raise
+
+    # DB write succeeded — now safe to drop the previous file. Best-effort,
+    # never fails the request if the file is already gone.
+    if new_photo_url and old_photo_url and old_photo_url != new_photo_url:
+        delete_uploaded_file(old_photo_url)
+
+    return _serialize_news(n)

@@ -11,18 +11,26 @@ Response shapes are kept compatible with what the Next.js client consumes in
 """
 from __future__ import annotations
 
+import logging
 from math import ceil
-from typing import Optional
+from typing import Any, Literal, Optional
 
 from fastapi import APIRouter, Depends, HTTPException, Query, status
+from pydantic import BaseModel
 from sqlalchemy import func, or_, select
 from sqlalchemy.orm import Session, selectinload
 
 from app.db import get_db
 from app.models import Franchise, Review
+from app.security import JwtPayload, require_role
 from app.serializers import serialize_franchise
 
 router = APIRouter(prefix="/franchises", tags=["franchises"])
+logger = logging.getLogger("mf-api.franchises")
+
+# Mirrors the Prisma SponsorPlacement enum.
+SponsorPlacementValue = Literal["HOME_DESTAQUES", "RANKING_CATEGORIA", "QUIZ"]
+MAX_SPONSORED_FRANCHISES = 5
 
 
 SORT_COLUMNS = {
@@ -210,6 +218,288 @@ def count_franchises(
         stmt = stmt.where(Franchise.name.ilike(f"%{search}%"))
     total = db.scalar(stmt) or 0
     return {"total": total}
+
+
+# ===========================================================================
+# Franchise options + admin endpoints
+#
+# These MUST be declared before the `/{slug}*` catch-all routes below so that
+# literal paths (`/options`, `/admin/all`) win over the slug matcher.
+#
+#   GET   /franchises/options                  public — [{id, name}, ...]
+#   GET   /franchises/admin/all                admin — paginated, inc. inactive
+#   PATCH /franchises/{id}/toggle-status       admin — isActive
+#   PATCH /franchises/{id}/toggle-review       admin — isReview
+#   PATCH /franchises/{id}/toggle-sponsored    admin — isSponsored (max 5)
+#   PATCH /franchises/{id}/sponsor-placements  admin — JSON placements array
+# ===========================================================================
+
+
+class ToggleStatusBody(BaseModel):
+    isActive: bool
+
+
+class ToggleReviewBody(BaseModel):
+    isReview: bool
+
+
+class ToggleSponsoredBody(BaseModel):
+    isSponsored: bool
+
+
+class UpdateSponsorPlacementsBody(BaseModel):
+    placements: list[SponsorPlacementValue]
+
+
+@router.get("/options", summary="Opções de franquia (id+name) — público")
+def get_franchise_options(
+    db: Session = Depends(get_db),
+    availableOnly: bool = False,
+    userId: Optional[str] = None,
+) -> list[dict[str, Any]]:
+    """Public endpoint — returns [{id, name}].
+
+    - default:                  all active franchises
+    - availableOnly=true:       active AND ownerId IS NULL
+    - availableOnly=true+userId: active AND (ownerId IS NULL OR ownerId=userId)
+    """
+    stmt = (
+        select(Franchise.id, Franchise.name)
+        .where(Franchise.isActive.is_(True))
+        .order_by(Franchise.name.asc())
+    )
+    if availableOnly and userId:
+        stmt = stmt.where(
+            or_(Franchise.ownerId.is_(None), Franchise.ownerId == userId)
+        )
+    elif availableOnly:
+        stmt = stmt.where(Franchise.ownerId.is_(None))
+
+    rows = db.execute(stmt).all()
+    return [{"id": row[0], "name": row[1]} for row in rows]
+
+
+@router.get("/admin/all", summary="Lista admin paginada (inclui inativas)")
+def get_all_franchises_for_admin(
+    db: Session = Depends(get_db),
+    _admin: JwtPayload = Depends(require_role("ADMIN")),
+    page: int = Query(1, ge=1),
+    limit: int = Query(10, ge=1, le=100),
+    search: Optional[str] = None,
+    segment: Optional[str] = None,
+    subsegment: Optional[str] = None,
+    excludeSubsegment: Optional[str] = None,
+    minInvestment: Optional[float] = None,
+    maxInvestment: Optional[float] = None,
+    minUnits: Optional[int] = None,
+    maxUnits: Optional[int] = None,
+    minROI: Optional[int] = None,
+    maxROI: Optional[int] = None,
+    minFranchiseFee: Optional[float] = None,
+    maxFranchiseFee: Optional[float] = None,
+    minRevenue: Optional[float] = None,
+    maxRevenue: Optional[float] = None,
+    minRating: Optional[float] = None,
+    maxRating: Optional[float] = None,
+    isSponsored: Optional[bool] = None,
+    nameSort: Optional[str] = None,
+    ratingSort: Optional[str] = None,
+    unitsSort: Optional[str] = None,
+    investmentSort: Optional[str] = None,
+    roiSort: Optional[str] = None,
+    franchiseFeeSort: Optional[str] = None,
+    revenueSort: Optional[str] = None,
+) -> dict[str, Any]:
+    """Admin listing. Matches /franchises filters but:
+      - does NOT restrict to isActive=true (admin sees everything)
+      - includes totalActive / totalInactive / totalSponsored counters
+      - omits the NestJS sponsored-first reordering with random selection
+        (admin panel needs deterministic order, not the public UX bump).
+    """
+    filters = {
+        "search": search,
+        "segment": segment,
+        "subsegment": subsegment,
+        "excludeSubsegment": excludeSubsegment,
+        "minInvestment": minInvestment,
+        "maxInvestment": maxInvestment,
+        "minUnits": minUnits,
+        "maxUnits": maxUnits,
+        "minROI": minROI,
+        "maxROI": maxROI,
+        "minFranchiseFee": minFranchiseFee,
+        "maxFranchiseFee": maxFranchiseFee,
+        "minRevenue": minRevenue,
+        "maxRevenue": maxRevenue,
+        "minRating": minRating,
+        "maxRating": maxRating,
+        "isSponsored": isSponsored,
+    }
+    sort_params = {
+        "name":         nameSort,
+        "rating":       ratingSort,
+        "units":        unitsSort,
+        "investment":   investmentSort,
+        "roi":          roiSort,
+        "franchiseFee": franchiseFeeSort,
+        "revenue":      revenueSort,
+    }
+
+    stmt = select(Franchise)
+    stmt = _apply_filters(stmt, only_active=False, filters=filters)
+    stmt = _apply_sorts(stmt, sort_params)
+
+    total = db.scalar(select(func.count()).select_from(stmt.subquery())) or 0
+    offset = (page - 1) * limit
+    rows = db.scalars(
+        stmt.options(selectinload(Franchise.contact)).offset(offset).limit(limit)
+    ).all()
+
+    total_active = (
+        db.scalar(select(func.count()).select_from(Franchise).where(Franchise.isActive.is_(True))) or 0
+    )
+    total_inactive = (
+        db.scalar(select(func.count()).select_from(Franchise).where(Franchise.isActive.is_(False))) or 0
+    )
+    total_sponsored = (
+        db.scalar(select(func.count()).select_from(Franchise).where(Franchise.isSponsored.is_(True))) or 0
+    )
+
+    return {
+        "data": [
+            serialize_franchise(f, ranking_position=offset + idx + 1)
+            for idx, f in enumerate(rows)
+        ],
+        "total": total,
+        "totalActive": total_active,
+        "totalInactive": total_inactive,
+        "totalSponsored": total_sponsored,
+        "page": page,
+        "lastPage": max(1, ceil(total / limit)) if total else 1,
+    }
+
+
+def _load_franchise_or_404(db: Session, franchise_id: str) -> Franchise:
+    f = db.scalar(select(Franchise).where(Franchise.id == franchise_id))
+    if f is None:
+        raise HTTPException(status.HTTP_404_NOT_FOUND, "Franchise not found")
+    return f
+
+
+@router.patch("/{franchise_id}/toggle-status", summary="Toggle isActive (admin)")
+def toggle_franchise_status(
+    franchise_id: str,
+    body: ToggleStatusBody,
+    _admin: JwtPayload = Depends(require_role("ADMIN")),
+    db: Session = Depends(get_db),
+) -> dict[str, Any]:
+    franchise = _load_franchise_or_404(db, franchise_id)
+    franchise.isActive = body.isActive
+    db.commit()
+    db.refresh(franchise)
+
+    # Side effects from NestJS skipped (no email service / cache in FastAPI):
+    #   - emailService.sendUserUpdateNotification to owner
+    #   - invalidateFranchiseCache (redis)
+    logger.warning(
+        "[toggle_franchise_status] franchise=%s isActive=%s — "
+        "skipped owner email + cache invalidation (services not ported)",
+        franchise_id, body.isActive,
+    )
+
+    return {
+        "data": serialize_franchise(franchise),
+        "message": f"Franchise {'activated' if body.isActive else 'deactivated'} successfully",
+    }
+
+
+@router.patch("/{franchise_id}/toggle-review", summary="Toggle isReview (admin)")
+def toggle_franchise_review(
+    franchise_id: str,
+    body: ToggleReviewBody,
+    _admin: JwtPayload = Depends(require_role("ADMIN")),
+    db: Session = Depends(get_db),
+) -> dict[str, Any]:
+    franchise = _load_franchise_or_404(db, franchise_id)
+    franchise.isReview = body.isReview
+    db.commit()
+    db.refresh(franchise)
+    return {
+        "data": serialize_franchise(franchise),
+        "message": "Franchise review toggled successfully",
+    }
+
+
+@router.patch("/{franchise_id}/toggle-sponsored", summary="Toggle isSponsored (admin, máx 5)")
+def toggle_franchise_sponsored(
+    franchise_id: str,
+    body: ToggleSponsoredBody,
+    _admin: JwtPayload = Depends(require_role("ADMIN")),
+    db: Session = Depends(get_db),
+) -> dict[str, Any]:
+    franchise = _load_franchise_or_404(db, franchise_id)
+
+    if body.isSponsored:
+        # Only enforce the cap when adding a new sponsored franchise. If the
+        # franchise is already sponsored, toggling it to True is a no-op and
+        # shouldn't count against the cap.
+        if not franchise.isSponsored:
+            sponsored_count = (
+                db.scalar(
+                    select(func.count())
+                    .select_from(Franchise)
+                    .where(Franchise.isSponsored.is_(True))
+                )
+                or 0
+            )
+            if sponsored_count >= MAX_SPONSORED_FRANCHISES:
+                raise HTTPException(
+                    status.HTTP_400_BAD_REQUEST,
+                    "Só podem existir no máximo 5 franquias patrocinadas ao mesmo tempo.",
+                )
+
+    franchise.isSponsored = body.isSponsored
+    if not body.isSponsored:
+        # Matches NestJS — clear placements when unsponsoring so the panel
+        # doesn't keep stale placements for non-sponsored franchises.
+        franchise.sponsorPlacements = []
+
+    db.commit()
+    db.refresh(franchise)
+    return {
+        "data": serialize_franchise(franchise),
+        "message": f"Franchise {'sponsored' if body.isSponsored else 'unsponsored'} successfully",
+    }
+
+
+@router.patch("/{franchise_id}/sponsor-placements", summary="Update sponsor placements (admin)")
+def update_sponsor_placements(
+    franchise_id: str,
+    body: UpdateSponsorPlacementsBody,
+    _admin: JwtPayload = Depends(require_role("ADMIN")),
+    db: Session = Depends(get_db),
+) -> dict[str, Any]:
+    franchise = _load_franchise_or_404(db, franchise_id)
+    if not franchise.isSponsored:
+        raise HTTPException(
+            status.HTTP_400_BAD_REQUEST,
+            "Cannot set sponsor placements for a non-sponsored franchise.",
+        )
+
+    # De-dupe while preserving order.
+    seen: set[str] = set()
+    deduped: list[str] = []
+    for p in body.placements:
+        if p not in seen:
+            seen.add(p)
+            deduped.append(p)
+    franchise.sponsorPlacements = deduped
+    db.commit()
+    db.refresh(franchise)
+    return {
+        "data": serialize_franchise(franchise),
+        "message": "Sponsor placements updated successfully",
+    }
 
 
 @router.get(
