@@ -108,3 +108,11 @@ Observacoes:
 - `npm run lint`: roda ESLint com auto-fix
 - `npm run test`: roda testes
 - `npm run list-segments`: script utilitario de segmentos
+
+## ⛔ CONGELADO DESDE 2026-04-18
+
+Este backend NestJS está **congelado**. Todo código novo vai para
+\`deploy/ec2/app/\` (FastAPI em produção no EC2). Decommissionamento
+programado para a Fase 5 da fusão — ver \`docs/FUSAO_INVENTORY.md\`.
+
+Não aceitar commits contra \`api/\` sem revisão explícita.
