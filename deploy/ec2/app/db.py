@@ -10,10 +10,14 @@ from typing import Generator
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session, sessionmaker
 
-DATABASE_URL = os.environ.get(
-    "DATABASE_URL",
-    "postgresql+psycopg://mf_user:mf_senha_forte_2026@localhost:5432/mercadofranquia",
-)
+DATABASE_URL = os.environ.get("DATABASE_URL")
+
+if not DATABASE_URL:
+    raise RuntimeError(
+        "DATABASE_URL environment variable is required. "
+        "Set it in the systemd service file "
+        "(/etc/systemd/system/mf-api.service) or export it locally."
+    )
 
 engine = create_engine(
     DATABASE_URL,
