@@ -49,6 +49,11 @@ const SECTIONS: NavSection[] = [
     title: 'Dados',
     items: [
       {
+        label: 'Fontes',
+        href: '/admin/fontes',
+        matcher: (p) => p.startsWith('/admin/fontes'),
+      },
+      {
         label: 'Segmentos ABF',
         href: '/admin/segmentos-abf',
         matcher: (p) => p.startsWith('/admin/segmentos-abf'),
