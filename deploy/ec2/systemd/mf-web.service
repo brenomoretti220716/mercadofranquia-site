@@ -1,0 +1,48 @@
+[Unit]
+Description=Mercado Franquia Next.js (standalone server)
+Documentation=https://nextjs.org
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=ubuntu
+Group=ubuntu
+# Standalone's server.js resolves `.next/static` and `public/` relative to cwd,
+# so the working dir is the standalone output folder (NOT the project root).
+WorkingDirectory=/home/ubuntu/mercadofranquia-web/.next/standalone
+
+# Environment — NEXT_PUBLIC_* vars bake into the bundle at build time.
+# Runtime env (server-only vars) can be set here; PORT / HOSTNAME affect
+# the Next standalone server.
+Environment=NODE_ENV=production
+Environment=PORT=3000
+Environment=HOSTNAME=127.0.0.1
+
+ExecStart=/usr/bin/node server.js
+
+Restart=on-failure
+RestartSec=3
+StartLimitBurst=5
+StartLimitIntervalSec=60
+
+# Hardening
+NoNewPrivileges=yes
+PrivateTmp=yes
+ProtectSystem=full
+ProtectHome=read-only
+ReadWritePaths=/home/ubuntu/mercadofranquia-web/.next
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+ProtectControlGroups=yes
+RestrictSUIDSGID=yes
+LockPersonality=yes
+
+LimitNOFILE=65535
+
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=mf-web
+
+[Install]
+WantedBy=multi-user.target

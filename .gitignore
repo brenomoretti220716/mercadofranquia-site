@@ -35,3 +35,6 @@ __pycache__/
 venv/
 .venv/
 api/dump-*.sql
+
+# Systemd file with real production secrets — template is versioned
+deploy/ec2/systemd/mf-api.service
