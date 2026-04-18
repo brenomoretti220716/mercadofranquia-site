@@ -37,7 +37,7 @@ WorkingDirectory=/home/ubuntu/mercadofranquia-api
 
 Environment=PYTHONUNBUFFERED=1
 Environment=PYTHONDONTWRITEBYTECODE=1
-Environment=DATABASE_URL=postgresql+psycopg://mf_user:mf_senha_forte_2026@localhost:5432/mercadofranquia
+Environment=DATABASE_URL=postgresql+psycopg://mf_user:${DB_PASSWORD}@localhost:5432/mercadofranquia
 Environment=PYTHONPATH=/home/ubuntu/mercadofranquia-api
 
 ExecStart=/home/ubuntu/mf-api/bin/python /home/ubuntu/mercadofranquia-api/scripts/run_macro_sync.py
