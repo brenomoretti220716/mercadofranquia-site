@@ -1,0 +1,884 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Mercado Franquia — Mapa de Features</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #ffffff;
+        --ink: #111;
+        --ink-soft: #444;
+        --mute: #777;
+        --line: #e5e5e5;
+        --line-soft: #f0f0f0;
+        --dot-green: #22c55e;
+        --dot-yellow: #f59e0b;
+        --dot-blue: #3b82f6;
+        --dot-orange: #e25e3e;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        background: var(--bg);
+        color: var(--ink);
+        font-family:
+          "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+          sans-serif;
+        font-size: 14px;
+        line-height: 1.5;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      .page {
+        max-width: 1120px;
+        margin: 0 auto;
+        padding: 56px 32px 64px;
+      }
+
+      .eyebrow {
+        font-size: 10px;
+        font-weight: 600;
+        letter-spacing: 1.6px;
+        color: var(--dot-orange);
+        text-transform: uppercase;
+        margin: 0 0 14px;
+      }
+
+      h1 {
+        font-size: 32px;
+        font-weight: 700;
+        letter-spacing: -0.5px;
+        margin: 0 0 12px;
+        line-height: 1.1;
+      }
+
+      .lede {
+        max-width: 640px;
+        color: var(--ink-soft);
+        font-size: 15px;
+        margin: 0 0 40px;
+      }
+
+      .meta {
+        display: flex;
+        gap: 24px;
+        flex-wrap: wrap;
+        border-top: 2px solid var(--ink);
+        border-bottom: 0.5px solid var(--line);
+        padding: 14px 0;
+        margin-bottom: 48px;
+        font-size: 12px;
+        color: var(--mute);
+      }
+
+      .meta strong {
+        color: var(--ink);
+        font-weight: 600;
+      }
+
+      section.category {
+        margin: 0 0 48px;
+      }
+
+      section.category > header {
+        border-top: 2px solid var(--ink);
+        padding-top: 14px;
+        margin-bottom: 22px;
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 16px;
+      }
+
+      section.category h2 {
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        margin: 0;
+      }
+
+      section.category .count {
+        font-size: 10px;
+        letter-spacing: 1.2px;
+        text-transform: uppercase;
+        color: var(--mute);
+        font-weight: 500;
+        font-family: "Inter", ui-monospace, monospace;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 4px 28px;
+      }
+
+      .feature {
+        display: grid;
+        grid-template-columns: 20px 1fr;
+        gap: 10px;
+        padding: 12px 0;
+        border-bottom: 0.5px solid var(--line-soft);
+        align-items: baseline;
+      }
+
+      .feature:last-child {
+        border-bottom: none;
+      }
+
+      .dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        display: inline-block;
+        margin-top: 6px;
+        margin-left: 4px;
+        flex-shrink: 0;
+      }
+
+      .dot.ready {
+        background: var(--dot-green);
+      }
+
+      .dot.partial {
+        background: var(--dot-yellow);
+      }
+
+      .dot.planned {
+        background: var(--dot-blue);
+      }
+
+      .dot.premium {
+        background: var(--dot-orange);
+      }
+
+      .feature .body {
+        min-width: 0;
+      }
+
+      .feature .name {
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--ink);
+        margin: 0 0 2px;
+      }
+
+      .feature .desc {
+        font-size: 12.5px;
+        color: var(--ink-soft);
+        margin: 0;
+        line-height: 1.45;
+      }
+
+      .feature .route {
+        display: inline-block;
+        font-family: ui-monospace, "SF Mono", Menlo, monospace;
+        font-size: 11px;
+        color: var(--mute);
+        background: #f7f7f5;
+        padding: 1px 6px;
+        border-radius: 3px;
+        margin-right: 6px;
+      }
+
+      footer.legend {
+        margin-top: 56px;
+        padding-top: 24px;
+        border-top: 2px solid var(--ink);
+      }
+
+      footer.legend h3 {
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        margin: 0 0 16px;
+      }
+
+      .legend-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 16px 24px;
+      }
+
+      .legend-item {
+        display: flex;
+        gap: 10px;
+        align-items: flex-start;
+      }
+
+      .legend-item .dot {
+        margin-top: 5px;
+      }
+
+      .legend-item .name {
+        font-weight: 600;
+        font-size: 13px;
+        margin: 0 0 2px;
+      }
+
+      .legend-item .desc {
+        font-size: 12px;
+        color: var(--ink-soft);
+        margin: 0;
+        line-height: 1.4;
+      }
+
+      .footnote {
+        margin-top: 32px;
+        font-size: 11px;
+        color: var(--mute);
+      }
+
+      @media (max-width: 720px) {
+        .page {
+          padding: 32px 20px 40px;
+        }
+        .grid {
+          grid-template-columns: 1fr;
+        }
+        .legend-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+        h1 {
+          font-size: 26px;
+        }
+      }
+
+      @media print {
+        body {
+          font-size: 12px;
+        }
+        .page {
+          padding: 20px 16px;
+          max-width: none;
+        }
+        section.category {
+          break-inside: avoid;
+          margin-bottom: 28px;
+        }
+        .feature {
+          break-inside: avoid;
+        }
+        a {
+          color: inherit;
+          text-decoration: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <p class="eyebrow">Produto · Roadmap interno</p>
+      <h1>Mercado Franquia — Mapa de Features</h1>
+      <p class="lede">
+        Visão única do que existe, o que está parcialmente entregue, o que
+        está planejado e o que é monetizado. Usar como referência rápida em
+        planejamento e onboarding.
+      </p>
+
+      <div class="meta">
+        <span><strong>7</strong> categorias</span>
+        <span><strong>48</strong> features mapeadas</span>
+        <span>Atualizado em abr/2026</span>
+      </div>
+
+      <section class="category">
+        <header>
+          <h2>Portal público</h2>
+          <span class="count">8 features</span>
+        </header>
+        <div class="grid">
+          <div class="feature">
+            <span class="dot ready" aria-hidden="true"></span>
+            <div class="body">
+              <p class="name">Home com busca</p>
+              <p class="desc">
+                <span class="route">/</span>Hero search por segmento,
+                investimento e localização; contador dinâmico de franquias
+                compatíveis.
+              </p>
+            </div>
+          </div>
+          <div class="feature">
+            <span class="dot ready" aria-hidden="true"></span>
+            <div class="body">
+              <p class="name">Ranking de franquias</p>
+              <p class="desc">
+                <span class="route">/ranking</span>Listagem ranqueada com
+                filtros, segmentos e paginação.
+              </p>
+            </div>
+          </div>
+          <div class="feature">
+            <span class="dot ready" aria-hidden="true"></span>
+            <div class="body">
+              <p class="name">Página de franquia</p>
+              <p class="desc">
+                <span class="route">/ranking/[franquia]</span>Perfil completo,
+                avaliações, investimento e informações de contato.
+              </p>
+            </div>
+          </div>
+          <div class="feature">
+            <span class="dot ready" aria-hidden="true"></span>
+            <div class="body">
+              <p class="name">Modelos de negócio</p>
+              <p class="desc">
+                <span class="route">/modelos-negocio/[id]</span>Detalhamento
+                por modelo operacional da rede.
+              </p>
+            </div>
+          </div>
+          <div class="feature">
+            <span class="dot ready" aria-hidden="true"></span>
+            <div class="body">
+              <p class="name">Visão de mercado</p>
+              <p class="desc">
+                <span class="route">/mercado</span>Panorama editorial do setor
+                de franquias no Brasil.
+              </p>
+            </div>
+          </div>
+          <div class="feature">
+            <span class="dot ready" aria-hidden="true"></span>
+            <div class="body">
+              <p class="name">Login e cadastro</p>
+              <p class="desc">
+                <span class="route">/login</span>
+                <span class="route">/cadastro</span>Fluxo simplificado em 2
+                passos, sem verificação de e-mail.
+              </p>
+            </div>
+          </div>
+          <div class="feature">
+            <span class="dot ready" aria-hidden="true"></span>
+            <div class="body">
+              <p class="name">Termos de uso</p>
+              <p class="desc">
+                <span class="route">/termos</span>Políticas e termos legais.
+              </p>
+            </div>
+          </div>
+          <div class="feature">
+            <span class="dot partial" aria-hidden="true"></span>
+            <div class="body">
+              <p class="name">SEO e Open Graph</p>
+              <p class="desc">
+                Metadados dinâmicos por página; cobertura parcial em detalhes
+                e notícias individuais.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="category">
+        <header>
+          <h2>Notícias e editorial</h2>
+          <span class="count">5 features</span>
+        </header>
+        <div class="grid">
+          <div class="feature">
+            <span class="dot ready" aria-hidden="true"></span>
+            <div class="body">
+              <p class="name">Listagem de notícias</p>
+              <p class="desc">
+                <span class="route">/noticias</span>Lista paginada com filtro
+                ativo por padrão; imagens e preview.
+              </p>
+            </div>
+          </div>
+          <div class="feature">
+            <span class="dot ready" aria-hidden="true"></span>
+            <div class="body">
+              <p class="name">Leitura de notícia</p>
+              <p class="desc">
+                <span class="route">/noticias/[noticia]</span>Página de
+                artigo, relacionadas por categoria.
+              </p>
+            </div>
+          </div>
+          <div class="feature">
+            <span class="dot ready" aria-hidden="true"></span>
+            <div class="body">
+              <p class="name">CMS de notícias</p>
+              <p class="desc">
+                <span class="route">/admin/noticias</span>Criar, editar,
+                ativar/desativar notícias no painel admin.
+              </p>
+            </div>
+          </div>
+          <div class="feature">
+            <span class="dot partial" aria-hidden="true"></span>
+            <div class="body">
+              <p class="name">Comentários em notícias</p>
+              <p class="desc">
+                Backend com moderação implementado; UI pública limitada,
+                ainda sem engajamento consolidado.
+              </p>
+            </div>
+          </div>
+          <div class="feature">
+            <span class="dot planned" aria-hidden="true"></span>
+            <div class="body">
+              <p class="name">Newsletter semanal</p>
+              <p class="desc">
+                Envio curado das principais notícias do setor; depende de
+                integração com provedor de e-mail.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="category">
+        <header>
+          <h2>Dados e inteligência</h2>
+          <span class="count">7 features</span>
+        </header>
+        <div class="grid">
+          <div class="feature">
+            <span class="dot ready" aria-hidden="true"></span>
+            <div class="body">
+              <p class="name">Big Numbers</p>
+              <p class="desc">
+                <span class="route">/admin/big-numbers</span>Destaques
+                numéricos editoriais do setor de franquias.
+              </p>
+            </div>
+          </div>
+          <div class="feature">
+            <span class="dot ready" aria-hidden="true"></span>
+            <div class="body">
+              <p class="name">Segmentos ABF</p>
+              <p class="desc">
+                <span class="route">/admin/segmentos-abf</span>Taxonomia
+                oficial de segmentos usada em rankings.
+              </p>
+            </div>
+          </div>
+          <div class="feature">
+            <span class="dot ready" aria-hidden="true"></span>
+            <div class="body">
+              <p class="name">Ranking algorítmico</p>
+              <p class="desc">
+                Cálculo de posição combinando avaliações, unidades e ROI em
+                tempo de consulta.
+              </p>
+            </div>
+          </div>
+          <div class="feature">
+            <span class="dot partial" aria-hidden="true"></span>
+            <div class="body">
+              <p class="name">Scraping de redes</p>
+              <p class="desc">
+                Coleta de dados de sitemap e logos; pipelines parciais,
+                consolidação manual onde falta padrão.
+              </p>
+            </div>
+          </div>
+          <div class="feature">
+            <span class="dot partial" aria-hidden="true"></span>
+            <div class="body">
+              <p class="name">Cobertura de logos</p>
+              <p class="desc">
+                % de franquias com logoUrl exibida no dashboard; gap ativo
+                sendo preenchido.
+              </p>
+            </div>
+          </div>
+          <div class="feature">
+            <span class="dot planned" aria-hidden="true"></span>
+            <div class="body">
+              <p class="name">Benchmarks setoriais</p>
+              <p class="desc">
+                Comparativos de investimento médio, ROI e faturamento por
+                segmento e região.
+              </p>
+            </div>
+          </div>
+          <div class="feature">
+            <span class="dot planned" aria-hidden="true"></span>
+            <div class="body">
+              <p class="name">API pública de dados</p>
+              <p class="desc">
+                Endpoint autenticado para parceiros consumirem listas e
+                estatísticas agregadas.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="category">
+        <header>
+          <h2>Ferramentas free</h2>
+          <span class="count">6 features</span>
+        </header>
+        <div class="grid">
+          <div class="feature">
+            <span class="dot ready" aria-hidden="true"></span>
+            <div class="body">
+              <p class="name">Quiz de compatibilidade</p>
+              <p class="desc">
+                <span class="route">/quiz</span>Sete perguntas sobre perfil,
+                capital e objetivos; retorna seleção personalizada.
+              </p>
+            </div>
+          </div>
+          <div class="feature">
+            <span class="dot ready" aria-hidden="true"></span>
+            <div class="body">
+              <p class="name">Intro do quiz para visitantes</p>
+              <p class="desc">
+                Landing pública do quiz antes do login, com CTA para
+                cadastro.
+              </p>
+            </div>
+          </div>
+          <div class="feature">
+            <span class="dot ready" aria-hidden="true"></span>
+            <div class="body">
+              <p class="name">Favoritos</p>
+              <p class="desc">
+                <span class="route">/favoritos</span>Lista pessoal de
+                franquias salvas por usuário autenticado.
+              </p>
+            </div>
+          </div>
+          <div class="feature">
+            <span class="dot ready" aria-hidden="true"></span>
+            <div class="body">
+              <p class="name">Resultados do quiz</p>
+              <p class="desc">
+                Blocos por compatibilidade e spotlight do segmento mais
+                aderente ao perfil.
+              </p>
+            </div>
+          </div>
+          <div class="feature">
+            <span class="dot planned" aria-hidden="true"></span>
+            <div class="body">
+              <p class="name">Comparador de franquias</p>
+              <p class="desc">
+                Seleção de 2–4 franquias lado a lado com métricas chave.
+              </p>
+            </div>
+          </div>
+          <div class="feature">
+            <span class="dot planned" aria-hidden="true"></span>
+            <div class="body">
+              <p class="name">Simulador de investimento</p>
+              <p class="desc">
+                Projeção de payback considerando taxa, royalties e
+                faturamento médio.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="category">
+        <header>
+          <h2>Ferramentas premium</h2>
+          <span class="count">6 features</span>
+        </header>
+        <div class="grid">
+          <div class="feature">
+            <span class="dot premium" aria-hidden="true"></span>
+            <div class="body">
+              <p class="name">Destaque patrocinado</p>
+              <p class="desc">
+                Até 5 franquias com placement fixo no topo de rankings e
+                busca.
+              </p>
+            </div>
+          </div>
+          <div class="feature">
+            <span class="dot premium" aria-hidden="true"></span>
+            <div class="body">
+              <p class="name">Spotlight no quiz</p>
+              <p class="desc">
+                Franquia patrocinada exibida como destaque no segmento
+                compatível do resultado.
+              </p>
+            </div>
+          </div>
+          <div class="feature">
+            <span class="dot premium" aria-hidden="true"></span>
+            <div class="body">
+              <p class="name">Página de franqueador</p>
+              <p class="desc">
+                <span class="route">/franqueador</span>Área com gestão das
+                próprias redes e leads direcionados.
+              </p>
+            </div>
+          </div>
+          <div class="feature">
+            <span class="dot planned" aria-hidden="true"></span>
+            <div class="body">
+              <p class="name">Leads qualificados</p>
+              <p class="desc">
+                Repasse de contatos gerados pelo quiz e página de franquia
+                para franqueadores assinantes.
+              </p>
+            </div>
+          </div>
+          <div class="feature">
+            <span class="dot planned" aria-hidden="true"></span>
+            <div class="body">
+              <p class="name">Relatórios de performance</p>
+              <p class="desc">
+                Visualizações, cliques, leads e conversão por rede no painel
+                do franqueador.
+              </p>
+            </div>
+          </div>
+          <div class="feature">
+            <span class="dot planned" aria-hidden="true"></span>
+            <div class="body">
+              <p class="name">Inteligência competitiva</p>
+              <p class="desc">
+                Benchmarks por segmento, faixa de investimento e região,
+                acessível só a assinantes.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="category">
+        <header>
+          <h2>Monetização</h2>
+          <span class="count">6 features</span>
+        </header>
+        <div class="grid">
+          <div class="feature">
+            <span class="dot premium" aria-hidden="true"></span>
+            <div class="body">
+              <p class="name">Placements patrocinados</p>
+              <p class="desc">
+                <span class="route">/admin/patrocinados</span>Gestão de slots
+                pagos em rankings e listagens.
+              </p>
+            </div>
+          </div>
+          <div class="feature">
+            <span class="dot ready" aria-hidden="true"></span>
+            <div class="body">
+              <p class="name">Badge "Patrocinado"</p>
+              <p class="desc">
+                Marcação visual transparente em cards e tabelas para
+                cumprimento de compliance publicitário.
+              </p>
+            </div>
+          </div>
+          <div class="feature">
+            <span class="dot planned" aria-hidden="true"></span>
+            <div class="body">
+              <p class="name">Assinatura franqueador</p>
+              <p class="desc">
+                Plano recorrente com acesso a leads, relatórios e
+                inteligência competitiva.
+              </p>
+            </div>
+          </div>
+          <div class="feature">
+            <span class="dot planned" aria-hidden="true"></span>
+            <div class="body">
+              <p class="name">Gateway de pagamento</p>
+              <p class="desc">
+                Integração recorrente para cobrança de assinaturas e
+                placements.
+              </p>
+            </div>
+          </div>
+          <div class="feature">
+            <span class="dot planned" aria-hidden="true"></span>
+            <div class="body">
+              <p class="name">Afiliados e parcerias</p>
+              <p class="desc">
+                Revenue share com portais e creators que enviem leads
+                qualificados.
+              </p>
+            </div>
+          </div>
+          <div class="feature">
+            <span class="dot planned" aria-hidden="true"></span>
+            <div class="body">
+              <p class="name">Conteúdo patrocinado</p>
+              <p class="desc">
+                Formatos editoriais pagos identificados como branded content
+                dentro de Notícias.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="category">
+        <header>
+          <h2>Painéis de usuário</h2>
+          <span class="count">10 features</span>
+        </header>
+        <div class="grid">
+          <div class="feature">
+            <span class="dot ready" aria-hidden="true"></span>
+            <div class="body">
+              <p class="name">Shell do painel admin</p>
+              <p class="desc">
+                Sidebar escura, topbar com data, bottom nav mobile e drawer
+                de ações secundárias.
+              </p>
+            </div>
+          </div>
+          <div class="feature">
+            <span class="dot ready" aria-hidden="true"></span>
+            <div class="body">
+              <p class="name">Dashboard admin</p>
+              <p class="desc">
+                <span class="route">/admin</span>Stats em tempo real,
+                franquias recentes e acesso rápido.
+              </p>
+            </div>
+          </div>
+          <div class="feature">
+            <span class="dot ready" aria-hidden="true"></span>
+            <div class="body">
+              <p class="name">Gestão de franquias</p>
+              <p class="desc">
+                <span class="route">/admin/franquias</span>Listagem
+                paginada, edição, ativação e sponsor placements.
+              </p>
+            </div>
+          </div>
+          <div class="feature">
+            <span class="dot ready" aria-hidden="true"></span>
+            <div class="body">
+              <p class="name">Gestão de administradores</p>
+              <p class="desc">
+                <span class="route">/admin/administradores</span>CRUD de
+                contas com papel ADMIN.
+              </p>
+            </div>
+          </div>
+          <div class="feature">
+            <span class="dot ready" aria-hidden="true"></span>
+            <div class="body">
+              <p class="name">Gestão de franqueadores</p>
+              <p class="desc">
+                <span class="route">/admin/franqueadores</span>Aprovação de
+                solicitações e vínculo a franquias.
+              </p>
+            </div>
+          </div>
+          <div class="feature">
+            <span class="dot ready" aria-hidden="true"></span>
+            <div class="body">
+              <p class="name">Gestão de membros</p>
+              <p class="desc">
+                <span class="route">/admin/franqueados</span>Usuários
+                candidatos, franqueados e entusiastas.
+              </p>
+            </div>
+          </div>
+          <div class="feature">
+            <span class="dot ready" aria-hidden="true"></span>
+            <div class="body">
+              <p class="name">Perfil do usuário</p>
+              <p class="desc">
+                <span class="route">/perfil</span>Dados pessoais, mudança de
+                e-mail e completar perfil.
+              </p>
+            </div>
+          </div>
+          <div class="feature">
+            <span class="dot partial" aria-hidden="true"></span>
+            <div class="body">
+              <p class="name">Painel franqueador</p>
+              <p class="desc">
+                <span class="route">/franqueador</span>Área autenticada com
+                visão básica; funcionalidades premium em evolução.
+              </p>
+            </div>
+          </div>
+          <div class="feature">
+            <span class="dot ready" aria-hidden="true"></span>
+            <div class="body">
+              <p class="name">Notificações</p>
+              <p class="desc">
+                Sino com contador no header, painel com lidas/não lidas e
+                ações em massa.
+              </p>
+            </div>
+          </div>
+          <div class="feature">
+            <span class="dot planned" aria-hidden="true"></span>
+            <div class="body">
+              <p class="name">Configurações</p>
+              <p class="desc">
+                Preferências de conta, notificações e privacidade —
+                consolidação em tela única.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <footer class="legend">
+        <h3>Legenda</h3>
+        <div class="legend-grid">
+          <div class="legend-item">
+            <span class="dot ready" aria-hidden="true"></span>
+            <div>
+              <p class="name">Pronto</p>
+              <p class="desc">Implementado e em produção.</p>
+            </div>
+          </div>
+          <div class="legend-item">
+            <span class="dot partial" aria-hidden="true"></span>
+            <div>
+              <p class="name">Parcial</p>
+              <p class="desc">Existe mas precisa de refinamento ou cobertura.</p>
+            </div>
+          </div>
+          <div class="legend-item">
+            <span class="dot planned" aria-hidden="true"></span>
+            <div>
+              <p class="name">Planejado</p>
+              <p class="desc">No roadmap, ainda não iniciado.</p>
+            </div>
+          </div>
+          <div class="legend-item">
+            <span class="dot premium" aria-hidden="true"></span>
+            <div>
+              <p class="name">Premium</p>
+              <p class="desc">Feature monetizada ou restrita a assinantes.</p>
+            </div>
+          </div>
+        </div>
+        <p class="footnote">
+          Documento interno — Mercado Franquia. Referência viva; atualizar
+          sempre que uma feature mudar de estágio.
+        </p>
+      </footer>
+    </div>
+  </body>
+</html>
