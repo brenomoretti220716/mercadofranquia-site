@@ -2,6 +2,7 @@
 
 import { useQuery } from '@tanstack/react-query'
 import { useMemo } from 'react'
+import SectionHeader from './SectionHeader'
 
 import ReviewsSectionSkeleton from '@/src/components/ui/skeletons/ReviewsSectionSkeleton'
 import { reviewQueries } from '@/src/queries/reviews'
@@ -53,15 +54,14 @@ const ReviewsSection = () => {
   }
 
   return (
-    <section className="py-8 md:py-16">
+    <section className="py-8 md:py-12">
       <div className="container mx-auto px-4">
-        <div className="text-left mb-6 md:mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-            Últimas Avaliações
-          </h2>
-          <p className="text-muted-foreground text-lg max-w-2xl">
-            Depoimentos reais de franqueados satisfeitos
-          </p>
+        <div className="border-t-2 border-[#111] pt-4 mb-6">
+          <SectionHeader
+            title="Avaliações"
+            href="/ranking"
+            linkLabel="Ver todas"
+          />
         </div>
 
         {isLoading ? (

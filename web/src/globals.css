@@ -8,6 +8,7 @@
 
   /* Template HSL Colors */
   --color-background: #ffffff;
+  --color-background-tertiary: #f7f7f5;
   --color-foreground: hsl(240 24% 12%);
 
   --color-primary: hsl(10 79% 57%);

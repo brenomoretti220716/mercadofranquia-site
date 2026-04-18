@@ -2,6 +2,7 @@
 
 import Header from '@/src/components/header/Header'
 import QuizFlow from '@/src/components/quiz/QuizFlow'
+import QuizIntro from '@/src/components/quiz/QuizIntro'
 import QuizResults from '@/src/components/quiz/QuizResults'
 import QuizSponsoredSpotlight from '@/src/components/quiz/QuizSponsoredSpotlight'
 import QuizFlowSkeleton from '@/src/components/ui/skeletons/QuizFlowSkeleton'
@@ -57,8 +58,7 @@ function QuizResultsSection({
   )
 }
 
-export default function QuizPage() {
-  const { payload } = useAuth()
+function AuthenticatedQuiz({ userName }: { userName: string }) {
   const queryClient = useQueryClient()
   const { data: submission, isLoading: submissionLoading } = useMyQuiz()
   const hasSubmission = Boolean(submission?.id)
@@ -87,8 +87,6 @@ export default function QuizPage() {
     setView('form')
     setPage(1)
   }
-
-  const userName = payload?.name ?? ''
 
   if (submissionLoading) {
     return (
@@ -133,4 +131,30 @@ export default function QuizPage() {
       </main>
     </div>
   )
+}
+
+export default function QuizPage() {
+  const { isAuthenticated, isValidating, payload } = useAuth()
+
+  if (isValidating) {
+    return (
+      <div>
+        <Header />
+        <main className="min-h-[80vh] flex items-center justify-center py-6 px-3 sm:px-4">
+          <QuizFlowSkeleton />
+        </main>
+      </div>
+    )
+  }
+
+  if (!isAuthenticated) {
+    return (
+      <div>
+        <Header />
+        <QuizIntro />
+      </div>
+    )
+  }
+
+  return <AuthenticatedQuiz userName={payload?.name ?? ''} />
 }

@@ -39,32 +39,37 @@ export function InvestmentSection({
 
   return (
     <div
-      className={`flex-1 relative transition-all duration-400 rounded-full ${
-        isFocused ? 'duration-500' : ''
+      className={`h-full flex items-center cursor-pointer transition-colors duration-200 ${
+        isDimmed ? 'hover:bg-white/5' : ''
       }`}
+      onClick={() => {
+        onToggle()
+        onFocus()
+      }}
     >
-      <div
-        className={`px-4 md:px-8 py-3 md:py-2 cursor-pointer rounded-2xl md:rounded-full transition-colors duration-200 ${
-          isDimmed ? 'hover:bg-gray-300' : ''
-        }`}
-        onClick={() => {
-          onToggle()
-          onFocus()
-        }}
-      >
-        <label
-          className="block text-base md:text-xl font-normal text-gray-900"
-          style={INPUT_LABEL_STYLE}
+      <div className="flex items-center gap-2 px-3 md:px-4 min-w-0">
+        <svg
+          width="14"
+          height="14"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.5"
+          className="text-white/30 shrink-0"
         >
-          Faixa de Investimento?
-        </label>
+          <line x1="12" y1="1" x2="12" y2="23" />
+          <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+        </svg>
         <input
           type="text"
-          placeholder={triggerCta}
+          placeholder="Faixa de investimento"
           value={hasSelectedInvestment ? triggerDisplay : ''}
           readOnly
-          className="w-full text-base md:text-xl font-normal text-gray-600 placeholder:text-[#C9C9C9] bg-transparent outline-none cursor-pointer"
-          style={INPUT_LABEL_STYLE}
+          className={`w-full text-[13px] font-normal bg-transparent outline-none cursor-pointer ${
+            hasSelectedInvestment
+              ? 'text-[#ccc]'
+              : 'text-transparent placeholder:text-[#555]'
+          }`}
         />
       </div>
     </div>
@@ -160,33 +165,36 @@ export function InvestmentDropdownPanel({
 
   return (
     <div>
-      <div className="relative flex max-w-[60vw] md:max-w-[20vw] mx-auto gap-2 p-2 bg-gray-100 rounded-full m-4">
-        <div
-          className="absolute top-2 bottom-2 rounded-full bg-white shadow-md transition-[left] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] w-[calc(50%-4px)] z-0"
-          // Align within the container padding when the pill moves right.
-          style={{ left: tab === 'inputs' ? 8 : 'calc(50% - 4px)' }}
-          aria-hidden
-        />
+      <div
+        className="relative flex max-w-[60vw] md:max-w-[20vw] mx-auto gap-0 bg-[#2a2a2a] rounded-[6px] mx-3 mt-3 mb-2 h-[36px]"
+        style={{ padding: '3px' }}
+      >
         <button
           type="button"
           onClick={() => setTab('inputs')}
-          className="relative z-10 flex-1 rounded-full px-6 py-2 text-sm font-medium transition-colors duration-300 cursor-pointer text-gray-600 hover:text-gray-900 data-[active]:text-gray-900"
-          data-active={tab === 'inputs' || undefined}
+          className={`relative z-10 flex-1 rounded-[4px] px-5 text-[13px] font-medium transition-colors duration-200 cursor-pointer ${
+            tab === 'inputs'
+              ? 'bg-[#E25E3E] text-white'
+              : 'text-[#888] hover:text-white'
+          }`}
         >
           Manual
         </button>
         <button
           type="button"
           onClick={() => setTab('bar')}
-          className="relative z-10 flex-1 rounded-full px-6 py-2 text-sm font-medium transition-colors duration-300 cursor-pointer text-gray-600 hover:text-gray-900 data-[active]:text-gray-900"
-          data-active={tab === 'bar' || undefined}
+          className={`relative z-10 flex-1 rounded-[4px] px-5 text-[13px] font-medium transition-colors duration-200 cursor-pointer ${
+            tab === 'bar'
+              ? 'bg-[#E25E3E] text-white'
+              : 'text-[#888] hover:text-white'
+          }`}
         >
           Faixa
         </button>
       </div>
-      <div className="px-6 py-4 overflow-hidden">
+      <div className="px-3 pb-3 overflow-hidden">
         {tab === 'bar' ? (
-          <div key="bar" className="animate-fade-in">
+          <div key="bar" className="animate-fade-in mt-4">
             <InvestmentRangeSlider
               min={min}
               max={max}
@@ -209,7 +217,7 @@ export function InvestmentDropdownPanel({
             className="animate-fade-in flex items-baseline gap-4"
           >
             <div className="flex-1">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-[11px] font-medium text-[#888] mb-1.5">
                 Investimento Mínimo
               </label>
               <input
@@ -225,12 +233,12 @@ export function InvestmentDropdownPanel({
                     setMinInputString(formatInvestmentNoDecimals(min))
                   }
                 }}
-                className="w-full px-4 py-2 text-lg font-normal text-gray-900 placeholder:text-gray-400 bg-gray-50 border border-gray-200 rounded-lg outline-none focus:border-primary focus:bg-white transition-colors"
+                className="w-full px-3 py-2 text-sm font-normal text-white placeholder:text-[#666] bg-[#2a2a2a] border border-[#444] rounded-md outline-none focus:border-[#E25E3E] transition-colors"
                 style={INPUT_LABEL_STYLE}
               />
             </div>
             <div className="flex-1">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-[11px] font-medium text-[#888] mb-1.5">
                 Investimento Máximo
               </label>
               <input
@@ -246,7 +254,7 @@ export function InvestmentDropdownPanel({
                     setMaxInputString(formatInvestmentNoDecimals(max))
                   }
                 }}
-                className="w-full px-4 py-2 text-lg font-normal text-gray-900 placeholder:text-gray-400 bg-gray-50 border border-gray-200 rounded-lg outline-none focus:border-primary focus:bg-white transition-colors"
+                className="w-full px-3 py-2 text-sm font-normal text-white placeholder:text-[#666] bg-[#2a2a2a] border border-[#444] rounded-md outline-none focus:border-[#E25E3E] transition-colors"
                 style={INPUT_LABEL_STYLE}
               />
             </div>

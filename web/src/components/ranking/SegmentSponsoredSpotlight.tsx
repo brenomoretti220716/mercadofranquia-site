@@ -2,7 +2,10 @@
 
 import { franchiseQueries } from '@/src/queries/franchises'
 import type { SponsorPlacement } from '@/src/schemas/franchises/Franchise'
-import { formatInvestmentRange } from '@/src/utils/formatters'
+import {
+  formatFranchiseName,
+  formatInvestmentRange,
+} from '@/src/utils/formatters'
 import { useQuery } from '@tanstack/react-query'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -90,25 +93,25 @@ export default function SegmentSponsoredSpotlight({
           <Link
             key={franchise.id}
             href={`/ranking/${franchise.slug ?? franchise.id}`}
-            className="h-full rounded-2xl border border-[#E25E3E]/40 bg-[#E25E3E]/5 p-4 transition-colors hover:bg-[#E25E3E]/10"
+            className="h-full rounded-[16px] border border-[#E25E3E]/40 bg-[#E25E3E]/5 p-4 transition-all duration-300 hover:scale-[1.02] hover:shadow-md"
           >
             <div className="flex h-full items-start gap-3">
-              <div className="w-12 h-12 rounded-lg bg-background flex items-center justify-center overflow-hidden shrink-0">
+              <div className="w-12 h-12 rounded-[10px] bg-white border border-border/50 flex items-center justify-center shrink-0 p-1.5">
                 {franchise.logoUrl ? (
                   <Image
                     src={franchise.logoUrl}
                     alt={franchise.name}
                     width={48}
                     height={48}
-                    className="object-contain"
+                    className="object-contain w-full h-full"
                   />
                 ) : (
                   <span className="text-xl">🏢</span>
                 )}
               </div>
               <div className="min-w-0 flex flex-1 flex-col">
-                <p className="font-semibold text-foreground truncate leading-tight">
-                  {franchise.name}
+                <p className="font-semibold text-foreground truncate leading-tight text-[15px]">
+                  {formatFranchiseName(franchise.name)}
                 </p>
                 <p className="text-xs text-muted-foreground truncate">
                   {franchise.segment || segment}

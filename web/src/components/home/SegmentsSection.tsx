@@ -4,6 +4,7 @@ import RoundedButton from '@/src/components/ui/RoundedButton'
 import { useState } from 'react'
 import FranchisesByCategory from './FranchisesByCategory'
 import type { HeroSearchFilters } from './hero-search/HeroSearch'
+import SectionHeader from './SectionHeader'
 
 interface CategoryConfig {
   label: string
@@ -119,10 +120,13 @@ const SegmentsSection = ({
   return (
     <section
       id="segments-section"
-      className="py-8 md:py-16 bg-[#FBFCFC] dark:bg-muted/40"
+      className="py-8 md:py-12 bg-[#FBFCFC] dark:bg-muted/40"
     >
       <div className="container mx-auto px-4">
-        <div className="flex flex-wrap items-center justify-end gap-3 mb-6 md:mb-12">
+        <div className="border-t-2 border-[#111] pt-4 mb-6">
+          <SectionHeader title="Franquias por Segmento" href="/ranking" />
+        </div>
+        <div className="flex flex-wrap items-center justify-end gap-3 mb-6">
           {filters && (
             <div className="flex items-center gap-3">
               <RoundedButton

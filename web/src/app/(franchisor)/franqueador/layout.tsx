@@ -9,7 +9,7 @@ export default function FranchisorLayout({
 }) {
   return (
     <div>
-      <Header variant="franchisor" />
+      <Header />
       {children}
     </div>
   )

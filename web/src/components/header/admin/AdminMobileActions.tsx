@@ -29,17 +29,17 @@ export const AdminMobileActions = ({
   }
 
   return (
-    <div className="border-t border-border p-6 space-y-2">
+    <div className="p-6 space-y-1" style={{ borderTop: '1px solid #222' }}>
       <Link
         href="/"
-        className="block w-full text-left p-3 rounded-lg hover:bg-secondary transition-colors text-foreground cursor-pointer"
+        className="block w-full text-left p-3 rounded-lg transition-colors text-white hover:text-[#E25E3E] cursor-pointer"
         onClick={handleMobileMenuClose}
       >
         Painel de Início
       </Link>
       <Link
         href="/favoritos"
-        className="block w-full text-left p-3 rounded-lg hover:bg-secondary transition-colors text-foreground cursor-pointer"
+        className="block w-full text-left p-3 rounded-lg transition-colors text-white hover:text-[#E25E3E] cursor-pointer"
         onClick={handleMobileMenuClose}
       >
         Favoritos
@@ -50,7 +50,7 @@ export const AdminMobileActions = ({
           handleMobileMenuClose()
         }}
         disabled={isLoggingOut}
-        className="w-full text-left p-3 rounded-lg hover:bg-secondary transition-colors text-destructive cursor-pointer "
+        className="w-full text-left p-3 rounded-lg transition-colors text-[#E25E3E] cursor-pointer"
       >
         Sair
       </button>

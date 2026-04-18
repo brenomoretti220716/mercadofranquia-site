@@ -12,6 +12,9 @@ interface AdminMobileNavigationProps {
   handleMobileMenuClose: () => void
 }
 
+const activeClass = 'text-[#E25E3E] font-semibold'
+const inactiveClass = 'text-white hover:text-[#E25E3E]'
+
 export const AdminMobileNavigation = ({
   isMobileMenuOpen,
   isMobileUsersDropdown,
@@ -35,34 +38,33 @@ export const AdminMobileNavigation = ({
   return (
     <>
       <div
-        className="fixed inset-0 bg-black/20 bg-opacity-50 z-40 md:hidden"
+        className="fixed inset-0 bg-black/50 z-40 md:hidden"
         onClick={handleMobileMenuClose}
       />
 
       <div
-        className={`fixed top-0 left-0 h-full w-80 bg-white transition-transform duration-300 ease-in-out z-50 md:hidden ${
+        className={`fixed top-0 left-0 h-full w-80 bg-[#111] transition-transform duration-300 ease-in-out z-50 md:hidden ${
           isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
-        <div className="flex items-center justify-between p-6 border-b border-border">
+        <div
+          className="flex items-center justify-between p-6"
+          style={{ borderBottom: '1px solid #222' }}
+        >
           <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 bg-secondary rounded-full flex items-center justify-center">
+            <div className="w-10 h-10 bg-[#222] rounded-full flex items-center justify-center">
               <EmojiIcon color="#E25E3E" />
             </div>
             <div>
-              <p className="font-medium text-sm text-foreground">Admin</p>
+              <p className="font-medium text-sm text-white">Admin</p>
             </div>
           </div>
         </div>
 
-        <nav className="flex flex-col p-6 space-y-2">
+        <nav className="flex flex-col p-6 space-y-1">
           <Link
             href="/admin"
-            className={`p-3 rounded-lg transition-colors ${
-              isHomeActive
-                ? 'bg-secondary font-semibold text-primary'
-                : 'hover:bg-secondary/50 text-foreground'
-            }`}
+            className={`p-3 rounded-lg transition-colors ${isHomeActive ? activeClass : inactiveClass}`}
             onClick={handleMobileMenuClose}
           >
             Home
@@ -70,23 +72,22 @@ export const AdminMobileNavigation = ({
 
           <div>
             <button
-              className={`w-full text-left p-3 rounded-lg transition-colors ${
-                isUsersActive
-                  ? 'bg-secondary font-semibold text-primary'
-                  : 'hover:bg-secondary/50 text-foreground'
-              }`}
+              className={`w-full text-left p-3 rounded-lg transition-colors ${isUsersActive ? activeClass : inactiveClass}`}
               onClick={() => setIsMobileUsersDropdown(!isMobileUsersDropdown)}
             >
               Usuários {isMobileUsersDropdown ? '▼' : '▶'}
             </button>
             {isMobileUsersDropdown && (
-              <div className="ml-4 mt-2 space-y-1">
+              <div
+                className="ml-4 mt-1 space-y-1 pt-1"
+                style={{ borderLeft: '1px solid #222' }}
+              >
                 <Link
                   href="/admin/administradores"
-                  className={`block p-2 rounded-lg transition-colors ${
+                  className={`block p-2 pl-3 rounded-lg transition-colors text-sm ${
                     pathname === '/admin/administradores'
-                      ? 'bg-secondary font-semibold text-primary'
-                      : 'hover:bg-secondary/50 text-foreground'
+                      ? activeClass
+                      : inactiveClass
                   }`}
                   onClick={handleMobileMenuClose}
                 >
@@ -94,10 +95,10 @@ export const AdminMobileNavigation = ({
                 </Link>
                 <Link
                   href="/admin/franqueadores"
-                  className={`block p-2 rounded-lg transition-colors ${
+                  className={`block p-2 pl-3 rounded-lg transition-colors text-sm ${
                     pathname === '/admin/franqueadores'
-                      ? 'bg-secondary font-semibold text-primary'
-                      : 'hover:bg-secondary/50 text-foreground'
+                      ? activeClass
+                      : inactiveClass
                   }`}
                   onClick={handleMobileMenuClose}
                 >
@@ -105,10 +106,10 @@ export const AdminMobileNavigation = ({
                 </Link>
                 <Link
                   href="/admin/franqueados"
-                  className={`block p-2 rounded-lg transition-colors ${
+                  className={`block p-2 pl-3 rounded-lg transition-colors text-sm ${
                     pathname === '/admin/franqueados'
-                      ? 'bg-secondary font-semibold text-primary'
-                      : 'hover:bg-secondary/50 text-foreground'
+                      ? activeClass
+                      : inactiveClass
                   }`}
                   onClick={handleMobileMenuClose}
                 >
@@ -120,11 +121,7 @@ export const AdminMobileNavigation = ({
 
           <Link
             href="/admin/franquias"
-            className={`p-3 rounded-lg transition-colors ${
-              isFranchisesActive
-                ? 'bg-secondary font-semibold text-primary'
-                : 'hover:bg-secondary/50 text-foreground'
-            }`}
+            className={`p-3 rounded-lg transition-colors ${isFranchisesActive ? activeClass : inactiveClass}`}
             onClick={handleMobileMenuClose}
           >
             Franquias
@@ -132,11 +129,7 @@ export const AdminMobileNavigation = ({
 
           <Link
             href="/admin/noticias"
-            className={`p-3 rounded-lg transition-colors ${
-              isNewsActive
-                ? 'bg-secondary font-semibold text-primary'
-                : 'hover:bg-secondary/50 text-foreground'
-            }`}
+            className={`p-3 rounded-lg transition-colors ${isNewsActive ? activeClass : inactiveClass}`}
             onClick={handleMobileMenuClose}
           >
             Notícias
@@ -144,11 +137,7 @@ export const AdminMobileNavigation = ({
 
           <Link
             href="/admin/segmentos-abf"
-            className={`p-3 rounded-lg transition-colors ${
-              isAbfSegmentsActive
-                ? 'bg-secondary font-semibold text-primary'
-                : 'hover:bg-secondary/50 text-foreground'
-            }`}
+            className={`p-3 rounded-lg transition-colors ${isAbfSegmentsActive ? activeClass : inactiveClass}`}
             onClick={handleMobileMenuClose}
           >
             Segmentos ABF

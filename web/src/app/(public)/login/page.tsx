@@ -7,7 +7,7 @@ import ModalLogin from '@/src/components/login/ModalLogin'
 export default function LoginPage() {
   return (
     <div className="flex flex-col min-h-screen">
-      <Header variant="minimal" />
+      <Header />
       <div className="flex flex-1 flex-col justify-center items-center px-4 py-8">
         <div className="w-full max-w-md">
           <ModalLogin

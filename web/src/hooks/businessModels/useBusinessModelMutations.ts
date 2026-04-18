@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'sonner'
+import Api from '@/src/api/Api'
 import { handleHttpError, formatErrorMessage } from '@/src/utils/errorHandlers'
 
 interface CreateBusinessModelInput {
@@ -25,16 +26,13 @@ async function createBusinessModel(
   formData.append('description', data.description)
   formData.append('photo', data.photo)
 
-  const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/business-models`,
-    {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-      body: formData,
+  const response = await fetch(Api('/business-models'), {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${token}`,
     },
-  )
+    body: formData,
+  })
 
   if (!response.ok) {
     const message = handleHttpError(
@@ -57,16 +55,13 @@ async function updateBusinessModel(
   if (data.description) formData.append('description', data.description)
   if (data.photo) formData.append('photo', data.photo)
 
-  const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/business-models/${id}`,
-    {
-      method: 'PUT',
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-      body: formData,
+  const response = await fetch(Api(`/business-models/${id}`), {
+    method: 'PUT',
+    headers: {
+      Authorization: `Bearer ${token}`,
     },
-  )
+    body: formData,
+  })
 
   if (!response.ok) {
     const message = handleHttpError(
@@ -80,15 +75,12 @@ async function updateBusinessModel(
 }
 
 async function deleteBusinessModel(id: string, token: string) {
-  const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/business-models/${id}`,
-    {
-      method: 'DELETE',
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+  const response = await fetch(Api(`/business-models/${id}`), {
+    method: 'DELETE',
+    headers: {
+      Authorization: `Bearer ${token}`,
     },
-  )
+  })
 
   if (!response.ok) {
     const message = handleHttpError(

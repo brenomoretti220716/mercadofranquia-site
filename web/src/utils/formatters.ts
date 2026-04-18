@@ -1,4 +1,24 @@
 /**
+ * Convert ALL-CAPS franchise name to Title Case.
+ * "CACAU SHOW" → "Cacau Show", "O BOTICÁRIO" → "O Boticário"
+ * Preserves already mixed-case names like "McDonald's".
+ */
+export function formatFranchiseName(name: string): string {
+  if (!name) return name
+  // Only transform if mostly uppercase (>70% caps)
+  const letters = name.replace(/[^a-zA-ZÀ-ÿ]/g, '')
+  const upperCount = (letters.match(/[A-ZÀ-Ý]/g) || []).length
+  if (letters.length === 0 || upperCount / letters.length < 0.7) return name
+
+  return name
+    .toLowerCase()
+    .replace(
+      /(^|\s|[-/(])(\S)/g,
+      (_, prefix, char) => prefix + char.toUpperCase(),
+    )
+}
+
+/**
  * Format a single currency value
  */
 export const formatCurrency = (value: number | null | undefined): string => {

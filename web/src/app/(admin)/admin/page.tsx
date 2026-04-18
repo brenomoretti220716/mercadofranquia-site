@@ -1,36 +1,43 @@
 'use client'
 
-import { useAuth, isAdmin } from '@/src/hooks/users/useAuth'
+import AdminDashboardPanel from '@/src/components/admin/panels/dashboard/AdminDashboardPanel'
+import { isAdmin, useAuth } from '@/src/hooks/users/useAuth'
+import { Suspense } from 'react'
+
+function DashboardSkeleton() {
+  return (
+    <div className="max-w-7xl mx-auto px-4 md:px-6 py-6 md:py-8 space-y-8 animate-pulse">
+      <div>
+        <div className="h-3 w-24 bg-[#e5e5e5] rounded mb-2" />
+        <div className="h-7 w-64 bg-[#e5e5e5] rounded" />
+      </div>
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+        {[0, 1, 2, 3].map((i) => (
+          <div
+            key={i}
+            className="bg-white rounded-xl border border-[#e5e5e5] p-5 h-28"
+          />
+        ))}
+      </div>
+      <div className="bg-white rounded-xl border border-[#e5e5e5] h-64" />
+    </div>
+  )
+}
 
 export default function AdminContent() {
   const { isValidating, payload } = useAuth()
 
   if (isValidating) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="flex items-center gap-2">
-          <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-primary"></div>
-          <span className="text-lg text-foreground">
-            Verificando autenticação...
-          </span>
-        </div>
-      </div>
-    )
+    return <DashboardSkeleton />
   }
 
-  if (isValidating || !isAdmin(payload)) {
+  if (!isAdmin(payload)) {
     return null
   }
 
   return (
-    <div className="m-10 p-10 bg-white rounded-2xl shadow-sm border border-border/50">
-      <h1 className="text-3xl font-bold mb-4 text-foreground">
-        Painel Administrativo
-      </h1>
-      <p className="text-lg mb-4 text-foreground">
-        Bem-vindo ao painel administrativo!
-      </p>
-      <p className="text-muted-foreground">Olá, {payload?.name}!</p>
-    </div>
+    <Suspense fallback={<DashboardSkeleton />}>
+      <AdminDashboardPanel />
+    </Suspense>
   )
 }

@@ -63,17 +63,17 @@ const FranchisesByCategory = ({
         <div
           className={
             isFiltered
-              ? 'grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 md:gap-6'
-              : 'flex gap-4 overflow-x-auto scrollbar-hide md:grid md:grid-cols-3 lg:grid-cols-6 md:overflow-visible md:gap-6'
+              ? 'grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-2'
+              : 'flex gap-2 overflow-x-auto snap-x snap-mandatory scroll-smooth scrollbar-hide -mx-4 px-4 md:mx-0 md:px-0 md:grid md:grid-cols-5 lg:grid-cols-6 md:overflow-visible'
           }
         >
           {Array.from({ length: skeletonCount }).map((_, i) => (
             <div
               key={i}
-              className={`animate-pulse ${isFiltered ? 'w-full' : 'flex-shrink-0 w-[180px]'}`}
+              className={`animate-pulse ${isFiltered ? '' : 'shrink-0 w-[28vw] md:w-auto'}`}
             >
-              <div className="w-full aspect-square bg-secondary rounded-xl border border-border mb-3" />
-              <div className="h-4 bg-secondary rounded w-3/4" />
+              <div className="w-full h-[100px] md:h-[110px] bg-secondary rounded-xl border border-border mb-1.5" />
+              <div className="h-3 bg-secondary rounded w-3/4" />
             </div>
           ))}
         </div>
@@ -86,8 +86,8 @@ const FranchisesByCategory = ({
           <div
             className={
               isFiltered
-                ? 'grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 md:gap-6 pb-2'
-                : 'flex gap-4 overflow-x-auto scrollbar-hide md:grid md:grid-cols-3 lg:grid-cols-6 md:overflow-visible md:gap-6 pb-2'
+                ? 'grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-2 pb-2'
+                : 'flex gap-2 overflow-x-auto snap-x snap-mandatory scroll-smooth scrollbar-hide -mx-4 px-4 md:mx-0 md:px-0 md:grid md:grid-cols-5 lg:grid-cols-6 md:overflow-visible pb-2'
             }
           >
             {franchises.map((franchise) => (
@@ -97,22 +97,19 @@ const FranchisesByCategory = ({
                 name={franchise.name}
                 logoUrl={franchise.logoUrl}
                 thumbnailUrl={franchise.thumbnailUrl}
-                className={isFiltered ? 'w-full' : undefined}
               />
             ))}
 
             {!isFiltered && onVerMais && (
-              <div className="flex items-center justify-center">
-                <button
-                  onClick={onVerMais}
-                  className="flex-shrink-0 w-30 h-30 flex flex-col items-center justify-center aspect-squar rounded-xl
-                  border-2 border-border hover:border-[#E25F3E] hover:text-[#E25F3E]
-                  transition-colors text-sm font-medium text-[#171726] gap-2 cursor-pointer"
-                >
-                  <span className="text-2xl">→</span>
-                  Ver mais
-                </button>
-              </div>
+              <button
+                onClick={onVerMais}
+                className="shrink-0 w-[28vw] md:w-auto h-[100px] md:h-[110px] snap-start flex flex-col items-center justify-center rounded-xl
+                border border-border/60 hover:border-[#E25F3E] hover:text-[#E25F3E]
+                transition-colors text-xs font-medium text-[#171726] gap-1.5 cursor-pointer"
+              >
+                <span className="text-lg">→</span>
+                Ver mais
+              </button>
             )}
           </div>
 

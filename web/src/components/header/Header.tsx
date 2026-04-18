@@ -10,6 +10,7 @@ import { AdminMobileNavigation } from './admin/AdminMobileNavigation'
 import { FranchisorDesktopNavigation } from './franchisor/FranchisorDesktopNavigation'
 import { FranchisorMobileNavigation } from './franchisor/FranchisorMobileNavigation'
 import { HeaderRightActions, HeaderVariant } from './HeaderRightActions'
+import MobileQuickNav from './MobileQuickNav'
 import { PublicDesktopNav } from './public/PublicDesktopNav'
 import { PublicMobileNav } from './public/PublicMobileNav'
 import { RenderMobileLayout } from './shared/RenderMobileLayout'
@@ -89,7 +90,7 @@ function HeaderContent({
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [variant, isUsersDropdown, isProfileDropdown])
 
-  const showMobileMenuButton = variant !== 'minimal' && variant !== 'admin'
+  const showMobileMenuButton = variant !== 'minimal'
   const containerClass =
     variant === 'franchisor'
       ? 'container mx-auto px-4 md:px-10 flex h-16 items-center justify-between'
@@ -110,26 +111,52 @@ function HeaderContent({
     <>
       <header className={`sticky top-0 z-50 ${headerBgClass}`}>
         <div className={`${containerClass} ${textColorClass}`}>
-          {variant === 'admin' && (
-            <button
-              className="md:hidden flex flex-col justify-center items-center w-8 h-8 space-y-1 flex-shrink-0"
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              aria-label="Menu"
-            >
-              <span
-                className={`block w-6 h-0.5 ${mobileHamburgerLineBgClass} transition-transform duration-300 ${mobileMenuOpen ? 'rotate-45 translate-y-2' : ''}`}
-              />
-              <span
-                className={`block w-6 h-0.5 ${mobileHamburgerLineBgClass} transition-opacity duration-300 ${mobileMenuOpen ? 'opacity-0' : ''}`}
-              />
-              <span
-                className={`block w-6 h-0.5 ${mobileHamburgerLineBgClass} transition-transform duration-300 ${mobileMenuOpen ? '-rotate-45 -translate-y-2' : ''}`}
-              />
-            </button>
-          )}
+          {/* Left group: Hamburger + Logo (mobile) */}
+          <div className="flex items-center gap-1">
+            {showMobileMenuButton && (
+              <button
+                className={`md:hidden p-2 ${mobileMenuButtonTextClass} flex-shrink-0`}
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                aria-label="Menu"
+              >
+                {mobileMenuOpen ? (
+                  <CloseIcon width={20} height={20} />
+                ) : (
+                  <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <line x1="3" y1="12" x2="21" y2="12" />
+                    <line x1="3" y1="6" x2="21" y2="6" />
+                    <line x1="3" y1="18" x2="21" y2="18" />
+                  </svg>
+                )}
+              </button>
+            )}
 
-          <LogoHeader dark={!darkMode} />
+            <LogoHeader dark={!darkMode} />
+            {payload?.role === 'ADMIN' && (
+              <span
+                className="uppercase font-semibold rounded px-1.5 py-0.5 ml-1.5"
+                style={{
+                  background: '#C73E1D',
+                  color: '#fff',
+                  fontSize: '9px',
+                  letterSpacing: '0.8px',
+                }}
+              >
+                Admin
+              </span>
+            )}
+          </div>
 
+          {/* Center: Desktop nav */}
           {variant === 'public' && <PublicDesktopNav darkMode={darkMode} />}
           {variant === 'admin' && (
             <AdminDesktopNavigation
@@ -143,6 +170,7 @@ function HeaderContent({
             <FranchisorDesktopNavigation darkMode={darkMode} />
           )}
 
+          {/* Right group: actions / login / avatar */}
           {variant === 'minimal' && (
             <HeaderRightActions variant="minimal" darkMode={darkMode} />
           )}
@@ -177,35 +205,10 @@ function HeaderContent({
               setIsProfileDropdown={setIsProfileDropdown}
             />
           )}
-
-          {showMobileMenuButton && (
-            <button
-              className={`md:hidden p-2 ${mobileMenuButtonTextClass} flex-shrink-0`}
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              aria-label="Menu"
-            >
-              {mobileMenuOpen ? (
-                <CloseIcon width={24} height={24} />
-              ) : (
-                <svg
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <line x1="3" y1="12" x2="21" y2="12" />
-                  <line x1="3" y1="6" x2="21" y2="6" />
-                  <line x1="3" y1="18" x2="21" y2="18" />
-                </svg>
-              )}
-            </button>
-          )}
         </div>
       </header>
+
+      {variant === 'public' && <MobileQuickNav />}
 
       {variant === 'public' && mobileMenuOpen && (
         <div

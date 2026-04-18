@@ -2,15 +2,16 @@
 
 import { useClickOutside } from '@/src/hooks/useClickOutside'
 import { MAX_INVESTMENT_INPUT } from '@/src/utils/investmentFormatters'
+import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import {
   useCallback,
   useEffect,
   useLayoutEffect,
+  useMemo,
   useRef,
   useState,
 } from 'react'
-import TargetIcon from '../../icons/targetIcon'
 import { InvestmentDropdownPanel, InvestmentSection } from './InvestmentSection'
 import { SegmentDropdownPanel, SegmentSection } from './SegmentSection'
 
@@ -18,6 +19,34 @@ export interface HeroSearchFilters {
   minInvestment: number
   maxInvestment: number
   segment: string
+}
+
+// Approximate counts by max investment bracket
+const INVESTMENT_COUNTS: [number, number][] = [
+  [50000, 312],
+  [100000, 487],
+  [200000, 698],
+  [300000, 821],
+  [500000, 934],
+  [1000000, 1102],
+  [2000000, 1287],
+  [Infinity, 1409],
+]
+
+const TOTAL_FRANCHISES = 1409
+const SEGMENT_COUNT = 16
+
+function estimateCount(maxInvestment: number, hasSegment: boolean): number {
+  let count = TOTAL_FRANCHISES
+  if (maxInvestment > 0 && maxInvestment < MAX_INVESTMENT_INPUT) {
+    const bracket = INVESTMENT_COUNTS.find(([cap]) => maxInvestment <= cap)
+    count = bracket ? bracket[1] : TOTAL_FRANCHISES
+  }
+  // Rough segment ratio: ~1/SEGMENT_COUNT of results
+  if (hasSegment) {
+    count = Math.max(1, Math.round(count / (SEGMENT_COUNT * 0.6)))
+  }
+  return count
 }
 
 const HeroSearch = () => {
@@ -31,9 +60,15 @@ const HeroSearch = () => {
   const [selectedSegment, setSelectedSegment] = useState('')
   const [showSegmentDropdown, setShowSegmentDropdown] = useState(false)
   const [showInvestmentDropdown, setShowInvestmentDropdown] = useState(false)
-  const [hoverSearch, setHoverSearch] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
 
-  // Panel position/size derived from the active section ref
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768)
+    check()
+    window.addEventListener('resize', check)
+    return () => window.removeEventListener('resize', check)
+  }, [])
+
   const [panelStyle, setPanelStyle] = useState<{
     left: number
     width: number
@@ -44,7 +79,6 @@ const HeroSearch = () => {
   const searchRef = useRef<HTMLDivElement>(null)
   const dropdownRef = useRef<HTMLDivElement>(null)
 
-  // Measure the active section and animate the panel to it
   useLayoutEffect(() => {
     const activeRef =
       focusedSection === 'investment'
@@ -73,34 +107,22 @@ const HeroSearch = () => {
     setFocusedSection(null)
   }, [])
 
-  const refsForClickOutside = [investmentRef, segmentRef, dropdownRef]
-  useClickOutside(refsForClickOutside, handleClickOutside)
+  useClickOutside([investmentRef, segmentRef, dropdownRef], handleClickOutside)
 
   const handleSearch = useCallback(() => {
-    const effectiveMinInvestment =
-      minInvestmentValue > 0 ? minInvestmentValue : 0
-    const effectiveMaxInvestment =
+    const effectiveMin = minInvestmentValue > 0 ? minInvestmentValue : 0
+    const effectiveMax =
       maxInvestmentValue > 0 ? maxInvestmentValue : MAX_INVESTMENT_INPUT
-
-    const safeMinInvestment = Math.min(
-      effectiveMinInvestment,
-      effectiveMaxInvestment,
-    )
+    const safeMin = Math.min(effectiveMin, effectiveMax)
 
     const params = new URLSearchParams()
-    if (safeMinInvestment > 0) {
-      params.set('minInvestment', String(safeMinInvestment))
-    }
-    if (effectiveMaxInvestment < MAX_INVESTMENT_INPUT) {
-      params.set('maxInvestment', String(effectiveMaxInvestment))
-    }
-    if (selectedSegment) {
-      params.set('segment', selectedSegment)
-    }
+    if (safeMin > 0) params.set('minInvestment', String(safeMin))
+    if (effectiveMax < MAX_INVESTMENT_INPUT)
+      params.set('maxInvestment', String(effectiveMax))
+    if (selectedSegment) params.set('segment', selectedSegment)
     params.set('scrollToRanking', '1')
 
-    const query = params.toString()
-    router.push(`/ranking?${query}`)
+    router.push(`/ranking?${params.toString()}`)
   }, [minInvestmentValue, maxInvestmentValue, selectedSegment, router])
 
   const handleSegmentSelect = useCallback((segment: string) => {
@@ -110,72 +132,49 @@ const HeroSearch = () => {
   }, [])
 
   const isOpen = showInvestmentDropdown || showSegmentDropdown
+  const hasFilter = hasSelectedInvestment || selectedSegment !== ''
 
-  // Mount the dropdown at its hidden state first, then flip visible on the
-  // next animation frame so the browser has a painted "from" state to
-  // transition from — this is the only reliable way to animate conditionally
-  // rendered elements in React without CSS @keyframes.
+  const estimatedCount = useMemo(
+    () => estimateCount(maxInvestmentValue, selectedSegment !== ''),
+    [maxInvestmentValue, selectedSegment],
+  )
+  const progressPct = Math.round((estimatedCount / TOTAL_FRANCHISES) * 100)
+
   const [dropdownVisible, setDropdownVisible] = useState(false)
   useEffect(() => {
-    if (!isOpen || !panelStyle) {
+    if (!isOpen) {
       setDropdownVisible(false)
       return
     }
     const id = requestAnimationFrame(() => setDropdownVisible(true))
     return () => cancelAnimationFrame(id)
-  }, [isOpen, panelStyle])
+  }, [isOpen])
 
   return (
-    <section
-      id="hero-search"
-      className="bg-[#E8583B] relative overflow-visible min-h-[300px] md:min-h-[42vh] lg:min-h-[50vh] flex flex-col justify-center"
-    >
-      {/* Decorative side backgrounds — md+ only (mobile: solid orange only, white title) */}
-      <div
-        className="hidden md:block pointer-events-none absolute inset-0 z-0 bg-no-repeat"
-        style={{
-          backgroundImage:
-            "url('/assets/LeftQuizSearchBG.png'), url('/assets/RightQuizSearchBG.png')",
-          backgroundPosition: 'left bottom, right bottom',
-          backgroundSize: 'auto 100%, auto 100%',
-        }}
-        aria-hidden
-      />
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <header className="flex items-center justify-center gap-3 sm:gap-6 mb-4 sm:mb-6">
-          <div className="w-12 h-12 sm:w-16 sm:h-16 md:hidden bg-white/20 rounded-full flex items-center justify-center flex-shrink-0">
-            <TargetIcon
-              className="w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10"
-              color="hsl(240 24% 12%)"
-            />
-          </div>
-          <h1 className="text-2xl sm:text-3xl lg:text-5xl font-bold text-white">
-            Qual franquia combina com você?
-          </h1>
-        </header>
+    <>
+      <section
+        id="hero-search"
+        className="bg-[#0d0d0d] relative overflow-visible py-10 md:py-14"
+      >
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          {/* Eyebrow */}
+          <header className="text-center mb-6 sm:mb-8">
+            <p className="text-[10px] tracking-[1.5px] text-[#E25E3E]/90 font-medium mb-3">
+              Inteligência de franquias
+            </p>
+            <h1 className="text-2xl sm:text-3xl lg:text-5xl font-bold text-white">
+              Qual franquia combina com você?
+            </h1>
+          </header>
 
-        <div className="max-w-5xl mx-auto relative z-10">
-          {/* Search bar */}
-          <div
-            ref={searchRef}
-            onMouseEnter={() => setHoverSearch(true)}
-            onMouseLeave={() => setHoverSearch(false)}
-            className={`relative rounded-2xl md:rounded-full shadow-2xl transition-all duration-400 ${focusedSection ? 'bg-gray-200 shadow-glow' : 'bg-white'}`}
-          >
-            {/* Sliding active-section pill */}
+          <div className="max-w-3xl mx-auto z-10 relative">
+            {/* Search bar */}
             <div
-              className={`absolute z-0 rounded-full bg-white shadow-md transition-all duration-600 ease-[cubic-bezier(0.16,1,0.3,1)] pointer-events-none hidden md:block ${
-                focusedSection === 'investment'
-                  ? 'inset-y-0 left-0 right-[calc(50%+3px)]'
-                  : focusedSection === 'segment'
-                    ? 'inset-y-0 left-[calc(50%+3px)] right-0'
-                    : 'inset-y-0 left-0 right-0 opacity-0'
-              }`}
-              aria-hidden
-            />
-
-            <div className="relative z-10 flex flex-col md:flex-row md:justify-between md:items-center">
-              <div ref={investmentRef} className="flex-1 min-w-0">
+              ref={searchRef}
+              className="relative bg-[#161616] rounded-[6px] h-[52px] flex items-center overflow-hidden"
+              style={{ border: '0.5px solid #222' }}
+            >
+              <div ref={investmentRef} className="flex-1 min-w-0 h-full">
                 <InvestmentSection
                   onToggle={() => {
                     setShowSegmentDropdown(false)
@@ -190,14 +189,9 @@ const HeroSearch = () => {
                 />
               </div>
 
-              <div
-                className={`hidden md:block h-10 w-px bg-gray-300 transition-opacity duration-300 ${
-                  hoverSearch || focusedSection ? 'opacity-0' : 'opacity-100'
-                }`}
-              />
-              <div className="block md:hidden mx-4 h-px bg-gray-100" />
+              <div className="h-7 w-px bg-[#222] shrink-0" />
 
-              <div ref={segmentRef} className="flex-1 min-w-0">
+              <div ref={segmentRef} className="flex-1 min-w-0 h-full">
                 <SegmentSection
                   open={showSegmentDropdown}
                   onToggle={() => {
@@ -211,77 +205,157 @@ const HeroSearch = () => {
                   isDimmed={focusedSection === 'investment'}
                 />
               </div>
+
+              <button
+                onClick={handleSearch}
+                className="flex items-center justify-center bg-[#E25E3E] hover:bg-[#c94e32] text-white w-[56px] h-full shrink-0 transition-colors"
+                aria-label="Buscar"
+              >
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <circle cx="11" cy="11" r="8" />
+                  <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                </svg>
+              </button>
+            </div>
+
+            {/* Dropdown panel */}
+            {isOpen && (
+              <div
+                ref={dropdownRef}
+                className={
+                  isMobile
+                    ? 'mt-1 bg-[#161616] rounded-[6px] overflow-hidden'
+                    : 'absolute mt-1 bg-[#161616] rounded-[6px] overflow-hidden z-50'
+                }
+                style={{
+                  border: '0.5px solid #222',
+                  opacity: dropdownVisible ? 1 : 0,
+                  transition: 'opacity 200ms ease-out',
+                  ...(isMobile
+                    ? { width: 'calc(100% - 56px)' }
+                    : {
+                        top: '100%',
+                        left: showInvestmentDropdown ? 0 : undefined,
+                        right: showSegmentDropdown ? 56 : undefined,
+                        width: 'calc(50% - 28px)',
+                      }),
+                }}
+              >
+                {showInvestmentDropdown && (
+                  <InvestmentDropdownPanel
+                    min={minInvestmentValue}
+                    max={maxInvestmentValue}
+                    onMinChange={(v) => {
+                      setHasSelectedInvestment(v > 0 || maxInvestmentValue > 0)
+                      setMinInvestmentValue(v)
+                      if (v > maxInvestmentValue) setMaxInvestmentValue(v)
+                    }}
+                    onMaxChange={(v) => {
+                      setHasSelectedInvestment(minInvestmentValue > 0 || v > 0)
+                      setMaxInvestmentValue(v)
+                      if (v < minInvestmentValue) setMinInvestmentValue(v)
+                    }}
+                    onFocus={() => setFocusedSection('investment')}
+                  />
+                )}
+
+                {showSegmentDropdown && (
+                  <SegmentDropdownPanel onSegmentSelect={handleSegmentSelect} />
+                )}
+              </div>
+            )}
+          </div>
+
+          {/* Dynamic result counter */}
+          <div className="max-w-3xl mx-auto mt-8 text-center">
+            <div className="flex items-baseline justify-center gap-2">
+              <span
+                className="text-[36px] font-medium text-white font-display transition-opacity duration-300"
+                style={{ letterSpacing: '-1.5px' }}
+              >
+                {estimatedCount.toLocaleString('pt-BR')}
+              </span>
+              <span className="text-[14px] text-[#555]">
+                {hasFilter ? 'franquias para você' : 'redes cadastradas'}
+              </span>
+              {hasFilter && (
+                <button
+                  onClick={handleSearch}
+                  className="text-[13px] text-[#E25E3E] font-medium hover:underline ml-2"
+                >
+                  Ver resultado →
+                </button>
+              )}
+            </div>
+
+            <p className="text-[12px] text-[#444] mt-1">
+              {hasFilter
+                ? 'Refine mais ou clique em buscar'
+                : `de ${TOTAL_FRANCHISES.toLocaleString('pt-BR')} redes no Brasil`}
+            </p>
+
+            {/* Progress bar */}
+            <div className="max-w-xs mx-auto mt-3">
+              <div className="h-[2px] bg-[#1a1a1a] rounded-full overflow-hidden">
+                <div
+                  className="h-full bg-[#E25E3E] transition-all duration-500 ease-out"
+                  style={{ width: `${progressPct}%` }}
+                />
+              </div>
+              <p className="text-[10px] text-[#444] mt-1">
+                {progressPct}% do universo de franquias do Brasil
+              </p>
             </div>
           </div>
 
-          {/* ── Unified sliding dropdown panel ── */}
-          {isOpen && panelStyle && (
-            <div
-              ref={dropdownRef}
-              className="absolute mt-2 bg-white rounded-3xl shadow-2xl border border-gray-100 z-[9999] overflow-hidden"
-              style={{
-                top: '100%',
-                left: panelStyle.left,
-                width: panelStyle.width,
-                transformOrigin: 'top center',
-                opacity: dropdownVisible ? 1 : 0,
-                transform: dropdownVisible
-                  ? 'scale(1) translateY(0px)'
-                  : 'scale(0.92) translateY(-8px)',
-                transition:
-                  'opacity 600ms cubic-bezier(0.16, 1, 0.3, 1), transform 600ms cubic-bezier(0.16, 1, 0.3, 1), left 700ms cubic-bezier(0.16, 1, 0.3, 1), width 700ms cubic-bezier(0.16, 1, 0.3, 1)',
-              }}
-            >
-              {/* Investment content */}
-              <div
-                className="transition-[opacity,transform] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]"
-                style={{
-                  position: showInvestmentDropdown ? 'relative' : 'absolute',
-                  inset: showInvestmentDropdown ? undefined : '0',
-                  opacity: showInvestmentDropdown ? 1 : 0,
-                  transform: showInvestmentDropdown
-                    ? 'translateX(0)'
-                    : 'translateX(-24px)',
-                  pointerEvents: showInvestmentDropdown ? 'auto' : 'none',
-                }}
-              >
-                <InvestmentDropdownPanel
-                  min={minInvestmentValue}
-                  max={maxInvestmentValue}
-                  onMinChange={(v) => {
-                    setHasSelectedInvestment(v > 0 || maxInvestmentValue > 0)
-                    setMinInvestmentValue(v)
-                    if (v > maxInvestmentValue) setMaxInvestmentValue(v)
-                  }}
-                  onMaxChange={(v) => {
-                    setHasSelectedInvestment(minInvestmentValue > 0 || v > 0)
-                    setMaxInvestmentValue(v)
-                    if (v < minInvestmentValue) setMinInvestmentValue(v)
-                  }}
-                  onFocus={() => setFocusedSection('investment')}
-                />
+          {/* Mini stats */}
+          <div
+            className="max-w-3xl mx-auto mt-6 pt-4 flex items-center justify-center gap-4 text-center"
+            style={{ borderTop: '0.5px solid #1a1a1a' }}
+          >
+            {[
+              { value: 'R$ 48k+', label: 'menor invest.' },
+              { value: '16', label: 'segmentos' },
+              { value: 'R$ 211bi', label: 'faturamento setor' },
+            ].map((s) => (
+              <div key={s.label} className="flex items-baseline gap-1">
+                <span className="text-[13px] text-[#aaa] font-medium">
+                  {s.value}
+                </span>
+                <span className="text-[10px] text-[#444]">{s.label}</span>
               </div>
+            ))}
+          </div>
+        </div>
+      </section>
 
-              {/* Segment content */}
-              <div
-                className="transition-[opacity,transform] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]"
-                style={{
-                  position: showSegmentDropdown ? 'relative' : 'absolute',
-                  inset: showSegmentDropdown ? undefined : '0',
-                  opacity: showSegmentDropdown ? 1 : 0,
-                  transform: showSegmentDropdown
-                    ? 'translateX(0)'
-                    : 'translateX(24px)',
-                  pointerEvents: showSegmentDropdown ? 'auto' : 'none',
-                }}
-              >
-                <SegmentDropdownPanel onSegmentSelect={handleSegmentSelect} />
-              </div>
-            </div>
-          )}
+      {/* CTA cadastro */}
+      <div
+        className="bg-[#161616] py-2.5"
+        style={{ borderTop: '0.5px solid #222' }}
+      >
+        <div className="container mx-auto px-4 flex items-center justify-between">
+          <span className="text-[12px] text-[#555]">
+            Sua franquia não está aqui?
+          </span>
+          <Link
+            href="/cadastro"
+            className="text-[12px] text-[#E25E3E] font-medium hover:underline"
+          >
+            Cadastre gratuitamente →
+          </Link>
         </div>
       </div>
-    </section>
+    </>
   )
 }
 

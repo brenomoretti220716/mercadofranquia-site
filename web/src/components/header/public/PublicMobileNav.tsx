@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation'
 
 const PUBLIC_NAV_ITEMS = [
   { label: 'Home', href: '/' },
+  { label: 'Quiz', href: '/quiz' },
   { label: 'Ranking', href: '/ranking' },
   { label: 'Mercado', href: '/mercado' },
   { label: 'Notícias', href: '/noticias' },

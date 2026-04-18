@@ -20,26 +20,20 @@ import FormInput from '../ui/FormInput'
 import PasswordInput from '../ui/PasswordInput'
 import PhoneInput from '../ui/PhoneInput'
 import RoundedButton from '../ui/RoundedButton'
-import MemberVerificationCode from './MemberVerificationCode'
 
-type Step = 'step1' | 'step2' | 'verification'
-
-const PENDING_VERIFICATION_KEY = 'pendingVerification'
+type Step = 'step1' | 'step2'
 
 export default function RegisterFlow() {
   const [currentStep, setCurrentStep] = useState<Step>('step1')
   const [userEmail, setUserEmail] = useQueryState('email', {
     defaultValue: '',
   })
-  const [initialExpiresIn, setInitialExpiresIn] = useState<number | null>(null)
   const [showPassword, setShowPassword] = useState(false)
-  const [hasPendingVerification, setHasPendingVerification] = useState(false)
   const [step1Data, setStep1Data] = useState<StepOneRegistrationInput | null>(
     null,
   )
   const registerMutation = useStepOneRegister()
 
-  // Form for Step 1: Email, Password, Confirm Password
   const step1Form = useForm<StepOneRegistrationInput>({
     resolver: zodResolver(StepOneRegistrationSchema),
     defaultValues: {
@@ -49,7 +43,6 @@ export default function RegisterFlow() {
     },
   })
 
-  // Form for Step 2: Name, Phone
   const step2Form = useForm<StepTwoRegistrationBasicInput>({
     resolver: zodResolver(StepTwoRegistrationBasicSchema),
     defaultValues: {
@@ -58,37 +51,17 @@ export default function RegisterFlow() {
     },
   })
 
-  // Pre-fill email from URL param if available
   useEffect(() => {
     if (userEmail) {
       step1Form.setValue('email', userEmail)
     }
   }, [userEmail, step1Form])
 
-  // Check for pending verification on mount
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const pending = localStorage.getItem(PENDING_VERIFICATION_KEY)
-      if (pending) {
-        try {
-          const data = JSON.parse(pending)
-          setUserEmail(data.email)
-          setHasPendingVerification(true)
-        } catch (error) {
-          console.error('Error parsing pending verification:', error)
-          localStorage.removeItem(PENDING_VERIFICATION_KEY)
-        }
-      }
-    }
-  }, [setUserEmail])
-
-  // Handle Step 1 submission - move to Step 2
   const handleStep1Submit = useCallback((data: StepOneRegistrationInput) => {
     setStep1Data(data)
     setCurrentStep('step2')
   }, [])
 
-  // Handle Step 2 submission - combine data and submit
   const handleStep2Submit = useCallback(
     (data: StepTwoRegistrationBasicInput) => {
       if (!step1Data) return
@@ -99,68 +72,22 @@ export default function RegisterFlow() {
       }
 
       setUserEmail(combinedData.email)
-      registerMutation.mutate(combinedData, {
-        onSuccess: (result) => {
-          if (result.success || result.rateLimited) {
-            if (result.rateLimited && result.expiresIn) {
-              setInitialExpiresIn(result.expiresIn)
-            }
-            // Save to localStorage for recovery
-            if (typeof window !== 'undefined') {
-              localStorage.setItem(
-                PENDING_VERIFICATION_KEY,
-                JSON.stringify({ email: combinedData.email }),
-              )
-            }
-            setCurrentStep('verification')
-          }
-        },
-      })
+      registerMutation.mutate(combinedData)
     },
     [step1Data, registerMutation, setUserEmail],
   )
 
-  // Handle back to Step 1
   const handleBackToStep1 = useCallback(() => {
     setCurrentStep('step1')
-  }, [])
-
-  const handleVerificationSuccess = useCallback(() => {
-    // Clear pending verification from localStorage
-    if (typeof window !== 'undefined') {
-      localStorage.removeItem(PENDING_VERIFICATION_KEY)
-    }
-    setHasPendingVerification(false)
-    // Redirect will happen automatically from the mutation
-  }, [])
-
-  const handleBackToForm = useCallback(() => {
-    setCurrentStep('step1')
-    setStep1Data(null)
-    setUserEmail('')
-    setInitialExpiresIn(null)
-    setHasPendingVerification(false)
-    step1Form.reset()
-    step2Form.reset()
-    // Clear from localStorage
-    if (typeof window !== 'undefined') {
-      localStorage.removeItem(PENDING_VERIFICATION_KEY)
-    }
-  }, [setUserEmail, step1Form, step2Form])
-
-  const handleContinueVerification = useCallback(() => {
-    setCurrentStep('verification')
-    setHasPendingVerification(false)
   }, [])
 
   const renderStepIndicator = () => {
     const steps = [
       { id: 'step1', label: '1. Credenciais', stepNumber: 1 },
       { id: 'step2', label: '2. Dados', stepNumber: 2 },
-      { id: 'verification', label: '3. Verificação', stepNumber: 3 },
     ]
 
-    const stepOrder: Step[] = ['step1', 'step2', 'verification']
+    const stepOrder: Step[] = ['step1', 'step2']
     const currentIndex = stepOrder.indexOf(currentStep)
 
     return (
@@ -195,8 +122,6 @@ export default function RegisterFlow() {
         return 'Crie sua conta'
       case 'step2':
         return 'Complete seu cadastro'
-      case 'verification':
-        return 'Verificação de Código'
       default:
         return 'Crie sua conta'
     }
@@ -208,8 +133,6 @@ export default function RegisterFlow() {
         return 'Comece criando suas credenciais de acesso'
       case 'step2':
         return 'Agora precisamos de algumas informações pessoais'
-      case 'verification':
-        return 'Estamos quase lá! Digite o código enviado para seu e-mail'
       default:
         return ''
     }
@@ -296,23 +219,6 @@ export default function RegisterFlow() {
               Faça login!
             </Link>
           </div>
-
-          {hasPendingVerification && (
-            <div className="mt-4 p-4 bg-accent border border-primary/20 rounded-md">
-              <div className="flex flex-col items-center justify-between gap-2">
-                <p className="text-sm text-center text-foreground">
-                  Verificação pendente para <strong>{userEmail}</strong>
-                </p>
-                <button
-                  type="button"
-                  onClick={handleContinueVerification}
-                  className="text-sm text-primary underline hover:text-primary/80 font-medium whitespace-nowrap transition-colors"
-                >
-                  Inserir código de verificação
-                </button>
-              </div>
-            </div>
-          )}
         </form>
       )}
 
@@ -363,15 +269,6 @@ export default function RegisterFlow() {
             />
           </div>
         </form>
-      )}
-
-      {currentStep === 'verification' && (
-        <MemberVerificationCode
-          email={userEmail}
-          initialExpiresIn={initialExpiresIn}
-          onSuccess={handleVerificationSuccess}
-          onBack={handleBackToForm}
-        />
       )}
     </div>
   )

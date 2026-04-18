@@ -185,13 +185,14 @@ export function useLogin() {
 export function useStepOneRegister() {
   return useMutation({
     mutationFn: async (data: CombinedRegistrationInputType) => {
-      // Ensure phone is sent as raw digits only
       const sanitizedData = {
-        ...data,
+        name: data.name,
+        email: data.email,
+        password: data.password,
         phone: stripNonDigits(data.phone),
       }
 
-      const response = await fetch(Api('/users/members/request-verification'), {
+      const response = await fetch(Api('/users/register/step-one'), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -209,146 +210,31 @@ export function useStepOneRegister() {
         throw new Error(specificMessage)
       }
 
-      // Handle rate limiter - return special info instead of throwing error
-      if (response.status === 400) {
-        const errorData = await response.json().catch(() => ({}))
-        return {
-          success: false,
-          rateLimited: true,
-          expiresIn: errorData.expiresIn,
-          message: 'Aguarde antes de solicitar um novo código.',
-        }
-      }
-
       if (!response.ok) {
         const message = handleHttpError(
           response,
-          'Não foi possível solicitar o código de verificação. Tente novamente.',
+          'Não foi possível concluir o cadastro. Tente novamente.',
         )
         throw new Error(message)
       }
 
       const result = await response.json()
-      return { success: true, ...result }
+      return result as { user?: Payload; access_token?: string }
     },
     onSuccess: (data) => {
-      if (data.rateLimited) {
-        toast.info(data.message)
-      } else {
-        toast.success('Código de verificação enviado para seu e-mail!')
-      }
-    },
-    onError: (error) => {
-      console.error('Request verification error:', error)
-      toast.error(
-        formatErrorMessage(
-          error,
-          'Não foi possível solicitar o código de verificação. Tente novamente.',
-        ),
-      )
-    },
-  })
-}
-
-export function useResendMemberVerification() {
-  return useMutation({
-    mutationFn: async (data: { email: string }) => {
-      const response = await fetch(Api('/users/members/resend-verification'), {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      })
-
-      if (response.status === 400) {
-        const errorData = await response.json().catch(() => ({}))
-        return {
-          success: false,
-          rateLimited: true,
-          expiresIn: errorData.expiresIn,
-          message: 'Aguarde antes de solicitar um novo código.',
-        }
-      }
-
-      if (!response.ok) {
-        const message = handleHttpError(
-          response,
-          'Não foi possível reenviar o código. Tente novamente.',
-        )
-        throw new Error(message)
-      }
-
-      return { success: true }
-    },
-    onSuccess: (data) => {
-      if (data.rateLimited) {
-        toast.info(data.message)
-      } else {
-        toast.success('Código reenviado com sucesso!')
-      }
-    },
-    onError: (error) => {
-      console.error('Resend verification error:', error)
-      toast.error(
-        formatErrorMessage(
-          error,
-          'Não foi possível reenviar o código. Tente novamente.',
-        ),
-      )
-    },
-  })
-}
-
-export function useVerifyAndCreateMember() {
-  return useMutation({
-    mutationFn: async (data: { email: string; code: string }) => {
-      const response = await fetch(Api('/users/members/verify-and-create'), {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      })
-
-      if (!response.ok) {
-        let errorMessage = 'Erro ao verificar código'
-
-        if (response.status === 400) {
-          errorMessage = 'Código inválido. Verifique o código digitado.'
-        } else if (response.status === 401) {
-          errorMessage = 'Código expirado. Solicite um novo código.'
-        } else if (response.status === 429) {
-          errorMessage =
-            'Muitas tentativas. Aguarde alguns minutos antes de tentar novamente.'
-        } else {
-          const errorData = await response
-            .json()
-            .catch(() => ({ message: 'Erro ao verificar código' }))
-          errorMessage = errorData.message || errorMessage
-        }
-
-        throw new Error(errorMessage)
-      }
-
-      const result = await response.json()
-      return result
-    },
-    onSuccess: (data) => {
-      // The token should be in data.user.access_token after code validation
-      const accessToken = data?.user?.access_token || data?.access_token
+      const accessToken = data?.access_token
 
       if (accessToken && typeof accessToken === 'string') {
         setClientAuthCookie(accessToken)
         toast.success('Cadastro realizado com sucesso!')
         redirectTo('/')
       } else {
-        console.error('No token received from verify and create member')
+        console.error('No token received from step-one register')
         toast.error('Erro ao processar cadastro. Token não recebido.')
       }
     },
     onError: (error) => {
-      console.error('Verify and create member error:', error)
+      console.error('Register error:', error)
       toast.error(
         formatErrorMessage(
           error,

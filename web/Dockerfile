@@ -23,8 +23,10 @@ COPY . .
 # next.config.ts usa NEXT_PUBLIC_API_URL em images.remotePatterns; precisa existir no build.
 ARG NEXT_PUBLIC_API_URL=http://localhost:4000
 ARG NEXT_PUBLIC_SITE_URL=http://localhost:3000
+ARG API_INTERNAL_URL=http://localhost:4000
 ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
 ENV NEXT_PUBLIC_SITE_URL=$NEXT_PUBLIC_SITE_URL
+ENV API_INTERNAL_URL=$API_INTERNAL_URL
 
 # Next.js collects completely anonymous telemetry data about general usage.
 # Learn more here: https://nextjs.org/telemetry

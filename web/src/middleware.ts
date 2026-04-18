@@ -43,6 +43,10 @@ const publicRoutes = [
     pattern: /^\/termos$/,
     whenAuthenticated: WhenAuthenticated.NEXT,
   },
+  {
+    pattern: /^\/quiz(\/.*)?$/,
+    whenAuthenticated: WhenAuthenticated.NEXT,
+  },
 ] as const
 
 const privateRoutes = [
@@ -58,10 +62,6 @@ const privateRoutes = [
   },
   {
     pattern: /^\/perfil$/,
-    whenAuthenticated: 'next',
-  },
-  {
-    pattern: /^\/quiz(\/.*)?$/,
     whenAuthenticated: 'next',
   },
 ] as const satisfies ReadonlyArray<{
@@ -134,5 +134,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/((?!api|_next/static|_next/image|assets|favicon.ico).*)'],
+  matcher: ['/((?!api|_next/static|_next/image|assets|uploads|favicon.ico).*)'],
 }
