@@ -1,0 +1,37 @@
+# /etc/systemd/system/mf-macro-sync.timer
+#
+# Fires mf-macro-sync.service once per day at 03:00 America/Sao_Paulo
+# (UTC-03:00 year-round since 2019 — no DST in Brazil).
+#
+# Install & enable:
+#   sudo systemctl enable --now mf-macro-sync.timer
+#
+# Inspect:
+#   systemctl list-timers mf-macro-sync.timer
+#   systemctl status mf-macro-sync.timer
+
+[Unit]
+Description=Daily trigger for mf-macro-sync.service (BCB/IBGE sync @ 03:00 BRT)
+Documentation=https://github.com/brenomoretti/mercadofranquia-site
+
+[Timer]
+# Explicit timezone — do not trust /etc/localtime on the EC2 box, which
+# defaults to UTC on stock Ubuntu AMIs.
+OnCalendar=*-*-* 03:00:00 America/Sao_Paulo
+
+# If the machine was off at 03:00 (reboot, stop/start of the EC2 instance),
+# catch up on the next boot instead of silently skipping a day.
+Persistent=true
+
+# 5-minute jitter so thousands of servers hitting BCB/IBGE at 03:00 sharp
+# don't all collide. Window becomes 03:00:00–03:05:00 BRT.
+RandomizedDelaySec=300
+
+# Redundant with the [Unit] stanza's default (Unit=<same-basename>.service),
+# but spelling it out makes the wiring obvious.
+Unit=mf-macro-sync.service
+
+AccuracySec=1min
+
+[Install]
+WantedBy=timers.target

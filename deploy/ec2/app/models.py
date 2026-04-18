@@ -910,3 +910,348 @@ class PlatformStatistics(Base):
         default=func.now(),
         onupdate=func.now(),
     )
+
+
+# ---------------------------------------------------------------------------
+# Macro / ABF pipeline (Fase 1A)
+#
+# Fed by the daily macro sync (services/macro_sync.py, wired via systemd
+# timer). SQLite schema at api/database.py in the pipeline repo; these are
+# PostgreSQL equivalents with PascalCase tables and camelCase columns to
+# match the rest of the Prisma-era schema.
+# ---------------------------------------------------------------------------
+
+
+class SegmentAcronym(Base):
+    __tablename__ = "SegmentAcronym"
+    __table_args__ = (
+        UniqueConstraint("segmento", name="SegmentAcronym_segmento_key"),
+    )
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    segmento: Mapped[str] = mapped_column(String(100), nullable=False)
+    acronimo: Mapped[str] = mapped_column(String(10), nullable=False)
+    createdAt: Mapped[datetime] = mapped_column(
+        "createdAt",
+        DateTime(timezone=False),
+        nullable=False,
+        server_default=func.now(),
+    )
+
+
+class AbfReport(Base):
+    __tablename__ = "AbfReport"
+    __table_args__ = (
+        UniqueConstraint("periodo", name="AbfReport_periodo_key"),
+    )
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    periodo: Mapped[str] = mapped_column(String(10), nullable=False)
+    ano: Mapped[int] = mapped_column(Integer, nullable=False)
+    trimestre: Mapped[Optional[int]] = mapped_column(Integer)
+    tipo: Mapped[str] = mapped_column(
+        String(20), nullable=False, server_default="trimestral"
+    )
+    arquivo: Mapped[Optional[str]] = mapped_column(String(255))
+    status: Mapped[str] = mapped_column(
+        String(20), nullable=False, server_default="importado"
+    )
+    notas: Mapped[Optional[str]] = mapped_column(Text)
+    createdAt: Mapped[datetime] = mapped_column(
+        "createdAt",
+        DateTime(timezone=False),
+        nullable=False,
+        server_default=func.now(),
+    )
+    updatedAt: Mapped[datetime] = mapped_column(
+        "updatedAt",
+        DateTime(timezone=False),
+        nullable=False,
+        default=func.now(),
+        onupdate=func.now(),
+    )
+
+
+class AbfRevenue(Base):
+    __tablename__ = "AbfRevenue"
+    __table_args__ = (
+        UniqueConstraint(
+            "periodo",
+            "segmento",
+            "tipoDado",
+            name="AbfRevenue_periodo_segmento_tipoDado_key",
+        ),
+        Index("AbfRevenue_periodo_idx", "periodo"),
+    )
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    periodo: Mapped[str] = mapped_column(String(10), nullable=False)
+    segmento: Mapped[str] = mapped_column(String(100), nullable=False)
+    valorMm: Mapped[Decimal] = mapped_column(
+        "valorMm", Numeric(18, 4), nullable=False
+    )
+    tipoDado: Mapped[str] = mapped_column(
+        "tipoDado", String(20), nullable=False, server_default="trimestral"
+    )
+    createdAt: Mapped[datetime] = mapped_column(
+        "createdAt",
+        DateTime(timezone=False),
+        nullable=False,
+        server_default=func.now(),
+    )
+
+
+class AbfIndicator(Base):
+    __tablename__ = "AbfIndicator"
+    __table_args__ = (
+        UniqueConstraint("periodo", name="AbfIndicator_periodo_key"),
+    )
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    periodo: Mapped[str] = mapped_column(String(10), nullable=False)
+    empregosDiretos: Mapped[Optional[int]] = mapped_column(
+        "empregosDiretos", Integer
+    )
+    numRedes: Mapped[Optional[int]] = mapped_column("numRedes", Integer)
+    numUnidades: Mapped[Optional[int]] = mapped_column("numUnidades", Integer)
+    ticketMedio: Mapped[Optional[Decimal]] = mapped_column(
+        "ticketMedio", Numeric(18, 4)
+    )
+    varEmpregosPct: Mapped[Optional[Decimal]] = mapped_column(
+        "varEmpregosPct", Numeric(8, 4)
+    )
+    varRedesPct: Mapped[Optional[Decimal]] = mapped_column(
+        "varRedesPct", Numeric(8, 4)
+    )
+    varUnidadesPct: Mapped[Optional[Decimal]] = mapped_column(
+        "varUnidadesPct", Numeric(8, 4)
+    )
+    empregosPorUnidade: Mapped[Optional[int]] = mapped_column(
+        "empregosPorUnidade", Integer
+    )
+    createdAt: Mapped[datetime] = mapped_column(
+        "createdAt",
+        DateTime(timezone=False),
+        nullable=False,
+        server_default=func.now(),
+    )
+
+
+class AbfUnitsRanking(Base):
+    __tablename__ = "AbfUnitsRanking"
+    __table_args__ = (
+        UniqueConstraint(
+            "ano", "posicao", name="AbfUnitsRanking_ano_posicao_key"
+        ),
+        Index("AbfUnitsRanking_ano_idx", "ano"),
+    )
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    ano: Mapped[int] = mapped_column(Integer, nullable=False)
+    posicao: Mapped[int] = mapped_column(Integer, nullable=False)
+    posicaoAnt: Mapped[Optional[int]] = mapped_column("posicaoAnt", Integer)
+    marca: Mapped[str] = mapped_column(String(150), nullable=False)
+    segmento: Mapped[Optional[str]] = mapped_column(String(100))
+    unidades: Mapped[Optional[int]] = mapped_column(Integer)
+    unidadesAnt: Mapped[Optional[int]] = mapped_column("unidadesAnt", Integer)
+    varPct: Mapped[Optional[Decimal]] = mapped_column("varPct", Numeric(8, 4))
+    createdAt: Mapped[datetime] = mapped_column(
+        "createdAt",
+        DateTime(timezone=False),
+        nullable=False,
+        server_default=func.now(),
+    )
+
+
+class AbfProjection(Base):
+    __tablename__ = "AbfProjection"
+    __table_args__ = (
+        UniqueConstraint(
+            "anoReferencia", name="AbfProjection_anoReferencia_key"
+        ),
+    )
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    anoReferencia: Mapped[int] = mapped_column(
+        "anoReferencia", Integer, nullable=False
+    )
+    fatVarMinPct: Mapped[Optional[Decimal]] = mapped_column(
+        "fatVarMinPct", Numeric(8, 4)
+    )
+    fatVarMaxPct: Mapped[Optional[Decimal]] = mapped_column(
+        "fatVarMaxPct", Numeric(8, 4)
+    )
+    fatRealizadoPct: Mapped[Optional[Decimal]] = mapped_column(
+        "fatRealizadoPct", Numeric(8, 4)
+    )
+    redesVarPct: Mapped[Optional[Decimal]] = mapped_column(
+        "redesVarPct", Numeric(8, 4)
+    )
+    unidadesVarPct: Mapped[Optional[Decimal]] = mapped_column(
+        "unidadesVarPct", Numeric(8, 4)
+    )
+    empregosVarPct: Mapped[Optional[Decimal]] = mapped_column(
+        "empregosVarPct", Numeric(8, 4)
+    )
+    createdAt: Mapped[datetime] = mapped_column(
+        "createdAt",
+        DateTime(timezone=False),
+        nullable=False,
+        server_default=func.now(),
+    )
+
+
+class MacroBcb(Base):
+    __tablename__ = "MacroBcb"
+    __table_args__ = (
+        UniqueConstraint(
+            "data", "codigoSerie", name="MacroBcb_data_codigoSerie_key"
+        ),
+        Index("MacroBcb_codigoSerie_data_idx", "codigoSerie", "data"),
+    )
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    data: Mapped[str] = mapped_column(String(10), nullable=False)
+    codigoSerie: Mapped[int] = mapped_column(
+        "codigoSerie", Integer, nullable=False
+    )
+    nomeSerie: Mapped[str] = mapped_column(
+        "nomeSerie", String(100), nullable=False
+    )
+    valor: Mapped[Decimal] = mapped_column(Numeric(18, 6), nullable=False)
+    fonte: Mapped[str] = mapped_column(
+        String(50), nullable=False, server_default="BCB"
+    )
+    createdAt: Mapped[datetime] = mapped_column(
+        "createdAt",
+        DateTime(timezone=False),
+        nullable=False,
+        server_default=func.now(),
+    )
+
+
+class MacroIbge(Base):
+    __tablename__ = "MacroIbge"
+    __table_args__ = (
+        UniqueConstraint(
+            "data",
+            "codigoAgregado",
+            "variavel",
+            "localidade",
+            name="MacroIbge_data_agregado_variavel_localidade_key",
+        ),
+        Index("MacroIbge_codigoAgregado_data_idx", "codigoAgregado", "data"),
+    )
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    data: Mapped[str] = mapped_column(String(10), nullable=False)
+    codigoAgregado: Mapped[int] = mapped_column(
+        "codigoAgregado", Integer, nullable=False
+    )
+    variavel: Mapped[str] = mapped_column(String(200), nullable=False)
+    localidade: Mapped[str] = mapped_column(String(200), nullable=False)
+    valor: Mapped[Optional[Decimal]] = mapped_column(Numeric(18, 4))
+    fonte: Mapped[str] = mapped_column(
+        String(50), nullable=False, server_default="IBGE"
+    )
+    createdAt: Mapped[datetime] = mapped_column(
+        "createdAt",
+        DateTime(timezone=False),
+        nullable=False,
+        server_default=func.now(),
+    )
+
+
+class MacroSyncLog(Base):
+    __tablename__ = "MacroSyncLog"
+    __table_args__ = (
+        Index("MacroSyncLog_fonte_createdAt_idx", "fonte", "createdAt"),
+    )
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    fonte: Mapped[str] = mapped_column(String(150), nullable=False)
+    status: Mapped[str] = mapped_column(String(10), nullable=False)
+    registrosInseridos: Mapped[int] = mapped_column(
+        "registrosInseridos", Integer, nullable=False, server_default="0"
+    )
+    duracaoMs: Mapped[int] = mapped_column(
+        "duracaoMs", Integer, nullable=False, server_default="0"
+    )
+    erro: Mapped[Optional[str]] = mapped_column(Text)
+    createdAt: Mapped[datetime] = mapped_column(
+        "createdAt",
+        DateTime(timezone=False),
+        nullable=False,
+        server_default=func.now(),
+    )
+
+
+class PmcIbge(Base):
+    __tablename__ = "PmcIbge"
+    __table_args__ = (
+        UniqueConstraint(
+            "data", "codigoSegmento", name="PmcIbge_data_codigoSegmento_key"
+        ),
+        Index("PmcIbge_codigoSegmento_data_idx", "codigoSegmento", "data"),
+    )
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    data: Mapped[str] = mapped_column(String(10), nullable=False)
+    codigoSegmento: Mapped[str] = mapped_column(
+        "codigoSegmento", String(20), nullable=False
+    )
+    nomeSegmento: Mapped[str] = mapped_column(
+        "nomeSegmento", String(200), nullable=False
+    )
+    variacaoMensal: Mapped[Optional[Decimal]] = mapped_column(
+        "variacaoMensal", Numeric(8, 4)
+    )
+    variacaoAnual: Mapped[Optional[Decimal]] = mapped_column(
+        "variacaoAnual", Numeric(8, 4)
+    )
+    indice: Mapped[Optional[Decimal]] = mapped_column(Numeric(18, 4))
+    fonte: Mapped[str] = mapped_column(
+        String(50), nullable=False, server_default="IBGE/PMC"
+    )
+    urlFonte: Mapped[Optional[str]] = mapped_column("urlFonte", Text)
+    dataColeta: Mapped[Optional[datetime]] = mapped_column(
+        "dataColeta", DateTime(timezone=False)
+    )
+    createdAt: Mapped[datetime] = mapped_column(
+        "createdAt",
+        DateTime(timezone=False),
+        nullable=False,
+        server_default=func.now(),
+    )
+
+
+class CagedBcb(Base):
+    __tablename__ = "CagedBcb"
+    __table_args__ = (
+        UniqueConstraint(
+            "data", "codigoBcb", name="CagedBcb_data_codigoBcb_key"
+        ),
+        Index("CagedBcb_codigoBcb_data_idx", "codigoBcb", "data"),
+    )
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    data: Mapped[str] = mapped_column(String(10), nullable=False)
+    estoque: Mapped[Optional[Decimal]] = mapped_column(Numeric(18, 4))
+    saldo: Mapped[Optional[Decimal]] = mapped_column(Numeric(18, 4))
+    setor: Mapped[str] = mapped_column(String(100), nullable=False)
+    codigoBcb: Mapped[int] = mapped_column(
+        "codigoBcb", Integer, nullable=False
+    )
+    fonte: Mapped[str] = mapped_column(
+        String(50), nullable=False, server_default="MTE/CAGED via BCB"
+    )
+    urlFonte: Mapped[Optional[str]] = mapped_column("urlFonte", Text)
+    dataColeta: Mapped[Optional[datetime]] = mapped_column(
+        "dataColeta", DateTime(timezone=False)
+    )
+    createdAt: Mapped[datetime] = mapped_column(
+        "createdAt",
+        DateTime(timezone=False),
+        nullable=False,
+        server_default=func.now(),
+    )
