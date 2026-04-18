@@ -139,3 +139,29 @@ export const formatPercentage = (value: number | null | undefined): string => {
   }
   return `${value.toFixed(1)}%`
 }
+
+/**
+ * Format a macro-data date string straight from the pipeline.
+ *
+ * Inputs:
+ *   "YYYY-MM-DD" (BCB/IBGE daily/quarterly) → "DD/MM/YYYY"
+ *   "YYYY-MM"    (IBGE/PMC monthly)         → "MM/YYYY"
+ *   null / undefined / empty                → "—"
+ *
+ * Does NOT parse through Date() — a bare "YYYY-MM-DD" parsed as Date gets
+ * shifted by UTC offset and silently becomes the day before in America/Sao_Paulo.
+ */
+export function formatDataMacro(raw: string | null | undefined): string {
+  if (!raw) return '—'
+  const datePart = raw.split('T')[0]
+  const parts = datePart.split('-')
+  if (parts.length === 3) {
+    const [year, month, day] = parts
+    return `${day}/${month}/${year}`
+  }
+  if (parts.length === 2) {
+    const [year, month] = parts
+    return `${month}/${year}`
+  }
+  return raw
+}
