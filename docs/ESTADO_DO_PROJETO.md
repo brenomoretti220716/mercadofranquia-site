@@ -174,6 +174,12 @@ sudo systemctl restart mf-api
 - `deploy/ec2/systemd/README.md` — instruções de install e troubleshooting
 - `deploy/ec2/systemd/mf-api.service` (arquivo real com secrets — **no .gitignore**)
 
+> **Atenção:** `deploy/ec2/app/db.py` **exige** `DATABASE_URL` no env
+> (desde 18/abr). Sem essa variável setada, o app não sobe (levanta
+> `RuntimeError` explícito). Em produção o systemd `mf-api.service`
+> seta a var, então deploy normal funciona. Para rodar localmente,
+> `export DATABASE_URL=postgresql+psycopg://...` antes.
+
 ---
 
 ## 7. O que foi decidido (e o que foi descartado)
@@ -204,9 +210,11 @@ sudo systemctl restart mf-api
 
 ## 8. Infra — pontos de atenção
 
-- **Secrets atuais em produção** (Postgres e JWT) foram rotacionados
-  nesta sessão, mas os valores saíram no chat — **devem ser rotacionados
-  mais uma vez em momento privado**.
+- ~~Secrets atuais em produção (Postgres e JWT) foram rotacionados
+  nesta sessão, mas os valores saíram no chat~~ **✅ Rotacionado em
+  momento privado em 18/abr/2026 (segunda rotação). Novos secrets
+  salvos em `~/.mf-secrets` no EC2 (chmod 600) — guardar em gerenciador
+  de senhas e esquecer o arquivo.**
 - **CORS** do FastAPI está em `*` no systemd — ok para o momento, mas
   apertar para a lista de origens reais antes de ter tráfego real.
 - **Backup automatizado do Postgres** — não existe. Os scripts antigos
@@ -244,11 +252,13 @@ Conhecimento tácito que precisa ser lembrado:
 - ✅ Scraping macro versionado + rodando
 - ✅ Systemd units versionados (com template sanitizado)
 - ✅ Backup local validado
-- 🟡 Secrets atuais precisam de mais uma rotação privada
+- ✅ Secrets rotacionados em momento privado — chat nunca viu os valores novos
+- ✅ Zero senhas hardcoded em arquivos ativos do repo (scripts históricos arquivados)
 - 🟡 Tabelas de conteúdo (News, Review etc.) esperando pipeline
+- 🟡 Painel `/admin/fontes` commitado mas ainda não deployed no EC2
 
 ---
 
-*Documento gerado no final da sessão de limpeza e consolidação de
-18/abr/2026. Atualizar quando houver mudança estrutural (nova feature
+*Documento gerado em 18/abr/2026, atualizado no mesmo dia após segunda
+rotação de secrets e sanitização de senhas hardcoded residuais. Atualizar quando houver mudança estrutural (nova feature
 grande, mudança de stack, migração).*
