@@ -85,7 +85,9 @@ SERIES_CAGED: dict[int, str] = {
 }
 
 
-def _periodos_mensais_ibge(ano_inicio: int = 2014, ano_fim: int = 2025) -> str:
+def _periodos_mensais_ibge(ano_inicio: int = 2014, ano_fim: int | None = None) -> str:
+    if ano_fim is None:
+        ano_fim = datetime.now().year
     periodos = [
         f"{ano}{mes:02d}"
         for ano in range(ano_inicio, ano_fim + 1)
@@ -94,7 +96,7 @@ def _periodos_mensais_ibge(ano_inicio: int = 2014, ano_fim: int = 2025) -> str:
     return "|".join(periodos)
 
 
-PERIODOS_IBGE = "|".join(str(a) for a in range(2014, 2025))
+PERIODOS_IBGE = "|".join(str(a) for a in range(2014, datetime.now().year + 1))
 PERIODOS_MENSAIS_IBGE = _periodos_mensais_ibge()
 
 ENDPOINTS_IBGE: list[dict[str, Any]] = [
@@ -112,6 +114,7 @@ ENDPOINTS_IBGE: list[dict[str, Any]] = [
         "url": (
             f"https://servicodados.ibge.gov.br/api/v3/agregados/8881"
             f"/periodos/{PERIODOS_MENSAIS_IBGE}/variaveis/11709?localidades=N1[all]"
+            f"&classificacao=11046[56736]"
         ),
     },
 ]
@@ -304,7 +307,7 @@ def sync_ibge(session: Session) -> int:
                     for serie in resultado.get("series", []):
                         localidade = serie.get("localidade", {}).get("nome", "Brasil")
                         for periodo, valor_raw in serie.get("serie", {}).items():
-                            if not valor_raw or valor_raw in ("...", "-", "X"):
+                            if not valor_raw or valor_raw in ("...", "..", "-", "X"):
                                 continue
                             try:
                                 valor = float(valor_raw)
@@ -352,7 +355,7 @@ def sync_pmc(session: Session) -> int:
     now = datetime.now()
 
     try:
-        periodos = _periodos_mensais_ibge(2014, 2026)
+        periodos = _periodos_mensais_ibge(2014)
         url = (
             f"https://servicodados.ibge.gov.br/api/v3/agregados/8882"
             f"/periodos/{periodos}"
