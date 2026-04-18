@@ -26,7 +26,7 @@ except ImportError:
     sys.exit("Missing dependency: pip install 'psycopg[binary]>=3.1'")
 
 
-DEFAULT_DB_URL = "postgresql://mf_user:mf_senha_forte_2026@localhost:5432/mercadofranquia"
+DEFAULT_DB_URL = None
 
 
 SEED: list[tuple[str, str]] = [
@@ -47,7 +47,9 @@ SEED: list[tuple[str, str]] = [
 
 
 def main() -> None:
-    db_url = os.environ.get("DATABASE_URL", DEFAULT_DB_URL)
+    db_url = os.environ.get("DATABASE_URL")
+    if not db_url:
+        sys.exit("DATABASE_URL environment variable is required.")
     with psycopg.connect(db_url, autocommit=False) as conn:
         with conn.cursor() as cur:
             for segmento, acronimo in SEED:

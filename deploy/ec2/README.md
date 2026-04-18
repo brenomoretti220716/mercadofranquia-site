@@ -153,7 +153,7 @@ pip install 'psycopg[binary]>=3.1' sqlparse 'sqlalchemy>=2.0' fastapi 'uvicorn[s
 python ~/migrate.py --dry-run | head -40
 
 # Execução real:
-python ~/migrate.py --db 'postgresql://mf_user:mf_senha_forte_2026@localhost:5432/mercadofranquia'
+python ~/migrate.py --db 'postgresql://mf_user:$DB_PASSWORD@localhost:5432/mercadofranquia'
 ```
 
 Esperado:
@@ -180,7 +180,7 @@ cp -r ~/app ~/mercadofranquia-api/app
 
 ```bash
 cd ~/mercadofranquia-api
-export DATABASE_URL='postgresql+psycopg://mf_user:mf_senha_forte_2026@localhost:5432/mercadofranquia'
+export DATABASE_URL='postgresql+psycopg://mf_user:$DB_PASSWORD@localhost:5432/mercadofranquia'
 uvicorn app.main:app --host 127.0.0.1 --port 4000 &
 sleep 3
 curl -s http://127.0.0.1:4000/health
@@ -359,7 +359,7 @@ sudo certbot --nginx -d mercadofranquia.com.br -d www.mercadofranquia.com.br
 ```bash
 sudo -u postgres psql -c 'DROP DATABASE mercadofranquia;'
 sudo -u postgres psql -c 'CREATE DATABASE mercadofranquia OWNER mf_user;'
-python ~/migrate.py --db 'postgresql://mf_user:mf_senha_forte_2026@localhost:5432/mercadofranquia'
+python ~/migrate.py --db 'postgresql://mf_user:$DB_PASSWORD@localhost:5432/mercadofranquia'
 ```
 
 ## Próximos passos previstos
