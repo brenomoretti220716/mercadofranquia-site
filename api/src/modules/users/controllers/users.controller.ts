@@ -1,7 +1,6 @@
 import { Body, Controller, Get, Post, Put, UseGuards } from '@nestjs/common';
 import {
     ApiBearerAuth,
-    ApiBody,
     ApiOperation,
     ApiResponse,
     ApiTags,
@@ -11,10 +10,8 @@ import { CurrentUser } from 'src/modules/auth/decorators/current-user.decorator'
 import { JwtGuard } from 'src/modules/auth/guards/jwt.guard';
 import { JwtPayload } from 'src/modules/auth/jwt.service';
 import {
-    ResendVerificationCodeDto,
     StepOneDto,
     StepTwoDto,
-    resendVerificationCodeSchema,
     stepOneSchema,
     stepTwoSchema,
 } from '../schemas/create-user.schema';
@@ -30,59 +27,12 @@ import {
     updateUserProfileSchema,
     verifyEmailChangeSchema,
 } from '../schemas/update-user.schema';
-import { MembersService } from '../services/members.service';
-import { UserVerificationService } from '../services/user-verification.service';
 import { UsersService } from '../services/users.service';
 
 @ApiTags('users')
 @Controller('users')
 export class UsersController {
-  constructor(
-    private readonly usersService: UsersService,
-    private readonly membersService: MembersService,
-    private readonly userVerificationService: UserVerificationService,
-  ) {}
-
-  @Post('members/request-verification')
-  @ApiOperation({ summary: 'Request member verification code' })
-  @ApiResponse({
-    status: 200,
-    description: 'Verification code sent successfully',
-  })
-  async requestMemberVerification(
-    @Body(new ZodValidationPipe(stepOneSchema))
-    data: StepOneDto,
-  ) {
-    return await this.membersService.requestVerificationCode(data);
-  }
-
-  @Post('members/resend-verification')
-  @ApiOperation({ summary: 'Resend member verification code' })
-  @ApiResponse({
-    status: 200,
-    description: 'Verification code resent successfully',
-  })
-  async resendMemberVerification(
-    @Body(new ZodValidationPipe(resendVerificationCodeSchema))
-    data: ResendVerificationCodeDto,
-  ) {
-    return await this.userVerificationService.resendVerificationCode(
-      data.email,
-    );
-  }
-
-  @Post('members/verify-and-create')
-  @ApiOperation({ summary: 'Verify code and create member account' })
-  @ApiBody({
-    schema: {
-      type: 'object',
-      properties: { email: { type: 'string' }, code: { type: 'string' } },
-    },
-  })
-  @ApiResponse({ status: 200, description: 'Member created successfully' })
-  async verifyAndCreateMember(@Body() data: { email: string; code: string }) {
-    return await this.membersService.verifyAndCreate(data.email, data.code);
-  }
+  constructor(private readonly usersService: UsersService) {}
 
   @Post('register/step-one')
   @ApiOperation({ summary: 'User registration step one' })

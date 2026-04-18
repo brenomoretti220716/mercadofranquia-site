@@ -6,16 +6,12 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { Prisma, Role, User } from '@prisma/client';
-import * as bcrypt from 'bcrypt';
-import { JwtService } from '../../auth/jwt.service';
 import { PrismaService } from '../../database/prisma.service';
 import { EmailService } from '../../email/email.service';
-import { StepOneDto } from '../schemas/create-user.schema';
 import {
   UpdateUserBasicInfoDto,
   UpdateUserProfileDto,
 } from '../schemas/update-user.schema';
-import { UserVerificationService } from './user-verification.service';
 
 interface UpdateFranchiseeUserDto
   extends UpdateUserBasicInfoDto,
@@ -36,8 +32,6 @@ export class MembersService {
   constructor(
     private prisma: PrismaService,
     private emailService: EmailService,
-    private userVerificationService: UserVerificationService,
-    private jwtService: JwtService,
   ) {}
 
   private async validateFranchises(franchiseeOf?: string[]): Promise<void> {
@@ -65,70 +59,6 @@ export class MembersService {
         `Franchises with IDs ${notFoundFranchises.join(', ')} do not exist`,
       );
     }
-  }
-
-  /**
-   * Step 1: Request verification code
-   * User provides their information, and a verification code is sent via email
-   */
-  async requestVerificationCode(userData: StepOneDto) {
-    const existingUser = await this.findByEmail(userData.email);
-    if (existingUser) {
-      throw new ConflictException('Email already exists');
-    }
-
-    const existingPhone = await this.findByPhone(userData.phone);
-    if (existingPhone) {
-      throw new ConflictException('Phone already exists');
-    }
-
-    const hashedPassword = await bcrypt.hash(userData.password, 10);
-
-    return await this.userVerificationService.createVerificationCode(
-      userData.email,
-      { ...userData, password: hashedPassword },
-    );
-  }
-
-  /**
-   * Step 2: Verify code and create user
-   * User submits the verification code they received via email
-   */
-  async verifyAndCreate(
-    email: string,
-    code: string,
-  ): Promise<{
-    user: Omit<User, 'password'>;
-    access_token: string;
-  }> {
-    // Verify the code and retrieve the stored user data
-    const userData = await this.userVerificationService.verifyCode(email, code);
-
-    if (!userData) {
-      throw new BadRequestException('Código de verificação inválido');
-    }
-
-    await this.validateFranchises(userData.franchiseeOf);
-
-    // Create the user and save the result
-    const createdUser = await this.prisma.user.create({
-      data: {
-        name: userData.name,
-        email: userData.email,
-        password: userData.password,
-        phone: userData.phone,
-      },
-    });
-
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { password, ...userWithoutPassword } = createdUser;
-
-    const token = this.jwtService.generateToken(userWithoutPassword);
-
-    return {
-      user: userWithoutPassword,
-      access_token: token.access_token,
-    };
   }
 
   async update(
