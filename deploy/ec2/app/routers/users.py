@@ -26,7 +26,7 @@ from sqlalchemy import and_, func, or_, select
 from sqlalchemy.orm import Session, selectinload
 
 from app.db import get_db
-from app.models import Franchise, User, UserProfile, UserVerification
+from app.models import AdminActionLog, Franchise, ProfileType, User, UserProfile, UserVerification
 from app.profile_completion import compute_completion
 from app.security import (
     JwtPayload,
@@ -1028,3 +1028,60 @@ def admin_update_user_profile(
             "access_token": token,
         }
     return {"roleChanged": False}
+
+
+# ---------------------------------------------------------------------------
+# PATCH /admin/users/{user_id}/profile-type  (Sprint 3 Fase 2)
+# Muda profileType do user + grava AdminActionLog pra audit trail.
+# ---------------------------------------------------------------------------
+
+
+class UpdateProfileTypeBody(BaseModel):
+    profileType: ProfileType
+    reason: Optional[str] = Field(default=None, max_length=500)
+
+
+@admin_router.patch(
+    "/users/{user_id}/profile-type",
+    summary="Atualiza profileType do user (admin only, audit-logged)",
+)
+def update_user_profile_type(
+    user_id: str,
+    body: UpdateProfileTypeBody,
+    db: Session = Depends(get_db),
+    admin: JwtPayload = Depends(require_role("ADMIN")),
+) -> dict[str, Any]:
+    target = db.scalar(select(User).where(User.id == user_id))
+    if target is None:
+        raise HTTPException(status.HTTP_404_NOT_FOUND, "User not found")
+
+    previous = target.profileType
+    if previous == body.profileType:
+        return {
+            "user": serialize_user(target),
+            "changed": False,
+            "previous": previous.value if previous else None,
+        }
+
+    target.profileType = body.profileType
+
+    log = AdminActionLog(
+        id=uuid.uuid4().hex,
+        adminId=admin.id,
+        action="UPDATE_PROFILE_TYPE",
+        targetUserId=user_id,
+        metadata_={
+            "from": previous.value if previous else None,
+            "to": body.profileType.value,
+            "reason": body.reason,
+        },
+    )
+    db.add(log)
+    db.commit()
+    db.refresh(target)
+
+    return {
+        "user": serialize_user(target),
+        "changed": True,
+        "previous": previous.value if previous else None,
+    }
