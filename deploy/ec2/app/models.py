@@ -22,6 +22,7 @@ from sqlalchemy import (
     DateTime,
     Double,
     ForeignKey,
+    Identity,
     Index,
     Integer,
     Numeric,
@@ -169,7 +170,19 @@ class UserProfile(Base):
 class UserVerification(Base):
     __tablename__ = "UserVerification"
 
-    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    id: Mapped[int] = mapped_column(
+        Integer,
+        Identity(
+            always=False,
+            start=1,
+            increment=1,
+            minvalue=1,
+            maxvalue=2147483647,
+            cycle=False,
+            cache=1,
+        ),
+        primary_key=True,
+    )
     email: Mapped[str] = mapped_column(String(191), nullable=False)
     code: Mapped[str] = mapped_column(String(6), nullable=False)
     expiresAt: Mapped[datetime] = mapped_column(
@@ -197,7 +210,19 @@ class UserVerification(Base):
 class ContactInfo(Base):
     __tablename__ = "ContactInfo"
 
-    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    id: Mapped[int] = mapped_column(
+        Integer,
+        Identity(
+            always=False,
+            start=1,
+            increment=1,
+            minvalue=1,
+            maxvalue=2147483647,
+            cycle=False,
+            cache=1,
+        ),
+        primary_key=True,
+    )
     phone: Mapped[str] = mapped_column(String(191), nullable=False)
     email: Mapped[str] = mapped_column(String(191), nullable=False)
     website: Mapped[Optional[str]] = mapped_column(Text)
@@ -493,7 +518,19 @@ class Review(Base):
         Index("Review_franchiseId_fkey", "franchiseId"),
     )
 
-    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    id: Mapped[int] = mapped_column(
+        Integer,
+        Identity(
+            always=False,
+            start=1,
+            increment=1,
+            minvalue=1,
+            maxvalue=2147483647,
+            cycle=False,
+            cache=1,
+        ),
+        primary_key=True,
+    )
     anonymous: Mapped[bool] = mapped_column(nullable=False)
     rating: Mapped[int] = mapped_column(Integer, nullable=False)
     comment: Mapped[str] = mapped_column(Text, nullable=False)
@@ -536,7 +573,19 @@ class ReviewResponse(Base):
         Index("ReviewResponse_reviewId_fkey", "reviewId"),
     )
 
-    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    id: Mapped[int] = mapped_column(
+        Integer,
+        Identity(
+            always=False,
+            start=1,
+            increment=1,
+            minvalue=1,
+            maxvalue=2147483647,
+            cycle=False,
+            cache=1,
+        ),
+        primary_key=True,
+    )
     content: Mapped[str] = mapped_column(Text, nullable=False)
     createdAt: Mapped[datetime] = mapped_column(
         "createdAt",
@@ -727,7 +776,6 @@ class FranchisorRequest(Base):
         String(191),
         ForeignKey("User.id", ondelete="CASCADE", onupdate="CASCADE"),
         nullable=False,
-        unique=True,
     )
     streamName: Mapped[str] = mapped_column("streamName", String(191), nullable=False)
     status: Mapped[str] = mapped_column(
@@ -918,7 +966,19 @@ class SegmentAcronym(Base):
         UniqueConstraint("segmento", name="SegmentAcronym_segmento_key"),
     )
 
-    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    id: Mapped[int] = mapped_column(
+        Integer,
+        Identity(
+            always=False,
+            start=1,
+            increment=1,
+            minvalue=1,
+            maxvalue=2147483647,
+            cycle=False,
+            cache=1,
+        ),
+        primary_key=True,
+    )
     segmento: Mapped[str] = mapped_column(String(100), nullable=False)
     acronimo: Mapped[str] = mapped_column(String(10), nullable=False)
     createdAt: Mapped[datetime] = mapped_column(
@@ -935,7 +995,19 @@ class AbfReport(Base):
         UniqueConstraint("periodo", name="AbfReport_periodo_key"),
     )
 
-    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    id: Mapped[int] = mapped_column(
+        Integer,
+        Identity(
+            always=False,
+            start=1,
+            increment=1,
+            minvalue=1,
+            maxvalue=2147483647,
+            cycle=False,
+            cache=1,
+        ),
+        primary_key=True,
+    )
     periodo: Mapped[str] = mapped_column(String(10), nullable=False)
     ano: Mapped[int] = mapped_column(Integer, nullable=False)
     trimestre: Mapped[Optional[int]] = mapped_column(Integer)
@@ -958,6 +1030,7 @@ class AbfReport(Base):
         DateTime(timezone=False),
         nullable=False,
         default=func.now(),
+        server_default=func.current_timestamp(),
         onupdate=func.now(),
     )
 
@@ -974,7 +1047,19 @@ class AbfRevenue(Base):
         Index("AbfRevenue_periodo_idx", "periodo"),
     )
 
-    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    id: Mapped[int] = mapped_column(
+        Integer,
+        Identity(
+            always=False,
+            start=1,
+            increment=1,
+            minvalue=1,
+            maxvalue=2147483647,
+            cycle=False,
+            cache=1,
+        ),
+        primary_key=True,
+    )
     periodo: Mapped[str] = mapped_column(String(10), nullable=False)
     segmento: Mapped[str] = mapped_column(String(100), nullable=False)
     valorMm: Mapped[Decimal] = mapped_column(
@@ -997,7 +1082,19 @@ class AbfIndicator(Base):
         UniqueConstraint("periodo", name="AbfIndicator_periodo_key"),
     )
 
-    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    id: Mapped[int] = mapped_column(
+        Integer,
+        Identity(
+            always=False,
+            start=1,
+            increment=1,
+            minvalue=1,
+            maxvalue=2147483647,
+            cycle=False,
+            cache=1,
+        ),
+        primary_key=True,
+    )
     periodo: Mapped[str] = mapped_column(String(10), nullable=False)
     empregosDiretos: Mapped[Optional[int]] = mapped_column(
         "empregosDiretos", Integer
@@ -1036,7 +1133,19 @@ class AbfUnitsRanking(Base):
         Index("AbfUnitsRanking_ano_idx", "ano"),
     )
 
-    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    id: Mapped[int] = mapped_column(
+        Integer,
+        Identity(
+            always=False,
+            start=1,
+            increment=1,
+            minvalue=1,
+            maxvalue=2147483647,
+            cycle=False,
+            cache=1,
+        ),
+        primary_key=True,
+    )
     ano: Mapped[int] = mapped_column(Integer, nullable=False)
     posicao: Mapped[int] = mapped_column(Integer, nullable=False)
     posicaoAnt: Mapped[Optional[int]] = mapped_column("posicaoAnt", Integer)
@@ -1061,7 +1170,19 @@ class AbfProjection(Base):
         ),
     )
 
-    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    id: Mapped[int] = mapped_column(
+        Integer,
+        Identity(
+            always=False,
+            start=1,
+            increment=1,
+            minvalue=1,
+            maxvalue=2147483647,
+            cycle=False,
+            cache=1,
+        ),
+        primary_key=True,
+    )
     anoReferencia: Mapped[int] = mapped_column(
         "anoReferencia", Integer, nullable=False
     )
@@ -1100,7 +1221,19 @@ class MacroBcb(Base):
         Index("MacroBcb_codigoSerie_data_idx", "codigoSerie", "data"),
     )
 
-    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    id: Mapped[int] = mapped_column(
+        Integer,
+        Identity(
+            always=False,
+            start=1,
+            increment=1,
+            minvalue=1,
+            maxvalue=2147483647,
+            cycle=False,
+            cache=1,
+        ),
+        primary_key=True,
+    )
     data: Mapped[str] = mapped_column(String(10), nullable=False)
     codigoSerie: Mapped[int] = mapped_column(
         "codigoSerie", Integer, nullable=False
@@ -1133,7 +1266,19 @@ class MacroIbge(Base):
         Index("MacroIbge_codigoAgregado_data_idx", "codigoAgregado", "data"),
     )
 
-    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    id: Mapped[int] = mapped_column(
+        Integer,
+        Identity(
+            always=False,
+            start=1,
+            increment=1,
+            minvalue=1,
+            maxvalue=2147483647,
+            cycle=False,
+            cache=1,
+        ),
+        primary_key=True,
+    )
     data: Mapped[str] = mapped_column(String(10), nullable=False)
     codigoAgregado: Mapped[int] = mapped_column(
         "codigoAgregado", Integer, nullable=False
@@ -1158,7 +1303,19 @@ class MacroSyncLog(Base):
         Index("MacroSyncLog_fonte_createdAt_idx", "fonte", "createdAt"),
     )
 
-    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    id: Mapped[int] = mapped_column(
+        Integer,
+        Identity(
+            always=False,
+            start=1,
+            increment=1,
+            minvalue=1,
+            maxvalue=2147483647,
+            cycle=False,
+            cache=1,
+        ),
+        primary_key=True,
+    )
     fonte: Mapped[str] = mapped_column(String(150), nullable=False)
     status: Mapped[str] = mapped_column(String(10), nullable=False)
     registrosInseridos: Mapped[int] = mapped_column(
@@ -1185,7 +1342,19 @@ class PmcIbge(Base):
         Index("PmcIbge_codigoSegmento_data_idx", "codigoSegmento", "data"),
     )
 
-    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    id: Mapped[int] = mapped_column(
+        Integer,
+        Identity(
+            always=False,
+            start=1,
+            increment=1,
+            minvalue=1,
+            maxvalue=2147483647,
+            cycle=False,
+            cache=1,
+        ),
+        primary_key=True,
+    )
     data: Mapped[str] = mapped_column(String(10), nullable=False)
     codigoSegmento: Mapped[str] = mapped_column(
         "codigoSegmento", String(20), nullable=False
@@ -1224,7 +1393,19 @@ class CagedBcb(Base):
         Index("CagedBcb_codigoBcb_data_idx", "codigoBcb", "data"),
     )
 
-    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    id: Mapped[int] = mapped_column(
+        Integer,
+        Identity(
+            always=False,
+            start=1,
+            increment=1,
+            minvalue=1,
+            maxvalue=2147483647,
+            cycle=False,
+            cache=1,
+        ),
+        primary_key=True,
+    )
     data: Mapped[str] = mapped_column(String(10), nullable=False)
     estoque: Mapped[Optional[Decimal]] = mapped_column(Numeric(18, 4))
     saldo: Mapped[Optional[Decimal]] = mapped_column(Numeric(18, 4))
