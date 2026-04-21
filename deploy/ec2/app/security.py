@@ -251,6 +251,40 @@ def require_any_role(*allowed_roles: str):
     return _check
 
 
+def require_franchisor_profile(
+    user: JwtPayload = Depends(get_current_user),
+) -> JwtPayload:
+    """Gate pra rotas /franqueador/* — permite ADMIN (bypass) ou user com profileType=FRANCHISOR.
+
+    Checagem real é via DB (source of truth) porque o JWT atual não carrega
+    profileType. Custo: 1 query extra por request protegido.
+
+    Aceita qualquer role desde que profileType=FRANCHISOR (MEMBER aguardando
+    aprovação e FRANCHISOR já aprovado ambos passam).
+    """
+    if user.role == "ADMIN":
+        return user
+
+    # Lazy imports pra evitar ciclo de import no startup
+    from sqlalchemy import select
+
+    from app.db import SessionLocal
+    from app.models import ProfileType, User
+
+    db = SessionLocal()
+    try:
+        target = db.scalar(select(User.profileType).where(User.id == user.id))
+    finally:
+        db.close()
+
+    if target != ProfileType.FRANCHISOR:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Acesso restrito a usuários com perfil de franqueador.",
+        )
+    return user
+
+
 # ---------------------------------------------------------------------------
 # Ownership checks — for resources scoped to a Franchise.
 # ---------------------------------------------------------------------------
