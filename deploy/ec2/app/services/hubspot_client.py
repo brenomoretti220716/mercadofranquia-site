@@ -132,23 +132,29 @@ async def create_investor_contact(
     name: str,
     phone: str,
     user_id: str,
+    job_title: Optional[str] = None,
 ) -> Optional[str]:
     """
-    Cria contact no HubSpot quando user se cadastra como INVESTOR.
+    Cria contact no HubSpot quando user se cadastra.
     Retorna o hubspotContactId ou None em caso de falha.
+
+    job_title: mapeia pro campo nativo "jobtitle" do HubSpot Contact.
     """
-    payload = {
-        "properties": {
-            "email": email,
-            "firstname": name,
-            "phone": phone,
-            HUBSPOT_CONTACT_PROP_ROLE: HubSpotRole.INVESTOR,
-            HUBSPOT_CONTACT_PROP_SIGNUP_PATH: HubSpotSignupPath.INVESTOR,
-            HUBSPOT_CONTACT_PROP_STATUS: HubSpotStatus.ACTIVE,
-            HUBSPOT_CONTACT_PROP_USER_ID: str(user_id),
-        }
+    properties: dict[str, Any] = {
+        "email": email,
+        "firstname": name,
+        "phone": phone,
+        HUBSPOT_CONTACT_PROP_ROLE: HubSpotRole.INVESTOR,
+        HUBSPOT_CONTACT_PROP_SIGNUP_PATH: HubSpotSignupPath.INVESTOR,
+        HUBSPOT_CONTACT_PROP_STATUS: HubSpotStatus.ACTIVE,
+        HUBSPOT_CONTACT_PROP_USER_ID: str(user_id),
     }
-    data = await _post(_contacts_url(), payload, "create_investor_contact")
+    if job_title:
+        properties["jobtitle"] = job_title
+
+    data = await _post(
+        _contacts_url(), {"properties": properties}, "create_investor_contact"
+    )
     if not data:
         return None
     contact_id = data.get("id")

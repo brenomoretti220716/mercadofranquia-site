@@ -15,7 +15,7 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session, selectinload
 
 from app.db import get_db
-from app.models import Franchise, User, UserProfile
+from app.models import Franchise, ProfileType, User, UserProfile
 from app.security import (
     JwtPayload,
     get_current_user,
@@ -47,6 +47,8 @@ class StepOneBody(BaseModel):
     email: EmailStr
     password: str = Field(min_length=6)
     phone: str
+    profileType: ProfileType = ProfileType.INVESTOR
+    jobTitle: Optional[str] = Field(default=None, max_length=100)
 
     @field_validator("password")
     @classmethod
@@ -63,6 +65,14 @@ class StepOneBody(BaseModel):
         if not validate_phone_digits(v):
             raise ValueError("Phone must have 10 or 11 digits")
         return strip_non_digits(v)
+
+    @field_validator("jobTitle")
+    @classmethod
+    def _normalize_job_title(cls, v: Optional[str]) -> Optional[str]:
+        if v is None:
+            return None
+        v = v.strip()
+        return v if v else None
 
 
 class StepTwoBody(BaseModel):
@@ -91,8 +101,13 @@ class StepTwoBody(BaseModel):
 # POST /users/register/step-one
 # ---------------------------------------------------------------------------
 
-def _sync_hubspot_for_new_investor(
-    *, user_id: str, email: str, name: str, phone: str
+def _sync_hubspot_for_new_user(
+    *,
+    user_id: str,
+    email: str,
+    name: str,
+    phone: str,
+    job_title: Optional[str] = None,
 ) -> None:
     """
     Background task: cria Contact no HubSpot e persiste hubspotContactId no User.
@@ -100,6 +115,8 @@ def _sync_hubspot_for_new_investor(
     Falhas aqui nunca propagam pro usuário — o cadastro já foi feito.
     Se HubSpot estiver fora, user continua sem hubspotContactId (pode ser
     sincronizado depois).
+
+    job_title: opcional, enviado pro campo nativo "jobtitle" do HubSpot Contact.
     """
     import asyncio
 
@@ -110,6 +127,7 @@ def _sync_hubspot_for_new_investor(
                 name=name,
                 phone=phone,
                 user_id=user_id,
+                job_title=job_title,
             )
         )
     except Exception as exc:  # noqa: BLE001
@@ -177,6 +195,8 @@ def step_one(
         password=hash_password(body.password),
         phone=body.phone,
         role="MEMBER",
+        profileType=body.profileType,
+        jobTitle=body.jobTitle,
         isActive=True,
     )
     db.add(new_user)
@@ -190,11 +210,12 @@ def step_one(
         user_name=new_user.name,
     )
     background_tasks.add_task(
-        _sync_hubspot_for_new_investor,
+        _sync_hubspot_for_new_user,
         user_id=new_user.id,
         email=new_user.email,
         name=new_user.name,
         phone=new_user.phone,
+        job_title=new_user.jobTitle,
     )
 
     token = issue_token({
