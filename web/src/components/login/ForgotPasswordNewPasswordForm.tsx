@@ -5,7 +5,6 @@ import {
   ResetPasswordSchema,
 } from '@/src/schemas/users/auth'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useResetPassword } from '../../hooks/users/useUserMutations'
 import PasswordInput from '../ui/PasswordInput'
@@ -22,7 +21,6 @@ export default function ForgotPasswordNewPasswordForm({
   code,
   onSuccess,
 }: ForgotPasswordNewPasswordFormProps) {
-  const [showPassword, setShowPassword] = useState(false)
   const resetPasswordMutation = useResetPassword()
 
   const {
@@ -74,8 +72,6 @@ export default function ForgotPasswordNewPasswordForm({
         error={errors.password?.message}
         register={register('password')}
         disabled={resetPasswordMutation.isPending}
-        showPassword={showPassword}
-        setShowPassword={setShowPassword}
         className="ring-1 rounded-sm"
       />
 
@@ -85,8 +81,6 @@ export default function ForgotPasswordNewPasswordForm({
         error={errors.confirmPassword?.message}
         register={register('confirmPassword')}
         disabled={resetPasswordMutation.isPending}
-        showPassword={showPassword}
-        setShowPassword={setShowPassword}
         className="ring-1 rounded-sm"
       />
 

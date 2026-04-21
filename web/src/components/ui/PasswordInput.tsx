@@ -1,4 +1,5 @@
-import { forwardRef, ReactElement } from 'react'
+import { Eye, EyeOff } from 'lucide-react'
+import { forwardRef, ReactElement, useState } from 'react'
 import { UseFormRegisterReturn } from 'react-hook-form'
 import LockIcon from '../icons/lockIcon'
 import UnlockIcon from '../icons/unlockIcon'
@@ -33,8 +34,8 @@ const PasswordInput = forwardRef<HTMLInputElement, PasswordInputProps>(
       error,
       register,
       showToggle = true,
-      showPassword,
-      setShowPassword,
+      showPassword: showPasswordProp,
+      setShowPassword: setShowPasswordProp,
       leftIcon,
       className = '',
       disabled,
@@ -43,7 +44,16 @@ const PasswordInput = forwardRef<HTMLInputElement, PasswordInputProps>(
     },
     ref,
   ) => {
-    const toggleIcon = showPassword ? (
+    const [internalShowPassword, setInternalShowPassword] = useState(false)
+    const isControlled = setShowPasswordProp !== undefined
+    const showPassword = isControlled
+      ? !!showPasswordProp
+      : internalShowPassword
+    const setShowPassword = isControlled
+      ? setShowPasswordProp!
+      : setInternalShowPassword
+
+    const lockIcon = showPassword ? (
       <UnlockIcon width={20} height={20} color="#747473" />
     ) : (
       <LockIcon width={20} height={20} color="#747473" />
@@ -55,15 +65,9 @@ const PasswordInput = forwardRef<HTMLInputElement, PasswordInputProps>(
     const inputElement = (
       <div className="relative">
         {showToggle && (
-          <button
-            type="button"
-            tabIndex={-1}
-            onClick={() => setShowPassword?.(!showPassword)}
-            className="absolute inset-y-0 left-0 pl-3 flex items-center z-10"
-            disabled={disabled}
-          >
-            {toggleIcon}
-          </button>
+          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none z-10">
+            {lockIcon}
+          </div>
         )}
         {!showToggle && leftIcon && (
           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -75,12 +79,25 @@ const PasswordInput = forwardRef<HTMLInputElement, PasswordInputProps>(
           ref={ref}
           id={inputId}
           type={showPassword ? 'text' : 'password'}
-          className={`pl-10 w-full px-3 py-2 border border-input rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-colors ${disabled ? 'disabled:bg-gray-100' : ''} ${className}`}
+          className={`pl-10 pr-10 w-full px-3 py-2 border border-input rounded-md focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-colors ${disabled ? 'disabled:bg-gray-100' : ''} ${className}`}
           placeholder={inputProps.placeholder || '********'}
           disabled={disabled}
           {...inputProps}
           {...register}
         />
+
+        {showToggle && (
+          <button
+            type="button"
+            tabIndex={-1}
+            onClick={() => setShowPassword(!showPassword)}
+            aria-label={showPassword ? 'Ocultar senha' : 'Mostrar senha'}
+            className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-500 hover:text-gray-700 z-10"
+            disabled={disabled}
+          >
+            {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+          </button>
+        )}
       </div>
     )
 

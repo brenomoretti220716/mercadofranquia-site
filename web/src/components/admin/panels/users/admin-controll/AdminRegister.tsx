@@ -11,7 +11,6 @@ import {
   AdminRegisterSchema,
 } from '@/src/schemas/users/auth'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 
 interface AdminRegisterProps {
@@ -23,7 +22,6 @@ export default function AdminRegister({
   onClose,
   onSuccess,
 }: AdminRegisterProps) {
-  const [showPassword, setShowPassword] = useState(false)
   const registerMutation = useAdminRegister()
 
   const {
@@ -100,8 +98,6 @@ export default function AdminRegister({
         error={errors.password?.message}
         register={register('password')}
         disabled={registerMutation.isPending}
-        showPassword={showPassword}
-        setShowPassword={setShowPassword}
       />
 
       <PasswordInput
@@ -110,8 +106,6 @@ export default function AdminRegister({
         error={errors.confirmPassword?.message}
         register={register('confirmPassword')}
         disabled={registerMutation.isPending}
-        showPassword={showPassword}
-        setShowPassword={setShowPassword}
       />
 
       <div className="text-left mt-2">
