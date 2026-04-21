@@ -14,9 +14,7 @@ export interface BusinessModel {
 async function fetchBusinessModelsByFranchise(
   franchiseId: string,
 ): Promise<BusinessModel[]> {
-  const response = await fetch(
-    Api(`/business-models/franchise/${franchiseId}`),
-  )
+  const response = await fetch(Api(`/business-models/franchise/${franchiseId}`))
 
   if (!response.ok) {
     throw new Error('Failed to fetch business models')

@@ -5,7 +5,10 @@ import { useQueryClient } from '@tanstack/react-query'
 import { FileBarChart2, Landmark, Newspaper, Store } from 'lucide-react'
 import RoundedButton from '@/src/components/ui/RoundedButton'
 import Skeleton from '@/src/components/ui/skeletons/Skeleton'
-import { FONTES_STATUS_KEY, useFontesStatus } from '@/src/hooks/fontes/useFontes'
+import {
+  FONTES_STATUS_KEY,
+  useFontesStatus,
+} from '@/src/hooks/fontes/useFontes'
 import FontesAbfTable from './FontesAbfTable'
 import FontesMacroTable from './FontesMacroTable'
 import FontesPlaceholderSection from './FontesPlaceholderSection'
