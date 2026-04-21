@@ -114,3 +114,22 @@ Durante a sessão, o plano mudou 6+ vezes antes de convergir. Evolução:
 4. Reviravolta final: eliminar /solicitar, tudo em `/minhas-franquias`
 
 Gatilho da reviravolta: insight de que "user não quer virar franqueador, quer cadastrar marca — resto é detalhe interno". Essa visão centrada no user invalidou a distinção artificial entre "solicitar acesso" e "cadastrar marca adicional".
+
+---
+
+## Postmortem — bug pós-deploy (.env.local na EC2)
+
+**Sintoma:** Após deploy, `/ranking` e páginas que consomem API mostravam "Nenhuma franquia encontrada". Curl direto na API funcionava, mas o frontend não conseguia fazer fetch.
+
+**Causa raiz:** O arquivo `.env.local` na EC2 (resíduo de deploy antigo antes de termos `--exclude .env.*` no rsync) continha `NEXT_PUBLIC_API_URL=http://18.230.68.207`. Next.js prioriza `.env.local` sobre `.env.production`, então o build congelou URL HTTP no bundle. Browser em HTTPS bloqueou as chamadas por mixed content.
+
+**Fix:** Rename `.env.local` → `.env.local.off` + rebuild + restart mf-web. Com `.env.local` removido, `.env.production` (com URL HTTPS correta) venceu a precedência.
+
+**Tempo de detecção/fix:** ~15-20min após deploy.
+
+**Prevenção:**
+1. **Já aplicado:** `--exclude '.env.*'` no rsync (deploy de hoje preservou o arquivo, não criou novo, mas também não sobrescreveu o que já estava lá)
+2. **A fazer:** Remover `.env.local` definitivamente da EC2 após confirmar estabilidade por 24-48h
+3. **A fazer:** Adicionar check no journal de próximos deploys: verificar `cat .env.local` antes de `npm run build` e falhar se o arquivo existir
+
+**Lição:** Variáveis `NEXT_PUBLIC_*` no Next.js são congeladas no bundle em build-time. Mudança requer rebuild + restart, não apenas restart. Ordem de precedência dos .env é crítica e documentada em https://nextjs.org/docs/basic-features/environment-variables
