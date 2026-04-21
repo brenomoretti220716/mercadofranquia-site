@@ -121,6 +121,11 @@ class User(Base):
     )
     cpf: Mapped[Optional[str]] = mapped_column(String(191), unique=True)
     phone: Mapped[str] = mapped_column(String(191), nullable=False, unique=True)
+    jobTitle: Mapped[Optional[str]] = mapped_column(
+        "jobTitle",
+        String(100),
+        nullable=True,
+    )
     hubspotContactId: Mapped[Optional[str]] = mapped_column(
         "hubspotContactId", String(100)
     )
