@@ -12,6 +12,7 @@ Usage:
 """
 from __future__ import annotations
 
+import enum
 from datetime import datetime
 from decimal import Decimal
 from typing import Optional
@@ -21,6 +22,7 @@ from sqlalchemy import (
     Column,
     DateTime,
     Double,
+    Enum as SQLEnum,
     ForeignKey,
     Identity,
     Index,
@@ -43,6 +45,18 @@ from sqlalchemy.orm import (
 
 class Base(DeclarativeBase):
     pass
+
+
+# ---------------------------------------------------------------------------
+# Enums (Sprint 3)
+# ---------------------------------------------------------------------------
+
+
+class ProfileType(str, enum.Enum):
+    """Perfil escolhido pelo user no cadastro — separação de jornadas."""
+
+    INVESTOR = "INVESTOR"
+    FRANCHISOR = "FRANCHISOR"
 
 
 # ---------------------------------------------------------------------------
@@ -82,6 +96,12 @@ class User(Base):
     password: Mapped[str] = mapped_column(String(191), nullable=False)
     role: Mapped[str] = mapped_column(
         String(20), nullable=False, default="MEMBER", server_default="MEMBER"
+    )
+    profileType: Mapped[ProfileType] = mapped_column(
+        "profileType",
+        SQLEnum(ProfileType, name="ProfileType", native_enum=True, create_type=True),
+        nullable=False,
+        server_default="INVESTOR",
     )
     isActive: Mapped[bool] = mapped_column(
         "isActive", nullable=False, default=True, server_default="true"
@@ -1425,4 +1445,46 @@ class CagedBcb(Base):
         DateTime(timezone=False),
         nullable=False,
         server_default=func.now(),
+    )
+
+
+# ---------------------------------------------------------------------------
+# Admin audit log (Sprint 3) — registra ações admin sensíveis
+# ---------------------------------------------------------------------------
+
+
+class AdminActionLog(Base):
+    __tablename__ = "AdminActionLog"
+    __table_args__ = (
+        Index("idx_admin_action_log_target", "targetUserId"),
+        Index("idx_admin_action_log_created", "createdAt"),
+    )
+
+    id: Mapped[str] = mapped_column(
+        String(191),
+        primary_key=True,
+        server_default=func.gen_random_uuid().cast(String),
+    )
+    adminId: Mapped[str] = mapped_column(
+        "adminId",
+        String(191),
+        ForeignKey("User.id", ondelete="RESTRICT", onupdate="CASCADE"),
+        nullable=False,
+    )
+    action: Mapped[str] = mapped_column(String(100), nullable=False)
+    targetUserId: Mapped[Optional[str]] = mapped_column(
+        "targetUserId",
+        String(191),
+        ForeignKey("User.id", ondelete="SET NULL", onupdate="CASCADE"),
+    )
+    metadata_: Mapped[Optional[dict]] = mapped_column(
+        "metadata",
+        JSONB,
+    )
+    createdAt: Mapped[datetime] = mapped_column(
+        "createdAt",
+        DateTime(timezone=False),
+        nullable=False,
+        default=func.now(),
+        server_default=func.current_timestamp(),
     )
