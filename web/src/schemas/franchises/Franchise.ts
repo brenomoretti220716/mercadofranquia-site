@@ -41,6 +41,7 @@ export interface Franchise {
   logoUrl?: string | null
   detailedDescription?: string | null
   isActive: boolean
+  status?: 'PENDING' | 'APPROVED' | 'REJECTED'
   isSponsored: boolean
   sponsorPlacements?: SponsorPlacement[] | null
   rankingPosition?: number | null
@@ -112,6 +113,7 @@ export interface FranchiseListItem {
   franchiseFee?: number | null
   averageMonthlyRevenue?: number | null
   isActive: boolean
+  status?: 'PENDING' | 'APPROVED' | 'REJECTED'
   isSponsored: boolean
   rankingPosition?: number | null
 }

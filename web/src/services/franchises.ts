@@ -7,6 +7,7 @@ import type {
   RankingBigNumber,
   RankingBigNumberInput,
 } from '@/src/schemas/ranking/RankingBigNumber'
+import type { CreateAdditionalFranchiseDto } from '@/src/schemas/franchises/CreateAdditionalFranchise'
 import type { FranchiseEditFormInput } from '@/src/schemas/franchises/FranchiseEdit'
 import { getClientAuthCookie } from '@/src/utils/clientCookie'
 import { handleHttpError } from '@/src/utils/errorHandlers'
@@ -829,4 +830,112 @@ export async function updateFranchiseLogo(
 
   const result = await response.json()
   return result.data
+}
+
+// ============================================================
+// Franchisor endpoints — franquias do próprio user autenticado
+// Post Sprint 1 (20/04/2026) - API nova FastAPI
+// ============================================================
+
+export interface MyFranchisesResponse {
+  data: Franchise[]
+  total: number
+}
+
+/**
+ * Lista todas as Franchises do franqueador autenticado (PENDING + APPROVED + REJECTED).
+ * Requer auth token com role=FRANCHISOR.
+ * Endpoint: GET /franchisor/franchises/me
+ */
+export async function fetchMyFranchises(
+  token: string,
+): Promise<MyFranchisesResponse> {
+  const response = await fetch(Api('/franchisor/franchises/me'), {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+  })
+  if (!response.ok) {
+    throw new Error(handleHttpError(response, 'Erro ao buscar suas franquias'))
+  }
+  const result = await response.json()
+  return {
+    data: result.data || [],
+    total: result.total || 0,
+  }
+}
+
+/**
+ * Cria uma franquia adicional. Retorna a Franchise com status=PENDING.
+ * Endpoint: POST /franchisor/franchises
+ */
+export async function createAdditionalFranchise(
+  dto: CreateAdditionalFranchiseDto,
+  token: string,
+): Promise<Franchise> {
+  // Remove strings vazias do payload antes de enviar (pydantic valida min_length)
+  const cleanPayload: Record<string, unknown> = { streamName: dto.streamName }
+  for (const [key, value] of Object.entries(dto)) {
+    if (key === 'streamName') continue
+    if (typeof value === 'string' && value.trim().length > 0) {
+      cleanPayload[key] = value
+    }
+  }
+
+  const response = await fetch(Api('/franchisor/franchises'), {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(cleanPayload),
+  })
+  if (!response.ok) {
+    throw new Error(
+      handleHttpError(response, 'Erro ao criar franquia adicional'),
+    )
+  }
+  const result = await response.json()
+  return result.data
+}
+
+// ============================================================
+// Admin endpoints — aprovar/rejeitar Franchise (NÃO FranchisorRequest)
+// Pra uso nos painéis admin. Endpoints: POST /franchises/admin/{id}/approve|reject
+// ============================================================
+
+export async function approveFranchise(
+  id: string,
+  token: string,
+): Promise<void> {
+  const response = await fetch(Api(`/franchises/admin/${id}/approve`), {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+  })
+  if (!response.ok) {
+    throw new Error(handleHttpError(response, 'Erro ao aprovar franquia'))
+  }
+}
+
+export async function rejectFranchise(
+  id: string,
+  rejectionReason: string,
+  token: string,
+): Promise<void> {
+  const response = await fetch(Api(`/franchises/admin/${id}/reject`), {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ rejectionReason }),
+  })
+  if (!response.ok) {
+    throw new Error(handleHttpError(response, 'Erro ao rejeitar franquia'))
+  }
 }

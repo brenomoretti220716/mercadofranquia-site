@@ -2,7 +2,6 @@
 
 import BasicInfoForm from '@/src/components/login/BasicInfoForm'
 import EmailUpdateForm from '@/src/components/login/EmailUpdateForm'
-import { FranchisorRequestAccordion } from '@/src/components/login/FranchisorRequestAccordion'
 import PasswordUpdateForm from '@/src/components/login/PasswordUpdateForm'
 import ProfileCompletionForm from '@/src/components/login/ProfileCompletionForm'
 import Accordion from '@/src/components/ui/Accordion'
@@ -97,8 +96,6 @@ export default function PerfilPageClient() {
             }}
           />
         </Accordion>
-
-        {user.role === 'FRANCHISOR' && <FranchisorRequestAccordion />}
       </div>
     </div>
   )

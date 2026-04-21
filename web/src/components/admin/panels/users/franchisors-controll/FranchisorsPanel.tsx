@@ -52,7 +52,7 @@ export default function FranchisorsPanel() {
 
   const { data: requestsData, refetch: refetchRequests } =
     useAllFranchisorRequests()
-  const allRequests: FranchisorRequest[] = requestsData || []
+  const allRequests: FranchisorRequest[] = requestsData?.data || []
 
   const pendingRequests = allRequests.filter(
     (request) =>

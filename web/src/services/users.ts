@@ -1,10 +1,8 @@
 import Api from '@/src/api/Api'
 import {
-  ApproveFranchisorRequestDto,
   CreateFranchisorRequestDto,
   FranchisorRequest,
   RejectFranchisorRequestDto,
-  UpdateFranchisorRequestDto,
 } from '@/src/schemas/users/FranchisorRequest'
 import { User } from '../schemas/users/User'
 
@@ -197,93 +195,65 @@ export async function createFranchisorRequest(
   token: string,
   data: CreateFranchisorRequestDto,
 ): Promise<FranchisorRequest> {
-  const formData = new FormData()
-  formData.append('streamName', data.streamName)
-  formData.append('cnpj', data.cnpj)
-  formData.append('responsable', data.responsable)
-  formData.append('responsableRole', data.responsableRole)
-  formData.append('commercialEmail', data.commercialEmail)
-  formData.append('commercialPhone', data.commercialPhone)
-  formData.append('cnpjCard', data.cnpjCard)
-  formData.append('socialContract', data.socialContract)
+  const cleanPayload: Record<string, unknown> = { mode: data.mode }
+  if (data.streamName?.trim()) cleanPayload.streamName = data.streamName.trim()
+  if (data.franchiseId?.trim())
+    cleanPayload.franchiseId = data.franchiseId.trim()
+  if (data.claimReason?.trim())
+    cleanPayload.claimReason = data.claimReason.trim()
 
   const response = await fetch(Api('/users/franchisor-request'), {
     method: 'POST',
     headers: {
       Authorization: `Bearer ${token}`,
-    },
-    body: formData,
-  })
-
-  if (!response.ok) {
-    const errorData = await response
-      .json()
-      .catch(() => ({ message: 'Erro ao criar solicitação' }))
-    throw new Error(errorData.message || 'Erro ao criar solicitação')
-  }
-
-  return await response.json()
-}
-
-export async function updateFranchisorRequest(
-  token: string,
-  data: UpdateFranchisorRequestDto,
-): Promise<FranchisorRequest> {
-  const formData = new FormData()
-  if (data.streamName) formData.append('streamName', data.streamName)
-  if (data.cnpj) formData.append('cnpj', data.cnpj)
-  if (data.responsable) formData.append('responsable', data.responsable)
-  if (data.responsableRole)
-    formData.append('responsableRole', data.responsableRole)
-  if (data.commercialEmail)
-    formData.append('commercialEmail', data.commercialEmail)
-  if (data.commercialPhone)
-    formData.append('commercialPhone', data.commercialPhone)
-  if (data.cnpjCard) formData.append('cnpjCard', data.cnpjCard)
-  if (data.socialContract)
-    formData.append('socialContract', data.socialContract)
-
-  const response = await fetch(Api('/users/franchisor-request'), {
-    method: 'PUT',
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-    body: formData,
-  })
-
-  if (!response.ok) {
-    const errorData = await response
-      .json()
-      .catch(() => ({ message: 'Erro ao atualizar solicitação' }))
-    throw new Error(errorData.message || 'Erro ao atualizar solicitação')
-  }
-
-  return await response.json()
-}
-
-export async function deleteFranchisorRequest(token: string): Promise<void> {
-  const response = await fetch(Api('/users/franchisor-request'), {
-    method: 'DELETE',
-    headers: {
-      Authorization: `Bearer ${token}`,
       'Content-Type': 'application/json',
     },
+    body: JSON.stringify(cleanPayload),
   })
 
   if (!response.ok) {
     const errorData = await response
       .json()
-      .catch(() => ({ message: 'Erro ao deletar solicitação' }))
-    throw new Error(errorData.message || 'Erro ao deletar solicitação')
+      .catch(() => ({ detail: 'Erro ao criar solicitação' }))
+    const message =
+      errorData.detail || errorData.message || 'Erro ao criar solicitação'
+    throw new Error(message)
   }
+
+  return await response.json()
 }
 
 // Admin Franchisor Request Services
 
+export interface FranchisorRequestsPaginatedResponse {
+  data: FranchisorRequest[]
+  total: number
+  page: number
+  lastPage: number
+}
+
 export async function getAllFranchisorRequests(
   token: string,
-): Promise<FranchisorRequest[]> {
-  const response = await fetch(Api('/admin/franchisor-requests'), {
+  params?: {
+    page?: number
+    limit?: number
+    status?: string
+    mode?: string
+    search?: string
+  },
+): Promise<FranchisorRequestsPaginatedResponse> {
+  const searchParams = new URLSearchParams()
+  if (params?.page) searchParams.set('page', String(params.page))
+  if (params?.limit) searchParams.set('limit', String(params.limit))
+  if (params?.status) searchParams.set('status', params.status)
+  if (params?.mode) searchParams.set('mode', params.mode)
+  if (params?.search) searchParams.set('search', params.search)
+
+  const endpoint = searchParams.toString()
+    ? `/admin/franchisor-requests?${searchParams}`
+    : '/admin/franchisor-requests'
+
+  const response = await fetch(Api(endpoint), {
     method: 'GET',
     headers: {
       Authorization: `Bearer ${token}`,
@@ -294,20 +264,24 @@ export async function getAllFranchisorRequests(
   if (!response.ok) {
     const errorData = await response
       .json()
-      .catch(() => ({ message: 'Erro ao buscar solicitações' }))
-    throw new Error(errorData.message || 'Erro ao buscar solicitações')
+      .catch(() => ({ detail: 'Erro ao buscar solicitações' }))
+    throw new Error(
+      errorData.detail || errorData.message || 'Erro ao buscar solicitações',
+    )
   }
 
   const data = await response.json()
-
-  // Handle both array and object with data property
-  return Array.isArray(data) ? data : data.data || []
+  return {
+    data: data.data || [],
+    total: data.total || 0,
+    page: data.page || 1,
+    lastPage: data.lastPage || 1,
+  }
 }
 
 export async function approveFranchisorRequest(
   token: string,
   requestId: string,
-  data: ApproveFranchisorRequestDto,
 ): Promise<void> {
   const response = await fetch(
     Api(`/admin/franchisor-requests/${requestId}/approve`),
@@ -317,15 +291,16 @@ export async function approveFranchisorRequest(
         Authorization: `Bearer ${token}`,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(data),
     },
   )
 
   if (!response.ok) {
     const errorData = await response
       .json()
-      .catch(() => ({ message: 'Erro ao aprovar solicitação' }))
-    throw new Error(errorData.message || 'Erro ao aprovar solicitação')
+      .catch(() => ({ detail: 'Erro ao aprovar solicitação' }))
+    throw new Error(
+      errorData.detail || errorData.message || 'Erro ao aprovar solicitação',
+    )
   }
 }
 
@@ -349,8 +324,35 @@ export async function rejectFranchisorRequest(
   if (!response.ok) {
     const errorData = await response
       .json()
-      .catch(() => ({ message: 'Erro ao rejeitar solicitação' }))
-    throw new Error(errorData.message || 'Erro ao rejeitar solicitação')
+      .catch(() => ({ detail: 'Erro ao rejeitar solicitação' }))
+    throw new Error(
+      errorData.detail || errorData.message || 'Erro ao rejeitar solicitação',
+    )
+  }
+}
+
+export async function reopenFranchisorRequest(
+  token: string,
+  requestId: string,
+): Promise<void> {
+  const response = await fetch(
+    Api(`/admin/franchisor-requests/${requestId}/reopen`),
+    {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+    },
+  )
+
+  if (!response.ok) {
+    const errorData = await response
+      .json()
+      .catch(() => ({ detail: 'Erro ao reabrir solicitação' }))
+    throw new Error(
+      errorData.detail || errorData.message || 'Erro ao reabrir solicitação',
+    )
   }
 }
 

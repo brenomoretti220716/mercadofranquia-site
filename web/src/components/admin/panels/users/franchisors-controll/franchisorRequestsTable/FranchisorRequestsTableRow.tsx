@@ -24,25 +24,27 @@ const statusLabels = {
   [FranchisorRequestStatus.REJECTED]: 'Rejeitado',
 }
 
+const modeLabels = {
+  NEW: 'Marca nova',
+  EXISTING: 'Reivindicação',
+}
+
+const modeColors = {
+  NEW: 'bg-indigo-100 text-indigo-800',
+  EXISTING: 'bg-purple-100 text-purple-800',
+}
+
 export default function FranchisorRequestsTableRow({
   request,
   onViewClick,
 }: FranchisorRequestsTableRowProps) {
   const { data: user, isLoading: isLoadingUser } = useUserById(request.userId)
-
-  const formatCNPJ = (cnpj: string) => {
-    return cnpj.replace(
-      /^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})$/,
-      '$1.$2.$3/$4-$5',
-    )
-  }
-
   const formatDate = formatDateToBrazilian
 
   return (
     <div className="flex bg-[#f6f6f9] border-b border-gray-200 hover:bg-gray-50 transition-colors items-center">
-      {/* Nome/Empresa Column */}
-      <div className="w-[15%] px-6 py-4">
+      {/* Marca Column */}
+      <div className="w-[20%] px-6 py-4">
         <div
           className="text-sm font-medium text-gray-900 truncate"
           title={request.streamName}
@@ -51,34 +53,31 @@ export default function FranchisorRequestsTableRow({
         </div>
       </div>
 
-      {/* CNPJ Column */}
-      <div className="w-[12%] px-6 py-4 text-center">
-        <div
-          className="text-sm text-gray-900 truncate"
-          title={formatCNPJ(request.cnpj)}
+      {/* Tipo Column */}
+      <div className="w-[15%] px-6 py-4 text-center">
+        <span
+          className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${modeColors[request.mode]}`}
         >
-          {formatCNPJ(request.cnpj)}
-        </div>
+          {modeLabels[request.mode]}
+        </span>
       </div>
 
-      {/* Responsável Column */}
-      <div className="w-[15%] px-6 py-4 text-center">
-        <div
-          className="text-sm text-gray-900 truncate"
-          title={request.responsable}
-        >
-          {request.responsable}
-        </div>
-        <div
-          className="text-xs text-gray-500 truncate"
-          title={request.responsableRole}
-        >
-          {request.responsableRole}
-        </div>
+      {/* Franquia Vinculada (só em EXISTING) Column */}
+      <div className="w-[20%] px-6 py-4 text-center">
+        {request.franchise ? (
+          <div
+            className="text-sm text-gray-900 truncate"
+            title={request.franchise.name}
+          >
+            {request.franchise.name}
+          </div>
+        ) : (
+          <div className="text-xs text-gray-400">—</div>
+        )}
       </div>
 
       {/* Usuário Column */}
-      <div className="w-[18%] px-6 py-4 text-center">
+      <div className="w-[20%] px-6 py-4 text-center">
         {isLoadingUser ? (
           <div className="text-sm text-gray-500">Carregando...</div>
         ) : user ? (
@@ -96,7 +95,7 @@ export default function FranchisorRequestsTableRow({
       </div>
 
       {/* Status Column */}
-      <div className="w-[12%] px-6 py-4 text-center">
+      <div className="w-[10%] px-6 py-4 text-center">
         <span
           className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${statusColors[request.status]}`}
         >
@@ -105,19 +104,19 @@ export default function FranchisorRequestsTableRow({
       </div>
 
       {/* Data Column */}
-      <div className="w-[13%] px-6 py-4 text-center">
+      <div className="w-[8%] px-6 py-4 text-center">
         <div className="text-sm text-gray-900">
           {formatDate(request.createdAt)}
         </div>
       </div>
 
       {/* Ações Column */}
-      <div className="w-[15%] px-6 py-4 text-center">
+      <div className="w-[7%] px-6 py-4 text-center">
         <button
           onClick={() => onViewClick(request)}
           className="text-[#E25E3E] hover:text-[#c04e2e] font-medium text-sm transition-colors"
         >
-          Ver Detalhes
+          Ver
         </button>
       </div>
     </div>

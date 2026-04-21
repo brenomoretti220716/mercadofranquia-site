@@ -4,6 +4,7 @@ import {
   fetchFranchiseOptionsWithParams,
   fetchFranchises,
   fetchFranchisorFranchises,
+  fetchMyFranchises,
   fetchPaginatedFranchises,
   type FetchFranchisesParams,
 } from '@/src/services/franchises'
@@ -27,6 +28,7 @@ export const franchiseKeys = {
     [...franchiseKeys.all, 'paginated', params] as const,
   franchisor: (franchisorId: string) =>
     [...franchiseKeys.all, 'franchisor', franchisorId] as const,
+  myFranchises: () => [...franchiseKeys.all, 'me'] as const,
 }
 
 export const franchiseQueries = {
@@ -76,5 +78,16 @@ export const franchiseQueries = {
       queryFn: () => fetchFranchisorFranchises(franchisorId, token),
       staleTime: 1000 * 60 * 5,
       enabled: !!franchisorId && !!token,
+    }),
+  /**
+   * Queries as Franchises do user autenticado (role=FRANCHISOR).
+   * Requer token. Endpoint: GET /franchisor/franchises/me
+   */
+  myFranchises: (token: string) =>
+    queryOptions({
+      queryKey: franchiseKeys.myFranchises(),
+      queryFn: () => fetchMyFranchises(token),
+      staleTime: 1000 * 60 * 2, // 2 min (mais agressivo que 5min — status muda com aprovação admin)
+      enabled: !!token,
     }),
 }

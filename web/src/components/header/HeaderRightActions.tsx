@@ -71,6 +71,12 @@ export function HeaderRightActions(props: HeaderRightActionsProps) {
   if (props.variant === 'public') {
     const isLoggedIn = props.isAuthenticated
     const textColor = props.darkMode ? 'text-white' : 'text-[#171726]'
+    // CTA "Cadastrar franquia" pra user logado que ainda não é FRANCHISOR nem ADMIN
+    // (cobre MEMBER + roles legados FRANCHISEE/CANDIDATE/ENTHUSIAST)
+    const showCadastrarFranquiaCta =
+      isLoggedIn &&
+      props.payload?.role !== 'FRANCHISOR' &&
+      props.payload?.role !== 'ADMIN'
     return (
       <>
         {/* Mobile right actions */}
@@ -123,6 +129,14 @@ export function HeaderRightActions(props: HeaderRightActionsProps) {
               )}
               {isLoggedIn && (
                 <>
+                  {showCadastrarFranquiaCta && (
+                    <Link
+                      href="/franqueador/minhas-franquias"
+                      className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#E25E3E] hover:bg-[#c04e2e] text-white text-sm font-medium transition-colors whitespace-nowrap"
+                    >
+                      Cadastrar franquia
+                    </Link>
+                  )}
                   <NotificationButton iconColor="#E25E3E" iconSize={22} />
                   <Link
                     href="/perfil"

@@ -51,6 +51,13 @@ export const RenderMobileLayout = ({
             </div>
           </div>
           <Link
+            href="/franqueador/minhas-franquias"
+            className="flex items-center gap-2 px-4 py-3 rounded-lg bg-[#E25E3E] hover:bg-[#c04e2e] text-white font-medium transition-colors"
+            onClick={handleMobileMenuClose}
+          >
+            Cadastrar franquia
+          </Link>
+          <Link
             href="/favoritos"
             className={linkClassName}
             onClick={handleMobileMenuClose}

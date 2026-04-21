@@ -2,21 +2,19 @@
 
 import BaseModal from '@/src/components/ui/BaseModal'
 import ModalConfirmation from '@/src/components/ui/ModalConfirmation'
-import MultiSelect from '@/src/components/ui/MultiSelect'
 import RoundedButton from '@/src/components/ui/RoundedButton'
 import {
   useApproveFranchisorRequest,
   useRejectFranchisorRequest,
+  useReopenFranchisorRequest,
 } from '@/src/hooks/users/useFranchisorRequest'
-import { franchiseQueries } from '@/src/queries/franchises'
 import {
   FranchisorRequest,
   FranchisorRequestStatus,
 } from '@/src/schemas/users/FranchisorRequest'
 import { formatDateTimeToBrazilian } from '@/src/utils/dateFormatters'
 import { formatErrorMessage } from '@/src/utils/errorHandlers'
-import { useSuspenseQuery } from '@tanstack/react-query'
-import Link from 'next/link'
+import Image from 'next/image'
 import { useState } from 'react'
 import { toast } from 'sonner'
 
@@ -27,73 +25,56 @@ interface Props {
   onSuccess: () => void
 }
 
+const statusColors = {
+  [FranchisorRequestStatus.PENDING]: 'bg-yellow-100 text-yellow-800',
+  [FranchisorRequestStatus.UNDER_REVIEW]: 'bg-blue-100 text-blue-800',
+  [FranchisorRequestStatus.APPROVED]: 'bg-green-100 text-green-800',
+  [FranchisorRequestStatus.REJECTED]: 'bg-red-100 text-red-800',
+}
+
+const statusLabels = {
+  [FranchisorRequestStatus.PENDING]: 'Pendente',
+  [FranchisorRequestStatus.UNDER_REVIEW]: 'Em Análise',
+  [FranchisorRequestStatus.APPROVED]: 'Aprovado',
+  [FranchisorRequestStatus.REJECTED]: 'Rejeitado',
+}
+
+const modeLabels = {
+  NEW: 'Marca nova',
+  EXISTING: 'Reivindicação',
+}
+
+const modeColors = {
+  NEW: 'bg-indigo-100 text-indigo-800',
+  EXISTING: 'bg-purple-100 text-purple-800',
+}
+
 export default function FranchisorRequestModal({
   isOpen,
   onClose,
   request,
   onSuccess,
 }: Props) {
-  const [isApproving, setIsApproving] = useState(false)
-  const [isRejecting, setIsRejecting] = useState(false)
-  const [selectedFranchises, setSelectedFranchises] = useState<string[]>([])
   const [rejectionReason, setRejectionReason] = useState('')
   const [showApproveConfirmModal, setShowApproveConfirmModal] = useState(false)
   const [showRejectConfirmModal, setShowRejectConfirmModal] = useState(false)
+  const [showReopenConfirmModal, setShowReopenConfirmModal] = useState(false)
 
   const approveMutation = useApproveFranchisorRequest()
   const rejectMutation = useRejectFranchisorRequest()
-  const { data: franchiseOptions } = useSuspenseQuery(
-    franchiseQueries.availableOptions(),
-  )
+  const reopenMutation = useReopenFranchisorRequest()
 
   if (!request) return null
 
-  const formatCNPJ = (cnpj: string) => {
-    return cnpj.replace(
-      /^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})$/,
-      '$1.$2.$3/$4-$5',
-    )
-  }
-
-  const formatPhone = (phone: string) => {
-    const numbers = phone.replace(/\D/g, '')
-    if (numbers.length <= 10) {
-      return numbers.replace(/^(\d{2})(\d{4})(\d{0,4})/, '($1) $2-$3')
-    }
-    return numbers.replace(/^(\d{2})(\d{5})(\d{0,4})/, '($1) $2-$3')
-  }
-
   const formatDate = formatDateTimeToBrazilian
 
-  const statusColors = {
-    [FranchisorRequestStatus.PENDING]: 'text-yellow-600 bg-yellow-50',
-    [FranchisorRequestStatus.UNDER_REVIEW]: 'text-blue-600 bg-blue-50',
-    [FranchisorRequestStatus.APPROVED]: 'text-green-600 bg-green-50',
-    [FranchisorRequestStatus.REJECTED]: 'text-red-600 bg-red-50',
-  }
-
-  const statusLabels = {
-    [FranchisorRequestStatus.PENDING]: 'Pendente',
-    [FranchisorRequestStatus.UNDER_REVIEW]: 'Em Análise',
-    [FranchisorRequestStatus.APPROVED]: 'Aprovado',
-    [FranchisorRequestStatus.REJECTED]: 'Rejeitado',
-  }
-
   const handleApprove = () => {
-    if (selectedFranchises.length === 0) {
-      toast.error('Por favor, selecione pelo menos uma franquia')
-      return
-    }
-
     setShowApproveConfirmModal(true)
   }
 
   const confirmApprove = async () => {
     try {
-      await approveMutation.mutateAsync({
-        requestId: request.id,
-        data: { ownedFranchises: selectedFranchises },
-      })
+      await approveMutation.mutateAsync(request.id)
       toast.success('Solicitação aprovada com sucesso!')
       setShowApproveConfirmModal(false)
       onSuccess()
@@ -103,26 +84,15 @@ export default function FranchisorRequestModal({
         error,
         'Não foi possível aprovar a solicitação. Tente novamente.',
       )
-
-      // Fallback: translate common backend English messages (if they ever leak)
-      const normalized = message.toLowerCase()
-      const translated =
-        normalized.includes('already owned') ||
-        normalized.includes('already owned by') ||
-        normalized.includes('already has an owner')
-          ? 'Uma ou mais franquias selecionadas já estão vinculadas a outro franqueador. Atualize a lista e tente novamente.'
-          : message
-
-      toast.error(translated)
+      toast.error(message)
     }
   }
 
   const handleReject = () => {
-    if (!rejectionReason.trim()) {
-      toast.error('Por favor, informe o motivo da rejeição')
+    if (rejectionReason.trim().length < 10) {
+      toast.error('Motivo da rejeição deve ter pelo menos 10 caracteres')
       return
     }
-
     setShowRejectConfirmModal(true)
   }
 
@@ -130,341 +100,307 @@ export default function FranchisorRequestModal({
     try {
       await rejectMutation.mutateAsync({
         requestId: request.id,
-        data: { rejectionReason },
+        data: { rejectionReason: rejectionReason.trim() },
       })
-      toast.success('Solicitação rejeitada com sucesso!')
+      toast.success('Solicitação rejeitada.')
       setShowRejectConfirmModal(false)
       onSuccess()
       handleClose()
     } catch (error: unknown) {
-      toast.error(
-        formatErrorMessage(
-          error,
-          'Não foi possível rejeitar a solicitação. Tente novamente.',
-        ),
+      const message = formatErrorMessage(
+        error,
+        'Não foi possível rejeitar a solicitação. Tente novamente.',
       )
+      toast.error(message)
+    }
+  }
+
+  const handleReopen = () => {
+    setShowReopenConfirmModal(true)
+  }
+
+  const confirmReopen = async () => {
+    try {
+      await reopenMutation.mutateAsync(request.id)
+      toast.success('Solicitação reaberta. Agora está pendente novamente.')
+      setShowReopenConfirmModal(false)
+      onSuccess()
+      handleClose()
+    } catch (error: unknown) {
+      const message = formatErrorMessage(
+        error,
+        'Não foi possível reabrir a solicitação.',
+      )
+      toast.error(message)
     }
   }
 
   const handleClose = () => {
-    setIsApproving(false)
-    setIsRejecting(false)
-    setSelectedFranchises([])
     setRejectionReason('')
     setShowApproveConfirmModal(false)
     setShowRejectConfirmModal(false)
+    setShowReopenConfirmModal(false)
     onClose()
   }
 
   const isPending = request.status === FranchisorRequestStatus.PENDING
+  const isRejected = request.status === FranchisorRequestStatus.REJECTED
+
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL ?? ''
+  const franchiseLogoSrc = request.franchise?.logoUrl
+    ? request.franchise.logoUrl.startsWith('http')
+      ? request.franchise.logoUrl
+      : `${apiUrl}${request.franchise.logoUrl}`
+    : null
 
   return (
-    <BaseModal
-      isOpen={isOpen}
-      onClose={handleClose}
-      tittleText="Detalhes da Solicitação de Franqueador"
-      subtittleText="Revise as informações e aprove ou rejeite a solicitação"
-    >
-      <div className="space-y-6 max-h-[70vh] overflow-y-auto px-1">
-        {/* Status Badge */}
-        <div className="flex items-center justify-between p-4 rounded-lg border">
-          <div>
-            <p className="text-sm text-gray-600">Status</p>
-            <span
-              className={`inline-block mt-1 px-3 py-1 text-sm font-semibold rounded-full ${statusColors[request.status]}`}
-            >
-              {statusLabels[request.status]}
-            </span>
-          </div>
-          <div className="text-right">
-            <p className="text-sm text-gray-600">Data de Criação</p>
-            <p className="text-sm font-medium text-gray-900 mt-1">
-              {formatDateTimeToBrazilian(request.createdAt)}
-            </p>
-          </div>
-        </div>
-
-        {/* Company Information */}
-        <div className="space-y-4">
-          <h3 className="text-lg font-semibold text-gray-900 border-b pb-2">
-            Informações da Empresa
-          </h3>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label className="text-sm font-medium text-gray-600">
-                Nome da Marca/Empresa
-              </label>
-              <p className="text-sm text-gray-900 mt-1">{request.streamName}</p>
-            </div>
-
-            <div>
-              <label className="text-sm font-medium text-gray-600">CNPJ</label>
-              <p className="text-sm text-gray-900 mt-1">
-                {formatCNPJ(request.cnpj)}
-              </p>
-            </div>
-          </div>
-        </div>
-
-        {/* Responsible Person */}
-        <div className="space-y-4">
-          <h3 className="text-lg font-semibold text-gray-900 border-b pb-2">
-            Responsável
-          </h3>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label className="text-sm font-medium text-gray-600">Nome</label>
-              <p className="text-sm text-gray-900 mt-1">
-                {request.responsable}
-              </p>
-            </div>
-
-            <div>
-              <label className="text-sm font-medium text-gray-600">Cargo</label>
-              <p className="text-sm text-gray-900 mt-1">
-                {request.responsableRole}
-              </p>
-            </div>
-          </div>
-        </div>
-
-        {/* Contact Information */}
-        <div className="space-y-4">
-          <h3 className="text-lg font-semibold text-gray-900 border-b pb-2">
-            Contatos Comerciais
-          </h3>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label className="text-sm font-medium text-gray-600">Email</label>
-              <p className="text-sm text-gray-900 mt-1">
-                {request.commercialEmail}
-              </p>
-            </div>
-
-            <div>
-              <label className="text-sm font-medium text-gray-600">
-                Telefone
-              </label>
-              <p className="text-sm text-gray-900 mt-1">
-                {formatPhone(request.commercialPhone)}
-              </p>
-            </div>
-          </div>
-        </div>
-
-        {/* Documents */}
-        <div className="space-y-4">
-          <h3 className="text-lg font-semibold text-gray-900 border-b pb-2">
-            Documentos
-          </h3>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label className="text-sm font-medium text-gray-600">
-                Cartão CNPJ
-              </label>
-              <a
-                href={`${process.env.NEXT_PUBLIC_API_URL}/${request.cnpjCardPath}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="block mt-1 text-sm text-[#E25E3E] hover:text-[#c04e2e] underline"
+    <>
+      <BaseModal
+        isOpen={isOpen}
+        onClose={handleClose}
+        tittleText="Solicitação de Franqueador"
+        subtittleText="Revise os dados e decida se aprova ou rejeita."
+      >
+        <div className="space-y-6">
+          {/* Badges + data */}
+          <div className="flex items-start justify-between gap-4 flex-wrap">
+            <div className="flex items-center gap-2 flex-wrap">
+              <span
+                className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${modeColors[request.mode]}`}
               >
-                Visualizar documento
-              </a>
-            </div>
-
-            <div>
-              <label className="text-sm font-medium text-gray-600">
-                Contrato Social
-              </label>
-              <a
-                href={`${process.env.NEXT_PUBLIC_API_URL}/${request.socialContractPath}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="block mt-1 text-sm text-[#E25E3E] hover:text-[#c04e2e] underline"
+                {modeLabels[request.mode]}
+              </span>
+              <span
+                className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${statusColors[request.status]}`}
               >
-                Visualizar documento
-              </a>
+                {statusLabels[request.status]}
+              </span>
+            </div>
+            <div className="text-right text-xs text-gray-500">
+              <div>Criado em</div>
+              <div className="font-medium text-gray-700">
+                {formatDate(request.createdAt)}
+              </div>
             </div>
           </div>
-        </div>
 
-        {/* Rejection Reason (if rejected) */}
-        {request.status === FranchisorRequestStatus.REJECTED &&
-          request.rejectionReason && (
-            <div className="space-y-2 p-4 bg-red-50 border border-red-200 rounded-lg">
-              <h3 className="text-sm font-semibold text-red-900">
-                Motivo da Rejeição
+          {/* Dados do usuário solicitante */}
+          <div className="border border-gray-200 rounded-lg p-4">
+            <h3 className="text-sm font-semibold text-gray-700 mb-2">
+              Usuário solicitante
+            </h3>
+            {request.user ? (
+              <>
+                <div className="text-sm text-gray-900 font-medium">
+                  {request.user.name}
+                </div>
+                <div className="text-sm text-gray-600">
+                  {request.user.email}
+                </div>
+              </>
+            ) : (
+              <div className="text-sm text-gray-500">
+                Informações do usuário indisponíveis
+              </div>
+            )}
+          </div>
+
+          {/* Marca — NEW */}
+          {request.mode === 'NEW' && (
+            <div className="border border-gray-200 rounded-lg p-4">
+              <h3 className="text-sm font-semibold text-gray-700 mb-2">
+                Nova marca a ser cadastrada
               </h3>
-              <p className="text-sm text-red-800">{request.rejectionReason}</p>
-              {request.reviewedAt && (
-                <p className="text-xs text-red-600 mt-2">
-                  Rejeitado em: {formatDate(request.reviewedAt)}
-                </p>
+              <div className="text-base font-medium text-gray-900">
+                {request.streamName}
+              </div>
+              {request.franchise && (
+                <div className="text-xs text-gray-500 mt-2">
+                  Franquia pré-criada em status {request.franchise.status}{' '}
+                  (slug: <code>/{request.franchise.slug ?? '—'}</code>)
+                </div>
+              )}
+              <p className="text-xs text-gray-500 mt-2">
+                Ao aprovar, a franquia associada será publicada e o usuário
+                receberá permissões de franqueador.
+              </p>
+            </div>
+          )}
+
+          {/* Marca — EXISTING (reivindicação) */}
+          {request.mode === 'EXISTING' && (
+            <div className="border border-gray-200 rounded-lg p-4 space-y-3">
+              <h3 className="text-sm font-semibold text-gray-700">
+                Reivindicação de marca existente
+              </h3>
+              {request.franchise ? (
+                <div className="flex items-start gap-3">
+                  <div className="w-12 h-12 bg-white rounded border border-gray-200 flex items-center justify-center shrink-0 p-2">
+                    {franchiseLogoSrc ? (
+                      <Image
+                        src={franchiseLogoSrc}
+                        alt={request.franchise.name}
+                        width={48}
+                        height={48}
+                        className="object-contain w-full h-full"
+                        unoptimized
+                      />
+                    ) : (
+                      <span className="text-2xl" aria-hidden="true">
+                        🏢
+                      </span>
+                    )}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="text-base font-medium text-gray-900 truncate">
+                      {request.franchise.name}
+                    </div>
+                    <div className="text-xs text-gray-500">
+                      /{request.franchise.slug ?? '—'}
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <div className="text-sm text-gray-500">
+                  Franquia vinculada não encontrada
+                </div>
+              )}
+              {request.claimReason && (
+                <div>
+                  <div className="text-xs font-medium text-gray-700 mb-1">
+                    Justificativa do solicitante
+                  </div>
+                  <p className="text-sm text-gray-900 bg-gray-50 rounded p-3 whitespace-pre-wrap">
+                    {request.claimReason}
+                  </p>
+                </div>
               )}
             </div>
           )}
 
-        {/* Approval Section */}
-        {isPending && !isRejecting && (
-          <div className="space-y-4 rounded-lg">
-            {isApproving ? (
-              <>
-                <h3 className="text-lg font-semibold text-gray-900">
-                  Selecione as Franquias
-                </h3>
-                <p className="text-sm text-gray-600 mb-3">
-                  Escolha quais franquias serão atribuídas a este franqueador
-                </p>
-                <MultiSelect
-                  options={franchiseOptions.map(
-                    (franchise: { value: string; label: string }) => ({
-                      value: franchise.value,
-                      label: franchise.label,
-                    }),
-                  )}
-                  value={selectedFranchises}
-                  onChange={(value) => setSelectedFranchises(value)}
-                  placeholder="Selecione as franquias"
+          {/* Rejection reason (se já rejeitado) */}
+          {isRejected && request.rejectionReason && (
+            <div className="border border-red-200 bg-red-50 rounded-lg p-4">
+              <h3 className="text-sm font-semibold text-red-800 mb-1">
+                Motivo da rejeição
+              </h3>
+              <p className="text-sm text-red-900 whitespace-pre-wrap">
+                {request.rejectionReason}
+              </p>
+              {request.reviewedAt && (
+                <div className="text-xs text-red-700 mt-2">
+                  Rejeitada em {formatDate(request.reviewedAt)}
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* Ações — só pra PENDING */}
+          {isPending && (
+            <div className="space-y-3 border-t border-gray-200 pt-4">
+              <div>
+                <label
+                  htmlFor="rejectionReason"
+                  className="block text-sm font-medium text-gray-700 mb-1"
+                >
+                  Motivo da rejeição (obrigatório se rejeitar)
+                </label>
+                <textarea
+                  id="rejectionReason"
+                  rows={3}
+                  value={rejectionReason}
+                  onChange={(e) => setRejectionReason(e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary resize-none text-sm"
+                  placeholder="Mínimo 10 caracteres. Será enviado ao solicitante por email."
                 />
-
-                <p className="text-sm text-gray-600">
-                  Franquia não existe ainda?
-                  <Link
-                    href="/admin/franquias?isRegisterModalOpen=true"
-                    className="text-[#E25E3E] hover:text-[#c04e2e] hover:underline cursor-pointer"
-                  >
-                    {' '}
-                    Clique aqui para criar
-                  </Link>
-                </p>
-
-                <div className="flex gap-3 mt-4">
-                  <div className="grid w-full">
-                    <RoundedButton
-                      text={
-                        approveMutation.isPending
-                          ? 'Aprovando...'
-                          : 'Confirmar Aprovação'
-                      }
-                      color="#E25E3E"
-                      textColor="white"
-                      onClick={handleApprove}
-                      disabled={
-                        approveMutation.isPending ||
-                        selectedFranchises.length === 0
-                      }
-                    />
-                  </div>
-                  <div className="grid w-full">
-                    <RoundedButton
-                      text={
-                        approveMutation.isPending ? 'Cancelando...' : 'Cancelar'
-                      }
-                      color="#E25E3E"
-                      textColor="white"
-                      onClick={() => {
-                        setIsApproving(false)
-                        setSelectedFranchises([])
-                      }}
-                      disabled={approveMutation.isPending}
-                    />
-                  </div>
-                </div>
-              </>
-            ) : (
-              <div className="flex gap-2">
-                <div className="grid w-full">
-                  <RoundedButton
-                    text="Aprovar Solicitação"
-                    color="#E25E3E"
-                    textColor="white"
-                    onClick={() => setIsApproving(true)}
-                  />
-                </div>
-
-                <div className="grid w-full">
-                  <RoundedButton
-                    text="Rejeitar Solicitação"
-                    color="#E25E3E"
-                    textColor="white"
-                    onClick={() => setIsRejecting(true)}
-                  />
-                </div>
               </div>
-            )}
-          </div>
-        )}
 
-        {/* Rejection Section */}
-        {isPending && isRejecting && !isApproving && (
-          <div className="space-y-4 p-4 bg-red-50 border border-red-200 rounded-lg">
-            <h3 className="text-lg font-semibold text-red-900">
-              Rejeitar Solicitação
-            </h3>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Motivo da Rejeição *
-              </label>
-              <textarea
-                value={rejectionReason}
-                onChange={(e) => setRejectionReason(e.target.value)}
-                rows={4}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"
-                placeholder="Descreva o motivo da rejeição..."
+              <div className="flex gap-3 justify-end flex-wrap">
+                <RoundedButton
+                  text="Rejeitar"
+                  loadingText="Rejeitando..."
+                  loading={rejectMutation.isPending}
+                  onClick={handleReject}
+                  disabled={rejectMutation.isPending}
+                  color="#FFFFFF"
+                  hoverColor="#fee2e2"
+                  textColor="#dc2626"
+                  hoverTextColor="#dc2626"
+                  borderColor="#dc2626"
+                  type="button"
+                />
+                <RoundedButton
+                  text="Aprovar"
+                  loadingText="Aprovando..."
+                  loading={approveMutation.isPending}
+                  onClick={handleApprove}
+                  disabled={approveMutation.isPending}
+                  color="#E25E3E"
+                  hoverColor="#c04e2e"
+                  textColor="#FFFFFF"
+                  hoverTextColor="#FFFFFF"
+                  type="button"
+                />
+              </div>
+            </div>
+          )}
+
+          {/* Reabrir (só REJECTED) */}
+          {isRejected && (
+            <div className="border-t border-gray-200 pt-4 flex justify-end">
+              <RoundedButton
+                text="Reabrir solicitação"
+                loadingText="Reabrindo..."
+                loading={reopenMutation.isPending}
+                onClick={handleReopen}
+                disabled={reopenMutation.isPending}
+                color="#FFFFFF"
+                hoverColor="#f3f4f6"
+                textColor="#374151"
+                hoverTextColor="#111827"
+                borderColor="#d1d5db"
+                type="button"
               />
             </div>
-            <div className="flex gap-3">
-              <div className="grid w-full">
-                <RoundedButton
-                  text="Cancelar"
-                  color="#E25E3E"
-                  textColor="white"
-                  onClick={() => {
-                    setIsRejecting(false)
-                    setRejectionReason('')
-                  }}
-                />
-              </div>
+          )}
+        </div>
+      </BaseModal>
 
-              <div className="grid w-full">
-                <RoundedButton
-                  text="Confirmar Rejeição"
-                  color="#E25E3E"
-                  textColor="white"
-                  onClick={handleReject}
-                  disabled={rejectMutation.isPending || !rejectionReason.trim()}
-                />
-              </div>
-            </div>
-          </div>
-        )}
-      </div>
-
-      {/* Approve Confirmation Modal */}
       <ModalConfirmation
         isOpen={showApproveConfirmModal}
         onClose={() => setShowApproveConfirmModal(false)}
         onConfirm={confirmApprove}
-        buttonText="Aprovar"
-        action="aprovar esta solicitação"
-        text={`Ao aprovar, o usuário se tornará franqueador e terá acesso às ${selectedFranchises.length} franquia(s) selecionada(s).`}
+        action="aprovar a solicitação"
+        text={`Ao confirmar, ${request.user?.name ?? 'o usuário'} se tornará franqueador${
+          request.mode === 'NEW'
+            ? ` e a marca "${request.streamName}" será publicada.`
+            : request.mode === 'EXISTING' && request.franchise
+              ? ` e passará a gerenciar "${request.franchise.name}".`
+              : '.'
+        } Esta ação pode ser revertida removendo a role do usuário depois.`}
+        buttonText="Confirmar aprovação"
         isLoading={approveMutation.isPending}
       />
 
-      {/* Reject Confirmation Modal */}
       <ModalConfirmation
         isOpen={showRejectConfirmModal}
         onClose={() => setShowRejectConfirmModal(false)}
         onConfirm={confirmReject}
-        buttonText="Rejeitar"
-        action="rejeitar esta solicitação"
-        text="O usuário será notificado sobre a rejeição e poderá visualizar o motivo informado."
+        action="rejeitar a solicitação"
+        text="O solicitante receberá um email com o motivo da rejeição. Ele poderá criar uma nova solicitação no futuro."
+        buttonText="Confirmar rejeição"
         isLoading={rejectMutation.isPending}
       />
-    </BaseModal>
+
+      <ModalConfirmation
+        isOpen={showReopenConfirmModal}
+        onClose={() => setShowReopenConfirmModal(false)}
+        onConfirm={confirmReopen}
+        action="reabrir a solicitação"
+        text="A solicitação voltará para status PENDENTE e poderá ser aprovada ou rejeitada novamente."
+        buttonText="Confirmar reabertura"
+        isLoading={reopenMutation.isPending}
+      />
+    </>
   )
 }

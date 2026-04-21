@@ -55,6 +55,17 @@ const privateRoutes = [
     whenAuthenticated: 'next',
     necessaryRole: Role.ADMIN,
   },
+  // /franqueador (root): qualquer logado — page redireciona pra /minhas-franquias
+  {
+    pattern: /^\/franqueador$/,
+    whenAuthenticated: 'next',
+  },
+  // /franqueador/minhas-franquias: qualquer logado pode cadastrar marca
+  {
+    pattern: /^\/franqueador\/minhas-franquias$/,
+    whenAuthenticated: 'next',
+  },
+  // Outros subpaths de /franqueador: exige role FRANCHISOR
   {
     pattern: /^\/franqueador(\/.*)?$/,
     whenAuthenticated: 'next',
@@ -72,6 +83,19 @@ const privateRoutes = [
 
 const REDIRECT_WHEN_NOT_AUTHENTICATED = '/login'
 
+function buildRedirectUrl(request: NextRequest, pathname: string): URL {
+  const forwardedHost = request.headers.get('x-forwarded-host')
+  const forwardedProto = request.headers.get('x-forwarded-proto')
+
+  if (forwardedHost && forwardedProto) {
+    return new URL(pathname, `${forwardedProto}://${forwardedHost}`)
+  }
+
+  const url = request.nextUrl.clone()
+  url.pathname = pathname
+  return url
+}
+
 export function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname
   const publicRoute = publicRoutes.find((route) => route.pattern.test(pathname))
@@ -87,9 +111,9 @@ export function middleware(request: NextRequest) {
 
   // Não autenticado e rota privada
   if (!authToken && !publicRoute) {
-    const redirectUrl = request.nextUrl.clone()
-    redirectUrl.pathname = REDIRECT_WHEN_NOT_AUTHENTICATED
-    return NextResponse.redirect(redirectUrl)
+    return NextResponse.redirect(
+      buildRedirectUrl(request, REDIRECT_WHEN_NOT_AUTHENTICATED),
+    )
   }
 
   // Autenticado e rota pública que redireciona
@@ -98,9 +122,7 @@ export function middleware(request: NextRequest) {
     publicRoute &&
     publicRoute.whenAuthenticated === WhenAuthenticated.REDIRECT
   ) {
-    const redirectUrl = request.nextUrl.clone()
-    redirectUrl.pathname = '/'
-    return NextResponse.redirect(redirectUrl)
+    return NextResponse.redirect(buildRedirectUrl(request, '/'))
   }
 
   // Autenticado e rota privada
@@ -109,9 +131,9 @@ export function middleware(request: NextRequest) {
     const decodedToken: DecodedToken = jwtDecode(token)
 
     if (decodedToken.exp && decodedToken.exp < Date.now() / 1000) {
-      const redirectUrl = request.nextUrl.clone()
-      redirectUrl.pathname = REDIRECT_WHEN_NOT_AUTHENTICATED
-      return NextResponse.redirect(redirectUrl)
+      return NextResponse.redirect(
+        buildRedirectUrl(request, REDIRECT_WHEN_NOT_AUTHENTICATED),
+      )
     }
 
     if ('necessaryRole' in privateRoute && privateRoute.necessaryRole) {
@@ -123,9 +145,7 @@ export function middleware(request: NextRequest) {
       ) as ReadonlyArray<Role>
 
       if (!userRole || !necessaryRoles.includes(userRole)) {
-        const redirectUrl = request.nextUrl.clone()
-        redirectUrl.pathname = '/'
-        return NextResponse.redirect(redirectUrl)
+        return NextResponse.redirect(buildRedirectUrl(request, '/'))
       }
     }
   }

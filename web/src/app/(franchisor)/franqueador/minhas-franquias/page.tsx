@@ -1,13 +1,27 @@
 'use client'
 
-import FranchisorSelectedFranchise from '@/src/components/franchisors/panels/franchises/FranchisorSelectedFranchise'
-import FranchisorSelectedFranchiseSkeleton from '@/src/components/ui/skeletons/FranchisorSelectedFranchiseSkeleton'
-import { Suspense } from 'react'
+import { useState } from 'react'
+import MyFranchisesList from '@/src/components/franchisors/panels/franchises/MyFranchisesList'
+import CreateAdditionalFranchiseForm from '@/src/components/franchisors/panels/franchises/CreateAdditionalFranchiseForm'
 
+/**
+ * Página principal do painel do franqueador — lista de Franchises + criar nova.
+ *
+ * Substitui o componente legado FranchisorSelectedFranchise (quebrado desde
+ * migração NestJS→FastAPI). Usa endpoints novos da Sprint 1:
+ * - GET /franchisor/franchises/me (listar)
+ * - POST /franchisor/franchises (criar marca adicional)
+ */
 export default function MyFranchisesPage() {
+  const [isCreateOpen, setIsCreateOpen] = useState(false)
+
   return (
-    <Suspense fallback={<FranchisorSelectedFranchiseSkeleton />}>
-      <FranchisorSelectedFranchise />
-    </Suspense>
+    <>
+      <MyFranchisesList onCreateNew={() => setIsCreateOpen(true)} />
+      <CreateAdditionalFranchiseForm
+        open={isCreateOpen}
+        onClose={() => setIsCreateOpen(false)}
+      />
+    </>
   )
 }
