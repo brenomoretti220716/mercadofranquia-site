@@ -17,6 +17,7 @@ from __future__ import annotations
 
 import json
 import logging
+import os
 import random
 from datetime import datetime, timedelta, timezone
 from typing import Any, Optional
@@ -35,6 +36,7 @@ from app.security import (
     verify_password,
     verify_token,
 )
+from app.services.ses_mailer import send_password_reset_email
 
 router = APIRouter(prefix="/auth", tags=["auth"])
 logger = logging.getLogger("mf-api.auth")
@@ -105,14 +107,35 @@ def _user_full_dict(u: User) -> dict[str, Any]:
 
 
 def _dispatch_reset_email(*, to: str, code: str, expires_at: datetime, user_name: str) -> None:
-    """
-    Stub: log the code instead of sending an email. Replace with SMTP/SES
-    delivery when the mail provider is wired up.
-    """
-    logger.warning(
-        "[RESET CODE] to=%s name=%s code=%s expires_at=%s (email not actually sent — stub)",
-        to, user_name, code, expires_at.isoformat(),
-    )
+    """Send the reset code via SES. Skips delivery when SES_ENABLED=false (dev/local)."""
+    if os.environ.get("SES_ENABLED", "true").lower() == "false":
+        logger.warning(
+            "[RESET CODE] to=%s name=%s code=%s expires_at=%s (SES_ENABLED=false — not sent)",
+            to, user_name, code, expires_at.isoformat(),
+        )
+        return
+
+    # expires_at is stored naive UTC; promote to aware for the comparison.
+    ea = expires_at if expires_at.tzinfo else expires_at.replace(tzinfo=timezone.utc)
+    minutes = max(1, int((ea - datetime.now(timezone.utc)).total_seconds() // 60))
+
+    try:
+        message_id = send_password_reset_email(
+            to=to,
+            code=code,
+            expires_at_minutes=minutes,
+            user_name=user_name,
+        )
+    except Exception as err:
+        # Don't 500 the endpoint — the UI already showed "código enviado"; admin
+        # monitors delivery via this log line.
+        logger.error(
+            "[RESET] send failed to=%s error_type=%s error=%s",
+            to, type(err).__name__, err,
+        )
+        return
+
+    logger.info("[RESET] sent to=%s mask=**%s msg_id=%s", to, code[-2:], message_id)
 
 
 def _find_active_reset_verification(db: Session, email: str) -> Optional[UserVerification]:

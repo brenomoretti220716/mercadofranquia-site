@@ -18,32 +18,42 @@ relative path is stored in the DB.
 """
 from __future__ import annotations
 
+import asyncio
 import logging
 import os
-import re
 import uuid
 from datetime import datetime
-from pathlib import Path
-from typing import Any, Optional
+from typing import Any, Literal, Optional
 
 from fastapi import (
     APIRouter,
+    BackgroundTasks,
     Depends,
-    File,
-    Form,
     HTTPException,
-    UploadFile,
     status,
 )
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, model_validator
 from sqlalchemy import and_, func, or_, select
 from sqlalchemy.orm import Session, selectinload
 
-from app.db import get_db
+from app.constantes import (
+    FranchiseStatus,
+    FranchisorRequestMode,
+    FranchisorRequestStatus,
+    UserRole,
+)
+from app.db import SessionLocal, get_db
 from app.models import Franchise, FranchisorRequest, FranchisorUser, User
 from app.security import JwtPayload, get_current_user, require_role
+from app.services import hubspot_client
+from app.services.ses_mailer import (
+    send_admin_new_franchisor_request,
+    send_franchisor_approved,
+    send_franchisor_rejected,
+    send_franchisor_request_received,
+)
 from app.user_serializers import serialize_franchisor_request
-from app.validators import strip_non_digits, validate_cnpj, validate_phone_digits
+from app.utils.slug import generate_unique_slug
 
 router = APIRouter(prefix="/users/franchisor-request", tags=["franchisor-requests"])
 admin_router = APIRouter(
@@ -51,45 +61,115 @@ admin_router = APIRouter(
 )
 logger = logging.getLogger("mf-api.franchisor-requests")
 
-UPLOAD_ROOT = Path(os.environ.get("UPLOAD_PATH", "./uploads")).resolve()
-ALLOWED_EXTS = {".pdf", ".png", ".jpg", ".jpeg", ".webp"}
-MAX_FILE_BYTES = 10 * 1024 * 1024  # 10 MB
+class CreateFranchisorRequestBody(BaseModel):
+    mode: Literal["NEW", "EXISTING"]
+    streamName: Optional[str] = Field(default=None, min_length=2, max_length=191)
+    franchiseId: Optional[str] = None
+    claimReason: Optional[str] = Field(default=None, max_length=5000)
+
+    @model_validator(mode="after")
+    def _validate_mode_fields(self):
+        if self.mode == "NEW":
+            if not self.streamName:
+                raise ValueError("streamName is required for mode=NEW")
+            if self.franchiseId or self.claimReason:
+                raise ValueError(
+                    "franchiseId and claimReason are not allowed for mode=NEW"
+                )
+        elif self.mode == "EXISTING":
+            if not self.franchiseId:
+                raise ValueError("franchiseId is required for mode=EXISTING")
+            if self.streamName:
+                raise ValueError(
+                    "streamName is not allowed for mode=EXISTING (derived from franchise)"
+                )
+        return self
 
 
-def _safe_ext(filename: Optional[str]) -> str:
-    if not filename:
-        return ""
-    ext = Path(filename).suffix.lower()
-    return ext if ext in ALLOWED_EXTS else ""
+def _sync_hubspot_for_franchisor_request(
+    *,
+    user_id: str,
+    hubspot_contact_id: Optional[str],
+    stream_name: str,
+    mode: str,
+    franchise_id: Optional[str],
+) -> None:
+    """Background task: cria Company no HubSpot, atualiza Contact, vincula os dois
+    e persiste hubspotCompanyId na FranchisorRequest. Falhas só logam."""
 
-
-def _save_upload(upload: UploadFile, *, user_id: str, slot: str) -> str:
-    ext = _safe_ext(upload.filename)
-    if not ext:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail=f"Invalid file type for {slot}; allowed: {', '.join(sorted(ALLOWED_EXTS))}",
+    async def _run() -> Optional[str]:
+        company_id = await hubspot_client.create_franchisor_company(
+            stream_name=stream_name,
+            mode=mode,
+            franchise_id=franchise_id,
         )
-    content = upload.file.read()
-    if len(content) > MAX_FILE_BYTES:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail=f"File too large ({slot}); max {MAX_FILE_BYTES // (1024 * 1024)} MB",
+        if hubspot_contact_id:
+            await hubspot_client.update_contact_for_franchisor_request(
+                hubspot_contact_id=hubspot_contact_id,
+                mode=mode,
+            )
+        if company_id and hubspot_contact_id:
+            await hubspot_client.associate_contact_with_company(
+                hubspot_contact_id=hubspot_contact_id,
+                hubspot_company_id=company_id,
+            )
+        return company_id
+
+    try:
+        company_id = asyncio.run(_run())
+    except Exception as exc:
+        logger.exception("Falha na sync HubSpot pro user %s: %s", user_id, exc)
+        return
+
+    if not company_id:
+        return
+
+    db = SessionLocal()
+    try:
+        req = db.scalar(
+            select(FranchisorRequest)
+            .where(FranchisorRequest.userId == user_id)
+            .where(FranchisorRequest.status == FranchisorRequestStatus.PENDING)
+            .order_by(FranchisorRequest.createdAt.desc())
         )
-    if len(content) == 0:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail=f"Empty file for {slot}",
-        )
-    safe_user = re.sub(r"[^A-Za-z0-9_.-]", "", user_id)[:64] or "user"
-    dest_dir = UPLOAD_ROOT / "franchisor-requests" / safe_user
-    dest_dir.mkdir(parents=True, exist_ok=True)
-    name = f"{slot}-{uuid.uuid4().hex}{ext}"
-    dest = dest_dir / name
-    with open(dest, "wb") as f:
-        f.write(content)
-    # Return path relative to the upload root so it's portable.
-    return f"franchisor-requests/{safe_user}/{name}"
+        if req:
+            req.hubspotCompanyId = company_id
+            db.commit()
+            logger.info(
+                "hubspotCompanyId %s salvo na request %s", company_id, req.id
+            )
+    except Exception as exc:
+        logger.exception("Erro persistindo hubspotCompanyId: %s", exc)
+        db.rollback()
+    finally:
+        db.close()
+
+
+def _sync_hubspot_on_admin_decision(
+    *,
+    hubspot_contact_id: Optional[str],
+    hubspot_company_id: Optional[str],
+    decision: str,
+) -> None:
+    """Background task: aplica status APPROVED/REJECTED em contact+company no
+    HubSpot quando admin decide uma request. Falhas só logam."""
+
+    async def _run() -> None:
+        if decision == FranchisorRequestStatus.APPROVED:
+            if hubspot_contact_id:
+                await hubspot_client.mark_contact_approved(hubspot_contact_id)
+            if hubspot_company_id:
+                await hubspot_client.mark_company_approved(hubspot_company_id)
+        elif decision == FranchisorRequestStatus.REJECTED:
+            if hubspot_contact_id:
+                await hubspot_client.mark_contact_rejected(hubspot_contact_id)
+            if hubspot_company_id:
+                await hubspot_client.mark_company_rejected(hubspot_company_id)
+
+    try:
+        asyncio.run(_run())
+    except Exception as exc:  # noqa: BLE001
+        logger.exception("Falha sync HubSpot decisão %s: %s", decision, exc)
 
 
 # ---------------------------------------------------------------------------
@@ -98,80 +178,178 @@ def _save_upload(upload: UploadFile, *, user_id: str, slot: str) -> str:
 
 @router.post("", summary="Criar solicitação para virar FRANCHISOR")
 def create_request(
-    streamName: str = Form(..., min_length=1),
-    cnpj: str = Form(..., min_length=1),
-    responsable: str = Form(..., min_length=1),
-    responsableRole: str = Form(..., min_length=1),
-    commercialEmail: str = Form(..., min_length=1),
-    commercialPhone: str = Form(..., min_length=1),
-    cnpjCard: UploadFile = File(...),
-    socialContract: UploadFile = File(...),
+    body: CreateFranchisorRequestBody,
+    background_tasks: BackgroundTasks,
     current: JwtPayload = Depends(get_current_user),
     db: Session = Depends(get_db),
 ) -> dict[str, Any]:
-    # Validations mirror the Zod stepThreeSchema.
-    if not validate_cnpj(cnpj):
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid CNPJ"
+    user = db.scalar(select(User).where(User.id == current.id))
+    if user is None:
+        raise HTTPException(status.HTTP_404_NOT_FOUND, "User not found")
+
+    if body.mode == FranchisorRequestMode.NEW:
+        name_clean = body.streamName.strip()
+        existing_franchise = db.scalar(
+            select(Franchise).where(func.lower(Franchise.name) == name_clean.lower())
         )
-    if not validate_phone_digits(commercialPhone):
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Commercial phone must have 10 or 11 digits",
+        if existing_franchise is not None:
+            raise HTTPException(
+                status_code=status.HTTP_409_CONFLICT,
+                detail=(
+                    f"A franquia '{name_clean}' já existe no sistema. "
+                    f"Use o modo EXISTING passando franchiseId='{existing_franchise.id}' "
+                    f"para reivindicar a franquia existente."
+                ),
+            )
+
+        same_name_pending = db.scalar(
+            select(FranchisorRequest).where(
+                FranchisorRequest.userId == current.id,
+                FranchisorRequest.streamName == name_clean,
+                FranchisorRequest.mode == FranchisorRequestMode.NEW,
+                FranchisorRequest.status.in_(
+                    [
+                        FranchisorRequestStatus.PENDING,
+                        FranchisorRequestStatus.UNDER_REVIEW,
+                    ]
+                ),
+            )
         )
+        if same_name_pending is not None:
+            raise HTTPException(
+                status_code=status.HTTP_409_CONFLICT,
+                detail=(
+                    f"Você já tem um cadastro pendente para a marca '{name_clean}'. "
+                    f"Aguarde a análise ou cancele o cadastro anterior."
+                ),
+            )
 
-    # Simple e-mail sanity (full RFC validation is overkill here;
-    # Pydantic's EmailStr needs a BaseModel, which is awkward with Form fields).
-    if "@" not in commercialEmail or "." not in commercialEmail.split("@")[-1]:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid email format"
+        franchise_slug = generate_unique_slug(name_clean, db)
+
+        new_franchise = Franchise(
+            id=uuid.uuid4().hex,
+            name=name_clean,
+            slug=franchise_slug,
+            status=FranchiseStatus.PENDING,
+            isActive=False,
+            sponsorPlacements={},
+            ownerId=user.id,
         )
+        db.add(new_franchise)
+        db.flush()
 
-    cnpj_digits = strip_non_digits(cnpj)
-    phone_digits = strip_non_digits(commercialPhone)
-
-    # Uniqueness checks (one request per user; one per CNPJ).
-    existing_by_user = db.scalar(
-        select(FranchisorRequest).where(FranchisorRequest.userId == current.id)
-    )
-    if existing_by_user is not None:
-        raise HTTPException(
-            status_code=status.HTTP_409_CONFLICT,
-            detail="You already have a pending request",
+        new_request = FranchisorRequest(
+            id=uuid.uuid4().hex,
+            userId=user.id,
+            streamName=name_clean,
+            mode=FranchisorRequestMode.NEW,
+            franchiseId=new_franchise.id,
+            status=FranchisorRequestStatus.PENDING,
         )
-    existing_by_cnpj = db.scalar(
-        select(FranchisorRequest).where(FranchisorRequest.cnpj == cnpj_digits)
-    )
-    if existing_by_cnpj is not None:
-        raise HTTPException(
-            status_code=status.HTTP_409_CONFLICT, detail="CNPJ already in use"
+        db.add(new_request)
+
+        user.role = UserRole.FRANCHISOR
+
+        db.commit()
+    else:
+        target = db.scalar(select(Franchise).where(Franchise.id == body.franchiseId))
+        if target is None:
+            raise HTTPException(status.HTTP_404_NOT_FOUND, "Franchise not found")
+        if target.status != FranchiseStatus.APPROVED:
+            raise HTTPException(
+                status.HTTP_400_BAD_REQUEST,
+                "Only APPROVED franchises can be claimed",
+            )
+
+        own_claim_pending = db.scalar(
+            select(FranchisorRequest).where(
+                FranchisorRequest.userId == current.id,
+                FranchisorRequest.franchiseId == target.id,
+                FranchisorRequest.mode == FranchisorRequestMode.EXISTING,
+                FranchisorRequest.status.in_(
+                    [
+                        FranchisorRequestStatus.PENDING,
+                        FranchisorRequestStatus.UNDER_REVIEW,
+                    ]
+                ),
+            )
         )
+        if own_claim_pending is not None:
+            raise HTTPException(
+                status_code=status.HTTP_409_CONFLICT,
+                detail="Você já tem uma reivindicação pendente para esta franquia.",
+            )
 
-    cnpj_path = _save_upload(cnpjCard, user_id=current.id, slot="cnpjCard")
-    contract_path = _save_upload(socialContract, user_id=current.id, slot="socialContract")
+        other_claim = db.scalar(
+            select(FranchisorRequest).where(
+                FranchisorRequest.franchiseId == target.id,
+                FranchisorRequest.status.in_(
+                    [
+                        FranchisorRequestStatus.PENDING,
+                        FranchisorRequestStatus.UNDER_REVIEW,
+                    ]
+                ),
+            )
+        )
+        if other_claim is not None:
+            raise HTTPException(
+                status.HTTP_409_CONFLICT,
+                "Esta franquia já tem uma reivindicação em análise. "
+                "Se é você, entre em contato com contato@mercadofranquia.com.br.",
+            )
 
-    req = FranchisorRequest(
-        id=uuid.uuid4().hex,
-        userId=current.id,
-        streamName=streamName,
-        cnpj=cnpj_digits,
-        cnpjCardPath=cnpj_path,
-        socialContractPath=contract_path,
-        responsable=responsable,
-        responsableRole=responsableRole,
-        commercialEmail=commercialEmail,
-        commercialPhone=phone_digits,
-        status="PENDING",
-    )
-    db.add(req)
-    db.commit()
+        new_request = FranchisorRequest(
+            id=uuid.uuid4().hex,
+            userId=user.id,
+            streamName=target.name,
+            mode=FranchisorRequestMode.EXISTING,
+            franchiseId=target.id,
+            claimReason=body.claimReason,
+            status=FranchisorRequestStatus.PENDING,
+        )
+        db.add(new_request)
 
-    # Re-load with user relation for the response.
+        db.commit()
+
     req = db.scalar(
         select(FranchisorRequest)
-        .where(FranchisorRequest.id == req.id)
-        .options(selectinload(FranchisorRequest.user))
+        .where(FranchisorRequest.id == new_request.id)
+        .options(
+            selectinload(FranchisorRequest.user),
+            selectinload(FranchisorRequest.franchise),
+        )
     )
+
+    background_tasks.add_task(
+        send_franchisor_request_received,
+        to=user.email,
+        user_name=user.name,
+        stream_name=req.streamName,
+        mode=req.mode,
+    )
+
+    admins_env = os.environ.get("ADMIN_NOTIFICATION_EMAILS", "")
+    admin_emails = [e.strip() for e in admins_env.split(",") if e.strip()]
+    if admin_emails:
+        background_tasks.add_task(
+            send_admin_new_franchisor_request,
+            to_admins_list=admin_emails,
+            user_name=user.name,
+            user_email=user.email,
+            stream_name=req.streamName,
+            mode=req.mode,
+            request_id=req.id,
+        )
+
+    background_tasks.add_task(
+        _sync_hubspot_for_franchisor_request,
+        user_id=user.id,
+        hubspot_contact_id=user.hubspotContactId,
+        stream_name=req.streamName,
+        mode=req.mode,
+        franchise_id=req.franchiseId,
+    )
+
     return serialize_franchisor_request(req)  # type: ignore[arg-type]
 
 
@@ -229,17 +407,23 @@ def _serialize_admin_request(
         if user_extra_fields:
             user_block["createdAt"] = r.user.createdAt.isoformat() if r.user.createdAt else None
 
+    franchise_block: Optional[dict[str, Any]] = None
+    if getattr(r, "franchise", None) is not None:
+        franchise_block = {
+            "id": r.franchise.id,
+            "name": r.franchise.name,
+            "logoUrl": getattr(r.franchise, "logoUrl", None),
+            "status": r.franchise.status,
+        }
+
     return {
         "id": r.id,
         "userId": r.userId,
         "streamName": r.streamName,
-        "cnpj": r.cnpj,
-        "cnpjCardPath": r.cnpjCardPath,
-        "socialContractPath": r.socialContractPath,
-        "responsable": r.responsable,
-        "responsableRole": r.responsableRole,
-        "commercialEmail": r.commercialEmail,
-        "commercialPhone": r.commercialPhone,
+        "mode": r.mode,
+        "franchiseId": r.franchiseId,
+        "claimReason": r.claimReason,
+        "hubspotCompanyId": r.hubspotCompanyId,
         "status": r.status,
         "rejectionReason": r.rejectionReason,
         "reviewedBy": r.reviewedBy,
@@ -248,6 +432,7 @@ def _serialize_admin_request(
         "updatedAt": r.updatedAt.isoformat() if r.updatedAt else None,
         "user": user_block,
         "reviewer": reviewer_map.get(r.reviewedBy) if r.reviewedBy else None,
+        "franchise": franchise_block,
     }
 
 
@@ -264,14 +449,14 @@ def _load_reviewer_map(
 
 
 def _admin_search_clause(search: Optional[str]) -> Optional[Any]:
-    """OR(user.name ilike, user.email ilike, cnpj contains)."""
+    """OR(user.name ilike, user.email ilike, streamName ilike)."""
     if not search or not search.strip():
         return None
     pat = f"%{search.strip()}%"
     return or_(
         User.name.ilike(pat),
         User.email.ilike(pat),
-        FranchisorRequest.cnpj.contains(search.strip()),
+        FranchisorRequest.streamName.ilike(pat),
     )
 
 
@@ -406,82 +591,82 @@ def get_request_by_id(
 @admin_router.post("/{request_id}/approve", summary="Aprovar solicitação")
 def approve_request(
     request_id: str,
-    body: ApproveRequestBody,
-    admin: JwtPayload = Depends(require_role("ADMIN")),
+    background_tasks: BackgroundTasks,
+    current: JwtPayload = Depends(require_role("ADMIN")),
     db: Session = Depends(get_db),
 ) -> dict[str, Any]:
-    req = db.scalar(select(FranchisorRequest).where(FranchisorRequest.id == request_id))
-    if req is None:
-        raise HTTPException(status.HTTP_404_NOT_FOUND, "Request not found")
-    if req.status != "PENDING":
-        raise HTTPException(
-            status.HTTP_400_BAD_REQUEST, "Request has already been reviewed"
-        )
-
-    franchises = db.scalars(
-        select(Franchise)
-        .where(Franchise.id.in_(body.ownedFranchises))
-        .options(selectinload(Franchise.owner))
-    ).all()
-    if len(franchises) != len(body.ownedFranchises):
-        raise HTTPException(
-            status.HTTP_400_BAD_REQUEST, "One or more franchises do not exist"
-        )
-    already_owned = [f for f in franchises if f.owner is not None]
-    if already_owned:
-        raise HTTPException(
-            status.HTTP_409_CONFLICT,
-            "Uma ou mais franquias selecionadas já estão vinculadas a outro franqueador. "
-            "Atualize a lista e tente novamente.",
-        )
-
-    # Single SQLAlchemy unit-of-work — all writes commit together; any raise
-    # before commit means nothing is persisted (FastAPI's get_db closes the
-    # session without commit on exceptions).
-    now = datetime.utcnow()
-    req.status = "APPROVED"
-    req.reviewedBy = admin.id
-    req.reviewedAt = now
-
-    db.add(
-        FranchisorUser(
-            id=uuid.uuid4().hex,
-            userId=req.userId,
-            streamName=req.streamName,
-            cnpj=req.cnpj,
-            cnpjCardPath=req.cnpjCardPath,
-            socialContractPath=req.socialContractPath,
-            responsable=req.responsable,
-            responsableRole=req.responsableRole,
-            commercialEmail=req.commercialEmail,
-            commercialPhone=req.commercialPhone,
+    req = db.scalar(
+        select(FranchisorRequest)
+        .where(FranchisorRequest.id == request_id)
+        .options(
+            selectinload(FranchisorRequest.user),
+            selectinload(FranchisorRequest.franchise),
         )
     )
+    if req is None:
+        raise HTTPException(status_code=404, detail="Request not found")
+    if req.status == FranchisorRequestStatus.APPROVED:
+        raise HTTPException(status_code=409, detail="Request already approved")
 
-    target = db.scalar(select(User).where(User.id == req.userId))
-    if target is None:
-        # Should be impossible (FK), but guard against orphaned data.
-        raise HTTPException(status.HTTP_404_NOT_FOUND, "Target user not found")
-    target.role = "FRANCHISOR"
+    user = req.user
+    if user is None:
+        raise HTTPException(status_code=500, detail="Request has no associated user")
 
-    for f in franchises:
-        f.ownerId = req.userId
+    if req.mode == FranchisorRequestMode.NEW:
+        franchise = req.franchise
+        if franchise is None:
+            raise HTTPException(
+                status_code=500,
+                detail="NEW request sem franchise associada — inconsistência de dados",
+            )
+        franchise.status = FranchiseStatus.APPROVED
+        franchise.isActive = True
+        # user.role já é FRANCHISOR desde o create_request
+    elif req.mode == FranchisorRequestMode.EXISTING:
+        user.role = UserRole.FRANCHISOR
+        franchise = req.franchise
+        if franchise is not None:
+            franchise.ownerId = user.id
+    else:
+        raise HTTPException(
+            status_code=500,
+            detail=f"mode desconhecido: {req.mode}",
+        )
+
+    req.status = FranchisorRequestStatus.APPROVED
+    req.rejectionReason = None
+    req.reviewedBy = current.id
+    req.reviewedAt = datetime.utcnow()
+
+    existing_fu = db.scalar(
+        select(FranchisorUser).where(FranchisorUser.userId == user.id)
+    )
+    if existing_fu is None:
+        db.add(
+            FranchisorUser(
+                id=uuid.uuid4().hex,
+                userId=user.id,
+                streamName=req.streamName,
+            )
+        )
 
     db.commit()
+    db.refresh(req)
 
-    # Side effects from NestJS that we don't have ports for yet:
-    #   - emailService.sendUserUpdateNotification
-    #   - notificationsService.notifyRequestApproved
-    # Logged so it's traceable until those services are ported.
-    logger.warning(
-        "[approve_request] approved request=%s for user=%s by admin=%s — "
-        "skipped email + in-app notification (services not ported yet)",
-        req.id,
-        req.userId,
-        admin.id,
+    background_tasks.add_task(
+        send_franchisor_approved,
+        to=user.email,
+        user_name=user.name,
+        stream_name=req.streamName,
+    )
+    background_tasks.add_task(
+        _sync_hubspot_on_admin_decision,
+        hubspot_contact_id=user.hubspotContactId,
+        hubspot_company_id=req.hubspotCompanyId,
+        decision=FranchisorRequestStatus.APPROVED,
     )
 
-    return {"message": "Request approved successfully"}
+    return {"message": "Request approved successfully", "requestId": req.id}
 
 
 # ---------------------------------------------------------------------------
@@ -492,29 +677,134 @@ def approve_request(
 def reject_request(
     request_id: str,
     body: RejectRequestBody,
-    admin: JwtPayload = Depends(require_role("ADMIN")),
+    background_tasks: BackgroundTasks,
+    current: JwtPayload = Depends(require_role("ADMIN")),
     db: Session = Depends(get_db),
 ) -> dict[str, Any]:
-    req = db.scalar(select(FranchisorRequest).where(FranchisorRequest.id == request_id))
-    if req is None:
-        raise HTTPException(status.HTTP_404_NOT_FOUND, "Request not found")
-    if req.status != "PENDING":
+    if not body.rejectionReason or len(body.rejectionReason.strip()) == 0:
         raise HTTPException(
-            status.HTTP_400_BAD_REQUEST, "Request has already been reviewed"
+            status_code=400,
+            detail="rejectionReason is required and cannot be empty",
         )
 
-    req.status = "REJECTED"
-    req.rejectionReason = body.rejectionReason
-    req.reviewedBy = admin.id
-    req.reviewedAt = datetime.utcnow()
-    db.commit()
+    req = db.scalar(
+        select(FranchisorRequest)
+        .where(FranchisorRequest.id == request_id)
+        .options(
+            selectinload(FranchisorRequest.user),
+            selectinload(FranchisorRequest.franchise),
+        )
+    )
+    if req is None:
+        raise HTTPException(status_code=404, detail="Request not found")
+    if req.status == FranchisorRequestStatus.REJECTED:
+        raise HTTPException(status_code=409, detail="Request already rejected")
 
-    logger.warning(
-        "[reject_request] rejected request=%s for user=%s by admin=%s — "
-        "skipped email + in-app notification (services not ported yet)",
-        req.id,
-        req.userId,
-        admin.id,
+    user = req.user
+    if user is None:
+        raise HTTPException(status_code=500, detail="Request has no associated user")
+
+    if req.mode == FranchisorRequestMode.NEW:
+        franchise = req.franchise
+        if franchise is not None:
+            franchise.status = FranchiseStatus.REJECTED
+            franchise.isActive = False
+        user.role = UserRole.MEMBER
+    elif req.mode == FranchisorRequestMode.EXISTING:
+        pass
+
+    req.status = FranchisorRequestStatus.REJECTED
+    req.rejectionReason = body.rejectionReason.strip()
+    req.reviewedBy = current.id
+    req.reviewedAt = datetime.utcnow()
+
+    db.commit()
+    db.refresh(req)
+
+    background_tasks.add_task(
+        send_franchisor_rejected,
+        to=user.email,
+        user_name=user.name,
+        stream_name=req.streamName,
+        rejection_reason=req.rejectionReason,
+    )
+    background_tasks.add_task(
+        _sync_hubspot_on_admin_decision,
+        hubspot_contact_id=user.hubspotContactId,
+        hubspot_company_id=req.hubspotCompanyId,
+        decision=FranchisorRequestStatus.REJECTED,
     )
 
-    return {"message": "Request rejected successfully"}
+    return {"message": "Request rejected successfully", "requestId": req.id}
+
+
+# ---------------------------------------------------------------------------
+# POST /admin/franchisor-requests/:id/reopen
+# ---------------------------------------------------------------------------
+
+@admin_router.post(
+    "/{request_id}/reopen",
+    summary="Reabre uma request rejeitada (volta a PENDING)",
+)
+def reopen_request(
+    request_id: str,
+    background_tasks: BackgroundTasks,
+    current: JwtPayload = Depends(require_role("ADMIN")),
+    db: Session = Depends(get_db),
+) -> dict[str, Any]:
+    req = db.scalar(
+        select(FranchisorRequest)
+        .where(FranchisorRequest.id == request_id)
+        .options(
+            selectinload(FranchisorRequest.user),
+            selectinload(FranchisorRequest.franchise),
+        )
+    )
+    if req is None:
+        raise HTTPException(status_code=404, detail="Request not found")
+    if req.status != FranchisorRequestStatus.REJECTED:
+        raise HTTPException(
+            status_code=409,
+            detail=f"Só é possível reabrir requests REJECTED. Status atual: {req.status}",
+        )
+
+    user = req.user
+    if user is None:
+        raise HTTPException(status_code=500, detail="Request has no associated user")
+
+    if req.mode == FranchisorRequestMode.NEW:
+        franchise = req.franchise
+        if franchise is not None:
+            franchise.status = FranchiseStatus.PENDING
+            franchise.isActive = False
+        user.role = UserRole.FRANCHISOR
+    elif req.mode == FranchisorRequestMode.EXISTING:
+        pass
+
+    req.status = FranchisorRequestStatus.PENDING
+    req.rejectionReason = None
+    req.reviewedBy = None
+    req.reviewedAt = None
+
+    db.commit()
+    db.refresh(req)
+
+    hubspot_contact_id = user.hubspotContactId
+    mode = req.mode
+
+    def _reopen_hubspot() -> None:
+        async def _run() -> None:
+            if hubspot_contact_id:
+                await hubspot_client.update_contact_for_franchisor_request(
+                    hubspot_contact_id=hubspot_contact_id,
+                    mode=mode,
+                )
+
+        try:
+            asyncio.run(_run())
+        except Exception as exc:  # noqa: BLE001
+            logger.exception("Falha reopen HubSpot: %s", exc)
+
+    background_tasks.add_task(_reopen_hubspot)
+
+    return {"message": "Request reopened successfully", "requestId": req.id}

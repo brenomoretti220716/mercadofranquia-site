@@ -25,6 +25,14 @@ from app.security import (
 from app.user_serializers import serialize_user
 from app.validators import strip_non_digits, validate_phone_digits
 
+from fastapi import BackgroundTasks
+from app.db import SessionLocal
+from app.services import hubspot_client
+from app.services.ses_mailer import send_welcome_email
+import logging
+
+logger = logging.getLogger(__name__)
+
 router = APIRouter(prefix="/users/register", tags=["register"])
 
 ROLE_LITERAL = Literal["FRANCHISEE", "CANDIDATE", "ENTHUSIAST", "FRANCHISOR"]
@@ -83,8 +91,70 @@ class StepTwoBody(BaseModel):
 # POST /users/register/step-one
 # ---------------------------------------------------------------------------
 
+def _sync_hubspot_for_new_investor(
+    *, user_id: str, email: str, name: str, phone: str
+) -> None:
+    """
+    Background task: cria Contact no HubSpot e persiste hubspotContactId no User.
+
+    Falhas aqui nunca propagam pro usuário — o cadastro já foi feito.
+    Se HubSpot estiver fora, user continua sem hubspotContactId (pode ser
+    sincronizado depois).
+    """
+    import asyncio
+
+    try:
+        contact_id = asyncio.run(
+            hubspot_client.create_investor_contact(
+                email=email,
+                name=name,
+                phone=phone,
+                user_id=user_id,
+            )
+        )
+    except Exception as exc:  # noqa: BLE001
+        logger.exception(
+            "Falha ao criar contact HubSpot pro user %s: %s", user_id, exc
+        )
+        return
+
+    if not contact_id:
+        logger.warning(
+            "HubSpot retornou contact_id vazio pro user %s — não persistindo",
+            user_id,
+        )
+        return
+
+    # Persistir hubspotContactId no banco. Abre nova sessão porque a original
+    # já fechou (endpoint retornou antes dessa task rodar).
+    db = SessionLocal()
+    try:
+        user = db.get(User, user_id)
+        if user is None:
+            logger.error(
+                "User %s sumiu do banco entre o cadastro e a sync HubSpot", user_id
+            )
+            return
+        user.hubspotContactId = contact_id
+        db.commit()
+        logger.info(
+            "hubspotContactId %s salvo pro user %s", contact_id, user_id
+        )
+    except Exception as exc:  # noqa: BLE001
+        logger.exception(
+            "Erro persistindo hubspotContactId pro user %s: %s", user_id, exc
+        )
+        db.rollback()
+    finally:
+        db.close()
+
+
 @router.post("/step-one", summary="Registro passo 1 (cria conta)")
-def step_one(body: StepOneBody, db: Session = Depends(get_db)) -> dict[str, Any]:
+def step_one(
+    body: StepOneBody,
+    background_tasks: BackgroundTasks,
+    db: Session = Depends(get_db),
+) -> dict[str, Any]:
     # Conflict checks match NestJS usersService.stepOneRegister.
     if db.scalar(select(User).where(User.email == body.email)) is not None:
         raise HTTPException(
@@ -112,6 +182,20 @@ def step_one(body: StepOneBody, db: Session = Depends(get_db)) -> dict[str, Any]
     db.add(new_user)
     db.commit()
     db.refresh(new_user)
+
+    # Background tasks (não bloqueiam a resposta): enviar welcome email + sync HubSpot
+    background_tasks.add_task(
+        send_welcome_email,
+        to=new_user.email,
+        user_name=new_user.name,
+    )
+    background_tasks.add_task(
+        _sync_hubspot_for_new_investor,
+        user_id=new_user.id,
+        email=new_user.email,
+        name=new_user.name,
+        phone=new_user.phone,
+    )
 
     token = issue_token({
         "id": new_user.id,

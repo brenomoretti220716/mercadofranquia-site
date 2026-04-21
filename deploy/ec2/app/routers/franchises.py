@@ -22,6 +22,7 @@ from typing import Any, Literal, Optional
 
 from fastapi import (
     APIRouter,
+    BackgroundTasks,
     Depends,
     File,
     HTTPException,
@@ -29,16 +30,27 @@ from fastapi import (
     UploadFile,
     status,
 )
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from sqlalchemy import func, or_, select
 from sqlalchemy.orm import Session, selectinload
 
-from app.db import get_db
-from app.models import ContactInfo, Franchise, Review
-from app.security import JwtPayload, require_role
+from app.db import SessionLocal, get_db
+from app.models import ContactInfo, Franchise, Review, User
+from app.security import JwtPayload, get_optional_user, require_role
 from app.serializers import serialize_franchise
+from app.services import hubspot_client
+from app.services.ses_mailer import (
+    send_additional_franchise_approved,
+    send_additional_franchise_received,
+    send_additional_franchise_rejected,
+)
+from app.utils.slug import generate_unique_slug
 
 router = APIRouter(prefix="/franchises", tags=["franchises"])
+franchisor_router = APIRouter(
+    prefix="/franchisor/franchises",
+    tags=["franchisor-franchises"],
+)
 logger = logging.getLogger("mf-api.franchises")
 
 # Mirrors the Prisma SponsorPlacement enum.
@@ -60,6 +72,10 @@ SORT_COLUMNS = {
 def _apply_filters(stmt, *, only_active: bool, filters: dict):
     if only_active:
         stmt = stmt.where(Franchise.isActive.is_(True))
+        # Defesa em profundidade: além de isActive, filtra explicitamente por status.
+        # Previne que franquias PENDING/REJECTED vazem pro público mesmo se alguém
+        # setar isActive=true manualmente sem passar pelo fluxo de aprovação.
+        stmt = stmt.where(Franchise.status == "APPROVED")
 
     search = filters.get("search")
     if search:
@@ -221,6 +237,8 @@ def count_franchises(
     stmt = select(func.count(Franchise.id))
     if isActive is not None:
         stmt = stmt.where(Franchise.isActive == isActive)
+    # Só conta franquias aprovadas (consistente com /franchises list)
+    stmt = stmt.where(Franchise.status == "APPROVED")
     if segment:
         stmt = stmt.where(Franchise.segment.ilike(f"%{segment}%"))
     if minInvestment is not None:
@@ -576,7 +594,17 @@ def get_franchise_ranking(
 
 
 @router.get("/{slug}", summary="Get a single franchise by slug (or id)")
-def get_franchise(slug: str, db: Session = Depends(get_db)):
+def get_franchise(
+    slug: str,
+    db: Session = Depends(get_db),
+    current: Optional[JwtPayload] = Depends(get_optional_user),
+):
+    """
+    Regras de visibilidade:
+    - Franchise APPROVED: qualquer um pode ver (público).
+    - Franchise PENDING/REJECTED: só owner ou admin pode ver.
+    - Se não se enquadra, retorna 404 (não 403, pra não vazar existência).
+    """
     stmt = (
         select(Franchise)
         .where(or_(Franchise.slug == slug, Franchise.id == slug))
@@ -590,6 +618,13 @@ def get_franchise(slug: str, db: Session = Depends(get_db)):
     franchise = db.scalars(stmt).first()
     if franchise is None:
         raise HTTPException(status_code=404, detail="Franchise not found")
+
+    if franchise.status != "APPROVED":
+        is_admin = current is not None and current.role == "ADMIN"
+        is_owner = current is not None and current.id == franchise.ownerId
+        if not (is_admin or is_owner):
+            raise HTTPException(status_code=404, detail="Franchise not found")
+
     return {"data": serialize_franchise(franchise, include_relations=True)}
 
 
@@ -1027,3 +1062,362 @@ async def update_franchise_from_csv(
     )
 
     return {"total": 1, "success": 1, "failed": 0, "errors": []}
+
+
+# ===========================================================================
+# Franchisor-facing endpoints — under /franchisor/franchises (franchisor_router)
+#
+#   GET  /franchisor/franchises/me       list franchises owned by caller
+#   POST /franchisor/franchises          create an additional brand (PENDING)
+# ===========================================================================
+
+
+class CreateAdditionalFranchiseBody(BaseModel):
+    """Payload pra franqueador aprovado criar uma marca adicional."""
+    streamName: str = Field(..., min_length=2, max_length=150)
+    description: Optional[str] = Field(None, max_length=1000)
+    detailedDescription: Optional[str] = Field(None, max_length=10000)
+    logoUrl: Optional[str] = Field(None, max_length=500)
+    segment: Optional[str] = Field(None, max_length=100)
+    subsegment: Optional[str] = Field(None, max_length=100)
+    headquarter: Optional[str] = Field(None, max_length=100)
+    headquarterState: Optional[str] = Field(None, max_length=2)
+
+
+def _sync_hubspot_for_additional_franchise(
+    *,
+    franchise_id: str,
+    franchise_name: str,
+    user_id: str,
+    hubspot_contact_id: Optional[str],
+) -> None:
+    """Background task: cria Company no HubSpot pra franquia adicional,
+    associa ao Contact do franqueador. Falhas só logam."""
+    import asyncio
+
+    async def _run() -> None:
+        company_id = await hubspot_client.create_franchisor_company(
+            stream_name=franchise_name,
+            mode="NEW",
+            franchise_id=franchise_id,
+        )
+        if not company_id:
+            logger.warning(
+                "HubSpot create_franchisor_company retornou None pra franquia adicional %s",
+                franchise_id,
+            )
+            return
+
+        db2 = SessionLocal()
+        try:
+            franchise = db2.get(Franchise, franchise_id)
+            if franchise is None:
+                logger.warning(
+                    "Franchise %s sumiu antes do sync HubSpot", franchise_id
+                )
+                return
+            if hubspot_contact_id:
+                await hubspot_client.associate_contact_with_company(
+                    hubspot_contact_id=hubspot_contact_id,
+                    hubspot_company_id=company_id,
+                )
+        finally:
+            db2.close()
+
+    try:
+        asyncio.run(_run())
+    except Exception as exc:  # noqa: BLE001
+        logger.exception(
+            "Falha sync HubSpot franquia adicional %s: %s", franchise_id, exc
+        )
+
+
+@franchisor_router.get("/me", summary="Lista franquias do franqueador autenticado")
+def my_franchises(
+    db: Session = Depends(get_db),
+    current: JwtPayload = Depends(require_role("FRANCHISOR")),
+) -> dict[str, Any]:
+    """
+    Retorna todas as Franchises do user autenticado (ownerId=current.id),
+    incluindo PENDING/REJECTED. Usado no painel do franqueador pra mostrar
+    banner de status ("aprovada", "em análise", "rejeitada").
+    """
+    stmt = (
+        select(Franchise)
+        .where(Franchise.ownerId == current.id)
+        .options(selectinload(Franchise.contact))
+        .order_by(Franchise.createdAt.desc())
+    )
+    rows = db.scalars(stmt).all()
+
+    return {
+        "data": [serialize_franchise(f) for f in rows],
+        "total": len(rows),
+    }
+
+
+@franchisor_router.post("", summary="Franqueador cria marca adicional")
+def create_additional_franchise(
+    body: CreateAdditionalFranchiseBody,
+    background_tasks: BackgroundTasks,
+    db: Session = Depends(get_db),
+    current: JwtPayload = Depends(require_role("FRANCHISOR")),
+) -> dict[str, Any]:
+    """
+    Franqueador aprovado cria uma marca adicional.
+    - Cria Franchise com status=PENDING, isActive=False, ownerId=current.id
+    - Gera slug automático único
+    - Dispara sync HubSpot (Company + Association com Contact)
+    - Dispara email pra admins notificando
+
+    Bloqueia se:
+    - Já existe Franchise com esse nome (sugere usar painel existente)
+    - User já tem marca adicional PENDING com mesmo nome (evita spam)
+    """
+    name_clean = body.streamName.strip()
+    if len(name_clean) < 2:
+        raise HTTPException(status_code=400, detail="streamName muito curto")
+
+    existing_by_name = db.scalar(
+        select(Franchise).where(Franchise.name == name_clean)
+    )
+    if existing_by_name is not None:
+        raise HTTPException(
+            status_code=409,
+            detail=(
+                f"Já existe uma franquia cadastrada com o nome '{name_clean}'. "
+                f"Se for sua, acesse pelo painel. Se não for, escolha outro nome."
+            ),
+        )
+
+    own_pending = db.scalar(
+        select(Franchise).where(
+            Franchise.ownerId == current.id,
+            Franchise.name == name_clean,
+            Franchise.status == "PENDING",
+        )
+    )
+    if own_pending is not None:
+        raise HTTPException(
+            status_code=409,
+            detail=f"Você já tem uma marca '{name_clean}' pendente de aprovação.",
+        )
+
+    franchise_slug = generate_unique_slug(name_clean, db)
+
+    user = db.get(User, current.id)
+    if user is None:
+        raise HTTPException(
+            status_code=500, detail="User autenticado não encontrado no banco"
+        )
+
+    new_franchise = Franchise(
+        id=uuid.uuid4().hex,
+        name=name_clean,
+        slug=franchise_slug,
+        status="PENDING",
+        isActive=False,
+        ownerId=current.id,
+        description=body.description,
+        detailedDescription=body.detailedDescription,
+        logoUrl=body.logoUrl,
+        segment=body.segment,
+        subsegment=body.subsegment,
+        headquarter=body.headquarter,
+        headquarterState=body.headquarterState,
+        sponsorPlacements={},
+    )
+    db.add(new_franchise)
+    db.commit()
+    db.refresh(new_franchise)
+
+    background_tasks.add_task(
+        _sync_hubspot_for_additional_franchise,
+        franchise_id=new_franchise.id,
+        franchise_name=new_franchise.name,
+        user_id=current.id,
+        hubspot_contact_id=user.hubspotContactId,
+    )
+
+    admin_emails = db.scalars(
+        select(User.email).where(User.role == "ADMIN", User.isActive.is_(True))
+    ).all()
+    for admin_email in admin_emails:
+        background_tasks.add_task(
+            send_additional_franchise_received,
+            to=admin_email,
+            franchisor_name=user.name,
+            franchisor_email=user.email,
+            stream_name=name_clean,
+            franchise_id=new_franchise.id,
+        )
+
+    return {
+        "data": serialize_franchise(new_franchise),
+        "message": "Franquia criada com sucesso. Aguardando aprovação do admin.",
+    }
+
+
+# ===========================================================================
+# Admin decision endpoints — approve/reject any Franchise (additional brands
+# created by franchisors via POST /franchisor/franchises, or any PENDING row).
+#
+#   POST /franchises/admin/{id}/approve
+#   POST /franchises/admin/{id}/reject
+# ===========================================================================
+
+
+class RejectFranchiseBody(BaseModel):
+    rejectionReason: str = Field(..., min_length=5, max_length=1000)
+
+
+def _sync_hubspot_on_franchise_decision(
+    *,
+    franchise_id: str,
+    decision: str,
+) -> None:
+    """Background task: atualiza status da Company no HubSpot.
+    decision: 'APPROVED' ou 'REJECTED'."""
+    import asyncio
+
+    async def _run() -> None:
+        company_id = await hubspot_client.get_company_by_franchise_id(franchise_id)
+        if not company_id:
+            logger.warning(
+                "HubSpot: sem Company pra franchise_id=%s, skip sync %s",
+                franchise_id,
+                decision,
+            )
+            return
+        if decision == "APPROVED":
+            await hubspot_client.mark_company_approved(company_id)
+        elif decision == "REJECTED":
+            await hubspot_client.mark_company_rejected(company_id)
+
+    try:
+        asyncio.run(_run())
+    except Exception as exc:  # noqa: BLE001
+        logger.exception(
+            "Falha sync HubSpot decisão franquia %s %s: %s",
+            decision,
+            franchise_id,
+            exc,
+        )
+
+
+@router.post(
+    "/admin/{franchise_id}/approve",
+    summary="Admin aprova franquia (adicional ou qualquer PENDING)",
+)
+def admin_approve_franchise(
+    franchise_id: str,
+    background_tasks: BackgroundTasks,
+    db: Session = Depends(get_db),
+    _admin: JwtPayload = Depends(require_role("ADMIN")),
+) -> dict[str, Any]:
+    """
+    Aprova uma Franchise:
+    - status → APPROVED
+    - isActive → true (passa a aparecer no site público)
+    - Sync HubSpot Company
+    - Email pro owner (franqueador)
+
+    Funciona pra qualquer Franchise em PENDING, independente de ter FranchisorRequest associada.
+    Usado principalmente pras marcas adicionais criadas via POST /franchisor/franchises.
+    """
+    franchise = db.scalar(
+        select(Franchise)
+        .where(Franchise.id == franchise_id)
+        .options(selectinload(Franchise.owner))
+    )
+    if franchise is None:
+        raise HTTPException(status_code=404, detail="Franchise not found")
+
+    if franchise.status == "APPROVED":
+        raise HTTPException(status_code=409, detail="Franchise já está aprovada")
+
+    franchise.status = "APPROVED"
+    franchise.isActive = True
+    db.commit()
+    db.refresh(franchise)
+
+    if franchise.owner is not None:
+        background_tasks.add_task(
+            send_additional_franchise_approved,
+            to=franchise.owner.email,
+            user_name=franchise.owner.name,
+            stream_name=franchise.name,
+            franchise_slug=franchise.slug or franchise.id,
+        )
+
+    background_tasks.add_task(
+        _sync_hubspot_on_franchise_decision,
+        franchise_id=franchise.id,
+        decision="APPROVED",
+    )
+
+    return {
+        "message": "Franchise approved successfully",
+        "franchiseId": franchise.id,
+        "slug": franchise.slug,
+    }
+
+
+@router.post(
+    "/admin/{franchise_id}/reject",
+    summary="Admin rejeita franquia",
+)
+def admin_reject_franchise(
+    franchise_id: str,
+    body: RejectFranchiseBody,
+    background_tasks: BackgroundTasks,
+    db: Session = Depends(get_db),
+    _admin: JwtPayload = Depends(require_role("ADMIN")),
+) -> dict[str, Any]:
+    """
+    Rejeita uma Franchise:
+    - status → REJECTED
+    - isActive → false (se estava true, deixa de aparecer no site)
+    - Sync HubSpot Company
+    - Email pro owner com motivo
+    """
+    franchise = db.scalar(
+        select(Franchise)
+        .where(Franchise.id == franchise_id)
+        .options(selectinload(Franchise.owner))
+    )
+    if franchise is None:
+        raise HTTPException(status_code=404, detail="Franchise not found")
+
+    if franchise.status == "REJECTED":
+        raise HTTPException(status_code=409, detail="Franchise já está rejeitada")
+
+    reason = body.rejectionReason.strip()
+    if not reason:
+        raise HTTPException(status_code=400, detail="rejectionReason vazio")
+
+    franchise.status = "REJECTED"
+    franchise.isActive = False
+    db.commit()
+    db.refresh(franchise)
+
+    if franchise.owner is not None:
+        background_tasks.add_task(
+            send_additional_franchise_rejected,
+            to=franchise.owner.email,
+            user_name=franchise.owner.name,
+            stream_name=franchise.name,
+            rejection_reason=reason,
+        )
+
+    background_tasks.add_task(
+        _sync_hubspot_on_franchise_decision,
+        franchise_id=franchise.id,
+        decision="REJECTED",
+    )
+
+    return {
+        "message": "Franchise rejected successfully",
+        "franchiseId": franchise.id,
+        "rejectionReason": reason,
+    }

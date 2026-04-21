@@ -100,6 +100,9 @@ class User(Base):
     )
     cpf: Mapped[Optional[str]] = mapped_column(String(191), unique=True)
     phone: Mapped[str] = mapped_column(String(191), nullable=False, unique=True)
+    hubspotContactId: Mapped[Optional[str]] = mapped_column(
+        "hubspotContactId", String(100)
+    )
 
     # Relationships
     profile: Mapped[Optional["UserProfile"]] = relationship(
@@ -217,6 +220,7 @@ class Franchise(Base):
         Index("Franchise_averageMonthlyRevenue_idx", "averageMonthlyRevenue"),
         Index("Franchise_minimumReturnOnInvestment_idx", "minimumReturnOnInvestment"),
         Index("Franchise_isActive_idx", "isActive"),
+        Index("Franchise_status_idx", "status"),
         Index("Franchise_isActive_segment_idx", "isActive", "segment"),
         Index("Franchise_isActive_totalUnits_idx", "isActive", "totalUnits"),
         Index("Franchise_isSponsored_idx", "isSponsored"),
@@ -267,6 +271,9 @@ class Franchise(Base):
     )
     isActive: Mapped[bool] = mapped_column(
         "isActive", nullable=False, default=True, server_default="true"
+    )
+    status: Mapped[str] = mapped_column(
+        String(20), nullable=False, default="APPROVED", server_default="APPROVED"
     )
     brandFoundationYear: Mapped[Optional[int]] = mapped_column("brandFoundationYear")
     description: Mapped[Optional[str]] = mapped_column(Text)
@@ -689,17 +696,6 @@ class FranchisorUser(Base):
         nullable=False,
         unique=True,
     )
-    cnpj: Mapped[str] = mapped_column(String(191), nullable=False, unique=True)
-    responsable: Mapped[str] = mapped_column(String(191), nullable=False)
-    responsableRole: Mapped[str] = mapped_column(
-        "responsableRole", String(191), nullable=False
-    )
-    commercialEmail: Mapped[str] = mapped_column(
-        "commercialEmail", String(191), nullable=False
-    )
-    commercialPhone: Mapped[str] = mapped_column(
-        "commercialPhone", String(191), nullable=False
-    )
     createdAt: Mapped[datetime] = mapped_column(
         "createdAt",
         DateTime(timezone=False),
@@ -712,10 +708,6 @@ class FranchisorUser(Base):
         nullable=False,
         default=func.now(),
         onupdate=func.now(),
-    )
-    cnpjCardPath: Mapped[Optional[str]] = mapped_column("cnpjCardPath", String(191))
-    socialContractPath: Mapped[str] = mapped_column(
-        "socialContractPath", String(191), nullable=False
     )
 
     user: Mapped["User"] = relationship(back_populates="franchisor_profile")
@@ -738,23 +730,6 @@ class FranchisorRequest(Base):
         unique=True,
     )
     streamName: Mapped[str] = mapped_column("streamName", String(191), nullable=False)
-    cnpj: Mapped[str] = mapped_column(String(191), nullable=False, unique=True)
-    cnpjCardPath: Mapped[str] = mapped_column(
-        "cnpjCardPath", String(191), nullable=False
-    )
-    socialContractPath: Mapped[str] = mapped_column(
-        "socialContractPath", String(191), nullable=False
-    )
-    responsable: Mapped[str] = mapped_column(String(191), nullable=False)
-    responsableRole: Mapped[str] = mapped_column(
-        "responsableRole", String(191), nullable=False
-    )
-    commercialEmail: Mapped[str] = mapped_column(
-        "commercialEmail", String(191), nullable=False
-    )
-    commercialPhone: Mapped[str] = mapped_column(
-        "commercialPhone", String(191), nullable=False
-    )
     status: Mapped[str] = mapped_column(
         String(20), nullable=False, default="PENDING", server_default="PENDING"
     )
@@ -780,9 +755,24 @@ class FranchisorRequest(Base):
         default=func.now(),
         onupdate=func.now(),
     )
+    mode: Mapped[str] = mapped_column(
+        String(20), nullable=False, default="NEW", server_default="NEW"
+    )
+    franchiseId: Mapped[Optional[str]] = mapped_column(
+        "franchiseId",
+        String(191),
+        ForeignKey("Franchise.id", ondelete="SET NULL", onupdate="CASCADE"),
+    )
+    claimReason: Mapped[Optional[str]] = mapped_column("claimReason", Text)
+    hubspotCompanyId: Mapped[Optional[str]] = mapped_column(
+        "hubspotCompanyId", String(100)
+    )
 
     user: Mapped["User"] = relationship(
         back_populates="franchisor_request", foreign_keys=[userId]
+    )
+    franchise: Mapped[Optional["Franchise"]] = relationship(
+        foreign_keys=[franchiseId]
     )
 
 

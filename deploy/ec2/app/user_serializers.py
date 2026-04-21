@@ -106,12 +106,10 @@ def serialize_franchisor_request_for_franchisor_listing(
         "reviewedAt": _iso(r.reviewedAt),
         "createdAt": _iso(r.createdAt),
         "updatedAt": _iso(r.updatedAt),
-        "cnpj": r.cnpj,
         "streamName": r.streamName,
-        "commercialEmail": r.commercialEmail,
-        "commercialPhone": r.commercialPhone,
-        "cnpjCardPath": r.cnpjCardPath,
-        "socialContractPath": r.socialContractPath,
+        "mode": r.mode,
+        "franchiseId": r.franchiseId,
+        "hubspotCompanyId": r.hubspotCompanyId,
         "reviewer": reviewer,
     }
 
@@ -213,13 +211,10 @@ def serialize_franchisor_request(
         "id": r.id,
         "userId": r.userId,
         "streamName": r.streamName,
-        "cnpj": r.cnpj,
-        "cnpjCardPath": r.cnpjCardPath,
-        "socialContractPath": r.socialContractPath,
-        "responsable": r.responsable,
-        "responsableRole": r.responsableRole,
-        "commercialEmail": r.commercialEmail,
-        "commercialPhone": r.commercialPhone,
+        "mode": r.mode,
+        "franchiseId": r.franchiseId,
+        "claimReason": r.claimReason,
+        "hubspotCompanyId": r.hubspotCompanyId,
         "status": r.status,
         "rejectionReason": r.rejectionReason,
         "reviewedBy": r.reviewedBy,
@@ -232,5 +227,12 @@ def serialize_franchisor_request(
             "id": r.user.id,
             "name": r.user.name,
             "email": r.user.email,
+        }
+    if getattr(r, "franchise", None) is not None:
+        data["franchise"] = {
+            "id": r.franchise.id,
+            "name": r.franchise.name,
+            "logoUrl": getattr(r.franchise, "logoUrl", None),
+            "status": r.franchise.status,
         }
     return data

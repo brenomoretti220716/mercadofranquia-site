@@ -151,6 +151,7 @@ def serialize_franchise(
         "description": f.description,
         "detailedDescription": f.detailedDescription,
         "isActive": f.isActive,
+        "status": f.status,
         "isAbfAssociated": f.isAbfAssociated,
         "isSponsored": f.isSponsored,
         "sponsorPlacements": list(f.sponsorPlacements or []),
