@@ -3,9 +3,9 @@
 import { Suspense, useCallback, useMemo, useState } from 'react'
 import { parseAsInteger, parseAsString, useQueryState } from 'nuqs'
 
-import FilterChips from '@/src/components/franchisees/news/components/FilterChips'
-import TemplateNewsCard from '@/src/components/franchisees/news/components/TemplateNewsCard'
-import TestimonialCard from '@/src/components/franchisees/news/components/TestimonialCard'
+import FilterChips from '@/src/components/franqueados/news/components/FilterChips'
+import TemplateNewsCard from '@/src/components/franqueados/news/components/TemplateNewsCard'
+import TestimonialCard from '@/src/components/franqueados/news/components/TestimonialCard'
 import SearchBar from '@/src/components/ui/SearchBar'
 import { Pagination } from '@/src/components/ui/Pagination'
 import { useNews } from '@/src/hooks/news/useNews'

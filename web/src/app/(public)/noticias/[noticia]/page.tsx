@@ -1,6 +1,6 @@
 'use client'
 
-import NewsDetailPanel from '@/src/components/franchisees/news/panel/NewsDetailPanel'
+import NewsDetailPanel from '@/src/components/franqueados/news/panel/NewsDetailPanel'
 import SelectedNewsSkeleton from '@/src/components/ui/skeletons/SelectedNewsSkeleton'
 import { Suspense } from 'react'
 

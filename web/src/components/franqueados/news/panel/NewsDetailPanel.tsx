@@ -1,6 +1,6 @@
 'use client'
 
-import SelectedNews from '@/src/components/franchisees/news/panel/SelectedNews'
+import SelectedNews from '@/src/components/franqueados/news/panel/SelectedNews'
 import RoundedButton from '@/src/components/ui/RoundedButton'
 import { useNewsById } from '@/src/hooks/news/useNews'
 import Link from 'next/link'

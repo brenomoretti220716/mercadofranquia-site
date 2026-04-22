@@ -1,7 +1,7 @@
 'use client'
 
-import Favorites from '@/src/components/franchisees/franchises/favorites/Favorites'
-import FakeFavoritesList from '@/src/components/franchisees/franchises/favorites/FakeFavoritesList'
+import Favorites from '@/src/components/franqueados/franchises/favorites/Favorites'
+import FakeFavoritesList from '@/src/components/franqueados/franchises/favorites/FakeFavoritesList'
 import ModalIncompleteProfile from '@/src/components/ui/ModalIncompleteProfile'
 import ModalRedirectLogin from '@/src/components/ui/ModalRedirectLogin'
 import { isMember, useAuth } from '@/src/hooks/users/useAuth'

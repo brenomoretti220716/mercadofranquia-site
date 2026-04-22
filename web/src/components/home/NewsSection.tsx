@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/react-query'
 import Image from 'next/image'
 import Link from 'next/link'
 
-import { getNewsImageUrl } from '@/src/components/franchisees/news/components/newsImage'
+import { getNewsImageUrl } from '@/src/components/franqueados/news/components/newsImage'
 import { newsQueries } from '@/src/queries/news'
 import type { NewsSchema } from '@/src/schemas/users/News'
 import { formatDateToBrazilian } from '@/src/utils/dateFormatters'

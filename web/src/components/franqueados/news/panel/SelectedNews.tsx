@@ -1,6 +1,6 @@
 'use client'
 
-import NewsComments from '@/src/components/franchisees/news/components/NewsComments'
+import NewsComments from '@/src/components/franqueados/news/components/NewsComments'
 import { NewsSchema } from '@/src/schemas/users/News'
 import { formatDateTimeToBrazilian } from '@/src/utils/dateFormatters'
 import Image from 'next/image'

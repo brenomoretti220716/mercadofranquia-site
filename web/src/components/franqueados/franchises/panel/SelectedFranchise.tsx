@@ -46,7 +46,7 @@ const BusinessModelsSection = dynamic(loadBusinessModelsSection, {
 })
 
 const loadCommentPanel = () =>
-  import('@/src/components/franchisees/franchises/comments/CommentPanel')
+  import('@/src/components/franqueados/franchises/comments/CommentPanel')
 
 const CommentPanel = dynamic(loadCommentPanel, {
   loading: () => <CommentSectionSkeleton />,

@@ -1,6 +1,6 @@
 'use client'
 
-import NewsPanel from '@/src/components/franchisees/news/panel/NewsPanel'
+import NewsPanel from '@/src/components/franqueados/news/panel/NewsPanel'
 
 export default function News() {
   return (

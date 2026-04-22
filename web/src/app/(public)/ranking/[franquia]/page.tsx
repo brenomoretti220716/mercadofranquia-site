@@ -1,6 +1,6 @@
 'use client'
 
-import SelectedFranchise from '@/src/components/franchisees/franchises/panel/SelectedFranchise'
+import SelectedFranchise from '@/src/components/franqueados/franchises/panel/SelectedFranchise'
 import AdminSelectedFranchiseSkeleton from '@/src/components/ui/skeletons/AdminSelectedFranchiseSkeleton'
 import { Suspense } from 'react'
 
