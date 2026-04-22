@@ -1,7 +1,7 @@
 'use client'
 
-import UserLogin from '@/src/components/login/UserLogin'
-import ModalLogin from '@/src/components/login/ModalLogin'
+import UserLogin from '@/src/components/autenticacao/UserLogin'
+import ModalLogin from '@/src/components/autenticacao/ModalLogin'
 
 export default function LoginPage() {
   return (

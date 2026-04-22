@@ -4,7 +4,7 @@ import RegisterModalSkeleton from '@/src/components/ui/skeletons/RegisterModalSk
 import dynamic from 'next/dynamic'
 
 const RegisterFlow = dynamic(
-  () => import('@/src/components/login/RegisterFlow'),
+  () => import('@/src/components/autenticacao/RegisterFlow'),
   {
     ssr: false,
     loading: () => <RegisterModalSkeleton />,

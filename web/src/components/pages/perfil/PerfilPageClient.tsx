@@ -1,9 +1,9 @@
 'use client'
 
-import BasicInfoForm from '@/src/components/login/BasicInfoForm'
-import EmailUpdateForm from '@/src/components/login/EmailUpdateForm'
-import PasswordUpdateForm from '@/src/components/login/PasswordUpdateForm'
-import ProfileCompletionForm from '@/src/components/login/ProfileCompletionForm'
+import BasicInfoForm from '@/src/components/autenticacao/BasicInfoForm'
+import EmailUpdateForm from '@/src/components/autenticacao/EmailUpdateForm'
+import PasswordUpdateForm from '@/src/components/autenticacao/PasswordUpdateForm'
+import ProfileCompletionForm from '@/src/components/autenticacao/ProfileCompletionForm'
 import Accordion from '@/src/components/ui/Accordion'
 import PerfilPageSkeleton from '@/src/components/ui/skeletons/PerfilPageSkeleton'
 import { isMember, useAuthContext } from '@/src/hooks/users/useAuth'
