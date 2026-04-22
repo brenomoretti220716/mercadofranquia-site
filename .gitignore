@@ -38,3 +38,7 @@ api/dump-*.sql
 
 # Systemd file with real production secrets — template is versioned
 deploy/ec2/systemd/mf-api.service
+
+# Local dev wrappers/scripts (per-machine, not shipped)
+deploy/ec2/app/main_local.py
+deploy/ec2/dev-start.sh
