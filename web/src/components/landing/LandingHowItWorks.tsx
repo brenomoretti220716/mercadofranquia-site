@@ -14,8 +14,7 @@ const steps: Step[] = [
   {
     number: '2',
     title: 'Validamos sua marca',
-    description:
-      'Nossa equipe revisa os dados em até 48h e aprova sua página.',
+    description: 'Nossa equipe revisa os dados em até 48h e aprova sua página.',
   },
   {
     number: '3',
@@ -44,7 +43,10 @@ export default function LandingHowItWorks() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-8 relative">
             {steps.map((step) => (
-              <div key={step.number} className="flex flex-col items-center text-center">
+              <div
+                key={step.number}
+                className="flex flex-col items-center text-center"
+              >
                 <div
                   className="relative z-10 w-16 h-16 rounded-full bg-[#E25E3E] text-white flex items-center justify-center text-2xl font-bold mb-5 shadow-lg"
                   aria-hidden="true"

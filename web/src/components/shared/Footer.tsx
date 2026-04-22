@@ -114,7 +114,11 @@ export default function Footer() {
                 className="p-2 rounded-full bg-white/10 hover:bg-white/20 transition-colors"
                 aria-label="Facebook"
               >
-                <FacebookIcon width={18} height={18} color="rgba(255, 255, 255, 0.7)" />
+                <FacebookIcon
+                  width={18}
+                  height={18}
+                  color="rgba(255, 255, 255, 0.7)"
+                />
               </a>
               <a
                 href="https://instagram.com"
@@ -123,7 +127,11 @@ export default function Footer() {
                 className="p-2 rounded-full bg-white/10 hover:bg-white/20 transition-colors"
                 aria-label="Instagram"
               >
-                <InstagramIcon width={18} height={18} color="rgba(255, 255, 255, 0.7)" />
+                <InstagramIcon
+                  width={18}
+                  height={18}
+                  color="rgba(255, 255, 255, 0.7)"
+                />
               </a>
               <a
                 href="https://linkedin.com"
@@ -132,7 +140,11 @@ export default function Footer() {
                 className="p-2 rounded-full bg-white/10 hover:bg-white/20 transition-colors"
                 aria-label="LinkedIn"
               >
-                <LinkedinIcon width={18} height={18} color="rgba(255, 255, 255, 0.7)" />
+                <LinkedinIcon
+                  width={18}
+                  height={18}
+                  color="rgba(255, 255, 255, 0.7)"
+                />
               </a>
               <a
                 href="https://youtube.com"
@@ -141,7 +153,11 @@ export default function Footer() {
                 className="p-2 rounded-full bg-white/10 hover:bg-white/20 transition-colors"
                 aria-label="YouTube"
               >
-                <YoutubeIcon width={18} height={18} color="rgba(255, 255, 255, 0.7)" />
+                <YoutubeIcon
+                  width={18}
+                  height={18}
+                  color="rgba(255, 255, 255, 0.7)"
+                />
               </a>
             </div>
           </div>

@@ -12,7 +12,10 @@ import {
   FranchisorRequestFormSchema,
 } from '@/src/schemas/users/FranchisorRequest'
 import { createFranchisorRequest } from '@/src/services/users'
-import { getClientAuthCookie, setClientAuthCookie } from '@/src/utils/clientCookie'
+import {
+  getClientAuthCookie,
+  setClientAuthCookie,
+} from '@/src/utils/clientCookie'
 import { formatErrorMessage } from '@/src/utils/errorHandlers'
 import FormInput from '@/src/components/ui/FormInput'
 import FormSelect from '@/src/components/ui/FormSelect'
@@ -71,7 +74,10 @@ export default function FranchisorStep3({ onSuccess }: FranchisorStep3Props) {
     },
     onError: (error) => {
       toast.error(
-        formatErrorMessage(error, 'Erro ao enviar solicitação. Tente novamente.'),
+        formatErrorMessage(
+          error,
+          'Erro ao enviar solicitação. Tente novamente.',
+        ),
       )
     },
   })
