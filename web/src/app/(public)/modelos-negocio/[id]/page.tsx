@@ -1,6 +1,6 @@
 'use client'
 
-import BusinessModelDetail from '@/src/components/franchisors/panels/franchises/businessModels/BusinessModelDetail'
+import BusinessModelDetail from '@/src/components/franqueadores/panels/franchises/businessModels/BusinessModelDetail'
 import BusinessModelDetailSkeleton from '@/src/components/ui/skeletons/BusinessModelDetailSkeleton'
 import { Suspense } from 'react'
 

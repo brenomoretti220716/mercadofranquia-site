@@ -38,7 +38,7 @@ interface SelectedFranchiseProps {
 
 const loadBusinessModelsSection = () =>
   import(
-    '@/src/components/franchisors/panels/franchises/businessModels/BusinessModelsSection'
+    '@/src/components/franqueadores/panels/franchises/businessModels/BusinessModelsSection'
   )
 
 const BusinessModelsSection = dynamic(loadBusinessModelsSection, {

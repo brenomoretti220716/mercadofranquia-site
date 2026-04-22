@@ -1,6 +1,6 @@
 'use client'
 
-import FranchisorFranchiseSelect from '@/src/components/franchisors/FranchisorFranchiseSelect'
+import FranchisorFranchiseSelect from '@/src/components/franqueadores/FranchisorFranchiseSelect'
 import LogoutIcon from '@/src/components/icons/logoutIcon'
 import { useFranchisorFranchisesQuery } from '@/src/hooks/franchises/useFranchises'
 import { useAuth } from '@/src/hooks/users/useAuth'

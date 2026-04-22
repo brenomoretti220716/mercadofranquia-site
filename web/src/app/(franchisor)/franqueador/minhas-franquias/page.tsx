@@ -1,8 +1,8 @@
 'use client'
 
 import { useState } from 'react'
-import MyFranchisesList from '@/src/components/franchisors/panels/franchises/MyFranchisesList'
-import CreateAdditionalFranchiseForm from '@/src/components/franchisors/panels/franchises/CreateAdditionalFranchiseForm'
+import MyFranchisesList from '@/src/components/franqueadores/panels/franchises/MyFranchisesList'
+import CreateAdditionalFranchiseForm from '@/src/components/franqueadores/panels/franchises/CreateAdditionalFranchiseForm'
 
 /**
  * Página principal do painel do franqueador — lista de Franchises + criar nova.
