@@ -4,7 +4,7 @@ import PerfilPageSkeleton from '@/src/components/ui/skeletons/PerfilPageSkeleton
 import dynamic from 'next/dynamic'
 
 const PerfilPageClient = dynamic(
-  () => import('@/src/components/pages/perfil/PerfilPageClient'),
+  () => import('./_components/PerfilPageClient'),
   {
     ssr: false,
     loading: () => <PerfilPageSkeleton />,
