@@ -1,6 +1,6 @@
 'use client'
 
-import NotificationButton from '@/src/components/notifications/NotificationButton'
+import NotificationButton from '@/src/components/notificacoes/NotificationButton'
 import { Payload } from '@/src/schemas/auth/auth'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'

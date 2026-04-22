@@ -1,7 +1,7 @@
 'use client'
 
 import EmojiIcon from '@/src/components/icons/emojiIcon'
-import NotificationButton from '@/src/components/notifications/NotificationButton'
+import NotificationButton from '@/src/components/notificacoes/NotificationButton'
 import Skeleton from '@/src/components/ui/skeletons/Skeleton'
 import { useAuth } from '@/src/hooks/users/useAuth'
 import { removeClientAuthCookie } from '@/src/utils/clientCookie'

@@ -1,5 +1,5 @@
 import EmojiIcon from '@/src/components/icons/emojiIcon'
-import NotificationButton from '@/src/components/notifications/NotificationButton'
+import NotificationButton from '@/src/components/notificacoes/NotificationButton'
 import { AuthContext } from '@/src/contexts/AuthContext'
 import { useLogout } from '@/src/hooks/users/useAuth'
 import Link from 'next/link'
