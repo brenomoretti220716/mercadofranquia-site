@@ -12,7 +12,7 @@ import {
   FranchisorRequestFormSchema,
 } from '@/src/schemas/users/FranchisorRequest'
 import { createFranchisorRequest } from '@/src/services/users'
-import { getClientAuthCookie } from '@/src/utils/clientCookie'
+import { getClientAuthCookie, setClientAuthCookie } from '@/src/utils/clientCookie'
 import { formatErrorMessage } from '@/src/utils/errorHandlers'
 import FormInput from '@/src/components/ui/FormInput'
 import FormSelect from '@/src/components/ui/FormSelect'
@@ -58,7 +58,10 @@ export default function FranchisorStep3({ onSuccess }: FranchisorStep3Props) {
         claimReason: data.mode === 'EXISTING' ? data.claimReason : undefined,
       })
     },
-    onSuccess: () => {
+    onSuccess: (data) => {
+      if (data.access_token) {
+        setClientAuthCookie(data.access_token)
+      }
       queryClient.invalidateQueries({ queryKey: franchiseKeys.myFranchises() })
       queryClient.invalidateQueries({
         queryKey: ['franchisor-request', 'my-request'],

@@ -191,10 +191,15 @@ export async function getMyFranchisorRequest(
   return await response.json()
 }
 
+export interface CreateFranchisorRequestResponse {
+  request: FranchisorRequest
+  access_token?: string
+}
+
 export async function createFranchisorRequest(
   token: string,
   data: CreateFranchisorRequestDto,
-): Promise<FranchisorRequest> {
+): Promise<CreateFranchisorRequestResponse> {
   const cleanPayload: Record<string, unknown> = { mode: data.mode }
   if (data.streamName?.trim()) cleanPayload.streamName = data.streamName.trim()
   if (data.franchiseId?.trim())

@@ -44,7 +44,7 @@ from app.constantes import (
 )
 from app.db import SessionLocal, get_db
 from app.models import Franchise, FranchisorRequest, FranchisorUser, User
-from app.security import JwtPayload, get_current_user, require_role
+from app.security import JwtPayload, get_current_user, issue_token, require_role
 from app.services import hubspot_client
 from app.services.ses_mailer import (
     send_admin_new_franchisor_request,
@@ -187,6 +187,8 @@ def create_request(
     if user is None:
         raise HTTPException(status.HTTP_404_NOT_FOUND, "User not found")
 
+    new_access_token: Optional[str] = None
+
     if body.mode == FranchisorRequestMode.NEW:
         name_clean = body.streamName.strip()
         existing_franchise = db.scalar(
@@ -251,6 +253,17 @@ def create_request(
         user.role = UserRole.FRANCHISOR
 
         db.commit()
+        db.refresh(user)
+
+        new_access_token = issue_token(
+            {
+                "id": user.id,
+                "email": user.email,
+                "name": user.name,
+                "role": user.role,
+                "isActive": user.isActive,
+            }
+        )
     else:
         target = db.scalar(select(Franchise).where(Franchise.id == body.franchiseId))
         if target is None:
@@ -350,7 +363,12 @@ def create_request(
         franchise_id=req.franchiseId,
     )
 
-    return serialize_franchisor_request(req)  # type: ignore[arg-type]
+    response: dict[str, Any] = {
+        "request": serialize_franchisor_request(req),  # type: ignore[arg-type]
+    }
+    if new_access_token is not None:
+        response["access_token"] = new_access_token
+    return response
 
 
 # ---------------------------------------------------------------------------
