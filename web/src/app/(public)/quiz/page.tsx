@@ -1,6 +1,5 @@
 'use client'
 
-import Header from '@/src/components/header/Header'
 import QuizFlow from '@/src/components/quiz/QuizFlow'
 import QuizIntro from '@/src/components/quiz/QuizIntro'
 import QuizResults from '@/src/components/quiz/QuizResults'
@@ -91,7 +90,6 @@ function AuthenticatedQuiz({ userName }: { userName: string }) {
   if (submissionLoading) {
     return (
       <div>
-        <Header />
         <main className="min-h-[80vh] flex items-center justify-center py-6 px-3 sm:px-4">
           <QuizFlowSkeleton />
         </main>
@@ -101,7 +99,6 @@ function AuthenticatedQuiz({ userName }: { userName: string }) {
 
   return (
     <div>
-      <Header />
       <main className="min-h-[60vh] my-6 sm:my-8 md:my-12 px-3 sm:px-4">
         {view === 'form' ? (
           <>
@@ -139,7 +136,6 @@ export default function QuizPage() {
   if (isValidating) {
     return (
       <div>
-        <Header />
         <main className="min-h-[80vh] flex items-center justify-center py-6 px-3 sm:px-4">
           <QuizFlowSkeleton />
         </main>
@@ -150,7 +146,6 @@ export default function QuizPage() {
   if (!isAuthenticated) {
     return (
       <div>
-        <Header />
         <QuizIntro />
       </div>
     )

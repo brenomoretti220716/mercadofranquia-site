@@ -3,6 +3,7 @@
 import AdminSidebar from '@/src/components/admin/shell/AdminSidebar'
 import AdminTopbar from '@/src/components/admin/shell/AdminTopbar'
 import Header from '@/src/components/header/Header'
+import FooterMinimal from '@/src/components/shared/FooterMinimal'
 
 export default function AdminLayout({
   children,
@@ -19,6 +20,7 @@ export default function AdminLayout({
       <div className="md:pl-[220px] flex flex-col min-h-[calc(100vh-4rem)]">
         <AdminTopbar />
         <main className="flex-1">{children}</main>
+        <FooterMinimal />
       </div>
     </div>
   )

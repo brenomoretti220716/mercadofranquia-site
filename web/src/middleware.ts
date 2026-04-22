@@ -47,6 +47,14 @@ const publicRoutes = [
     pattern: /^\/quiz(\/.*)?$/,
     whenAuthenticated: WhenAuthenticated.NEXT,
   },
+  {
+    pattern: /^\/anuncie-sua-franquia$/,
+    whenAuthenticated: WhenAuthenticated.NEXT,
+  },
+  {
+    pattern: /^\/anuncie-sua-franquia\/cadastro$/,
+    whenAuthenticated: WhenAuthenticated.NEXT,
+  },
 ] as const
 
 const privateRoutes = [
@@ -65,11 +73,13 @@ const privateRoutes = [
     pattern: /^\/franqueador\/minhas-franquias$/,
     whenAuthenticated: 'next',
   },
-  // Outros subpaths de /franqueador: exige role FRANCHISOR
+  // Outros subpaths de /franqueador: FRANCHISOR ou ADMIN.
+  // (Sprint 3 Fase 3) Aceita ADMIN pra bypass administrativo sem re-login.
+  // Refinamento via profileType fica na camada de backend (require_franchisor_profile).
   {
     pattern: /^\/franqueador(\/.*)?$/,
     whenAuthenticated: 'next',
-    necessaryRole: Role.FRANCHISOR,
+    necessaryRole: [Role.FRANCHISOR, Role.ADMIN],
   },
   {
     pattern: /^\/perfil$/,

@@ -1,4 +1,5 @@
-import Footer from '@/src/components/franchisees/footer/Footer'
+import Header from '@/src/components/header/Header'
+import Footer from '@/src/components/shared/Footer'
 
 export default function PublicLayout({
   children,
@@ -7,6 +8,7 @@ export default function PublicLayout({
 }) {
   return (
     <div>
+      <Header variant="public" />
       {children}
       <Footer />
     </div>

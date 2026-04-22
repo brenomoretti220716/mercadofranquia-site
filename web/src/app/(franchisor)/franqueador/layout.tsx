@@ -1,6 +1,7 @@
 'use client'
 
 import Header from '@/src/components/header/Header'
+import FooterMinimal from '@/src/components/shared/FooterMinimal'
 
 export default function FranchisorLayout({
   children,
@@ -8,9 +9,10 @@ export default function FranchisorLayout({
   children: React.ReactNode
 }) {
   return (
-    <div>
+    <div className="flex flex-col min-h-screen">
       <Header />
-      {children}
+      <div className="flex-1">{children}</div>
+      <FooterMinimal />
     </div>
   )
 }

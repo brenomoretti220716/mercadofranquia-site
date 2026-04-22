@@ -1,6 +1,5 @@
 'use client'
 
-import Header from '@/src/components/header/Header'
 import QuizBanner from '@/src/components/home/QuizBanner'
 import RankingDisplay from '@/src/components/ranking/RankingDisplay'
 import RankingFilterMenu from '@/src/components/ranking/RankingFiltersMenu'
@@ -142,8 +141,6 @@ export default function RankingPage() {
 
   return (
     <>
-      <Header />
-
       <div className="min-h-screen bg-background">
         <RankingSegmentCards
           segments={rankingCards}

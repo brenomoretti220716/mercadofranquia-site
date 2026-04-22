@@ -1,6 +1,5 @@
 'use client'
 
-import Header from '@/src/components/header/Header'
 import {
   defaultGlobalQuarter,
   uniqueQuarters,
@@ -29,7 +28,6 @@ export default function MercadoPage() {
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
-      <Header />
       <main className="flex-1">
         <div className="m-5 md:m-10 space-y-6">
           <div className="text-center space-y-4">

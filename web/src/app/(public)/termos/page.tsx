@@ -1,11 +1,8 @@
 'use client'
 
-import Header from '@/src/components/header/Header'
-
 export default function TermsOfUsePage() {
   return (
     <div className="min-h-screen flex flex-col bg-background">
-      <Header />
       <main className="flex-1">
         <div className="container mx-auto px-4 py-10 max-w-3xl">
           <h1 className="text-2xl md:text-3xl font-bold text-foreground mb-6">

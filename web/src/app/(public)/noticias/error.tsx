@@ -1,13 +1,11 @@
 'use client'
 
-import Header from '@/src/components/header/Header'
 import { useRouter } from 'next/navigation'
 
 export default function Error() {
   const router = useRouter()
   return (
     <>
-      <Header />
       <div className="flex flex-col items-center justify-center min-h-[40vh] p-6">
         <div className="text-red-500 text-lg mb-4">Página não encontrada.</div>
         <button

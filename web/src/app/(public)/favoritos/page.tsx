@@ -1,6 +1,5 @@
 'use client'
 
-import Header from '@/src/components/header/Header'
 import Favorites from '@/src/components/franchisees/franchises/favorites/Favorites'
 import FakeFavoritesList from '@/src/components/franchisees/franchises/favorites/FakeFavoritesList'
 import ModalIncompleteProfile from '@/src/components/ui/ModalIncompleteProfile'
@@ -42,7 +41,6 @@ export default function FavoritesPage() {
   if (isValidating) {
     return (
       <div className="min-h-screen flex flex-col bg-background">
-        <Header />
         <main className="flex-1">
           <div className="m-5 md:m-10">
             <RankingTableSkeleton />
@@ -55,7 +53,6 @@ export default function FavoritesPage() {
   if (!isAuthenticated || !token || isIncompleteUser) {
     return (
       <div className="min-h-screen flex flex-col bg-background">
-        <Header />
         <main className="flex-1">
           <div className="m-5 md:m-10 relative">
             <FakeFavoritesList />
@@ -80,7 +77,6 @@ export default function FavoritesPage() {
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
-      <Header />
       <main className="flex-1">
         <div className="m-5 md:m-10">
           <Suspense fallback={<RankingTableSkeleton />}>
