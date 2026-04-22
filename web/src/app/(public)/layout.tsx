@@ -1,4 +1,4 @@
-import Header from '@/src/components/header/Header'
+import Header from '@/src/components/layout/Header'
 import Footer from '@/src/components/shared/Footer'
 
 export default function PublicLayout({

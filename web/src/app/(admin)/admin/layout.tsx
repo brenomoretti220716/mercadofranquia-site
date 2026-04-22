@@ -2,7 +2,7 @@
 
 import AdminSidebar from '@/src/components/admin/shell/AdminSidebar'
 import AdminTopbar from '@/src/components/admin/shell/AdminTopbar'
-import Header from '@/src/components/header/Header'
+import Header from '@/src/components/layout/Header'
 import FooterMinimal from '@/src/components/shared/FooterMinimal'
 
 export default function AdminLayout({
