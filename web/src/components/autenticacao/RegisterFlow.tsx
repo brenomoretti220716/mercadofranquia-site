@@ -28,7 +28,6 @@ export default function RegisterFlow() {
   const [userEmail, setUserEmail] = useQueryState('email', {
     defaultValue: '',
   })
-  const [showPassword, setShowPassword] = useState(false)
   const [step1Data, setStep1Data] = useState<StepOneRegistrationInput | null>(
     null,
   )
@@ -174,8 +173,6 @@ export default function RegisterFlow() {
             error={step1Form.formState.errors.password?.message}
             register={step1Form.register('password')}
             disabled={registerMutation.isPending}
-            showPassword={showPassword}
-            setShowPassword={setShowPassword}
           />
 
           <PasswordInput
@@ -184,8 +181,6 @@ export default function RegisterFlow() {
             error={step1Form.formState.errors.confirmPassword?.message}
             register={step1Form.register('confirmPassword')}
             disabled={registerMutation.isPending}
-            showPassword={showPassword}
-            setShowPassword={setShowPassword}
           />
 
           <div className="text-left mt-2">

@@ -13,7 +13,6 @@ import {
 } from '@/src/schemas/users/FranchisorUsers'
 import { formatCNPJ, stripNonDigits } from '@/src/utils/formaters'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 
 interface FranchisorRegisterProps {
@@ -26,7 +25,6 @@ export default function FranchisorRegister({
   onSuccess,
 }: FranchisorRegisterProps) {
   const registerMutation = useFranchisorRegister()
-  const [showPassword, setShowPassword] = useState(false)
 
   const {
     franchiseOptions,
@@ -158,8 +156,6 @@ export default function FranchisorRegister({
         error={errors.password?.message}
         register={register('password')}
         disabled={registerMutation.isPending}
-        showPassword={showPassword}
-        setShowPassword={setShowPassword}
       />
 
       <PasswordInput
@@ -168,8 +164,6 @@ export default function FranchisorRegister({
         error={errors.confirmPassword?.message}
         register={register('confirmPassword')}
         disabled={registerMutation.isPending}
-        showPassword={showPassword}
-        setShowPassword={setShowPassword}
       />
 
       <div className="text-left mt-2">

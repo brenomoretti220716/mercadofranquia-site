@@ -1,7 +1,6 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import {
   StepOneRegistrationInput,
@@ -21,8 +20,6 @@ export default function FranchisorStep1({
   defaultValues,
   onSubmit,
 }: FranchisorStep1Props) {
-  const [showPassword, setShowPassword] = useState(false)
-
   const form = useForm<StepOneRegistrationInput>({
     resolver: zodResolver(StepOneRegistrationSchema),
     defaultValues: {
@@ -53,8 +50,6 @@ export default function FranchisorStep1({
         id="password"
         error={form.formState.errors.password?.message}
         register={form.register('password')}
-        showPassword={showPassword}
-        setShowPassword={setShowPassword}
       />
 
       <PasswordInput
@@ -62,8 +57,6 @@ export default function FranchisorStep1({
         id="confirmPassword"
         error={form.formState.errors.confirmPassword?.message}
         register={form.register('confirmPassword')}
-        showPassword={showPassword}
-        setShowPassword={setShowPassword}
       />
 
       <div className="text-left mt-2">

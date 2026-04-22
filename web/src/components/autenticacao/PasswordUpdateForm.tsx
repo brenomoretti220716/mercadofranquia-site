@@ -6,14 +6,11 @@ import {
   UpdatePasswordSchema,
 } from '@/src/schemas/users/profile'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import PasswordInput from '../ui/PasswordInput'
 import RoundedButton from '../ui/RoundedButton'
 
 export default function PasswordUpdateForm() {
-  const [showPassword, setShowPassword] = useState(false)
-
   const updatePassword = useUpdatePassword()
 
   const {
@@ -58,8 +55,6 @@ export default function PasswordUpdateForm() {
         error={errors.password?.message}
         register={register('password')}
         disabled={updatePassword.isPending}
-        showPassword={showPassword}
-        setShowPassword={setShowPassword}
       />
 
       <PasswordInput
@@ -68,8 +63,6 @@ export default function PasswordUpdateForm() {
         error={errors.confirmPassword?.message}
         register={register('confirmPassword')}
         disabled={updatePassword.isPending}
-        showPassword={showPassword}
-        setShowPassword={setShowPassword}
       />
 
       <div className="text-left mt-2">

@@ -69,7 +69,6 @@ export default function AdminEditing({
 }: AdminEditingProps) {
   const [currentStatus, setCurrentStatus] = useState(user?.isActive ?? true)
   const [showToggleModal, setShowToggleModal] = useState(false)
-  const [showPassword, setShowPassword] = useState(false)
 
   const updateMutation = useAdminUpdateBasicInfo({
     onSuccess: () => {
@@ -213,8 +212,6 @@ export default function AdminEditing({
             error={adminInfoForm.formState.errors.password?.message}
             register={adminInfoForm.register('password')}
             disabled={updateMutation.isPending}
-            showPassword={showPassword}
-            setShowPassword={setShowPassword}
           />
 
           <PasswordInput
@@ -223,8 +220,6 @@ export default function AdminEditing({
             error={adminInfoForm.formState.errors.confirmPassword?.message}
             register={adminInfoForm.register('confirmPassword')}
             disabled={updateMutation.isPending}
-            showPassword={showPassword}
-            setShowPassword={setShowPassword}
           />
 
           <div className="grid w-full mt-6">

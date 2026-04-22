@@ -13,7 +13,6 @@ import ForgotPasswordFlow from './ForgotPasswordFlow'
 
 export default function UserLogin() {
   const loginMutation = useLogin()
-  const [showPassword, setShowPassword] = useState(false)
   const [isForgotPasswordModalOpen, setIsForgotPasswordModalOpen] =
     useState(false)
 
@@ -61,8 +60,6 @@ export default function UserLogin() {
           error={errors.password?.message}
           register={register('password')}
           disabled={loginMutation.isPending}
-          showPassword={showPassword}
-          setShowPassword={setShowPassword}
         />
 
         <div className="flex justify-end">

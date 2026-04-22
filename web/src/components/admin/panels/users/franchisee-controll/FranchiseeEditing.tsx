@@ -69,7 +69,6 @@ export default function FranchiseeEditing({
 }: FranchiseeEditingProps) {
   const [currentStatus, setCurrentStatus] = useState(user?.isActive ?? true)
   const [showToggleModal, setShowToggleModal] = useState(false)
-  const [showPassword, setShowPassword] = useState(false)
   const { franchiseOptions, isLoading: isLoadingFranchises } = useFranchises()
 
   const basicInfoMutation = useAdminUpdateBasicInfo({
@@ -274,8 +273,6 @@ export default function FranchiseeEditing({
             error={basicInfoForm.formState.errors.password?.message}
             register={basicInfoForm.register('password')}
             disabled={basicInfoMutation.isPending}
-            showPassword={showPassword}
-            setShowPassword={setShowPassword}
           />
 
           <PasswordInput
@@ -284,8 +281,6 @@ export default function FranchiseeEditing({
             error={basicInfoForm.formState.errors.confirmPassword?.message}
             register={basicInfoForm.register('confirmPassword')}
             disabled={basicInfoMutation.isPending}
-            showPassword={showPassword}
-            setShowPassword={setShowPassword}
           />
 
           <div className="grid w-full mt-6">
