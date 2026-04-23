@@ -901,6 +901,34 @@ export async function createAdditionalFranchise(
   return result.data
 }
 
+/**
+ * Edita franquia do franqueador autenticado (ou admin editando qualquer).
+ * Endpoint PATCH /franchisor/franchises/{id} aceita whitelist JSON dos campos
+ * não-mídia. Media (logo/thumb/gallery/video) fica pra endpoints separados.
+ */
+export async function updateFranchisorFranchise(
+  franchiseId: string,
+  payload: Record<string, unknown>,
+  token: string,
+): Promise<Franchise> {
+  const response = await fetch(
+    Api(`/franchisor/franchises/${franchiseId}`),
+    {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(payload),
+    },
+  )
+  if (!response.ok) {
+    throw new Error(handleHttpError(response, 'Erro ao atualizar franquia'))
+  }
+  const result = await response.json()
+  return result.data
+}
+
 // ============================================================
 // Admin endpoints — aprovar/rejeitar Franchise (NÃO FranchisorRequest)
 // Pra uso nos painéis admin. Endpoints: POST /franchises/admin/{id}/approve|reject

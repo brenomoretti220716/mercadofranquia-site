@@ -3,7 +3,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { useQuery } from '@tanstack/react-query'
-import { ExternalLink, Plus, Rocket } from 'lucide-react'
+import { ExternalLink, Pencil, Plus, Rocket } from 'lucide-react'
 import { franchiseQueries } from '@/src/queries/franchises'
 import { useAuth } from '@/src/hooks/users/useAuth'
 import RoundedButton from '@/src/components/ui/RoundedButton'
@@ -187,17 +187,28 @@ function FranchiseCard({ franchise }: FranchiseCardProps) {
           )}
         </div>
 
-        {franchise.status === 'APPROVED' && franchise.slug && (
-          <Link
-            href={`/ranking/${franchise.slug}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline shrink-0"
-          >
-            Ver no site
-            <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
-          </Link>
-        )}
+        <div className="flex flex-col sm:items-end items-start gap-1.5 shrink-0">
+          {franchise.slug && (
+            <Link
+              href={`/franqueador/franquias/${franchise.slug}/editar`}
+              className="inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:underline"
+            >
+              <Pencil className="h-3.5 w-3.5" aria-hidden="true" />
+              Editar
+            </Link>
+          )}
+          {franchise.status === 'APPROVED' && franchise.slug && (
+            <Link
+              href={`/ranking/${franchise.slug}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-primary"
+            >
+              Ver no site
+              <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
+            </Link>
+          )}
+        </div>
       </div>
 
       <FranchiseStatusBanner

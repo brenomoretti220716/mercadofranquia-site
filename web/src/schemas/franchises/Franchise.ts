@@ -12,15 +12,21 @@ export interface Franchise {
   minimumInvestment?: number | null
   maximumInvestment?: number | null
 
+  headquarter?: string | null
   headquarterState: string
   totalUnits: number
+  totalUnitsInBrazil?: number | null
   unitsEvolution?: 'UP' | 'DOWN' | 'MAINTAIN' | null
   segment: string
   subsegment: string
   businessType: string
+  description?: string | null
   brandFoundationYear: number
   franchiseStartYear: number
   abfSince: number
+  isAbfAssociated?: boolean | null
+  calculationBaseAdFee?: string | null
+  calculationBaseRoyaltie?: string | null
 
   // ROI Range (in months)
   minimumReturnOnInvestment?: number | null
