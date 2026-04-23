@@ -1,21 +1,48 @@
 'use client'
 
-import { Construction } from 'lucide-react'
+import type { Franchise } from '@/src/schemas/franchises/Franchise'
+import MediaLogoCard from '../media/MediaLogoCard'
+import MediaThumbnailCard from '../media/MediaThumbnailCard'
+import MediaGalleryManager from '../media/MediaGalleryManager'
+import MediaVideoList from '../media/MediaVideoList'
 
-export default function MediaTab() {
+interface MediaTabProps {
+  franchise: Franchise
+  token: string
+}
+
+export default function MediaTab({ franchise, token }: MediaTabProps) {
   return (
-    <div className="flex flex-col items-center justify-center text-center py-12 px-4">
-      <Construction
-        className="h-10 w-10 text-muted-foreground mb-4"
-        aria-hidden="true"
+    <div className="space-y-10">
+      <MediaLogoCard
+        franchiseId={franchise.id}
+        currentUrl={franchise.logoUrl}
+        token={token}
       />
-      <h2 className="text-xl font-semibold text-foreground mb-2">
-        Disponível em breve
-      </h2>
-      <p className="text-sm text-muted-foreground max-w-md">
-        O upload de logo, thumbnail, galeria e vídeo da franquia chega na
-        próxima atualização do editor.
-      </p>
+
+      <div className="border-t border-border/40" />
+
+      <MediaThumbnailCard
+        franchiseId={franchise.id}
+        currentUrl={franchise.thumbnailUrl}
+        token={token}
+      />
+
+      <div className="border-t border-border/40" />
+
+      <MediaGalleryManager
+        franchiseId={franchise.id}
+        galleryUrls={franchise.galleryUrls}
+        token={token}
+      />
+
+      <div className="border-t border-border/40" />
+
+      <MediaVideoList
+        franchiseId={franchise.id}
+        videoUrl={franchise.videoUrl}
+        token={token}
+      />
     </div>
   )
 }

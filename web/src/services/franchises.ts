@@ -904,7 +904,7 @@ export async function createAdditionalFranchise(
 /**
  * Edita franquia do franqueador autenticado (ou admin editando qualquer).
  * Endpoint PATCH /franchisor/franchises/{id} aceita whitelist JSON dos campos
- * não-mídia. Media (logo/thumb/gallery/video) fica pra endpoints separados.
+ * não-mídia. Media (logo/thumb/gallery/video) tem endpoints dedicados abaixo.
  */
 export async function updateFranchisorFranchise(
   franchiseId: string,
@@ -927,6 +927,166 @@ export async function updateFranchisorFranchise(
   }
   const result = await response.json()
   return result.data
+}
+
+// ============================================================
+// Media endpoints - logo/thumbnail/gallery/video upload & delete
+// Sprint 4 Fatia 2. Todos retornam a franchise atualizada completa.
+// ============================================================
+
+async function uploadSingleMediaFile(
+  path: string,
+  file: File,
+  token: string,
+  errorMsg: string,
+): Promise<Franchise> {
+  const fd = new FormData()
+  fd.append('file', file)
+  const response = await fetch(Api(path), {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${token}` },
+    body: fd,
+  })
+  if (!response.ok) {
+    throw new Error(handleHttpError(response, errorMsg))
+  }
+  const result = await response.json()
+  return result.data
+}
+
+async function deleteMediaPath(
+  path: string,
+  token: string,
+  errorMsg: string,
+): Promise<Franchise> {
+  const response = await fetch(Api(path), {
+    method: 'DELETE',
+    headers: { Authorization: `Bearer ${token}` },
+  })
+  if (!response.ok) {
+    throw new Error(handleHttpError(response, errorMsg))
+  }
+  const result = await response.json()
+  return result.data
+}
+
+export function uploadFranchiseLogo(
+  franchiseId: string,
+  file: File,
+  token: string,
+): Promise<Franchise> {
+  return uploadSingleMediaFile(
+    `/franchisor/franchises/${franchiseId}/logo`,
+    file,
+    token,
+    'Erro ao enviar logo',
+  )
+}
+
+export function deleteFranchiseLogo(
+  franchiseId: string,
+  token: string,
+): Promise<Franchise> {
+  return deleteMediaPath(
+    `/franchisor/franchises/${franchiseId}/logo`,
+    token,
+    'Erro ao remover logo',
+  )
+}
+
+export function uploadFranchiseThumbnail(
+  franchiseId: string,
+  file: File,
+  token: string,
+): Promise<Franchise> {
+  return uploadSingleMediaFile(
+    `/franchisor/franchises/${franchiseId}/thumbnail`,
+    file,
+    token,
+    'Erro ao enviar thumbnail',
+  )
+}
+
+export function deleteFranchiseThumbnail(
+  franchiseId: string,
+  token: string,
+): Promise<Franchise> {
+  return deleteMediaPath(
+    `/franchisor/franchises/${franchiseId}/thumbnail`,
+    token,
+    'Erro ao remover thumbnail',
+  )
+}
+
+export async function addFranchiseGalleryPhotos(
+  franchiseId: string,
+  files: File[],
+  token: string,
+): Promise<Franchise> {
+  const fd = new FormData()
+  for (const f of files) fd.append('files', f)
+  const response = await fetch(
+    Api(`/franchisor/franchises/${franchiseId}/gallery`),
+    {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${token}` },
+      body: fd,
+    },
+  )
+  if (!response.ok) {
+    throw new Error(handleHttpError(response, 'Erro ao adicionar fotos à galeria'))
+  }
+  const result = await response.json()
+  return result.data
+}
+
+export function deleteFranchiseGalleryPhoto(
+  franchiseId: string,
+  url: string,
+  token: string,
+): Promise<Franchise> {
+  const q = new URLSearchParams({ url }).toString()
+  return deleteMediaPath(
+    `/franchisor/franchises/${franchiseId}/gallery?${q}`,
+    token,
+    'Erro ao remover foto da galeria',
+  )
+}
+
+export async function addFranchiseVideo(
+  franchiseId: string,
+  url: string,
+  token: string,
+): Promise<Franchise> {
+  const response = await fetch(
+    Api(`/franchisor/franchises/${franchiseId}/video`),
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ url }),
+    },
+  )
+  if (!response.ok) {
+    throw new Error(handleHttpError(response, 'Erro ao adicionar vídeo'))
+  }
+  const result = await response.json()
+  return result.data
+}
+
+export function deleteFranchiseVideoUrl(
+  franchiseId: string,
+  url: string,
+  token: string,
+): Promise<Franchise> {
+  const q = new URLSearchParams({ url }).toString()
+  return deleteMediaPath(
+    `/franchisor/franchises/${franchiseId}/video?${q}`,
+    token,
+    'Erro ao remover vídeo',
+  )
 }
 
 // ============================================================

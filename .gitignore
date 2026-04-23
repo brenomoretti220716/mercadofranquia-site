@@ -1,5 +1,6 @@
 .env
 api/uploads/
+deploy/ec2/uploads/
 
 # ===== Adicionado 2026-04-17 =====
 

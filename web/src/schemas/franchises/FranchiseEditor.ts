@@ -133,6 +133,136 @@ export type FranchiseEditorInfoFormInput = z.infer<
   typeof FranchiseEditorInfoFormSchema
 >
 
+// ============================================================
+// Investment tab schema — Sprint 4 Fatia 2
+// 13 campos numéricos (Decimal no backend).
+// ============================================================
+
+const CALCULATION_BASE_OPTIONS = ['FATURAMENTO_BRUTO', 'FATURAMENTO_LIQUIDO'] as const
+
+export const FranchiseEditorInvestmentFormSchema = z
+  .object({
+    minimumInvestment: optionalNumericString,
+    maximumInvestment: optionalNumericString,
+
+    franchiseFee: optionalNumericString,
+    setupCapital: optionalNumericString,
+    workingCapital: optionalNumericString,
+
+    royalties: optionalNumericString,
+    advertisingFee: optionalNumericString,
+    calculationBaseRoyaltie: z
+      .enum(CALCULATION_BASE_OPTIONS)
+      .optional()
+      .or(z.literal('')),
+    calculationBaseAdFee: z
+      .enum(CALCULATION_BASE_OPTIONS)
+      .optional()
+      .or(z.literal('')),
+
+    minimumReturnOnInvestment: optionalIntegerString,
+    maximumReturnOnInvestment: optionalIntegerString,
+    averageMonthlyRevenue: optionalNumericString,
+
+    storeArea: optionalIntegerString,
+  })
+  .refine(
+    (data) => {
+      if (!data.minimumInvestment || !data.maximumInvestment) return true
+      return (
+        parseFloat(data.maximumInvestment) >= parseFloat(data.minimumInvestment)
+      )
+    },
+    {
+      message: 'Investimento máximo deve ser maior ou igual ao mínimo',
+      path: ['maximumInvestment'],
+    },
+  )
+  .refine(
+    (data) => {
+      if (!data.minimumReturnOnInvestment || !data.maximumReturnOnInvestment)
+        return true
+      return (
+        parseInt(data.maximumReturnOnInvestment) >=
+        parseInt(data.minimumReturnOnInvestment)
+      )
+    },
+    {
+      message: 'ROI máximo deve ser maior ou igual ao mínimo',
+      path: ['maximumReturnOnInvestment'],
+    },
+  )
+
+export type FranchiseEditorInvestmentFormInput = z.infer<
+  typeof FranchiseEditorInvestmentFormSchema
+>
+
+/**
+ * Converte form (strings) → payload PATCH, só campos dirty.
+ * Inteiros entram como number inteiro; decimais entram como number float.
+ * Strings de enum (calculationBase*) vazias viram null (limpar).
+ */
+export function normalizeFranchiseEditorInvestmentPayload(
+  data: FranchiseEditorInvestmentFormInput,
+  dirtyFields: Partial<
+    Record<keyof FranchiseEditorInvestmentFormInput, boolean>
+  >,
+): Record<string, unknown> {
+  const out: Record<string, unknown> = {}
+
+  const setFloat = (key: keyof FranchiseEditorInvestmentFormInput) => {
+    if (!dirtyFields[key]) return
+    const raw = data[key]
+    if (raw === undefined || raw === '' || raw === null) {
+      out[key] = null
+      return
+    }
+    if (typeof raw !== 'string') return
+    const n = parseFloat(raw)
+    out[key] = Number.isNaN(n) ? null : n
+  }
+
+  const setInt = (key: keyof FranchiseEditorInvestmentFormInput) => {
+    if (!dirtyFields[key]) return
+    const raw = data[key]
+    if (raw === undefined || raw === '' || raw === null) {
+      out[key] = null
+      return
+    }
+    if (typeof raw !== 'string') return
+    const n = parseInt(raw.replace(/\./g, ''), 10)
+    out[key] = Number.isNaN(n) ? null : n
+  }
+
+  const setEnum = (key: keyof FranchiseEditorInvestmentFormInput) => {
+    if (!dirtyFields[key]) return
+    const v = data[key]
+    if (v === 'FATURAMENTO_BRUTO' || v === 'FATURAMENTO_LIQUIDO') {
+      out[key] = v
+    } else {
+      out[key] = null
+    }
+  }
+
+  setFloat('minimumInvestment')
+  setFloat('maximumInvestment')
+  setFloat('franchiseFee')
+  setFloat('setupCapital')
+  setFloat('workingCapital')
+  setFloat('royalties')
+  setFloat('advertisingFee')
+  setFloat('averageMonthlyRevenue')
+
+  setInt('minimumReturnOnInvestment')
+  setInt('maximumReturnOnInvestment')
+  setInt('storeArea')
+
+  setEnum('calculationBaseRoyaltie')
+  setEnum('calculationBaseAdFee')
+
+  return out
+}
+
 /**
  * Mapeia o form input (strings) → payload aceito pelo PATCH
  * /franchisor/franchises/{id}. Só inclui campos efetivamente alterados

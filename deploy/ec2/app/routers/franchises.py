@@ -20,6 +20,8 @@ from decimal import Decimal, InvalidOperation
 from math import ceil
 from typing import Any, Literal, Optional
 
+import json as _json
+
 from fastapi import (
     APIRouter,
     BackgroundTasks,
@@ -43,8 +45,10 @@ from app.security import (
     require_any_role,
     require_role,
 )
-from app.serializers import serialize_franchise
+from app.serializers import parse_gallery_urls, serialize_franchise
 from app.services import hubspot_client
+from app.storage import delete_uploaded_file, save_image_upload
+from app.utils.video_url import is_valid_video_url
 from app.services.ses_mailer import (
     send_additional_franchise_approved,
     send_additional_franchise_received,
@@ -1417,6 +1421,333 @@ def update_franchise(
     )
 
     return {"data": serialize_franchise(fresh, include_relations=True)}
+
+
+# ---------------------------------------------------------------------------
+# Media endpoints — logo, thumbnail, gallery, video upload/delete
+# ---------------------------------------------------------------------------
+#
+# Todos debaixo de /franchisor/franchises/{id}/... e gateados por ownership
+# (franchisor dono ou admin). Sem guard de status — franqueador pode completar
+# mídia em PENDING e continuar mantendo em APPROVED.
+#
+# Formato storage:
+# - logoUrl/thumbnailUrl: string simples (path "/uploads/franchises/<uuid>.jpg")
+# - galleryUrls: JSON-array-stringified em TEXT → parse/modify/dumps
+# - videoUrl: JSON-array-stringified em TEXT → parse/modify/dumps
+#   (serializer faz parse só de galleryUrls; videoUrl continua string crua no
+#   response — inconsistência histórica preservada pra não quebrar consumers
+#   como VideoCarousel.tsx e SelectedFranchise público que já fazem o parse
+#   no frontend via normalizeVideoUrls.)
+#
+# Race safety: gallery e video usam SELECT ... FOR UPDATE (via with_for_update())
+# pra bloquear linha durante parse-modify-serialize. Logo/thumbnail pulam o lock
+# porque são single-value columns (last-write-wins é aceitável).
+# ---------------------------------------------------------------------------
+
+
+class AddVideoBody(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    url: str = Field(..., min_length=1, max_length=500)
+
+
+def _fetch_franchise_full(db: Session, franchise_id: str) -> Optional[Franchise]:
+    """Re-query com todas as relações eager + populate_existing. Reusado em
+    todos os endpoints de mídia pra montar o response final consistente com
+    o PATCH principal e o GET detail."""
+    return db.scalar(
+        select(Franchise)
+        .where(Franchise.id == franchise_id)
+        .options(
+            selectinload(Franchise.contact),
+            selectinload(Franchise.owner),
+            selectinload(Franchise.business_models),
+            selectinload(Franchise.reviews).selectinload(Review.author),
+        )
+        .execution_options(populate_existing=True)
+    )
+
+
+def _parse_video_urls(raw: Optional[str]) -> list[str]:
+    """Paralelo de parse_gallery_urls pra videoUrl. Tolera string vazia,
+    JSON array, CSV e URL única — mesmas regras defensivas."""
+    if not raw:
+        return []
+    raw = raw.strip()
+    if raw.startswith("["):
+        try:
+            parsed = _json.loads(raw)
+            if isinstance(parsed, list):
+                return [str(x) for x in parsed if x]
+        except _json.JSONDecodeError:
+            pass
+    if "," in raw:
+        return [s.strip() for s in raw.split(",") if s.strip()]
+    return [raw]
+
+
+# ---- Logo ----------------------------------------------------------------
+
+@franchisor_router.post(
+    "/{franchise_id}/logo",
+    summary="Upload logo da franquia",
+)
+def upload_franchise_logo(
+    franchise_id: str,
+    file: UploadFile = File(...),
+    db: Session = Depends(get_db),
+    current: JwtPayload = Depends(require_any_role("ADMIN", "FRANCHISOR")),
+) -> dict[str, Any]:
+    franchise = db.scalar(select(Franchise).where(Franchise.id == franchise_id))
+    if franchise is None:
+        raise HTTPException(404, "Franchise not found")
+    assert_franchise_owner(current, franchise.ownerId)
+
+    old_url = franchise.logoUrl
+    new_url = save_image_upload(file, "franchises")
+    franchise.logoUrl = new_url
+    db.commit()
+
+    if old_url and old_url != new_url:
+        delete_uploaded_file(old_url)
+
+    return {"data": serialize_franchise(_fetch_franchise_full(db, franchise_id), include_relations=True)}
+
+
+@franchisor_router.delete(
+    "/{franchise_id}/logo",
+    summary="Remover logo da franquia",
+)
+def delete_franchise_logo(
+    franchise_id: str,
+    db: Session = Depends(get_db),
+    current: JwtPayload = Depends(require_any_role("ADMIN", "FRANCHISOR")),
+) -> dict[str, Any]:
+    franchise = db.scalar(select(Franchise).where(Franchise.id == franchise_id))
+    if franchise is None:
+        raise HTTPException(404, "Franchise not found")
+    assert_franchise_owner(current, franchise.ownerId)
+
+    old_url = franchise.logoUrl
+    franchise.logoUrl = None
+    db.commit()
+    delete_uploaded_file(old_url)
+
+    return {"data": serialize_franchise(_fetch_franchise_full(db, franchise_id), include_relations=True)}
+
+
+# ---- Thumbnail -----------------------------------------------------------
+
+@franchisor_router.post(
+    "/{franchise_id}/thumbnail",
+    summary="Upload thumbnail da franquia",
+)
+def upload_franchise_thumbnail(
+    franchise_id: str,
+    file: UploadFile = File(...),
+    db: Session = Depends(get_db),
+    current: JwtPayload = Depends(require_any_role("ADMIN", "FRANCHISOR")),
+) -> dict[str, Any]:
+    franchise = db.scalar(select(Franchise).where(Franchise.id == franchise_id))
+    if franchise is None:
+        raise HTTPException(404, "Franchise not found")
+    assert_franchise_owner(current, franchise.ownerId)
+
+    old_url = franchise.thumbnailUrl
+    new_url = save_image_upload(file, "franchises")
+    franchise.thumbnailUrl = new_url
+    db.commit()
+
+    if old_url and old_url != new_url:
+        delete_uploaded_file(old_url)
+
+    return {"data": serialize_franchise(_fetch_franchise_full(db, franchise_id), include_relations=True)}
+
+
+@franchisor_router.delete(
+    "/{franchise_id}/thumbnail",
+    summary="Remover thumbnail da franquia",
+)
+def delete_franchise_thumbnail(
+    franchise_id: str,
+    db: Session = Depends(get_db),
+    current: JwtPayload = Depends(require_any_role("ADMIN", "FRANCHISOR")),
+) -> dict[str, Any]:
+    franchise = db.scalar(select(Franchise).where(Franchise.id == franchise_id))
+    if franchise is None:
+        raise HTTPException(404, "Franchise not found")
+    assert_franchise_owner(current, franchise.ownerId)
+
+    old_url = franchise.thumbnailUrl
+    franchise.thumbnailUrl = None
+    db.commit()
+    delete_uploaded_file(old_url)
+
+    return {"data": serialize_franchise(_fetch_franchise_full(db, franchise_id), include_relations=True)}
+
+
+# ---- Gallery -------------------------------------------------------------
+#
+# Formato JSON-array-stringified em TEXT. Pessimistic lock via
+# .with_for_update() durante parse → append → dumps pra evitar que dois
+# uploads simultâneos leiam mesma baseline e um sobrescreva o outro.
+
+MAX_GALLERY_IMAGES = 20
+
+
+@franchisor_router.post(
+    "/{franchise_id}/gallery",
+    summary="Adicionar fotos à galeria (multipart múltiplo)",
+)
+def add_franchise_gallery(
+    franchise_id: str,
+    files: list[UploadFile] = File(...),
+    db: Session = Depends(get_db),
+    current: JwtPayload = Depends(require_any_role("ADMIN", "FRANCHISOR")),
+) -> dict[str, Any]:
+    if not files:
+        raise HTTPException(400, "Pelo menos um arquivo é obrigatório")
+
+    # Salva todos os uploads ANTES do lock pra não bloquear a row por IO.
+    saved_urls: list[str] = []
+    try:
+        for f in files:
+            saved_urls.append(save_image_upload(f, "franchises"))
+    except HTTPException:
+        # Validação falhou no meio — cleanup dos que já salvaram.
+        for u in saved_urls:
+            delete_uploaded_file(u)
+        raise
+
+    franchise = db.scalar(
+        select(Franchise).where(Franchise.id == franchise_id).with_for_update()
+    )
+    if franchise is None:
+        for u in saved_urls:
+            delete_uploaded_file(u)
+        raise HTTPException(404, "Franchise not found")
+    try:
+        assert_franchise_owner(current, franchise.ownerId)
+    except HTTPException:
+        for u in saved_urls:
+            delete_uploaded_file(u)
+        raise
+
+    current_urls = parse_gallery_urls(franchise.galleryUrls)
+    merged = current_urls + saved_urls
+    if len(merged) > MAX_GALLERY_IMAGES:
+        for u in saved_urls:
+            delete_uploaded_file(u)
+        raise HTTPException(
+            400,
+            f"Galeria permite no máximo {MAX_GALLERY_IMAGES} fotos "
+            f"(atual: {len(current_urls)}, tentativa: +{len(saved_urls)})",
+        )
+
+    franchise.galleryUrls = _json.dumps(merged)
+    db.commit()
+
+    return {"data": serialize_franchise(_fetch_franchise_full(db, franchise_id), include_relations=True)}
+
+
+@franchisor_router.delete(
+    "/{franchise_id}/gallery",
+    summary="Remover foto específica da galeria",
+)
+def delete_franchise_gallery_photo(
+    franchise_id: str,
+    url: str = Query(..., min_length=1, max_length=500),
+    db: Session = Depends(get_db),
+    current: JwtPayload = Depends(require_any_role("ADMIN", "FRANCHISOR")),
+) -> dict[str, Any]:
+    franchise = db.scalar(
+        select(Franchise).where(Franchise.id == franchise_id).with_for_update()
+    )
+    if franchise is None:
+        raise HTTPException(404, "Franchise not found")
+    assert_franchise_owner(current, franchise.ownerId)
+
+    current_urls = parse_gallery_urls(franchise.galleryUrls)
+    if url not in current_urls:
+        raise HTTPException(404, "URL informada não pertence à galeria desta franquia")
+    remaining = [u for u in current_urls if u != url]
+    franchise.galleryUrls = _json.dumps(remaining) if remaining else None
+    db.commit()
+
+    delete_uploaded_file(url)
+
+    return {"data": serialize_franchise(_fetch_franchise_full(db, franchise_id), include_relations=True)}
+
+
+# ---- Video ---------------------------------------------------------------
+
+MAX_VIDEOS = 10
+
+
+@franchisor_router.post(
+    "/{franchise_id}/video",
+    summary="Adicionar URL de vídeo (YouTube/Vimeo) à franquia",
+)
+def add_franchise_video(
+    franchise_id: str,
+    body: AddVideoBody,
+    db: Session = Depends(get_db),
+    current: JwtPayload = Depends(require_any_role("ADMIN", "FRANCHISOR")),
+) -> dict[str, Any]:
+    video_url = body.url.strip()
+    if not is_valid_video_url(video_url):
+        raise HTTPException(
+            422,
+            "URL inválida. Aceitamos apenas links HTTPS do YouTube ou Vimeo.",
+        )
+
+    franchise = db.scalar(
+        select(Franchise).where(Franchise.id == franchise_id).with_for_update()
+    )
+    if franchise is None:
+        raise HTTPException(404, "Franchise not found")
+    assert_franchise_owner(current, franchise.ownerId)
+
+    current_urls = _parse_video_urls(franchise.videoUrl)
+    if video_url in current_urls:
+        raise HTTPException(409, "Este vídeo já foi adicionado")
+    if len(current_urls) + 1 > MAX_VIDEOS:
+        raise HTTPException(
+            400, f"Limite de {MAX_VIDEOS} vídeos por franquia atingido"
+        )
+
+    merged = current_urls + [video_url]
+    franchise.videoUrl = _json.dumps(merged)
+    db.commit()
+
+    return {"data": serialize_franchise(_fetch_franchise_full(db, franchise_id), include_relations=True)}
+
+
+@franchisor_router.delete(
+    "/{franchise_id}/video",
+    summary="Remover URL de vídeo específica da franquia",
+)
+def delete_franchise_video(
+    franchise_id: str,
+    url: str = Query(..., min_length=1, max_length=500),
+    db: Session = Depends(get_db),
+    current: JwtPayload = Depends(require_any_role("ADMIN", "FRANCHISOR")),
+) -> dict[str, Any]:
+    franchise = db.scalar(
+        select(Franchise).where(Franchise.id == franchise_id).with_for_update()
+    )
+    if franchise is None:
+        raise HTTPException(404, "Franchise not found")
+    assert_franchise_owner(current, franchise.ownerId)
+
+    current_urls = _parse_video_urls(franchise.videoUrl)
+    if url not in current_urls:
+        raise HTTPException(404, "URL informada não está registrada nesta franquia")
+    remaining = [u for u in current_urls if u != url]
+    franchise.videoUrl = _json.dumps(remaining) if remaining else None
+    db.commit()
+
+    return {"data": serialize_franchise(_fetch_franchise_full(db, franchise_id), include_relations=True)}
 
 
 # ===========================================================================

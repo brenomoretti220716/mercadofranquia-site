@@ -1,14 +1,16 @@
 'use client'
 
 import Api from '@/src/api/Api'
-import FranchiseEditDetails from '@/src/components/shared/franchise-edit/FranchiseEditDetails'
 import { Pagination } from '@/src/components/ui/Pagination'
 import { Franchise } from '@/src/schemas/franchises/Franchise'
 import { Review } from '@/src/schemas/franchises/Reviews'
 import { getClientAuthCookie } from '@/src/utils/clientCookie'
 import { useSuspenseQuery } from '@tanstack/react-query'
+import Image from 'next/image'
+import Link from 'next/link'
 import { useParams, useRouter } from 'next/navigation'
 import { useState } from 'react'
+import { Pencil, ExternalLink } from 'lucide-react'
 import AdminCommentPanel from '../comments-controll/AdminCommentPanel'
 
 const fetchFranchiseById = async (id: string): Promise<Franchise> => {
@@ -74,7 +76,6 @@ export default function AdminSelectedFranchise() {
   const franchiseId = params.franquia as string
   const [page, setPage] = useState(1)
   const limit = 4
-  const token = getClientAuthCookie() || ''
 
   // React Query para buscar franquia específica
   const { data: franchise } = useSuspenseQuery({
@@ -159,7 +160,7 @@ export default function AdminSelectedFranchise() {
         </button>
       </div>
 
-      <FranchiseEditDetails franchise={franchise} token={token} />
+      <FranchiseAdminSummary franchise={franchise} />
 
       <div id="admin-franchise-reviews-panel">
         <AdminCommentPanel
@@ -178,5 +179,82 @@ export default function AdminSelectedFranchise() {
         />
       </div>
     </>
+  )
+}
+
+interface FranchiseAdminSummaryProps {
+  franchise: Franchise
+}
+
+function FranchiseAdminSummary({ franchise }: FranchiseAdminSummaryProps) {
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL ?? ''
+  const logoSrc = franchise.logoUrl
+    ? franchise.logoUrl.startsWith('http')
+      ? franchise.logoUrl
+      : `${apiUrl}${franchise.logoUrl}`
+    : null
+
+  return (
+    <div className="mx-4 sm:mx-6 md:mx-10 my-6">
+      <div className="bg-white rounded-2xl border border-border/50 p-5 sm:p-6 shadow-sm">
+        <div className="flex items-start gap-4 flex-wrap">
+          <div className="w-16 h-16 bg-white rounded-xl border border-border/50 flex items-center justify-center shrink-0 p-2">
+            {logoSrc ? (
+              <Image
+                src={logoSrc}
+                alt={franchise.name}
+                width={64}
+                height={64}
+                className="object-contain w-full h-full"
+                unoptimized
+              />
+            ) : (
+              <span className="text-3xl" aria-hidden>
+                🏢
+              </span>
+            )}
+          </div>
+
+          <div className="flex-1 min-w-0">
+            <h2 className="text-xl sm:text-2xl font-semibold text-foreground truncate">
+              {franchise.name}
+            </h2>
+            <p className="text-xs text-muted-foreground mt-0.5">
+              /{franchise.slug ?? franchise.id} · status {franchise.status ?? '—'}
+            </p>
+          </div>
+
+          <div className="flex flex-col sm:flex-row gap-2 sm:items-center">
+            {franchise.slug && (
+              <Link
+                href={`/franqueador/franquias/${franchise.slug}/editar`}
+                className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg text-sm font-medium hover:bg-primary/90"
+              >
+                <Pencil className="h-4 w-4" aria-hidden />
+                Editar dados da franquia
+              </Link>
+            )}
+            {franchise.status === 'APPROVED' && franchise.slug && (
+              <Link
+                href={`/ranking/${franchise.slug}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-4 py-2 border border-border/60 text-sm font-medium text-muted-foreground hover:text-foreground rounded-lg"
+              >
+                Ver no site
+                <ExternalLink className="h-4 w-4" aria-hidden />
+              </Link>
+            )}
+          </div>
+        </div>
+
+        <p className="text-xs text-muted-foreground mt-4">
+          A edição dos dados da franquia (informações, investimento, mídia,
+          modelos de negócio) agora é feita pelo mesmo editor que o franqueador
+          usa. Como admin, você tem acesso total — inclusive pra alterar o nome
+          após aprovação.
+        </p>
+      </div>
+    </div>
   )
 }

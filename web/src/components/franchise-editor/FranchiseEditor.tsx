@@ -121,8 +121,12 @@ export default function FranchiseEditor({
               userRole={userRole}
             />
           )}
-          {activeTab === 'investment' && <InvestmentTab />}
-          {activeTab === 'media' && <MediaTab />}
+          {activeTab === 'investment' && (
+            <InvestmentTab franchise={franchise} token={token} />
+          )}
+          {activeTab === 'media' && (
+            <MediaTab franchise={franchise} token={token} />
+          )}
           {activeTab === 'businessModels' && (
             <BusinessModelsTab franchise={franchise} token={token} />
           )}
