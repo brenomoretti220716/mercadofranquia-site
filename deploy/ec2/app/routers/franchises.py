@@ -30,13 +30,19 @@ from fastapi import (
     UploadFile,
     status,
 )
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 from sqlalchemy import func, or_, select
 from sqlalchemy.orm import Session, selectinload
 
 from app.db import SessionLocal, get_db
 from app.models import ContactInfo, Franchise, Review, User
-from app.security import JwtPayload, get_optional_user, require_role
+from app.security import (
+    JwtPayload,
+    assert_franchise_owner,
+    get_optional_user,
+    require_any_role,
+    require_role,
+)
 from app.serializers import serialize_franchise
 from app.services import hubspot_client
 from app.services.ses_mailer import (
@@ -1256,6 +1262,161 @@ def create_additional_franchise(
         "data": serialize_franchise(new_franchise),
         "message": "Franquia criada com sucesso. Aguardando aprovação do admin.",
     }
+
+
+# ---------------------------------------------------------------------------
+# PATCH /franchisor/franchises/{id} — editar campos não-mídia da franquia.
+# ---------------------------------------------------------------------------
+#
+# Whitelist explícita via FranchiseEditBody + extra="forbid" — qualquer campo
+# não listado (ex: isSponsored, status, ownerId, isReview, sku, sponsorPlacements,
+# logoUrl/thumbnailUrl/galleryUrls/videoUrl, campos computados de rating/favorites)
+# dispara 422. Mídia fica pra Sprint 4 Fatia 2 via upload endpoints separados.
+#
+# Mapeamento dos 3 campos de contato (contactPhone/contactEmail/contactWebsite)
+# pra ContactInfo 1-1:
+#   - se franchise.contactId é NULL, cria ContactInfo com defaults "" pros NOT NULL
+#     ausentes (prod importou tudo com phone=""/email="" via CSV — manter consistência)
+#   - se existe, update in-place
+# ---------------------------------------------------------------------------
+
+
+class FranchiseEditBody(BaseModel):
+    """Payload PATCH pro franqueador editar sua franquia (ou admin editar qualquer).
+
+    Whitelist explícita. Campos ausentes não são tocados (semântica PATCH via
+    `model_dump(exclude_unset=True)`).
+    """
+
+    model_config = ConfigDict(extra="forbid")
+
+    # Informações gerais
+    name: Optional[str] = Field(None, min_length=2, max_length=150)
+    description: Optional[str] = Field(None, max_length=1000)
+    detailedDescription: Optional[str] = Field(None, max_length=10000)
+    segment: Optional[str] = Field(None, max_length=100)
+    subsegment: Optional[str] = Field(None, max_length=100)
+    businessType: Optional[str] = Field(None, max_length=100)
+    headquarter: Optional[str] = Field(None, max_length=100)
+    headquarterState: Optional[str] = Field(None, max_length=2)
+    brandFoundationYear: Optional[int] = Field(None, ge=1800, le=2100)
+    franchiseStartYear: Optional[int] = Field(None, ge=1800, le=2100)
+    abfSince: Optional[int] = Field(None, ge=1800, le=2100)
+    isAbfAssociated: Optional[bool] = None
+    totalUnits: Optional[int] = Field(None, ge=0)
+    totalUnitsInBrazil: Optional[int] = Field(None, ge=0)
+    unitsEvolution: Optional[Literal["UP", "DOWN", "MAINTAIN"]] = None
+
+    # Investimento (endpoint aceita já; UI da Fatia 1 não expõe ainda)
+    minimumInvestment: Optional[Decimal] = None
+    maximumInvestment: Optional[Decimal] = None
+    minimumReturnOnInvestment: Optional[int] = None
+    maximumReturnOnInvestment: Optional[int] = None
+    franchiseFee: Optional[Decimal] = None
+    averageMonthlyRevenue: Optional[Decimal] = None
+    royalties: Optional[Decimal] = None
+    advertisingFee: Optional[Decimal] = None
+    setupCapital: Optional[Decimal] = None
+    workingCapital: Optional[Decimal] = None
+    storeArea: Optional[int] = Field(None, ge=0)
+    calculationBaseAdFee: Optional[str] = Field(None, max_length=100)
+    calculationBaseRoyaltie: Optional[str] = Field(None, max_length=100)
+
+    # Contato — 1-1 com ContactInfo, upsert no handler
+    contactPhone: Optional[str] = Field(None, max_length=191)
+    contactEmail: Optional[str] = Field(None, max_length=191)
+    contactWebsite: Optional[str] = Field(None, max_length=500)
+
+
+# Mapeia nomes do payload → colunas de ContactInfo
+_CONTACT_FIELD_MAP = {
+    "contactPhone": "phone",
+    "contactEmail": "email",
+    "contactWebsite": "website",
+}
+
+
+@franchisor_router.patch(
+    "/{franchise_id}",
+    summary="Editar franquia (franchisor dono ou admin)",
+)
+def update_franchise(
+    franchise_id: str,
+    body: FranchiseEditBody,
+    db: Session = Depends(get_db),
+    current: JwtPayload = Depends(require_any_role("ADMIN", "FRANCHISOR")),
+) -> dict[str, Any]:
+    franchise = db.scalar(
+        select(Franchise)
+        .where(Franchise.id == franchise_id)
+        .options(selectinload(Franchise.contact))
+    )
+    if franchise is None:
+        raise HTTPException(status_code=404, detail="Franchise not found")
+
+    assert_franchise_owner(current, franchise.ownerId)
+
+    updates = body.model_dump(exclude_unset=True)
+
+    if (
+        "name" in updates
+        and franchise.status == "APPROVED"
+        and current.role != "ADMIN"
+    ):
+        raise HTTPException(
+            status_code=422,
+            detail=(
+                "Não é possível alterar o nome da franquia após aprovação. "
+                "Entre em contato com o admin."
+            ),
+        )
+
+    contact_updates: dict[str, Any] = {}
+    for api_key, col_name in _CONTACT_FIELD_MAP.items():
+        if api_key in updates:
+            contact_updates[col_name] = updates.pop(api_key)
+
+    if contact_updates:
+        if franchise.contactId is not None:
+            contact = db.get(ContactInfo, franchise.contactId)
+            if contact is None:
+                raise HTTPException(
+                    status_code=500,
+                    detail="ContactInfo referenciado não encontrado.",
+                )
+            for col, value in contact_updates.items():
+                setattr(contact, col, value)
+        else:
+            contact = ContactInfo(
+                phone=contact_updates.get("phone") or "",
+                email=contact_updates.get("email") or "",
+                website=contact_updates.get("website"),
+            )
+            db.add(contact)
+            db.flush()
+            franchise.contactId = contact.id
+
+    for col, value in updates.items():
+        setattr(franchise, col, value)
+
+    db.commit()
+
+    # `populate_existing=True` força re-carga do objeto no identity map — sem isso
+    # o selectinload abaixo é ignorado pra um Franchise já presente na sessão, e
+    # o response vem com `contact: None` mesmo quando o contactId foi setado.
+    fresh = db.scalar(
+        select(Franchise)
+        .where(Franchise.id == franchise_id)
+        .options(
+            selectinload(Franchise.contact),
+            selectinload(Franchise.owner),
+            selectinload(Franchise.business_models),
+            selectinload(Franchise.reviews).selectinload(Review.author),
+        )
+        .execution_options(populate_existing=True)
+    )
+
+    return {"data": serialize_franchise(fresh, include_relations=True)}
 
 
 # ===========================================================================
