@@ -34,6 +34,7 @@ from fastapi import (
 )
 from pydantic import BaseModel, Field, model_validator
 from sqlalchemy import and_, func, or_, select
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session, selectinload
 
 from app.constantes import (
@@ -252,7 +253,17 @@ def create_request(
 
         user.role = UserRole.FRANCHISOR
 
-        db.commit()
+        try:
+            db.commit()
+        except IntegrityError as e:
+            db.rollback()
+            logger.warning(
+                f"IntegrityError on NEW franchisor request (user={user.id}): {e}"
+            )
+            raise HTTPException(
+                status_code=status.HTTP_409_CONFLICT,
+                detail="Já existe uma marca cadastrada com esse nome. Tente um nome diferente.",
+            )
         db.refresh(user)
 
         new_access_token = issue_token(
@@ -272,6 +283,16 @@ def create_request(
             raise HTTPException(
                 status.HTTP_400_BAD_REQUEST,
                 "Only APPROVED franchises can be claimed",
+            )
+
+        if target.ownerId is not None:
+            raise HTTPException(
+                status_code=status.HTTP_409_CONFLICT,
+                detail=(
+                    "Esta franquia já tem um franqueador responsável. "
+                    "Se você é o dono legítimo e acredita que houve um erro, "
+                    "entre em contato pelo email de suporte."
+                ),
             )
 
         own_claim_pending = db.scalar(
@@ -322,7 +343,21 @@ def create_request(
         )
         db.add(new_request)
 
-        db.commit()
+        try:
+            db.commit()
+        except IntegrityError as e:
+            db.rollback()
+            logger.warning(
+                f"IntegrityError on EXISTING franchisor request "
+                f"(user={user.id}, franchiseId={target.id}): {e}"
+            )
+            raise HTTPException(
+                status_code=status.HTTP_409_CONFLICT,
+                detail=(
+                    "Esta franquia já tem uma reivindicação em análise. "
+                    "Tente novamente em alguns instantes ou entre em contato pelo suporte."
+                ),
+            )
 
     req = db.scalar(
         select(FranchisorRequest)
@@ -387,6 +422,73 @@ def get_my_request(
     )
     if req is None:
         return None
+    return serialize_franchisor_request(req)
+
+
+# ---------------------------------------------------------------------------
+# POST /users/franchisor-request/my-request/cancel
+# ---------------------------------------------------------------------------
+
+@router.post(
+    "/my-request/cancel",
+    summary="Cancelar a própria reivindicação (auto-serviço)",
+)
+def cancel_my_request(
+    current: JwtPayload = Depends(get_current_user),
+    db: Session = Depends(get_db),
+) -> dict[str, Any]:
+    """
+    Cancela a FranchisorRequest PENDING/UNDER_REVIEW do user autenticado
+    (ou 404 se não houver). Estado terminal: depois de CANCELLED, o user
+    precisa criar nova request se quiser tentar de novo.
+
+    Side effects espelham o /admin/.../reject pro NEW mode:
+    - NEW cancel: Franchise associada vira REJECTED + isActive=False,
+      user.role volta pra MEMBER.
+    - EXISTING cancel: só o status do request muda — user nunca foi promovido
+      no create_request (EXISTING não promove), e a Franchise alvo não foi
+      tocada na criação (ownership só transferiria no /approve).
+
+    updatedAt é auto-atualizado pelo SQLAlchemy via onupdate=func.now() no
+    modelo — não precisa setar manualmente.
+    """
+    req = db.scalar(
+        select(FranchisorRequest)
+        .where(FranchisorRequest.userId == current.id)
+        .where(
+            FranchisorRequest.status.in_(
+                [
+                    FranchisorRequestStatus.PENDING,
+                    FranchisorRequestStatus.UNDER_REVIEW,
+                ]
+            )
+        )
+        .options(
+            selectinload(FranchisorRequest.user),
+            selectinload(FranchisorRequest.franchise),
+        )
+    )
+    if req is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Não há reivindicação em análise.",
+        )
+
+    req.status = FranchisorRequestStatus.CANCELLED
+    if req.mode == FranchisorRequestMode.NEW:
+        franchise = req.franchise
+        if franchise is not None:
+            franchise.status = FranchiseStatus.REJECTED
+            franchise.isActive = False
+        user = req.user
+        if user is not None:
+            user.role = UserRole.MEMBER
+    # EXISTING: nothing to undo — user wasn't promoted on create, and the
+    # target franchise was never touched.
+
+    db.commit()
+    db.refresh(req)
+
     return serialize_franchisor_request(req)
 
 
@@ -625,6 +727,11 @@ def approve_request(
         raise HTTPException(status_code=404, detail="Request not found")
     if req.status == FranchisorRequestStatus.APPROVED:
         raise HTTPException(status_code=409, detail="Request already approved")
+    if req.status == FranchisorRequestStatus.CANCELLED:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="Reivindicação foi cancelada pelo solicitante e não pode ser aprovada.",
+        )
 
     user = req.user
     if user is None:
@@ -717,6 +824,11 @@ def reject_request(
         raise HTTPException(status_code=404, detail="Request not found")
     if req.status == FranchisorRequestStatus.REJECTED:
         raise HTTPException(status_code=409, detail="Request already rejected")
+    if req.status == FranchisorRequestStatus.CANCELLED:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="Reivindicação foi cancelada pelo solicitante e não pode ser rejeitada.",
+        )
 
     user = req.user
     if user is None:

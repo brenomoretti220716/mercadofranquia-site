@@ -73,6 +73,7 @@ class FranchisorRequestStatus:
     UNDER_REVIEW = "UNDER_REVIEW"
     APPROVED = "APPROVED"
     REJECTED = "REJECTED"
+    CANCELLED = "CANCELLED"
 
 
 class FranchisorRequestMode:
