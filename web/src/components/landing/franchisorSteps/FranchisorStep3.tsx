@@ -11,7 +11,10 @@ import {
   FranchisorRequestFormInput,
   FranchisorRequestFormSchema,
 } from '@/src/schemas/users/FranchisorRequest'
-import { createFranchisorRequest } from '@/src/services/users'
+import {
+  createFranchisorRequest,
+  type CreateFranchisorRequestResponse,
+} from '@/src/services/users'
 import {
   getClientAuthCookie,
   setClientAuthCookie,
@@ -24,7 +27,7 @@ import ModeSelectorCard from '@/src/components/ui/ModeSelectorCard'
 import RoundedButton from '@/src/components/ui/RoundedButton'
 
 interface FranchisorStep3Props {
-  onSuccess: () => void
+  onSuccess: (data: CreateFranchisorRequestResponse) => void
 }
 
 export default function FranchisorStep3({ onSuccess }: FranchisorStep3Props) {
@@ -70,7 +73,7 @@ export default function FranchisorStep3({ onSuccess }: FranchisorStep3Props) {
         queryKey: ['franchisor-request', 'my-request'],
       })
       toast.success('Solicitação enviada! Aguardando aprovação.')
-      onSuccess()
+      onSuccess(data)
     },
     onError: (error) => {
       toast.error(

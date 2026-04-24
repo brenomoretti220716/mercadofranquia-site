@@ -4,6 +4,7 @@ import { useCallback, useState } from 'react'
 import { StepOneRegistrationInput } from '@/src/schemas/users/auth'
 import { FranchisorStepTwoInput } from '@/src/schemas/users/franchisorAuth'
 import { useFranchisorStepOneMutation } from '@/src/hooks/users/useFranchisorRegisterMutations'
+import type { CreateFranchisorRequestResponse } from '@/src/services/users'
 import FranchisorStep1 from './franchisorSteps/FranchisorStep1'
 import FranchisorStep2 from './franchisorSteps/FranchisorStep2'
 import FranchisorStep3 from './franchisorSteps/FranchisorStep3'
@@ -49,9 +50,17 @@ export default function FranchisorRegisterFlow() {
     [step1Data, stepOneMutation],
   )
 
-  const handleStep3Success = useCallback(() => {
-    redirectTo('/franqueador/minhas-franquias')
-  }, [])
+  const handleStep3Success = useCallback(
+    (data: CreateFranchisorRequestResponse) => {
+      const req = data.request
+      if (req.mode === 'NEW' && req.franchise?.slug) {
+        redirectTo(`/franqueador/franquias/${req.franchise.slug}/editar`)
+      } else {
+        redirectTo('/franqueador/minhas-franquias')
+      }
+    },
+    [],
+  )
 
   const handleBack = useCallback(() => {
     if (currentStep === 'step2') setCurrentStep('step1')

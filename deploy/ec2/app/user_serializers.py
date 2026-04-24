@@ -232,6 +232,7 @@ def serialize_franchisor_request(
         data["franchise"] = {
             "id": r.franchise.id,
             "name": r.franchise.name,
+            "slug": getattr(r.franchise, "slug", None),
             "logoUrl": getattr(r.franchise, "logoUrl", None),
             "status": r.franchise.status,
         }
