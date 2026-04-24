@@ -25,9 +25,33 @@ const UNITS_EVOLUTION_OPTIONS = [
 ]
 
 const BR_STATES = [
-  'AC', 'AL', 'AM', 'AP', 'BA', 'CE', 'DF', 'ES', 'GO', 'MA',
-  'MG', 'MS', 'MT', 'PA', 'PB', 'PE', 'PI', 'PR', 'RJ', 'RN',
-  'RO', 'RR', 'RS', 'SC', 'SE', 'SP', 'TO',
+  'AC',
+  'AL',
+  'AM',
+  'AP',
+  'BA',
+  'CE',
+  'DF',
+  'ES',
+  'GO',
+  'MA',
+  'MG',
+  'MS',
+  'MT',
+  'PA',
+  'PB',
+  'PE',
+  'PI',
+  'PR',
+  'RJ',
+  'RN',
+  'RO',
+  'RR',
+  'RS',
+  'SC',
+  'SE',
+  'SP',
+  'TO',
 ]
 
 const STATE_OPTIONS = [
@@ -35,9 +59,7 @@ const STATE_OPTIONS = [
   ...BR_STATES.map((uf) => ({ value: uf, label: uf })),
 ]
 
-function franchiseToFormDefaults(
-  f: Franchise,
-): FranchiseEditorInfoFormInput {
+function franchiseToFormDefaults(f: Franchise): FranchiseEditorInfoFormInput {
   return {
     name: f.name ?? '',
     description: f.description ?? '',
@@ -47,8 +69,7 @@ function franchiseToFormDefaults(
     businessType: f.businessType ?? '',
     headquarter: f.headquarter ?? '',
     headquarterState: f.headquarterState ?? '',
-    totalUnits:
-      typeof f.totalUnits === 'number' ? String(f.totalUnits) : '',
+    totalUnits: typeof f.totalUnits === 'number' ? String(f.totalUnits) : '',
     totalUnitsInBrazil:
       typeof f.totalUnitsInBrazil === 'number'
         ? String(f.totalUnitsInBrazil)
@@ -62,12 +83,9 @@ function franchiseToFormDefaults(
       typeof f.franchiseStartYear === 'number'
         ? String(f.franchiseStartYear)
         : '',
-    abfSince:
-      typeof f.abfSince === 'number' ? String(f.abfSince) : '',
+    abfSince: typeof f.abfSince === 'number' ? String(f.abfSince) : '',
     isAbfAssociated:
-      typeof f.isAbfAssociated === 'boolean'
-        ? f.isAbfAssociated
-        : undefined,
+      typeof f.isAbfAssociated === 'boolean' ? f.isAbfAssociated : undefined,
     contactPhone: f.contact?.phone ?? '',
     contactEmail: f.contact?.email ?? '',
     contactWebsite: f.contact?.website ?? '',
@@ -144,9 +162,12 @@ export default function InfoTab({ franchise, token, userRole }: InfoTabProps) {
           />
           {nameLocked && (
             <p className="text-xs text-muted-foreground mt-1 flex items-start gap-1.5">
-              <Info className="h-3.5 w-3.5 mt-0.5 shrink-0" aria-hidden="true" />
-              O nome não pode ser alterado após a aprovação. Fale com o admin
-              se precisar mudar.
+              <Info
+                className="h-3.5 w-3.5 mt-0.5 shrink-0"
+                aria-hidden="true"
+              />
+              O nome não pode ser alterado após a aprovação. Fale com o admin se
+              precisar mudar.
             </p>
           )}
         </div>
@@ -175,9 +196,7 @@ export default function InfoTab({ franchise, token, userRole }: InfoTabProps) {
       </section>
 
       <section className="space-y-4">
-        <h2 className="text-lg font-semibold text-foreground">
-          Classificação
-        </h2>
+        <h2 className="text-lg font-semibold text-foreground">Classificação</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <FormInput
             label="Segmento"
@@ -327,9 +346,7 @@ export default function InfoTab({ franchise, token, userRole }: InfoTabProps) {
 
       <div className="flex items-center justify-end gap-3 pt-2 border-t border-border/50">
         <p className="text-xs text-muted-foreground mr-auto">
-          {isDirty
-            ? 'Alterações não salvas'
-            : 'Nenhuma alteração pendente'}
+          {isDirty ? 'Alterações não salvas' : 'Nenhuma alteração pendente'}
         </p>
         <RoundedButton
           text="Salvar alterações"

@@ -54,7 +54,10 @@ interface InvestmentTabProps {
   token: string
 }
 
-export default function InvestmentTab({ franchise, token }: InvestmentTabProps) {
+export default function InvestmentTab({
+  franchise,
+  token,
+}: InvestmentTabProps) {
   const mutation = useUpdateFranchisorFranchise()
 
   const defaults = useMemo(
@@ -102,8 +105,8 @@ export default function InvestmentTab({ franchise, token }: InvestmentTabProps) 
           Investimento total
         </h2>
         <p className="text-xs text-muted-foreground -mt-2">
-          Faixa completa pra abrir uma unidade. Use ponto como separador
-          decimal (ex: 450000.00).
+          Faixa completa pra abrir uma unidade. Use ponto como separador decimal
+          (ex: 450000.00).
         </p>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <FormInput

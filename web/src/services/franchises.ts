@@ -622,17 +622,14 @@ export async function updateFranchisorFranchise(
   payload: Record<string, unknown>,
   token: string,
 ): Promise<Franchise> {
-  const response = await fetch(
-    Api(`/franchisor/franchises/${franchiseId}`),
-    {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(payload),
+  const response = await fetch(Api(`/franchisor/franchises/${franchiseId}`), {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
     },
-  )
+    body: JSON.stringify(payload),
+  })
   if (!response.ok) {
     throw new Error(handleHttpError(response, 'Erro ao atualizar franquia'))
   }
@@ -745,7 +742,9 @@ export async function addFranchiseGalleryPhotos(
     },
   )
   if (!response.ok) {
-    throw new Error(handleHttpError(response, 'Erro ao adicionar fotos à galeria'))
+    throw new Error(
+      handleHttpError(response, 'Erro ao adicionar fotos à galeria'),
+    )
   }
   const result = await response.json()
   return result.data

@@ -220,7 +220,8 @@ function FranchiseAdminSummary({ franchise }: FranchiseAdminSummaryProps) {
               {franchise.name}
             </h2>
             <p className="text-xs text-muted-foreground mt-0.5">
-              /{franchise.slug ?? franchise.id} · status {franchise.status ?? '—'}
+              /{franchise.slug ?? franchise.id} · status{' '}
+              {franchise.status ?? '—'}
             </p>
           </div>
 

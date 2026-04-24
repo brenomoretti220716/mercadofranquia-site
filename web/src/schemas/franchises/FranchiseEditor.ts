@@ -48,7 +48,11 @@ export const FranchiseEditorInfoFormSchema = z
       .max(150, 'Nome muito longo')
       .optional()
       .or(z.literal('')),
-    description: z.string().max(1000, 'Máximo 1000 caracteres').optional().or(z.literal('')),
+    description: z
+      .string()
+      .max(1000, 'Máximo 1000 caracteres')
+      .optional()
+      .or(z.literal('')),
     detailedDescription: z
       .string()
       .max(10000, 'Máximo 10000 caracteres')
@@ -69,7 +73,10 @@ export const FranchiseEditorInfoFormSchema = z
       .or(z.literal('')),
     totalUnits: optionalIntegerString,
     totalUnitsInBrazil: optionalIntegerString,
-    unitsEvolution: z.enum(['UP', 'DOWN', 'MAINTAIN']).optional().or(z.literal('')),
+    unitsEvolution: z
+      .enum(['UP', 'DOWN', 'MAINTAIN'])
+      .optional()
+      .or(z.literal('')),
 
     // Histórico
     brandFoundationYear: optionalYearString,
@@ -138,7 +145,10 @@ export type FranchiseEditorInfoFormInput = z.infer<
 // 13 campos numéricos (Decimal no backend).
 // ============================================================
 
-const CALCULATION_BASE_OPTIONS = ['FATURAMENTO_BRUTO', 'FATURAMENTO_LIQUIDO'] as const
+const CALCULATION_BASE_OPTIONS = [
+  'FATURAMENTO_BRUTO',
+  'FATURAMENTO_LIQUIDO',
+] as const
 
 export const FranchiseEditorInvestmentFormSchema = z
   .object({

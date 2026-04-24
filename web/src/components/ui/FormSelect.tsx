@@ -1,12 +1,6 @@
 'use client'
 
-import {
-  forwardRef,
-  useRef,
-  useState,
-  useEffect,
-  ReactElement,
-} from 'react'
+import { forwardRef, useRef, useState, useEffect, ReactElement } from 'react'
 import { UseFormRegisterReturn } from 'react-hook-form'
 import ArrowDownIcon from '../icons/arrowDownIcon'
 
@@ -91,8 +85,7 @@ const FormSelect = forwardRef<HTMLInputElement, FormSelectProps>(
 
     // Display value: external `value` prop (controlled) takes precedence; otherwise
     // fall back to internal state that tracks RHF's field value via register.
-    const currentValue =
-      value !== undefined ? (value as string) : internalValue
+    const currentValue = value !== undefined ? (value as string) : internalValue
     const selectedOption = options.find((opt) => opt.value === currentValue)
     const displayText = selectedOption
       ? selectedOption.label

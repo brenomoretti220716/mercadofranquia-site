@@ -11,7 +11,11 @@ import {
 } from '@/src/services/franchises'
 import type { Franchise } from '@/src/schemas/franchises/Franchise'
 import { formatErrorMessage } from '@/src/utils/errorHandlers'
-import { useMutation, useQueryClient, type UseMutationOptions } from '@tanstack/react-query'
+import {
+  useMutation,
+  useQueryClient,
+  type UseMutationOptions,
+} from '@tanstack/react-query'
 import { toast } from 'sonner'
 
 interface UpdateFranchisorFranchiseInput {
@@ -45,7 +49,10 @@ export function useUpdateFranchisorFranchise() {
     },
     onError: (error: Error) => {
       toast.error(
-        formatErrorMessage(error, 'Erro ao salvar alterações. Tente novamente.'),
+        formatErrorMessage(
+          error,
+          'Erro ao salvar alterações. Tente novamente.',
+        ),
       )
     },
   })
@@ -104,7 +111,11 @@ export function useUploadFranchiseLogo() {
   return useMutation({
     mutationFn: ({ franchiseId, file, token }: MediaFileInput) =>
       uploadFranchiseLogo(franchiseId, file, token),
-    ...buildMediaMutationConfig<MediaFileInput>(qc, 'Logo atualizado.', 'Erro ao enviar logo.'),
+    ...buildMediaMutationConfig<MediaFileInput>(
+      qc,
+      'Logo atualizado.',
+      'Erro ao enviar logo.',
+    ),
   })
 }
 
@@ -113,7 +124,11 @@ export function useDeleteFranchiseLogo() {
   return useMutation({
     mutationFn: ({ franchiseId, token }: MediaIdInput) =>
       deleteFranchiseLogo(franchiseId, token),
-    ...buildMediaMutationConfig<MediaIdInput>(qc, 'Logo removido.', 'Erro ao remover logo.'),
+    ...buildMediaMutationConfig<MediaIdInput>(
+      qc,
+      'Logo removido.',
+      'Erro ao remover logo.',
+    ),
   })
 }
 
@@ -122,7 +137,11 @@ export function useUploadFranchiseThumbnail() {
   return useMutation({
     mutationFn: ({ franchiseId, file, token }: MediaFileInput) =>
       uploadFranchiseThumbnail(franchiseId, file, token),
-    ...buildMediaMutationConfig<MediaFileInput>(qc, 'Thumbnail atualizado.', 'Erro ao enviar thumbnail.'),
+    ...buildMediaMutationConfig<MediaFileInput>(
+      qc,
+      'Thumbnail atualizado.',
+      'Erro ao enviar thumbnail.',
+    ),
   })
 }
 
@@ -131,7 +150,11 @@ export function useDeleteFranchiseThumbnail() {
   return useMutation({
     mutationFn: ({ franchiseId, token }: MediaIdInput) =>
       deleteFranchiseThumbnail(franchiseId, token),
-    ...buildMediaMutationConfig<MediaIdInput>(qc, 'Thumbnail removido.', 'Erro ao remover thumbnail.'),
+    ...buildMediaMutationConfig<MediaIdInput>(
+      qc,
+      'Thumbnail removido.',
+      'Erro ao remover thumbnail.',
+    ),
   })
 }
 
@@ -140,7 +163,11 @@ export function useAddFranchiseGalleryPhotos() {
   return useMutation({
     mutationFn: ({ franchiseId, files, token }: MediaFilesInput) =>
       addFranchiseGalleryPhotos(franchiseId, files, token),
-    ...buildMediaMutationConfig<MediaFilesInput>(qc, 'Fotos adicionadas.', 'Erro ao adicionar fotos.'),
+    ...buildMediaMutationConfig<MediaFilesInput>(
+      qc,
+      'Fotos adicionadas.',
+      'Erro ao adicionar fotos.',
+    ),
   })
 }
 
@@ -149,7 +176,11 @@ export function useDeleteFranchiseGalleryPhoto() {
   return useMutation({
     mutationFn: ({ franchiseId, url, token }: MediaUrlInput) =>
       deleteFranchiseGalleryPhoto(franchiseId, url, token),
-    ...buildMediaMutationConfig<MediaUrlInput>(qc, 'Foto removida.', 'Erro ao remover foto.'),
+    ...buildMediaMutationConfig<MediaUrlInput>(
+      qc,
+      'Foto removida.',
+      'Erro ao remover foto.',
+    ),
   })
 }
 
@@ -158,7 +189,11 @@ export function useAddFranchiseVideo() {
   return useMutation({
     mutationFn: ({ franchiseId, url, token }: MediaUrlInput) =>
       addFranchiseVideo(franchiseId, url, token),
-    ...buildMediaMutationConfig<MediaUrlInput>(qc, 'Vídeo adicionado.', 'Erro ao adicionar vídeo.'),
+    ...buildMediaMutationConfig<MediaUrlInput>(
+      qc,
+      'Vídeo adicionado.',
+      'Erro ao adicionar vídeo.',
+    ),
   })
 }
 
@@ -167,6 +202,10 @@ export function useDeleteFranchiseVideoUrl() {
   return useMutation({
     mutationFn: ({ franchiseId, url, token }: MediaUrlInput) =>
       deleteFranchiseVideoUrl(franchiseId, url, token),
-    ...buildMediaMutationConfig<MediaUrlInput>(qc, 'Vídeo removido.', 'Erro ao remover vídeo.'),
+    ...buildMediaMutationConfig<MediaUrlInput>(
+      qc,
+      'Vídeo removido.',
+      'Erro ao remover vídeo.',
+    ),
   })
 }

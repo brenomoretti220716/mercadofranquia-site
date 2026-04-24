@@ -115,11 +115,7 @@ export default function FranchiseEditor({
 
         <section className="flex-1 min-w-0 bg-white rounded-2xl border border-border/50 p-5 sm:p-6 md:p-8 shadow-sm">
           {activeTab === 'info' && (
-            <InfoTab
-              franchise={franchise}
-              token={token}
-              userRole={userRole}
-            />
+            <InfoTab franchise={franchise} token={token} userRole={userRole} />
           )}
           {activeTab === 'investment' && (
             <InvestmentTab franchise={franchise} token={token} />
