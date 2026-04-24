@@ -156,8 +156,10 @@ export function hasValidImages(
 /**
  * Checks if a franchise has any valid videos.
  */
-export function hasValidVideos(videoUrl: string | null | undefined): boolean {
-  const normalizedVideos = normalizeVideoUrls(videoUrl)
+export function hasValidVideos(
+  videoUrls: string[] | string | null | undefined,
+): boolean {
+  const normalizedVideos = normalizeVideoUrls(videoUrls)
   return (
     normalizedVideos.filter((video) => Boolean(video && video.trim())).length >
     0

@@ -41,7 +41,7 @@ export interface Franchise {
   workingCapital?: number | null
   storeArea?: number | null // m²
 
-  videoUrl?: string | null
+  videoUrls?: string[] | null
   thumbnailUrl?: string | null
   galleryUrls?: string[] | null
   logoUrl?: string | null

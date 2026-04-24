@@ -188,7 +188,7 @@ export default function SelectedFranchise({
       <div className="flex flex-col m-4 sm:m-5 md:m-10 w-auto min-h-screen gap-4 md:gap-5">
         {/* Media Section - only show if at least one field exists */}
         {(hasValidImages(franchise.thumbnailUrl, franchise.galleryUrls) ||
-          hasValidVideos(franchise.videoUrl)) && (
+          hasValidVideos(franchise.videoUrls)) && (
           <div className="flex flex-col lg:flex-row gap-4 md:gap-5">
             {/* Image Carousel - combines thumbnailUrl (first) + galleryUrls (rest) */}
             {hasValidImages(franchise.thumbnailUrl, franchise.galleryUrls) ? (
@@ -211,9 +211,9 @@ export default function SelectedFranchise({
             )}
 
             {/* Video Frame */}
-            {hasValidVideos(franchise.videoUrl) ? (
+            {hasValidVideos(franchise.videoUrls) ? (
               <VideoCarousel
-                videos={franchise.videoUrl}
+                videos={franchise.videoUrls}
                 title={`Vídeo da ${franchise.name}`}
                 className="w-full"
                 posterSrc={franchise.thumbnailUrl}

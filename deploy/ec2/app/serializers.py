@@ -60,6 +60,15 @@ def parse_gallery_urls(raw: Optional[str]) -> list[str]:
     return [raw]
 
 
+def parse_video_urls(raw: Optional[str]) -> list[str]:
+    """
+    Franchise.videoUrl column is stored as TEXT holding a JSON-encoded array
+    (same shape as galleryUrls). The API exposes it as the plural `videoUrls`
+    field to match the underlying list structure.
+    """
+    return parse_gallery_urls(raw)
+
+
 def serialize_contact(c: Optional[ContactInfo]) -> Optional[dict[str, Any]]:
     if c is None:
         return None
@@ -144,7 +153,7 @@ def serialize_franchise(
         "setupCapital": _num(f.setupCapital),
         "workingCapital": _num(f.workingCapital),
         "storeArea": f.storeArea,
-        "videoUrl": f.videoUrl,
+        "videoUrls": parse_video_urls(f.videoUrl),
         "thumbnailUrl": f.thumbnailUrl,
         "galleryUrls": parse_gallery_urls(f.galleryUrls),
         "logoUrl": f.logoUrl,

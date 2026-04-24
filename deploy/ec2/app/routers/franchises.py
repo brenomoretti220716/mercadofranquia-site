@@ -45,7 +45,7 @@ from app.security import (
     require_any_role,
     require_role,
 )
-from app.serializers import parse_gallery_urls, serialize_franchise
+from app.serializers import parse_gallery_urls, parse_video_urls, serialize_franchise
 from app.services import hubspot_client
 from app.storage import delete_uploaded_file, save_image_upload
 from app.utils.video_url import is_valid_video_url
@@ -689,7 +689,7 @@ _FRANCHISE_BOOL_FIELDS = ("isActive", "isSponsored", "isReview", "isAbfAssociate
 _FRANCHISE_STR_FIELDS = (
     "name", "sku", "slug", "segment", "subsegment", "businessType",
     "headquarter", "headquarterState", "description", "detailedDescription",
-    "logoUrl", "thumbnailUrl", "videoUrl", "scrapedWebsite",
+    "logoUrl", "thumbnailUrl", "scrapedWebsite",
     "calculationBaseAdFee", "calculationBaseRoyaltie", "unitsEvolution",
 )
 _CONTACT_FIELDS = ("phone", "email", "website")
@@ -1434,11 +1434,9 @@ def update_franchise(
 # Formato storage:
 # - logoUrl/thumbnailUrl: string simples (path "/uploads/franchises/<uuid>.jpg")
 # - galleryUrls: JSON-array-stringified em TEXT → parse/modify/dumps
-# - videoUrl: JSON-array-stringified em TEXT → parse/modify/dumps
-#   (serializer faz parse só de galleryUrls; videoUrl continua string crua no
-#   response — inconsistência histórica preservada pra não quebrar consumers
-#   como VideoCarousel.tsx e SelectedFranchise público que já fazem o parse
-#   no frontend via normalizeVideoUrls.)
+# - videoUrl (coluna DB): JSON-array-stringified em TEXT → parse/modify/dumps;
+#   serializer expõe como chave `videoUrls` (plural) parseada em list[str] pra
+#   casar com a forma real do dado (array de URLs YouTube/Vimeo).
 #
 # Race safety: gallery e video usam SELECT ... FOR UPDATE (via with_for_update())
 # pra bloquear linha durante parse-modify-serialize. Logo/thumbnail pulam o lock
@@ -1466,24 +1464,6 @@ def _fetch_franchise_full(db: Session, franchise_id: str) -> Optional[Franchise]
         )
         .execution_options(populate_existing=True)
     )
-
-
-def _parse_video_urls(raw: Optional[str]) -> list[str]:
-    """Paralelo de parse_gallery_urls pra videoUrl. Tolera string vazia,
-    JSON array, CSV e URL única — mesmas regras defensivas."""
-    if not raw:
-        return []
-    raw = raw.strip()
-    if raw.startswith("["):
-        try:
-            parsed = _json.loads(raw)
-            if isinstance(parsed, list):
-                return [str(x) for x in parsed if x]
-        except _json.JSONDecodeError:
-            pass
-    if "," in raw:
-        return [s.strip() for s in raw.split(",") if s.strip()]
-    return [raw]
 
 
 # ---- Logo ----------------------------------------------------------------
@@ -1708,7 +1688,7 @@ def add_franchise_video(
         raise HTTPException(404, "Franchise not found")
     assert_franchise_owner(current, franchise.ownerId)
 
-    current_urls = _parse_video_urls(franchise.videoUrl)
+    current_urls = parse_video_urls(franchise.videoUrl)
     if video_url in current_urls:
         raise HTTPException(409, "Este vídeo já foi adicionado")
     if len(current_urls) + 1 > MAX_VIDEOS:
@@ -1740,7 +1720,7 @@ def delete_franchise_video(
         raise HTTPException(404, "Franchise not found")
     assert_franchise_owner(current, franchise.ownerId)
 
-    current_urls = _parse_video_urls(franchise.videoUrl)
+    current_urls = parse_video_urls(franchise.videoUrl)
     if url not in current_urls:
         raise HTTPException(404, "URL informada não está registrada nesta franquia")
     remaining = [u for u in current_urls if u != url]

@@ -40,7 +40,7 @@ export default function MediaTab({ franchise, token }: MediaTabProps) {
 
       <MediaVideoList
         franchiseId={franchise.id}
-        videoUrl={franchise.videoUrl}
+        videoUrls={franchise.videoUrls}
         token={token}
       />
     </div>

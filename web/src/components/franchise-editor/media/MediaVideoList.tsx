@@ -38,13 +38,13 @@ function isLikelyAllowedHost(url: string): boolean {
 
 interface MediaVideoListProps {
   franchiseId: string
-  videoUrl: string | null | undefined
+  videoUrls: string[] | string | null | undefined
   token: string
 }
 
 export default function MediaVideoList({
   franchiseId,
-  videoUrl,
+  videoUrls,
   token,
 }: MediaVideoListProps) {
   const [input, setInput] = useState('')
@@ -52,7 +52,7 @@ export default function MediaVideoList({
   const addMutation = useAddFranchiseVideo()
   const deleteMutation = useDeleteFranchiseVideoUrl()
 
-  const videos = normalizeVideoUrls(videoUrl)
+  const videos = normalizeVideoUrls(videoUrls)
   const busy = addMutation.isPending || deleteMutation.isPending
   const atLimit = videos.length >= MAX_VIDEOS
 
