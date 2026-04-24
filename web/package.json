@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
+    "build:deploy": "bash scripts/build-standalone.sh",
     "analyze": "ANALYZE=true next build",
     "start": "node .next/standalone/server.js",
     "lint": "eslint .",

@@ -19,31 +19,32 @@ Two systemd services on the same host:
    NODE_ENV=production
    ```
 
-2. Build:
+2. Build (from inside `web/`):
 
    ```bash
-   cd web && rm -rf .next && npm run build
+   npm run build:deploy
    ```
 
-3. **Always rewrite `web/.next/standalone/.env`** after build. Next standalone copies `web/.env` (root) into the bundle but ignores `.local` files — so the bundled `.env` ends up with whatever dev values are in `web/.env`. Overwrite manually:
+   This runs `scripts/build-standalone.sh`, which validates `.env.production.local`, cleans `.next/`, runs `next build` with `NODE_OPTIONS='--max-old-space-size=2048'`, and copies the 3 artefacts the standalone bundle doesn't include by default into `.next/standalone/`:
 
-   ```bash
-   cat > web/.next/standalone/.env <<'EOF'
-   PORT=3000
-   NODE_ENV=production
-   NEXT_PUBLIC_API_URL=https://mercadofranquia.com.br
-   NEXT_PUBLIC_SITE_URL=https://mercadofranquia.com.br
-   EOF
-   ```
+   - `.env` (copied from `.env.production.local` — prod values)
+   - `public/` (static assets served by Next)
+   - `.next/static/` (built JS/CSS chunks served at `/_next/static/*`)
 
-4. Sanity grep:
+   Don't run `npm run build` directly for a deploy — the standalone bundle ends up missing those 3 artefacts and the site serves broken HTML without CSS/JS or with wrong env.
 
-   ```bash
-   grep -rl "localhost:3050" web/.next/standalone/   # expect empty
-   grep -rl "mercadofranquia.com.br" web/.next/standalone/ | head  # expect chunks
-   ```
+### Why the script exists
 
-   `localhost:4000` matches in `server.js`, `routes-manifest.json`, `required-server-files.json` are benign (they come from `next.config.js` rewrites; nginx intercepts `/api/*` before it reaches Next in prod).
+Next 15 in `output: 'standalone'` mode produces a minimal `.next/standalone/` with `server.js` + `node_modules`, but **does not include** `public/`, `.next/static/`, or any `.env.*.local`. Those must be copied post-build for the rsync destination to have everything needed at runtime. The 3 manual copies are easy to forget; the script makes forgetting impossible.
+
+### Sanity grep (optional, post-build)
+
+```bash
+grep -rl "localhost:3050" web/.next/standalone/   # expect empty
+grep -rl "mercadofranquia.com.br" web/.next/standalone/ | head  # expect chunks
+```
+
+`localhost:4000` matches in `server.js`, `routes-manifest.json`, `required-server-files.json` are benign (they come from `next.config.js` rewrites; nginx intercepts `/api/*` before it reaches Next in prod).
 
 ## Rsync paths (THE source of truth)
 
