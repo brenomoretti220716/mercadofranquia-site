@@ -1,6 +1,12 @@
 'use client'
 
-import { forwardRef, useRef, useState, useEffect, ReactElement } from 'react'
+import {
+  forwardRef,
+  useRef,
+  useState,
+  useEffect,
+  ReactElement,
+} from 'react'
 import { UseFormRegisterReturn } from 'react-hook-form'
 import ArrowDownIcon from '../icons/arrowDownIcon'
 
@@ -49,8 +55,20 @@ const FormSelect = forwardRef<HTMLInputElement, FormSelectProps>(
   ) => {
     const [isOpen, setIsOpen] = useState(false)
     const [selectedIndex, setSelectedIndex] = useState(-1)
+    const [internalValue, setInternalValue] = useState<string>('')
     const dropdownRef = useRef<HTMLDivElement>(null)
     const containerRef = useRef<HTMLDivElement>(null)
+    const hiddenInputRef = useRef<HTMLInputElement | null>(null)
+
+    // Seed internal value from RHF's default (set via ref on mount) when the
+    // consumer drives the component via `register` instead of `value`.
+    useEffect(() => {
+      if (register && hiddenInputRef.current && value === undefined) {
+        const domValue = hiddenInputRef.current.value
+        if (domValue) setInternalValue(domValue)
+      }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
 
     const hasLeftIcon = !!leftIcon
     // Match CitySelect styling exactly: "w-full px-3 py-2 pl-10"
@@ -71,8 +89,10 @@ const FormSelect = forwardRef<HTMLInputElement, FormSelectProps>(
       <ArrowDownIcon width={20} height={20} />
     )
 
-    // Get current value (from props)
-    const currentValue = (value as string) || ''
+    // Display value: external `value` prop (controlled) takes precedence; otherwise
+    // fall back to internal state that tracks RHF's field value via register.
+    const currentValue =
+      value !== undefined ? (value as string) : internalValue
     const selectedOption = options.find((opt) => opt.value === currentValue)
     const displayText = selectedOption
       ? selectedOption.label
@@ -178,6 +198,11 @@ const FormSelect = forwardRef<HTMLInputElement, FormSelectProps>(
         selectProps.onChange(syntheticEvent)
       }
 
+      // Sync internal display when no external value is controlling the component
+      if (value === undefined) {
+        setInternalValue(option.value)
+      }
+
       setIsOpen(false)
       setSelectedIndex(-1)
     }
@@ -189,10 +214,21 @@ const FormSelect = forwardRef<HTMLInputElement, FormSelectProps>(
       }
     }
 
-    // Hidden input for react-hook-form integration
-    // The register will handle the form state, we just need to sync the value
+    // Hidden input for react-hook-form integration. When `register` drives the
+    // field, we DON'T set `value` on the DOM input — React would treat it as
+    // controlled and force the DOM back to that value on every render, which
+    // previously clobbered the value RHF was trying to track via its ref.
     const hiddenInput = register ? (
-      <input type="hidden" {...register} value={currentValue} />
+      <input
+        type="hidden"
+        name={register.name}
+        onChange={register.onChange}
+        onBlur={register.onBlur}
+        ref={(el) => {
+          hiddenInputRef.current = el
+          register.ref(el)
+        }}
+      />
     ) : selectProps.name ? (
       <input
         type="hidden"

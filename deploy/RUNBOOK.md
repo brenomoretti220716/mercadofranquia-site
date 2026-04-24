@@ -111,6 +111,31 @@ Expected: web=200, api returns `{"status":"ok"}`.
 
 `deploy/ec2/dev-start.sh` boots a local FastAPI on port 4000 with `app/main_local.py` (gitignored wrapper that mounts the prod `app` under `/api` to mirror nginx). `.env.local` (gitignored) supplies `DATABASE_URL`, `JWT_SECRET=desenvolvimento-local-nao-usar-em-producao`, `SES_ENABLED=false`. Frontend points at it via `web/.env.local` (`NEXT_PUBLIC_API_URL=http://localhost:4000`).
 
+**`main_local.py` must also mount `/uploads` as static files** — in prod nginx serves `/uploads/*` directly from disk (bypassing FastAPI), so the prod app itself has no mount. In dev there is no nginx, so without this mount every uploaded logo/thumbnail/gallery image 404s in the browser (broken image icon in the editor and everywhere else that displays user-uploaded media). Minimal working wrapper:
+
+```python
+# deploy/ec2/app/main_local.py  (gitignored — exists only on dev machines)
+from fastapi import FastAPI
+from fastapi.staticfiles import StaticFiles
+
+from app.main import app as base_app
+from app.storage import UPLOAD_ROOT
+
+app = FastAPI(
+    title="Mercado Franquia API (local wrapper)",
+    docs_url=None,
+    redoc_url=None,
+)
+
+app.mount("/api", base_app)
+
+# Mirror the nginx `location /uploads/` alias so uploaded images render in dev.
+UPLOAD_ROOT.mkdir(parents=True, exist_ok=True)
+app.mount("/uploads", StaticFiles(directory=str(UPLOAD_ROOT)))
+```
+
+Verify with `curl -I http://localhost:4000/uploads/franchises/<any-existing-file>.png` → expect `200 OK`, not `404`.
+
 ## Known backlog
 
 - `web/.env` (repo root) still has legacy NestJS values (`localhost:3050`). Cleanup deferred — only matters if someone reads `.env` directly without overriding via `.env.local` / `.env.production.local`.
