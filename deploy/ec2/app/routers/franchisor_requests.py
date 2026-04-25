@@ -418,6 +418,7 @@ def get_my_request(
     req = db.scalar(
         select(FranchisorRequest)
         .where(FranchisorRequest.userId == current.id)
+        .order_by(FranchisorRequest.createdAt.desc())
         .options(selectinload(FranchisorRequest.user))
     )
     if req is None:

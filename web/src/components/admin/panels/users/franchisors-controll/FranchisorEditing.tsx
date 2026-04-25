@@ -346,6 +346,7 @@ export default function FranchisorEditing({
                 [FranchisorRequestStatus.APPROVED]:
                   'text-green-600 bg-green-50',
                 [FranchisorRequestStatus.REJECTED]: 'text-red-600 bg-red-50',
+                [FranchisorRequestStatus.CANCELLED]: 'text-gray-600 bg-gray-50',
               }
 
               const statusLabels = {
@@ -353,6 +354,7 @@ export default function FranchisorEditing({
                 [FranchisorRequestStatus.UNDER_REVIEW]: 'Em Análise',
                 [FranchisorRequestStatus.APPROVED]: 'Aprovado',
                 [FranchisorRequestStatus.REJECTED]: 'Rejeitado',
+                [FranchisorRequestStatus.CANCELLED]: 'Cancelada',
               }
 
               return (

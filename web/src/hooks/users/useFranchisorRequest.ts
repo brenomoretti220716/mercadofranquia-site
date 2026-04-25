@@ -5,6 +5,7 @@ import {
 } from '@/src/schemas/users/FranchisorRequest'
 import {
   approveFranchisorRequest,
+  cancelMyFranchisorRequest,
   createFranchisorRequest,
   getAllFranchisorRequests,
   getMyFranchisorRequest,
@@ -12,6 +13,7 @@ import {
   reopenFranchisorRequest,
 } from '@/src/services/users'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { toast } from 'sonner'
 import { useAuth } from './useAuth'
 
 // User hooks (for franchisors)
@@ -43,6 +45,24 @@ export function useCreateFranchisorRequest() {
       queryClient.invalidateQueries({
         queryKey: franchiseKeys.myFranchises(),
       })
+    },
+  })
+}
+
+export function useCancelMyFranchisorRequest() {
+  const { token } = useAuth()
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: () => cancelMyFranchisorRequest(token!),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['franchisor-request', 'my-request'],
+      })
+      toast.success('Reivindicação cancelada.')
+    },
+    onError: (err: Error) => {
+      toast.error(err.message || 'Erro ao cancelar reivindicação.')
     },
   })
 }

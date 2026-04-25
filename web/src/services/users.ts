@@ -191,6 +191,32 @@ export async function getMyFranchisorRequest(
   return await response.json()
 }
 
+export async function cancelMyFranchisorRequest(
+  token: string,
+): Promise<FranchisorRequest> {
+  const response = await fetch(
+    Api('/users/franchisor-request/my-request/cancel'),
+    {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+    },
+  )
+
+  if (!response.ok) {
+    const errorData = await response
+      .json()
+      .catch(() => ({ detail: 'Erro ao cancelar reivindicação' }))
+    throw new Error(
+      errorData.detail || errorData.message || 'Erro ao cancelar reivindicação',
+    )
+  }
+
+  return await response.json()
+}
+
 export interface CreateFranchisorRequestResponse {
   request: FranchisorRequest
   access_token?: string

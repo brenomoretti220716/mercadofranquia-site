@@ -34,6 +34,7 @@ export enum FranchisorRequestStatus {
   APPROVED = 'APPROVED',
   REJECTED = 'REJECTED',
   UNDER_REVIEW = 'UNDER_REVIEW',
+  CANCELLED = 'CANCELLED',
 }
 
 // ============================================================================

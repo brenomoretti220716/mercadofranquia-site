@@ -15,6 +15,7 @@ const statusColors = {
   [FranchisorRequestStatus.UNDER_REVIEW]: 'bg-blue-100 text-blue-800',
   [FranchisorRequestStatus.APPROVED]: 'bg-green-100 text-green-800',
   [FranchisorRequestStatus.REJECTED]: 'bg-red-100 text-red-800',
+  [FranchisorRequestStatus.CANCELLED]: 'bg-gray-100 text-gray-800',
 }
 
 const statusLabels = {
@@ -22,6 +23,7 @@ const statusLabels = {
   [FranchisorRequestStatus.UNDER_REVIEW]: 'Em Análise',
   [FranchisorRequestStatus.APPROVED]: 'Aprovado',
   [FranchisorRequestStatus.REJECTED]: 'Rejeitado',
+  [FranchisorRequestStatus.CANCELLED]: 'Cancelada',
 }
 
 const modeLabels = {
