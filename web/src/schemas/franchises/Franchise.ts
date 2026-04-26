@@ -74,6 +74,12 @@ export interface Franchise {
   differentials?: string[] | null
   idealFranchiseeProfile?: string | null
   processSteps?: ProcessStep[] | null
+
+  // Landing redesign — Fatia 1.5 (publica v9). Backend ja retorna desde a
+  // Fatia 0.5; demais campos (phone/whatsapp/publicEmail/instagram/facebook/
+  // linkedin/totalUnitsUpdatedAt/totalUnitsLastConfirmedAt) entram conforme
+  // virem requeridos pelo frontend.
+  bannerUrl?: string | null
 }
 
 export interface ContactInfo {
