@@ -401,6 +401,30 @@ class Franchise(Base):
     )
     storeArea: Mapped[Optional[int]] = mapped_column("storeArea")
 
+    # Landing redesign — Fatia 0 (alembic 66a4e030b691). Todos nullable;
+    # backend-acceptance habilitado na Fatia 0.5. Frontend consumira nas
+    # fatias seguintes (UI do editor + landing publica nova).
+    tagline: Mapped[Optional[str]] = mapped_column(String(200))
+    differentials: Mapped[Optional[list]] = mapped_column(JSONB)
+    idealFranchiseeProfile: Mapped[Optional[str]] = mapped_column(
+        "idealFranchiseeProfile", Text
+    )
+    processSteps: Mapped[Optional[list]] = mapped_column("processSteps", JSONB)
+    testimonials: Mapped[Optional[list]] = mapped_column(JSONB)
+    bannerUrl: Mapped[Optional[str]] = mapped_column("bannerUrl", String(500))
+    phone: Mapped[Optional[str]] = mapped_column(String(20))
+    whatsapp: Mapped[Optional[str]] = mapped_column(String(20))
+    publicEmail: Mapped[Optional[str]] = mapped_column("publicEmail", String(100))
+    instagramUrl: Mapped[Optional[str]] = mapped_column("instagramUrl", String(200))
+    facebookUrl: Mapped[Optional[str]] = mapped_column("facebookUrl", String(200))
+    linkedinUrl: Mapped[Optional[str]] = mapped_column("linkedinUrl", String(200))
+    totalUnitsUpdatedAt: Mapped[Optional[datetime]] = mapped_column(
+        "totalUnitsUpdatedAt", DateTime(timezone=False)
+    )
+    totalUnitsLastConfirmedAt: Mapped[Optional[datetime]] = mapped_column(
+        "totalUnitsLastConfirmedAt", DateTime(timezone=False)
+    )
+
     # Relationships
     contact: Mapped[Optional["ContactInfo"]] = relationship(
         back_populates="franchise"
