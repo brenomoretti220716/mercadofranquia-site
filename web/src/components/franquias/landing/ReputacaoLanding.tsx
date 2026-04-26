@@ -176,7 +176,21 @@ export default function ReputacaoLanding({
 
           <div className={styles.reviewList}>
             {visible.map((r) => {
-              const author = r.anonymous ? 'Investidor anônimo' : r.authorName
+              // API returns author as { id, name } (nullable when anonymous);
+              // o TS schema legado declara authorName top-level mas o backend
+              // serializer (_serialize_review) nao popula esse campo. Preferir
+              // r.author?.name e cair pra authorName so como fallback de compat.
+              type ReviewWithAuthor = typeof r & {
+                author?: { name?: string | null } | null
+              }
+              const reviewExt = r as ReviewWithAuthor
+              const author = r.anonymous
+                ? 'Investidor anônimo'
+                : (reviewExt.author?.name ?? r.authorName ?? 'Investidor')
+              // Response da marca: backend atual NAO retorna r.responses neste
+              // endpoint (apenas selectinload de Review.author). Resposta da
+              // marca so vai renderizar quando backend incluir o campo (fatia
+              // futura). Optional chain mantem comportamento gracefull.
               const response = r.responses && r.responses[0]
               return (
                 <div key={r.id} className={styles.reviewItem}>
