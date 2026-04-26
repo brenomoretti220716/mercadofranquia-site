@@ -22,6 +22,7 @@ import GaleriaLanding from '@/src/components/franquias/landing/GaleriaLanding'
 import LeadFormLanding from '@/src/components/franquias/landing/LeadFormLanding'
 import ContactFooterLanding from '@/src/components/franquias/landing/ContactFooterLanding'
 import ReputacaoLanding from '@/src/components/franquias/landing/ReputacaoLanding'
+import SidebarCTA from '@/src/components/franquias/landing/SidebarCTA'
 import landingStyles from '@/src/components/franquias/landing/landing.module.css'
 import { normalizeGalleryUrls } from '@/src/utils/franchiseImageUtils'
 
@@ -32,17 +33,22 @@ interface SelectedFranchiseProps {
 /**
  * Pagina publica da franquia (rota /ranking/[franquia]).
  *
- * Layout v9 hibrido (Fatia 1.6) — container .page max 1280px com
- * bordas line, dentro de um .canvas cinza-bege que ocupa o resto do
- * viewport. Conteudo narrativo (Sobre, Como funciona, Diferenciais,
- * Perfil ideal) constrained a 720px centralizado dentro dos blocos
+ * Layout v9 com sidebar sticky (Fatia 1.7) — container .page max
+ * 1280px dentro de .canvas cinza-bege. Em ≥ 1024px, .twoColumn vira
+ * grid `1fr 320px` com sidebar sticky de CTA (SidebarCTA). Em <
+ * 1024px, sidebar some e o stack vira coluna unica.
+ *
+ * Conteudo narrativo (Sobre, Como funciona, Diferenciais, Perfil
+ * ideal) constrained a 720px centralizado dentro dos blocos
  * full-width pra manter legibilidade.
  *
- * 13 blocos, ordem fixa, condicionais. Excecao: Banner, que mostra
- * placeholder hachurado quando bannerUrl null (nao some).
+ * Banner e LeadForm + ContactFooter ficam FORA do 2-col grid (full-
+ * width 100% do .page em qualquer breakpoint). Sao os blocos com
+ * impacto visual ou final-de-funil.
  *
  * Ordem v9 (docs/mockups/pagina_publica_franquia_v9.html):
  *   1. Banner full-width (BannerLanding)
+ *   FROM HERE start 2-col grid (main + sidebar):
  *   2. Hero (HeroLanding) — logo + segmento + nome + tagline +
  *      metricas + CTA scroll
  *   3. Strip de selos (SelosStripLanding placeholder)
@@ -53,10 +59,15 @@ interface SelectedFranchiseProps {
  *   8. Diferenciais (DifferentialsLanding)
  *   9. Perfil ideal (IdealProfileLanding)
  *  10. Veja as lojas (GaleriaLanding 4/3/2 cols responsivo)
- *  11. Reputacao (ReputacaoLanding — Fatia 1.6 redesign nativo v9
- *      com filtros client-side, lista 2 cols, empty state)
+ *  11. Reputacao (ReputacaoLanding — 1 col em qualquer breakpoint
+ *      a partir da Fatia 1.7, sem badge "Franqueado verificado")
+ *   FROM HERE close 2-col, back to full-width:
  *  12. Quero saber mais (LeadFormLanding secao dark, target do CTA)
  *  13. Canais de contato (ContactFooterLanding)
+ *
+ * Sidebar (≥ 1024px apenas) renderiza SidebarCTA — investimento
+ * resumido + CTA orange + telefone clicavel + payback/unidades +
+ * selo ABF se associada. CTA chama o mesmo scrollToLead do Hero.
  */
 export default function SelectedFranchise({
   selectedFranchise,
@@ -143,81 +154,104 @@ export default function SelectedFranchise({
   return (
     <div className={`${landingStyles.landing} ${landingStyles.canvas}`}>
       <div className={landingStyles.page}>
-        {/* 1. Banner full-width */}
+        {/* 1. Banner — sempre full-width 100% do .page (fora do 2-col grid) */}
         <BannerLanding
           url={franchise.bannerUrl}
           alt={`Banner ${franchise.name}`}
         />
 
-        {/* 2. Hero */}
-        <HeroLanding
-          name={franchise.name}
-          segment={franchise.segment}
-          tagline={franchise.tagline}
-          logoUrl={franchise.logoUrl}
-          minimumInvestment={franchise.minimumInvestment}
-          maximumInvestment={franchise.maximumInvestment}
-          minimumReturnOnInvestment={franchise.minimumReturnOnInvestment}
-          maximumReturnOnInvestment={franchise.maximumReturnOnInvestment}
-          totalUnits={franchise.totalUnits}
-          onCtaClick={scrollToLead}
-        />
+        {/* 2-col grid (≥ 1024px): coluna principal narrativa + sidebar
+            sticky com CTA. Em < 1024px volta a 1 coluna stack e a
+            sidebar some (display: none). */}
+        <div className={landingStyles.twoColumn}>
+          <main className={landingStyles.mainColumn}>
+            {/* 2. Hero */}
+            <HeroLanding
+              name={franchise.name}
+              segment={franchise.segment}
+              tagline={franchise.tagline}
+              logoUrl={franchise.logoUrl}
+              minimumInvestment={franchise.minimumInvestment}
+              maximumInvestment={franchise.maximumInvestment}
+              minimumReturnOnInvestment={franchise.minimumReturnOnInvestment}
+              maximumReturnOnInvestment={franchise.maximumReturnOnInvestment}
+              totalUnits={franchise.totalUnits}
+              onCtaClick={scrollToLead}
+            />
 
-        {/* 3. Strip de selos (placeholder) */}
-        <SelosStripLanding selos={null} />
+            {/* 3. Strip de selos (placeholder) */}
+            <SelosStripLanding selos={null} />
 
-        {/* 4. Modelos disponiveis (adaptativo) */}
-        <ModelosLanding
-          models={franchise.businessModels}
-          franchiseFallback={{
-            minimumInvestment: franchise.minimumInvestment,
-            maximumInvestment: franchise.maximumInvestment,
-            franchiseFee: franchise.franchiseFee,
-            minimumReturnOnInvestment: franchise.minimumReturnOnInvestment,
-            maximumReturnOnInvestment: franchise.maximumReturnOnInvestment,
-          }}
-        />
+            {/* 4. Modelos disponiveis (adaptativo) */}
+            <ModelosLanding
+              models={franchise.businessModels}
+              franchiseFallback={{
+                minimumInvestment: franchise.minimumInvestment,
+                maximumInvestment: franchise.maximumInvestment,
+                franchiseFee: franchise.franchiseFee,
+                minimumReturnOnInvestment: franchise.minimumReturnOnInvestment,
+                maximumReturnOnInvestment: franchise.maximumReturnOnInvestment,
+              }}
+            />
 
-        {/* 5. Sobre a marca (description + metas) */}
-        <SobreLanding
-          description={franchise.description}
-          brandFoundationYear={franchise.brandFoundationYear}
-          franchiseStartYear={franchise.franchiseStartYear}
-          abfSince={franchise.abfSince}
-        />
+            {/* 5. Sobre a marca (description + metas) */}
+            <SobreLanding
+              description={franchise.description}
+              brandFoundationYear={franchise.brandFoundationYear}
+              franchiseStartYear={franchise.franchiseStartYear}
+              abfSince={franchise.abfSince}
+            />
 
-        {/* 6. Conheca a marca (video) */}
-        <VideoLanding videoUrls={normalizeGalleryUrls(franchise.videoUrls)} />
+            {/* 6. Conheca a marca (video) */}
+            <VideoLanding
+              videoUrls={normalizeGalleryUrls(franchise.videoUrls)}
+            />
 
-        {/* 7. Como funciona */}
-        <ProcessStepperLanding steps={franchise.processSteps} />
+            {/* 7. Como funciona */}
+            <ProcessStepperLanding steps={franchise.processSteps} />
 
-        {/* 8. Diferenciais */}
-        <DifferentialsLanding items={franchise.differentials} />
+            {/* 8. Diferenciais */}
+            <DifferentialsLanding items={franchise.differentials} />
 
-        {/* 9. Perfil ideal */}
-        <IdealProfileLanding text={franchise.idealFranchiseeProfile} />
+            {/* 9. Perfil ideal */}
+            <IdealProfileLanding text={franchise.idealFranchiseeProfile} />
 
-        {/* 10. Galeria */}
-        <GaleriaLanding urls={normalizeGalleryUrls(franchise.galleryUrls)} />
+            {/* 10. Galeria */}
+            <GaleriaLanding
+              urls={normalizeGalleryUrls(franchise.galleryUrls)}
+            />
 
-        {/* 11. Reputacao — Fatia 1.6 substitui CommentPanel pelo
-          ReputacaoLanding (design v9 nativo, filtros client-side, empty
-          state). */}
-        {franchiseSlug && (
-          <ReputacaoLanding
-            franchiseId={franchiseSlug}
-            averageRating={franchise.averageRating}
-            reviewCount={franchise.reviewCount}
-          />
-        )}
+            {/* 11. Reputacao */}
+            {franchiseSlug && (
+              <ReputacaoLanding
+                franchiseId={franchiseSlug}
+                averageRating={franchise.averageRating}
+                reviewCount={franchise.reviewCount}
+              />
+            )}
+          </main>
 
-        {/* 12. Quero saber mais — secao dark, target do CTA do Hero */}
+          <aside className={landingStyles.sidebar}>
+            <SidebarCTA
+              minimumInvestment={franchise.minimumInvestment}
+              maximumInvestment={franchise.maximumInvestment}
+              minimumReturnOnInvestment={franchise.minimumReturnOnInvestment}
+              maximumReturnOnInvestment={franchise.maximumReturnOnInvestment}
+              totalUnits={franchise.totalUnits}
+              phone={franchise.contact?.phone}
+              isAbfAssociated={franchise.isAbfAssociated}
+              onCtaClick={scrollToLead}
+            />
+          </aside>
+        </div>
+
+        {/* 12. Quero saber mais — full-width 100% do .page (fora do grid),
+            target do CTA do Hero E da Sidebar. */}
         <div ref={leadSectionRef}>
           <LeadFormLanding franchiseName={franchise.name} />
         </div>
 
-        {/* 13. Canais de contato (extra v9, integra a sidecard antiga) */}
+        {/* 13. Canais de contato — full-width 100% do .page */}
         <ContactFooterLanding
           phone={franchise.contact?.phone}
           email={franchise.contact?.email}

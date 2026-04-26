@@ -199,11 +199,11 @@ export default function ReputacaoLanding({
                       {starsRow(r.rating)}
                     </div>
                     <div className={styles.reviewAuthor}>{author}</div>
-                    {r.isFranchisee && !r.anonymous && (
-                      <div className={styles.reviewBadge}>
-                        Franqueado verificado
-                      </div>
-                    )}
+                    {/* Fatia 1.7 — badge "Franqueado verificado" removida
+                        do design. Campo isFranchisee continua no DB e na
+                        response, so nao renderiza mais. Badge "Anônimo"
+                        permanece (diferenciacao com nome vs sem nome
+                        ainda agrega valor ao leitor). */}
                     {r.anonymous && (
                       <div
                         className={`${styles.reviewBadge} ${styles.reviewBadgeAnon}`}
