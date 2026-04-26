@@ -124,6 +124,37 @@ export const FranchiseEditorInfoFormSchema = z
         },
         { message: 'URL precisa começar com http:// ou https://' },
       ),
+
+    // Landing redesign — Fatia 2 (Info tab)
+    tagline: z
+      .string()
+      .max(200, 'Máximo 200 caracteres')
+      .optional()
+      .or(z.literal('')),
+    idealFranchiseeProfile: z
+      .string()
+      .max(10000, 'Máximo 10000 caracteres')
+      .optional()
+      .or(z.literal('')),
+    differentials: z
+      .array(z.string().max(200, 'Cada item: máximo 200 caracteres'))
+      .max(6, 'Máximo 6 diferenciais')
+      .optional(),
+    processSteps: z
+      .array(
+        z.object({
+          title: z
+            .string()
+            .min(1, 'Título obrigatório')
+            .max(200, 'Máximo 200 caracteres'),
+          description: z
+            .string()
+            .min(1, 'Descrição obrigatória')
+            .max(500, 'Máximo 500 caracteres'),
+        }),
+      )
+      .max(8, 'Máximo 8 etapas')
+      .optional(),
   })
   .refine(
     (data) => {
@@ -341,6 +372,26 @@ export function normalizeFranchiseEditorPayload(
   if (dirtyFields.contactWebsite) {
     const trimmed = (data.contactWebsite ?? '').trim()
     out.contactWebsite = trimmed === '' ? null : trimmed
+  }
+
+  // Landing redesign — Fatia 2 (Info tab)
+  setString('tagline')
+  setString('idealFranchiseeProfile')
+
+  if (dirtyFields.differentials) {
+    const items = (data.differentials ?? [])
+      .map((s) => s.trim())
+      .filter((s) => s !== '')
+    out.differentials = items.length === 0 ? null : items
+  }
+  if (dirtyFields.processSteps) {
+    const steps = (data.processSteps ?? [])
+      .map((s) => ({
+        title: (s.title ?? '').trim(),
+        description: (s.description ?? '').trim(),
+      }))
+      .filter((s) => s.title !== '' && s.description !== '')
+    out.processSteps = steps.length === 0 ? null : steps
   }
 
   return out
