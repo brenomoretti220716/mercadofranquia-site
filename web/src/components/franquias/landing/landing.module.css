@@ -1,0 +1,145 @@
+/*
+ * Design system v9 — escopado aos blocos da landing publica do redesign.
+ * Paper #FAFAF7, ink #14161C, orange #FF5A1F, line #E6E4DE.
+ * Inter Tight (display) + Fraunces Italic (accent) + JetBrains Mono (kicker).
+ *
+ * Mantido scoped via CSS module pra nao vazar pro restante da plataforma.
+ */
+
+.landing {
+  --paper: #fafaf7;
+  --ink: #14161c;
+  --orange: #ff5a1f;
+  --line: #e6e4de;
+  --media: #5a6070;
+  --media-2: #8a8f9e;
+
+  --font-display: var(--font-inter-tight), system-ui, sans-serif;
+  --font-accent: var(--font-fraunces), Georgia, serif;
+  --font-mono: var(--font-jetbrains-mono), ui-monospace, monospace;
+
+  font-family: var(--font-display);
+  color: var(--ink);
+  background: var(--paper);
+  -webkit-font-smoothing: antialiased;
+}
+
+.section {
+  padding: 32px 24px;
+  border-bottom: 1px solid var(--line);
+}
+
+.heading {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 26px;
+  letter-spacing: -0.03em;
+  margin: 0 0 16px;
+  color: var(--ink);
+}
+
+.accent {
+  font-family: var(--font-accent);
+  font-style: italic;
+  color: var(--orange);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+}
+
+/* Tagline (entra no bloco Hero existente) */
+.tagline {
+  font-family: var(--font-display);
+  font-size: 18px;
+  line-height: 1.5;
+  color: var(--ink);
+  margin: 0 0 24px;
+  max-width: 540px;
+}
+
+/* Como funciona — stepper */
+.steps {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 24px;
+}
+.step {
+  display: flex;
+  gap: 16px;
+  align-items: baseline;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--line);
+}
+.step:last-child {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+.stepNum {
+  font-family: var(--font-accent);
+  font-style: italic;
+  color: var(--orange);
+  font-size: 32px;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  width: 36px;
+  flex-shrink: 0;
+  line-height: 1;
+}
+.stepBody {
+  flex: 1;
+  padding-top: 4px;
+}
+.stepTitle {
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  margin: 0 0 4px;
+  color: var(--ink);
+}
+.stepDesc {
+  font-family: var(--font-display);
+  font-size: 14px;
+  color: var(--media);
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* Diferenciais */
+.diff {
+  list-style: none;
+  padding: 0;
+  margin: 16px 0 0;
+}
+.diffItem {
+  font-family: var(--font-display);
+  padding: 12px 0;
+  border-bottom: 1px solid var(--line);
+  font-size: 15px;
+  line-height: 1.5;
+  display: flex;
+  gap: 14px;
+  align-items: baseline;
+  color: var(--ink);
+}
+.diffItem:last-child {
+  border-bottom: 0;
+}
+.diffItem::before {
+  content: '';
+  flex-shrink: 0;
+  width: 6px;
+  height: 6px;
+  background: var(--ink);
+  margin-top: 8px;
+}
+
+/* Perfil ideal */
+.profileText {
+  font-family: var(--font-display);
+  font-size: 16px;
+  line-height: 1.6;
+  max-width: 580px;
+  margin: 16px 0 0;
+  color: var(--ink);
+}
