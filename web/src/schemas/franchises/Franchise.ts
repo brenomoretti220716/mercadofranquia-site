@@ -3,6 +3,11 @@ import type { Review } from './Reviews'
 
 export type SponsorPlacement = 'HOME_DESTAQUES' | 'RANKING_CATEGORIA' | 'QUIZ'
 
+export interface ProcessStep {
+  title: string
+  description: string
+}
+
 export interface Franchise {
   id: string
   name: string
@@ -63,6 +68,12 @@ export interface Franchise {
   franchisees?: FranchiseeUser[]
   isReview: boolean
   reviews?: Review[]
+
+  // Landing redesign — Fatia 2 (Info tab)
+  tagline?: string | null
+  differentials?: string[] | null
+  idealFranchiseeProfile?: string | null
+  processSteps?: ProcessStep[] | null
 }
 
 export interface ContactInfo {
