@@ -11,7 +11,9 @@ interface IdealProfileLandingProps {
  * Texto livre, paragrafo unico, max-width 580px.
  * Renderiza nada quando text vazio/null.
  */
-export default function IdealProfileLanding({ text }: IdealProfileLandingProps) {
+export default function IdealProfileLanding({
+  text,
+}: IdealProfileLandingProps) {
   if (!text || !text.trim()) return null
   return (
     <section className={`${styles.landing} ${styles.section}`}>

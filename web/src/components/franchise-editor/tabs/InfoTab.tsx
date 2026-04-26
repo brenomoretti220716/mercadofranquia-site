@@ -214,8 +214,8 @@ export default function InfoTab({ franchise, token, userRole }: InfoTabProps) {
           Apresentação na landing pública
         </h2>
         <p className="text-xs text-muted-foreground -mt-2">
-          Informações que aparecem na sua página pública pra investidores.
-          Tudo é opcional — blocos sem preenchimento somem da página.
+          Informações que aparecem na sua página pública pra investidores. Tudo
+          é opcional — blocos sem preenchimento somem da página.
         </p>
 
         <div>
@@ -257,9 +257,7 @@ export default function InfoTab({ franchise, token, userRole }: InfoTabProps) {
               onClick={() =>
                 (differentialsArray.append as (v: string) => void)('')
               }
-              disabled={
-                isSubmitting || differentialsArray.fields.length >= 6
-              }
+              disabled={isSubmitting || differentialsArray.fields.length >= 6}
               className="text-xs flex items-center gap-1 text-primary hover:opacity-80 disabled:opacity-40"
             >
               <Plus className="h-3.5 w-3.5" /> Adicionar
@@ -267,8 +265,8 @@ export default function InfoTab({ franchise, token, userRole }: InfoTabProps) {
           </div>
           {differentialsArray.fields.length === 0 && (
             <p className="text-xs text-muted-foreground italic">
-              Nenhum diferencial cadastrado. Ex: &ldquo;Produto premium difícil de
-              substituir&rdquo;, &ldquo;Cardápio inclusivo&rdquo;.
+              Nenhum diferencial cadastrado. Ex: &ldquo;Produto premium difícil
+              de substituir&rdquo;, &ldquo;Cardápio inclusivo&rdquo;.
             </p>
           )}
           <ul className="space-y-2">
@@ -315,9 +313,7 @@ export default function InfoTab({ franchise, token, userRole }: InfoTabProps) {
               onClick={() =>
                 processStepsArray.append({ title: '', description: '' })
               }
-              disabled={
-                isSubmitting || processStepsArray.fields.length >= 8
-              }
+              disabled={isSubmitting || processStepsArray.fields.length >= 8}
               className="text-xs flex items-center gap-1 text-primary hover:opacity-80 disabled:opacity-40"
             >
               <Plus className="h-3.5 w-3.5" /> Adicionar etapa
@@ -325,8 +321,8 @@ export default function InfoTab({ franchise, token, userRole }: InfoTabProps) {
           </div>
           {processStepsArray.fields.length === 0 && (
             <p className="text-xs text-muted-foreground italic">
-              Nenhuma etapa cadastrada. Ex: 1. Pré-qualificação · 2. Análise
-              da COF · 3. Contrato e ponto comercial.
+              Nenhuma etapa cadastrada. Ex: 1. Pré-qualificação · 2. Análise da
+              COF · 3. Contrato e ponto comercial.
             </p>
           )}
           <ol className="space-y-3">
