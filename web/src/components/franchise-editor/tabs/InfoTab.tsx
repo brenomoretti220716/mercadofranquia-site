@@ -1,10 +1,10 @@
 'use client'
 
 import { useMemo } from 'react'
-import { useForm } from 'react-hook-form'
+import { useFieldArray, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { toast } from 'sonner'
-import { Info } from 'lucide-react'
+import { Info, Plus, Trash2 } from 'lucide-react'
 import FormInput from '@/src/components/ui/FormInput'
 import FormSelect from '@/src/components/ui/FormSelect'
 import FormTextarea from '@/src/components/ui/FormTextarea'
@@ -89,6 +89,10 @@ function franchiseToFormDefaults(f: Franchise): FranchiseEditorInfoFormInput {
     contactPhone: f.contact?.phone ?? '',
     contactEmail: f.contact?.email ?? '',
     contactWebsite: f.contact?.website ?? '',
+    tagline: f.tagline ?? '',
+    idealFranchiseeProfile: f.idealFranchiseeProfile ?? '',
+    differentials: f.differentials ?? [],
+    processSteps: f.processSteps ?? [],
   }
 }
 
@@ -114,6 +118,7 @@ export default function InfoTab({ franchise, token, userRole }: InfoTabProps) {
     handleSubmit,
     reset,
     watch,
+    control,
     formState: { errors, dirtyFields, isDirty },
   } = useForm<FranchiseEditorInfoFormInput>({
     resolver: zodResolver(FranchiseEditorInfoFormSchema),
@@ -121,6 +126,15 @@ export default function InfoTab({ franchise, token, userRole }: InfoTabProps) {
   })
 
   const isAbfAssociated = watch('isAbfAssociated')
+
+  const differentialsArray = useFieldArray({
+    control,
+    name: 'differentials' as never,
+  })
+  const processStepsArray = useFieldArray({
+    control,
+    name: 'processSteps',
+  })
 
   const onSubmit = (data: FranchiseEditorInfoFormInput) => {
     const payload = normalizeFranchiseEditorPayload(
@@ -193,6 +207,206 @@ export default function InfoTab({ franchise, token, userRole }: InfoTabProps) {
           showCharacterCount
           maxCharacterCount={10000}
         />
+      </section>
+
+      <section className="space-y-4">
+        <h2 className="text-lg font-semibold text-foreground">
+          Apresentação na landing pública
+        </h2>
+        <p className="text-xs text-muted-foreground -mt-2">
+          Informações que aparecem na sua página pública pra investidores.
+          Tudo é opcional — blocos sem preenchimento somem da página.
+        </p>
+
+        <div>
+          <FormInput
+            label="Tagline"
+            register={register('tagline')}
+            error={errors.tagline?.message}
+            disabled={isSubmitting}
+            placeholder="Ex: Leve a experiência do verdadeiro gelato pro Brasil"
+            maxLength={200}
+          />
+          <p className="text-xs text-muted-foreground mt-1">
+            Aparece abaixo do nome no Hero. Frase curta de impacto.
+          </p>
+        </div>
+
+        <FormTextarea
+          label="Perfil ideal do franqueado"
+          register={register('idealFranchiseeProfile')}
+          error={errors.idealFranchiseeProfile?.message}
+          disabled={isSubmitting}
+          rows={4}
+          placeholder="Ex: Empreendedor com perfil de gestão e dedicação ao negócio. Não é necessário experiência prévia em alimentação."
+          showCharacterCount
+          maxCharacterCount={10000}
+        />
+        <p className="text-xs text-muted-foreground -mt-2">
+          Texto livre — descreva o perfil que dá certo na sua rede.
+        </p>
+
+        {/* Diferenciais — lista editavel de strings */}
+        <div className="space-y-2">
+          <div className="flex items-center justify-between">
+            <label className="text-sm font-medium text-foreground">
+              Diferenciais
+            </label>
+            <button
+              type="button"
+              onClick={() =>
+                (differentialsArray.append as (v: string) => void)('')
+              }
+              disabled={
+                isSubmitting || differentialsArray.fields.length >= 6
+              }
+              className="text-xs flex items-center gap-1 text-primary hover:opacity-80 disabled:opacity-40"
+            >
+              <Plus className="h-3.5 w-3.5" /> Adicionar
+            </button>
+          </div>
+          {differentialsArray.fields.length === 0 && (
+            <p className="text-xs text-muted-foreground italic">
+              Nenhum diferencial cadastrado. Ex: &ldquo;Produto premium difícil de
+              substituir&rdquo;, &ldquo;Cardápio inclusivo&rdquo;.
+            </p>
+          )}
+          <ul className="space-y-2">
+            {differentialsArray.fields.map((field, i) => (
+              <li key={field.id} className="flex items-start gap-2">
+                <input
+                  {...register(`differentials.${i}` as const)}
+                  disabled={isSubmitting}
+                  placeholder="Ex: Produto premium difícil de substituir"
+                  maxLength={200}
+                  className="flex-1 px-3 py-2 text-sm border border-input rounded-md bg-background focus:outline-none focus:ring-2 focus:ring-primary/40"
+                />
+                <button
+                  type="button"
+                  onClick={() => differentialsArray.remove(i)}
+                  disabled={isSubmitting}
+                  aria-label="Remover diferencial"
+                  className="p-2 text-muted-foreground hover:text-destructive disabled:opacity-40"
+                >
+                  <Trash2 className="h-4 w-4" />
+                </button>
+              </li>
+            ))}
+          </ul>
+          {errors.differentials && (
+            <p className="text-xs text-destructive">
+              {errors.differentials.message ||
+                'Verifique os diferenciais cadastrados.'}
+            </p>
+          )}
+          <p className="text-xs text-muted-foreground">
+            Máximo 6 itens. Cada um até 200 caracteres.
+          </p>
+        </div>
+
+        {/* Process steps — Como funciona */}
+        <div className="space-y-2">
+          <div className="flex items-center justify-between">
+            <label className="text-sm font-medium text-foreground">
+              Etapas (&ldquo;Como funciona&rdquo;)
+            </label>
+            <button
+              type="button"
+              onClick={() =>
+                processStepsArray.append({ title: '', description: '' })
+              }
+              disabled={
+                isSubmitting || processStepsArray.fields.length >= 8
+              }
+              className="text-xs flex items-center gap-1 text-primary hover:opacity-80 disabled:opacity-40"
+            >
+              <Plus className="h-3.5 w-3.5" /> Adicionar etapa
+            </button>
+          </div>
+          {processStepsArray.fields.length === 0 && (
+            <p className="text-xs text-muted-foreground italic">
+              Nenhuma etapa cadastrada. Ex: 1. Pré-qualificação · 2. Análise
+              da COF · 3. Contrato e ponto comercial.
+            </p>
+          )}
+          <ol className="space-y-3">
+            {processStepsArray.fields.map((field, i) => (
+              <li
+                key={field.id}
+                className="border border-border rounded-md p-3 bg-muted/30 space-y-2"
+              >
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-medium text-muted-foreground">
+                    Etapa {i + 1}
+                  </span>
+                  <div className="flex items-center gap-1">
+                    <button
+                      type="button"
+                      onClick={() => i > 0 && processStepsArray.move(i, i - 1)}
+                      disabled={isSubmitting || i === 0}
+                      aria-label="Mover pra cima"
+                      className="px-2 py-1 text-xs text-muted-foreground hover:text-foreground disabled:opacity-30"
+                    >
+                      ↑
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() =>
+                        i < processStepsArray.fields.length - 1 &&
+                        processStepsArray.move(i, i + 1)
+                      }
+                      disabled={
+                        isSubmitting ||
+                        i === processStepsArray.fields.length - 1
+                      }
+                      aria-label="Mover pra baixo"
+                      className="px-2 py-1 text-xs text-muted-foreground hover:text-foreground disabled:opacity-30"
+                    >
+                      ↓
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => processStepsArray.remove(i)}
+                      disabled={isSubmitting}
+                      aria-label="Remover etapa"
+                      className="p-1 text-muted-foreground hover:text-destructive disabled:opacity-40"
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </button>
+                  </div>
+                </div>
+                <input
+                  {...register(`processSteps.${i}.title` as const)}
+                  disabled={isSubmitting}
+                  placeholder="Título (ex: Pré-qualificação)"
+                  maxLength={200}
+                  className="w-full px-3 py-2 text-sm font-medium border border-input rounded-md bg-background focus:outline-none focus:ring-2 focus:ring-primary/40"
+                />
+                {errors.processSteps?.[i]?.title && (
+                  <p className="text-xs text-destructive">
+                    {errors.processSteps[i]?.title?.message}
+                  </p>
+                )}
+                <textarea
+                  {...register(`processSteps.${i}.description` as const)}
+                  disabled={isSubmitting}
+                  rows={2}
+                  placeholder="Descrição curta (ex: Apresentação e ficha inicial)"
+                  maxLength={500}
+                  className="w-full px-3 py-2 text-sm border border-input rounded-md bg-background focus:outline-none focus:ring-2 focus:ring-primary/40 resize-none"
+                />
+                {errors.processSteps?.[i]?.description && (
+                  <p className="text-xs text-destructive">
+                    {errors.processSteps[i]?.description?.message}
+                  </p>
+                )}
+              </li>
+            ))}
+          </ol>
+          <p className="text-xs text-muted-foreground">
+            Máximo 8 etapas. Use as setas pra reordenar.
+          </p>
+        </div>
       </section>
 
       <section className="space-y-4">
