@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Mercado Franquia · Página pública v10 (Handoff Editorial)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600;700&family=Fraunces:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  /* Paleta canônica do handoff Mercado Franquia */
+  --paper:    #F4F1EA;
+  --paper-2:  #ECE8DE;
+  --paper-3:  #E3DED1;
+  --white:    #FFFFFF;
+  --ink-900:  #0B0B0D;
+  --ink-800:  #1A1A1F;
+  --ink-700:  #2A2A31;
+  --ink-600:  #3F3F47;
+  --ink-500:  #6B6B75;
+  --ink-300:  #C7C7CE;
+  --ink-200:  #E3E2DD;
+  --accent:     #E8552B;
+  --accent-600: #C9451F;
+  --accent-700: #A8390F;
+  --accent-100: #FBE5DB;
+  --up:    #1E7F4E;
+  --up-700: #155A37;
+  --down:  #C1362B;
+
+  --serif: "Fraunces", "GT Sectra", Georgia, serif;
+  --sans:  "IBM Plex Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+  --mono:  "IBM Plex Mono", "SF Mono", Menlo, monospace;
+
+  --rule: 1px solid var(--ink-300);
+  --rule-strong: 1px solid var(--ink-500);
+  --rule-thick: 2px solid var(--ink-900);
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; font-family: var(--sans); background: var(--paper); color: var(--ink-900); -webkit-font-smoothing: antialiased; }
+
+.page { max-width: 1200px; margin: 0 auto; background: var(--paper); }
+
+.banner { height: 240px; background: var(--ink-900); background-image: repeating-linear-gradient(45deg, transparent 0 12px, rgba(232,85,43,0.08) 12px 13px); display: flex; align-items: center; justify-content: center; color: var(--ink-200); }
+.banner-text { font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.16em; text-align: center; }
+
+.section { padding: 40px 48px; border-bottom: var(--rule); }
+.section h2 { margin: 0 0 22px; font-family: var(--serif); font-weight: 400; font-size: 42px; letter-spacing: -0.025em; line-height: 1; color: var(--ink-900); }
+.section h2 .acc { font-style: italic; color: var(--accent-600); }
+
+.kicker { font-family: var(--mono); font-size: 10px; font-weight: 600; color: var(--accent-700); text-transform: uppercase; letter-spacing: 0.18em; display: inline-flex; align-items: center; gap: 6px; }
+.kicker::before { content: ""; width: 7px; height: 7px; background: var(--accent-600); border-radius: 999px; }
+
+.micro { font-family: var(--mono); font-size: 10px; font-weight: 600; color: var(--ink-800); text-transform: uppercase; letter-spacing: 0.14em; }
+
+.tag { font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; padding: 5px 10px; border: 1px solid var(--ink-700); color: var(--ink-900); display: inline-flex; align-items: center; gap: 6px; background: transparent; font-weight: 600; }
+.tag.up { border-color: var(--up-700); color: var(--up-700); }
+.tag.up::before { content: "●"; color: var(--up); }
+
+.hero-tags { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
+.hero-name { font-family: var(--serif); font-weight: 400; font-size: 96px; line-height: 0.95; letter-spacing: -0.035em; margin: 14px 0 18px; max-width: 720px; }
+.hero-name em { font-style: italic; color: var(--accent-600); }
+.tagline { font-size: 17px; line-height: 1.55; max-width: 580px; margin: 0 0 28px; color: var(--ink-900); }
+.hero-meta { display: flex; gap: 28px; font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; flex-wrap: wrap; margin-bottom: 28px; color: var(--ink-800); font-weight: 500; }
+.hero-meta .label { color: var(--ink-800); }
+.hero-meta b { color: var(--ink-900); font-weight: 700; margin-left: 6px; }
+
+.kpi-strip { display: grid; grid-template-columns: repeat(3, 1fr); border-top: var(--rule-strong); border-bottom: var(--rule-strong); }
+.kpi { padding: 24px; border-right: var(--rule); }
+.kpi:last-child { border-right: 0; }
+.kpi-value { font-family: var(--serif); font-weight: 400; font-size: 36px; letter-spacing: -0.025em; line-height: 1; color: var(--ink-900); margin: 8px 0 6px; font-variant-numeric: tabular-nums; }
+.kpi-sub { font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; color: var(--ink-800); text-transform: uppercase; font-weight: 500; }
+
+.cta { font-family: var(--sans); font-weight: 600; font-size: 14px; padding: 14px 22px; border: 1px solid var(--accent-600); background: var(--accent-600); color: var(--white); cursor: pointer; letter-spacing: -0.005em; display: inline-flex; align-items: center; gap: 10px; }
+.cta:hover { background: var(--accent-700); border-color: var(--accent-700); }
+.cta-block { display: block; width: 100%; text-align: center; justify-content: center; }
+.cta-ghost { background: transparent; color: var(--ink-900); border-color: var(--ink-900); }
+.cta-ghost:hover { background: var(--ink-900); color: var(--paper); }
+
+.models { display: grid; grid-template-columns: repeat(3, 1fr); border: var(--rule-strong); background: var(--white); }
+.model { padding: 24px; border-right: var(--rule); }
+.model:last-child { border-right: 0; }
+.model-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 18px; padding-bottom: 12px; border-bottom: var(--rule); }
+.model-name { font-family: var(--serif); font-weight: 400; font-size: 26px; letter-spacing: -0.02em; color: var(--ink-900); }
+.model-row { display: flex; justify-content: space-between; padding: 8px 0; }
+.model-row-label { font-family: var(--mono); font-size: 10px; color: var(--ink-800); text-transform: uppercase; letter-spacing: 0.14em; font-weight: 600; }
+.model-row-value { font-family: var(--serif); font-size: 17px; letter-spacing: -0.015em; font-variant-numeric: tabular-nums; color: var(--ink-900); }
+
+.text-block { font-size: 16px; line-height: 1.65; color: var(--ink-900); max-width: 680px; }
+.text-block b { color: var(--ink-900); font-weight: 700; }
+
+.video { aspect-ratio: 16/9; background: var(--ink-900); display: flex; align-items: center; justify-content: center; border: var(--rule-strong); position: relative; max-width: 900px; }
+.play { width: 72px; height: 72px; border-radius: 50%; background: var(--accent-600); display: flex; align-items: center; justify-content: center; }
+
+.steps { display: flex; flex-direction: column; }
+.step { display: flex; gap: 28px; align-items: baseline; padding: 20px 0; border-bottom: var(--rule); }
+.step:last-child { border-bottom: 0; }
+.step-num { font-family: var(--serif); font-style: italic; color: var(--accent-600); font-size: 64px; width: 72px; flex-shrink: 0; line-height: 0.9; font-weight: 400; letter-spacing: -0.03em; }
+.step-body { padding-top: 14px; flex: 1; max-width: 600px; }
+.step-title { font-family: var(--serif); font-size: 24px; font-weight: 400; letter-spacing: -0.02em; margin-bottom: 6px; color: var(--ink-900); }
+.step-desc { font-size: 15px; color: var(--ink-900); line-height: 1.55; }
+
+.diff { list-style: none; padding: 0; margin: 0; }
+.diff li { padding: 16px 0; border-bottom: var(--rule); font-size: 16px; line-height: 1.5; display: flex; gap: 24px; align-items: baseline; color: var(--ink-900); }
+.diff li:last-child { border-bottom: 0; }
+.diff-num { font-family: var(--mono); font-size: 11px; color: var(--ink-800); letter-spacing: 0.14em; flex-shrink: 0; padding-top: 2px; font-weight: 700; }
+
+.gallery { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; }
+.gallery-item { aspect-ratio: 1; background: var(--paper-3); background-image: repeating-linear-gradient(135deg, rgba(0,0,0,0.05) 0 1px, transparent 1px 8px); display: flex; align-items: center; justify-content: center; font-family: var(--mono); font-size: 10px; color: var(--ink-800); text-transform: uppercase; letter-spacing: 0.14em; font-weight: 600; }
+
+.rep-stat { display: flex; align-items: baseline; gap: 28px; padding: 20px 0; border-top: var(--rule-thick); border-bottom: var(--rule-strong); }
+.rep-avg { font-family: var(--serif); font-weight: 400; font-size: 64px; letter-spacing: -0.035em; line-height: 1; font-variant-numeric: tabular-nums; }
+.rep-stars { color: var(--accent-600); font-size: 16px; letter-spacing: 2px; }
+.rep-meta { font-family: var(--mono); font-size: 11px; color: var(--ink-800); text-transform: uppercase; letter-spacing: 0.14em; font-weight: 500; }
+.rep-meta b { color: var(--ink-900); font-weight: 700; }
+
+.rep-filters { display: flex; gap: 0; border-bottom: var(--rule-strong); flex-wrap: wrap; }
+.rep-filter { padding: 12px 18px; cursor: pointer; font-family: var(--mono); font-size: 11px; font-weight: 600; color: var(--ink-800); text-transform: uppercase; letter-spacing: 0.14em; background: transparent; border: none; border-bottom: 2px solid transparent; white-space: nowrap; }
+.rep-filter.active { color: var(--ink-900); border-bottom-color: var(--accent-600); }
+.rep-filter.disabled { color: var(--ink-500); cursor: not-allowed; }
+.rep-sort { margin-left: auto; align-self: center; font-family: var(--mono); font-size: 11px; color: var(--ink-800); text-transform: uppercase; letter-spacing: 0.14em; padding-right: 14px; font-weight: 600; }
+
+.rep-list { display: flex; flex-direction: column; }
+.rep-item { padding: 20px 0; border-bottom: var(--rule); }
+.rep-item:last-child { border-bottom: 0; }
+.rep-header { display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap; margin-bottom: 6px; }
+.rep-stars-row { color: var(--accent-600); font-size: 13px; letter-spacing: 1px; }
+.rep-author { font-family: var(--serif); font-size: 19px; font-weight: 400; letter-spacing: -0.015em; color: var(--ink-900); }
+.rep-anon { font-family: var(--mono); font-size: 10px; padding: 2px 8px; border: 1px solid var(--ink-800); color: var(--ink-900); text-transform: uppercase; letter-spacing: 0.14em; font-weight: 600; }
+.rep-when { font-family: var(--mono); font-size: 10px; color: var(--ink-800); text-transform: uppercase; letter-spacing: 0.12em; margin-left: auto; font-weight: 600; }
+.rep-text { font-size: 15px; line-height: 1.6; color: var(--ink-900); margin: 6px 0 0; max-width: 760px; }
+.rep-response { background: var(--paper-2); border-left: 3px solid var(--accent-600); padding: 14px 18px; margin: 14px 0 0; max-width: 760px; }
+.rep-response-label { font-family: var(--mono); font-size: 10px; color: var(--accent-700); text-transform: uppercase; letter-spacing: 0.16em; margin-bottom: 4px; font-weight: 700; }
+.rep-response-text { font-size: 14px; line-height: 1.55; color: var(--ink-800); }
+
+.rep-pag { display: flex; align-items: center; justify-content: space-between; padding: 20px 0 0; border-top: var(--rule-strong); margin-top: 8px; flex-wrap: wrap; gap: 12px; }
+.rep-pag-info { font-family: var(--mono); font-size: 11px; color: var(--ink-800); text-transform: uppercase; letter-spacing: 0.14em; font-weight: 600; }
+.rep-pag-controls { display: flex; gap: 4px; }
+.page-btn { padding: 7px 11px; font-family: var(--mono); font-size: 11px; color: var(--ink-900); background: transparent; border: 1px solid var(--ink-500); cursor: pointer; min-width: 30px; text-align: center; font-weight: 600; }
+.page-btn.active { background: var(--ink-900); color: var(--paper); border-color: var(--ink-900); }
+.page-btn.disabled { color: var(--ink-500); cursor: not-allowed; }
+
+.lead-section { background: var(--ink-900); color: var(--paper); padding: 64px 48px; }
+.lead-grid { display: grid; grid-template-columns: 1.1fr 1fr; gap: 64px; align-items: start; }
+.lead-left .kicker { color: #FF8A5C; margin-bottom: 16px; }
+.lead-left .kicker::before { background: var(--accent-600); }
+.lead-left h2 { font-family: var(--serif); font-weight: 400; color: var(--paper); margin: 0 0 18px; font-size: 56px; line-height: 1.02; letter-spacing: -0.035em; }
+.lead-left h2 em { font-style: italic; color: #FF8A5C; }
+.lead-left p { font-size: 15px; line-height: 1.65; color: var(--paper); margin: 0 0 24px; max-width: 440px; }
+.lead-bullets { list-style: none; padding: 0; margin: 0; border-top: 1px solid rgba(255,255,255,0.3); }
+.lead-bullets li { font-size: 14px; color: var(--paper); padding: 14px 0 14px 32px; position: relative; line-height: 1.5; border-bottom: 1px solid rgba(255,255,255,0.3); display: flex; align-items: baseline; gap: 12px; }
+.lead-bullets li::before { content: ""; position: absolute; left: 0; top: 22px; width: 18px; height: 1px; background: var(--accent-600); }
+.lead-bullets li b { font-family: var(--mono); font-size: 10px; color: rgba(244,241,234,0.9); text-transform: uppercase; letter-spacing: 0.14em; flex-shrink: 0; min-width: 44px; font-weight: 700; }
+
+.lead-form { display: flex; flex-direction: column; gap: 12px; max-width: 480px; }
+.lead-form input, .lead-form select { padding: 12px 14px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.4); color: var(--paper); font-family: inherit; font-size: 14px; outline: none; border-radius: 0; }
+.lead-form input::placeholder, .lead-form select { color: rgba(244,241,234,0.85); }
+.lead-form input:focus, .lead-form select:focus { border-color: var(--accent-600); outline: 2px solid rgba(232,85,43,0.4); }
+.lead-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.lead-section .cta { margin-top: 8px; }
+.lead-disclaimer { font-family: var(--mono); font-size: 10px; color: rgba(244,241,234,0.85); text-transform: uppercase; letter-spacing: 0.14em; line-height: 1.6; margin-top: 8px; font-weight: 600; }
+
+@media (max-width: 768px) {
+  .section { padding: 28px 20px; }
+  .lead-section { padding: 40px 20px; }
+  .hero-name { font-size: 56px; }
+  .section h2 { font-size: 30px; }
+  .lead-left h2 { font-size: 36px; }
+  .kpi-strip, .models { grid-template-columns: 1fr; }
+  .kpi, .model { border-right: 0; border-bottom: var(--rule); }
+  .kpi:last-child, .model:last-child { border-bottom: 0; }
+  .lead-grid { grid-template-columns: 1fr; gap: 36px; }
+  .gallery { grid-template-columns: repeat(2, 1fr); }
+  .step-num { font-size: 44px; width: 50px; }
+  .rep-avg { font-size: 48px; }
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+<div class="banner">
+  <div class="banner-text">
+    <div style="margin-bottom: 6px;">Banner full-width</div>
+    <div style="opacity: 0.8;">1920 × 600 — Capa visual da marca</div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="hero-tags">
+    <span class="tag">Alimentação</span>
+  </div>
+  <div class="kicker">Ficha da rede</div>
+  <h1 class="hero-name">Pizza do <em>João</em></h1>
+  <p class="tagline">Rede de pizzarias artesanais com foco em bairros nobres. Modelo enxuto, operação 5 funcionários, ticket médio alto.</p>
+  <div class="hero-meta">
+    <span><span class="label">Fundada em</span><b>2014</b></span>
+    <span><span class="label">Sede</span><b>São Paulo, SP</b></span>
+    <span><b>62</b><span class="label" style="margin-left: 6px;">unidades</span></span>
+  </div>
+
+  <div class="kpi-strip">
+    <div class="kpi">
+      <div class="micro">Investimento</div>
+      <div class="kpi-value">R$ 139–342k</div>
+      <div class="kpi-sub">Inclui royalty</div>
+    </div>
+    <div class="kpi">
+      <div class="micro">Payback</div>
+      <div class="kpi-value">22 meses</div>
+    </div>
+    <div class="kpi">
+      <div class="micro">Unidades em operação</div>
+      <div class="kpi-value">62</div>
+    </div>
+  </div>
+
+  <div style="display: flex; gap: 12px; margin-top: 28px;">
+    <button class="cta">Quero ser franqueado →</button>
+    <button class="cta cta-ghost">Como funciona</button>
+  </div>
+</div>
+
+<div class="section">
+  <div class="kicker" style="margin-bottom: 14px;">Modelos</div>
+  <h2>Modelos <span class="acc">disponíveis</span></h2>
+  <div class="models">
+    <div class="model">
+      <div class="model-head">
+        <div class="model-name">Loja</div>
+      </div>
+      <div class="model-row"><span class="model-row-label">Investimento</span><span class="model-row-value">R$ 342k</span></div>
+      <div class="model-row"><span class="model-row-label">Payback</span><span class="model-row-value">22 meses</span></div>
+      <div class="model-row"><span class="model-row-label">Área</span><span class="model-row-value">80m²</span></div>
+    </div>
+    <div class="model">
+      <div class="model-head">
+        <div class="model-name">Container</div>
+      </div>
+      <div class="model-row"><span class="model-row-label">Investimento</span><span class="model-row-value">R$ 205k</span></div>
+      <div class="model-row"><span class="model-row-label">Payback</span><span class="model-row-value">22 meses</span></div>
+      <div class="model-row"><span class="model-row-label">Área</span><span class="model-row-value">35m²</span></div>
+    </div>
+    <div class="model">
+      <div class="model-head">
+        <div class="model-name">Quiosque</div>
+      </div>
+      <div class="model-row"><span class="model-row-label">Investimento</span><span class="model-row-value">R$ 139k</span></div>
+      <div class="model-row"><span class="model-row-label">Payback</span><span class="model-row-value">22 meses</span></div>
+      <div class="model-row"><span class="model-row-label">Área</span><span class="model-row-value">12m²</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="kicker" style="margin-bottom: 14px;">Sobre a marca</div>
+  <h2>Sobre a <span class="acc">marca</span></h2>
+  <p class="text-block">Gelato artesanal premium, feito sem gordura hidrogenada, com sabores autorais e versões veganas e sem açúcar. Modelo testado e validado, com <b>6 unidades próprias</b> e <b>56 franqueadas em atividade</b>.</p>
+</div>
+
+<div class="section">
+  <div class="kicker" style="margin-bottom: 14px;">Vídeo institucional</div>
+  <h2>Conheça a <span class="acc">marca</span></h2>
+  <div class="video">
+    <div class="play">
+      <svg width="24" height="24" viewBox="0 0 16 16" style="margin-left: 3px;"><path d="M3 2L13 8L3 14V2Z" fill="#F4F1EA"/></svg>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="kicker" style="margin-bottom: 14px;">Processo</div>
+  <h2>Como <span class="acc">funciona</span></h2>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <div class="step-title">Pré-qualificação</div>
+        <div class="step-desc">Análise do seu perfil de investidor e do capital disponível. Resposta em até 5 dias úteis.</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <div class="step-title">Análise da COF</div>
+        <div class="step-desc">Recebimento e análise da Circular de Oferta de Franquia. Período mínimo legal de 10 dias antes da assinatura.</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <div class="step-title">Contrato e ponto comercial</div>
+        <div class="step-desc">Assinatura do contrato e auxílio na escolha do ponto. Inauguração estimada em 120 dias.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="kicker" style="margin-bottom: 14px;">Vantagens competitivas</div>
+  <h2><span class="acc">Diferenciais</span></h2>
+  <ul class="diff">
+    <li><span class="diff-num">01</span><span>Produto premium difícil de substituir, ticket médio R$ 94 por pessoa</span></li>
+    <li><span class="diff-num">02</span><span>Cardápio inclusivo (vegano, sem lactose, sem açúcar) atende público-alvo crescente</span></li>
+    <li><span class="diff-num">03</span><span>Sabores sazonais que fidelizam e aumentam frequência de visita</span></li>
+    <li><span class="diff-num">04</span><span>Marketing pronto e operação validada em 62 unidades</span></li>
+  </ul>
+</div>
+
+<div class="section">
+  <div class="kicker" style="margin-bottom: 14px;">Perfil do investidor</div>
+  <h2>Perfil <span class="acc">ideal</span></h2>
+  <p class="text-block">Empreendedor com <b>perfil de gestão</b> e dedicação ao negócio. Não é necessário experiência prévia em alimentação. Capital disponível a partir de <b>R$ 139 mil</b>. Disponibilidade para acompanhar a operação nos primeiros 6 meses.</p>
+</div>
+
+<div class="section">
+  <div class="kicker" style="margin-bottom: 14px;">Galeria</div>
+  <h2><span class="acc">Veja</span> as lojas</h2>
+  <div class="gallery">
+    <div class="gallery-item">Foto 1</div>
+    <div class="gallery-item">Foto 2</div>
+    <div class="gallery-item">Foto 3</div>
+    <div class="gallery-item">+9</div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="kicker" style="margin-bottom: 14px;">Reputação</div>
+  <h2><span class="acc">Reputação</span></h2>
+  <div class="rep-stat">
+    <div class="rep-avg">4.3</div>
+    <div style="display: flex; flex-direction: column; gap: 6px;">
+      <div class="rep-stars">★ ★ ★ ★ ☆</div>
+      <div class="rep-meta"><b>124</b> avaliações · <b>87%</b> recomendam</div>
+    </div>
+  </div>
+
+  <div class="rep-filters">
+    <button class="rep-filter active">Todas (124)</button>
+    <button class="rep-filter">5 ★ (78)</button>
+    <button class="rep-filter">4 ★ (24)</button>
+    <button class="rep-filter">3 ★ (12)</button>
+    <button class="rep-filter">2 ★ (6)</button>
+    <button class="rep-filter disabled">1 ★ (0)</button>
+    <span class="rep-sort">Ordenar: Mais recentes ↓</span>
+  </div>
+
+  <div class="rep-list">
+    <div class="rep-item">
+      <div class="rep-header">
+        <span class="rep-stars-row">★ ★ ★ ★ ★</span>
+        <span class="rep-author">Itamar L.</span>
+        <span class="rep-when">há 12 dias</span>
+      </div>
+      <p class="rep-text">Investi em uma loja em 2023. Em 18 meses já tinha o payback. O suporte da rede pra escolher ponto comercial fez muita diferença — me pouparam de erros caros que eu provavelmente cometeria sozinho.</p>
+      <div class="rep-response">
+        <div class="rep-response-label">Resposta da marca · há 11 dias</div>
+        <div class="rep-response-text">Itamar, valeu pelo depoimento. Você é referência no nosso programa de mentoria.</div>
+      </div>
+    </div>
+    <div class="rep-item">
+      <div class="rep-header">
+        <span class="rep-stars-row">★ ★ ★ ★ ☆</span>
+        <span class="rep-author">Mariana S.</span>
+        <span class="rep-when">há 28 dias</span>
+      </div>
+      <p class="rep-text">Negócio sólido e marca bem posicionada. Capital de giro recomendado parece subestimado pra cidades menores. Tive que ajustar nos primeiros 4 meses.</p>
+    </div>
+    <div class="rep-item">
+      <div class="rep-header">
+        <span class="rep-stars-row">★ ★ ★ ★ ★</span>
+        <span class="rep-author">Investidor</span>
+        <span class="rep-anon">Anônimo</span>
+        <span class="rep-when">há 41 dias</span>
+      </div>
+      <p class="rep-text">Pesquisei muito antes de escolher franqueador. Da Pá Virada respondeu todas as dúvidas em até 24h, mandou COF detalhada e indicou outros franqueados pra eu conversar.</p>
+    </div>
+  </div>
+
+  <div class="rep-pag">
+    <div class="rep-pag-info">Mostrando 1–5 de 124</div>
+    <div class="rep-pag-controls">
+      <button class="page-btn disabled">←</button>
+      <button class="page-btn active">1</button>
+      <button class="page-btn">2</button>
+      <button class="page-btn">3</button>
+      <button class="page-btn">…</button>
+      <button class="page-btn">25</button>
+      <button class="page-btn">→</button>
+    </div>
+  </div>
+</div>
+
+<div class="lead-section">
+  <div class="lead-grid">
+    <div class="lead-left">
+      <span class="kicker">Próximo passo</span>
+      <h2>Quero <em>saber</em> mais</h2>
+      <p>Preencha e a Pizza do João entra em contato direto. Você também recebe a análise comparativa da rede no Mercado Franquia.</p>
+      <ul class="lead-bullets">
+        <li><b>48h</b><span>Resposta direta da rede, sem intermediários</span></li>
+        <li><b>Análise</b><span>Comparativo do segmento Alimentação</span></li>
+        <li><b>Sem custo</b><span>Sem compromisso, sem taxa de cadastro</span></li>
+      </ul>
+    </div>
+    <div class="lead-form">
+      <input type="text" placeholder="Nome completo" />
+      <input type="email" placeholder="E-mail" />
+      <input type="tel" placeholder="Telefone com DDD" />
+      <div class="lead-row">
+        <input type="text" placeholder="Cidade" />
+        <input type="text" placeholder="UF" />
+      </div>
+      <select>
+        <option>Capital disponível</option>
+        <option>R$ 100 a 300 mil</option>
+        <option>R$ 300 a 500 mil</option>
+        <option>Acima de R$ 500 mil</option>
+      </select>
+      <button class="cta cta-block">Enviar interesse →</button>
+      <div class="lead-disclaimer">Seus dados vão direto à rede · Sem intermediários · LGPD</div>
+    </div>
+  </div>
+</div>
+
+</div>
+</body>
+</html>
