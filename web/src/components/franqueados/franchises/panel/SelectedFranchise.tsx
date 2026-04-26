@@ -31,6 +31,10 @@ import { BusinessModelsSkeleton } from '@/src/components/ui/skeletons/BusinessMo
 import { CommentSectionSkeleton } from '@/src/components/ui/skeletons/CommentSectionSkeleton'
 import { isMember, useAuth } from '@/src/hooks/users/useAuth'
 import { useProfileCompletion } from '@/src/hooks/users/useProfileCompletion'
+import HeroTagline from '@/src/components/franquias/landing/HeroTagline'
+import ProcessStepperLanding from '@/src/components/franquias/landing/ProcessStepperLanding'
+import DifferentialsLanding from '@/src/components/franquias/landing/DifferentialsLanding'
+import IdealProfileLanding from '@/src/components/franquias/landing/IdealProfileLanding'
 
 interface SelectedFranchiseProps {
   selectedFranchise?: string
@@ -239,6 +243,8 @@ export default function SelectedFranchise({
                 {franchise.name}
               </h2>
 
+              <HeroTagline tagline={franchise.tagline} />
+
               <div className="flex flex-col">
                 <h3 className="text-lg sm:text-xl font-semibold text-foreground">
                   Valor investimento
@@ -430,6 +436,12 @@ export default function SelectedFranchise({
             </div>
           </div>
         )}
+        {/* Landing redesign blocks (Fatia 2) — renderizam so quando ha dados.
+            Ordem segue mockup v9: Como funciona → Diferenciais → Perfil ideal. */}
+        <ProcessStepperLanding steps={franchise.processSteps} />
+        <DifferentialsLanding items={franchise.differentials} />
+        <IdealProfileLanding text={franchise.idealFranchiseeProfile} />
+
         {/* Business Models Section */}
         {franchise.businessModels && franchise.businessModels.length > 0 && (
           <BusinessModelsSection
