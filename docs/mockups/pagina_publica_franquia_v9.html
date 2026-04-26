@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Mercado Franquia · Página pública v3 (Design System)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&family=Fraunces:ital,wght@1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    /* Paleta canônica Mercado Franquia */
+    --paper:   #FAFAF7;
+    --ink:     #14161C;
+    --orange:  #FF5A1F;
+    --up:      #0E8A4D;
+    --down:    #C1362B;
+    --wash:    #FFE4D6;
+    --media:   #5A6070;
+    --media-2: #8A8F9E;
+    --line:    #E6E4DE;
+    --dark:    #0A0B0F;
+
+    /* Tipografia */
+    --font-display: "Inter Tight", system-ui, sans-serif;
+    --font-accent:  "Fraunces", Georgia, serif;
+    --font-mono:    "JetBrains Mono", monospace;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: #f0ede5;
+    font-family: var(--font-display);
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .page {
+    max-width: 720px;
+    margin: 0 auto;
+    background: var(--paper);
+    border-left: 1px solid var(--line);
+    border-right: 1px solid var(--line);
+    min-height: 100vh;
+  }
+
+  .accent { font-family: var(--font-accent); font-style: italic; color: var(--orange); font-weight: 400; letter-spacing: -0.02em; }
+  .mono   { font-family: var(--font-mono); }
+  .kicker {
+    font-family: var(--font-mono); font-size: 11px; font-weight: 500;
+    color: var(--media-2); text-transform: uppercase; letter-spacing: 0.16em;
+    display: inline-flex; align-items: center; gap: 8px;
+  }
+  .kicker::before { content: ""; width: 6px; height: 6px; background: var(--orange); border-radius: 50%; }
+
+  h1, h2, h3 { margin: 0; font-family: var(--font-display); font-weight: 500; }
+  p { margin: 0; }
+
+  /* Banner full-width (placeholder hachurado, mas em paleta MF) */
+  .banner {
+    height: 240px;
+    background: var(--ink);
+    background-image:
+      repeating-linear-gradient(45deg, transparent 0 12px, rgba(255,90,31,0.08) 12px 13px),
+      linear-gradient(180deg, rgba(255,90,31,0.05), rgba(20,22,28,0.6));
+    display: flex; align-items: center; justify-content: center;
+    color: var(--media-2);
+    border-bottom: 1px solid var(--line);
+  }
+  .banner-text { font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.16em; text-align: center; }
+
+  /* Hero */
+  .hero { padding: 32px 24px 28px; border-bottom: 1px solid var(--line); }
+  .hero-top { display: flex; gap: 16px; align-items: center; margin-bottom: 20px; }
+  .hero-logo {
+    width: 64px; height: 64px;
+    background: var(--paper); border: 1px solid var(--line);
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-mono); font-size: 10px; color: var(--media-2);
+    flex-shrink: 0;
+  }
+  .hero-id { flex: 1; min-width: 0; }
+  .hero-segment {
+    font-family: var(--font-mono); font-size: 11px; font-weight: 500;
+    color: var(--media-2); text-transform: uppercase; letter-spacing: 0.16em;
+    margin-bottom: 4px;
+  }
+  .hero h1 {
+    font-size: 36px; line-height: 1.05; letter-spacing: -0.035em;
+  }
+  .hero-tag {
+    font-family: var(--font-mono); font-size: 10px; font-weight: 500;
+    padding: 4px 10px; border: 1px solid var(--line); color: var(--ink);
+    text-transform: uppercase; letter-spacing: 0.14em;
+    display: inline-flex; align-items: center; gap: 6px; flex-shrink: 0;
+  }
+  .hero-tag::before { content: ""; width: 5px; height: 5px; border-radius: 50%; background: var(--up); }
+
+  .hero-tagline {
+    font-size: 18px; line-height: 1.5; color: var(--ink);
+    margin: 0 0 24px; max-width: 540px;
+  }
+  .hero-tagline .accent { font-size: 18px; }
+
+
+  /* Strip de selos abaixo do hero */
+  .selos-strip {
+    display: flex; align-items: stretch;
+    border-bottom: 1px solid var(--line);
+    background: var(--paper);
+    overflow-x: auto;
+  }
+  .selo {
+    flex: 1; min-width: 0;
+    padding: 14px 12px;
+    border-right: 1px solid var(--line);
+    display: flex; flex-direction: column; gap: 4px;
+    align-items: flex-start;
+  }
+  .selo:last-child { border-right: 0; }
+  .selo-label {
+    font-family: var(--font-mono); font-size: 9px; font-weight: 500;
+    color: var(--media-2); text-transform: uppercase; letter-spacing: 0.16em;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .selo-label::before {
+    content: ""; width: 5px; height: 5px; border-radius: 50%;
+    background: var(--up);
+  }
+  .selo-name {
+    font-size: 12px; font-weight: 500; letter-spacing: -0.01em;
+    color: var(--ink);
+  }
+
+  /* Strip de métricas */
+  .metrics { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); margin-bottom: 20px; }
+  .metric { padding: 14px 12px; border-right: 1px solid var(--line); }
+  .metric:last-child { border-right: 0; }
+  .metric-label {
+    font-family: var(--font-mono); font-size: 10px; font-weight: 500;
+    color: var(--media-2); text-transform: uppercase; letter-spacing: 0.16em;
+    margin-bottom: 6px;
+  }
+  .metric-value {
+    font-family: var(--font-display); font-size: 22px; font-weight: 500;
+    letter-spacing: -0.025em; font-variant-numeric: tabular-nums;
+  }
+
+  /* CTAs */
+  .btn {
+    display: inline-block; width: 100%; text-align: center;
+    padding: 14px 20px; border: none; cursor: pointer;
+    font-family: var(--font-display); font-size: 14px; font-weight: 500;
+    letter-spacing: -0.005em;
+  }
+  .btn-primary { background: var(--orange); color: var(--paper); }
+  .btn-primary:hover { background: #e74e15; }
+  .btn-ink { background: var(--ink); color: var(--paper); }
+  .btn-ghost { background: transparent; border: 1px solid var(--ink); color: var(--ink); }
+
+  /* Seção genérica */
+  section { padding: 32px 24px; border-bottom: 1px solid var(--line); }
+  section h2 { font-size: 26px; letter-spacing: -0.03em; margin-bottom: 16px; }
+
+  /* Modelos */
+  .models { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; border: 1px solid var(--line); }
+  .model { padding: 16px; border-right: 1px solid var(--line); }
+  .model:last-child { border-right: 0; }
+  .model-name { font-size: 15px; font-weight: 500; margin-bottom: 12px; letter-spacing: -0.015em; }
+  .model-row { margin-bottom: 8px; }
+  .model-row:last-child { margin-bottom: 0; }
+  .model-label {
+    font-family: var(--font-mono); font-size: 10px; font-weight: 500;
+    color: var(--media-2); text-transform: uppercase; letter-spacing: 0.14em;
+    display: block; margin-bottom: 2px;
+  }
+  .model-value { font-size: 15px; font-weight: 500; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+
+  /* Wash callout (em breve serviços) */
+  .wash {
+    background: var(--wash);
+    padding: 28px 24px;
+    border-bottom: 1px solid var(--line);
+  }
+  .wash-kicker {
+    font-family: var(--font-mono); font-size: 11px; font-weight: 500;
+    color: var(--ink); text-transform: uppercase; letter-spacing: 0.16em;
+    margin-bottom: 6px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .wash-kicker .badge { background: var(--ink); color: var(--paper); padding: 2px 8px; }
+  .wash h2 { font-size: 22px; letter-spacing: -0.03em; margin-bottom: 16px; }
+  .wash h2 .accent { font-size: 22px; }
+  .wash-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .wash-card { background: var(--paper); padding: 14px 16px; border: 1px solid rgba(20,22,28,0.08); }
+  .wash-card-title { font-size: 14px; font-weight: 500; letter-spacing: -0.015em; margin-bottom: 4px; }
+  .wash-card-desc { font-family: var(--font-mono); font-size: 10px; color: var(--media); text-transform: uppercase; letter-spacing: 0.14em; }
+  .wash-full { grid-column: span 2; }
+
+  /* Sobre */
+  .about-text { font-size: 16px; line-height: 1.6; color: var(--ink); max-width: 580px; }
+
+  /* Vídeo */
+  .video-frame {
+    aspect-ratio: 16/9;
+    background: var(--ink);
+    display: flex; align-items: center; justify-content: center;
+    position: relative;
+    border: 1px solid var(--line);
+  }
+  .play-btn {
+    width: 64px; height: 64px; border-radius: 50%;
+    background: var(--orange);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .video-caption {
+    position: absolute; bottom: 12px; left: 16px;
+    font-family: var(--font-mono); font-size: 10px;
+    color: var(--media-2); text-transform: uppercase; letter-spacing: 0.14em;
+  }
+
+  /* Stepper como funciona */
+  .steps { display: flex; flex-direction: column; gap: 14px; }
+  .step { display: flex; gap: 16px; align-items: baseline; padding-bottom: 14px; border-bottom: 1px solid var(--line); }
+  .step:last-child { border-bottom: 0; padding-bottom: 0; }
+  .step-num {
+    font-family: var(--font-accent); font-style: italic; color: var(--orange);
+    font-size: 32px; font-weight: 400; letter-spacing: -0.02em;
+    width: 36px; flex-shrink: 0; line-height: 1;
+  }
+  .step-body { flex: 1; padding-top: 4px; }
+  .step-title { font-size: 16px; font-weight: 500; letter-spacing: -0.02em; margin-bottom: 4px; }
+  .step-desc { font-size: 14px; color: var(--media); line-height: 1.5; }
+
+  /* Diferenciais */
+  ul.diff { list-style: none; padding: 0; margin: 0; }
+  ul.diff li {
+    padding: 12px 0; border-bottom: 1px solid var(--line);
+    font-size: 15px; line-height: 1.5;
+    display: flex; gap: 14px; align-items: baseline;
+  }
+  ul.diff li:last-child { border-bottom: 0; }
+  ul.diff li::before {
+    content: ""; flex-shrink: 0; width: 6px; height: 6px;
+    background: var(--ink); margin-top: 8px;
+  }
+
+  /* Perfil */
+  .profile-text { font-size: 16px; line-height: 1.6; max-width: 580px; }
+
+  /* Galeria */
+  .gallery { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; }
+  .gallery-item {
+    aspect-ratio: 1; background: var(--line);
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-mono); font-size: 10px; color: var(--media-2);
+    text-transform: uppercase; letter-spacing: 0.14em;
+  }
+
+  /* Depoimento */
+  .testimonial {
+    border-left: 3px solid var(--orange);
+    padding: 4px 0 4px 20px;
+  }
+  .quote {
+    font-family: var(--font-accent); font-style: italic;
+    font-size: 18px; line-height: 1.5; color: var(--ink);
+    margin-bottom: 12px; letter-spacing: -0.015em;
+  }
+  .testimonial-meta { font-family: var(--font-mono); font-size: 11px; color: var(--media); text-transform: uppercase; letter-spacing: 0.14em; }
+  .testimonial-meta strong { color: var(--ink); font-weight: 500; }
+
+  /* Form lead — seção dark de impacto */
+  .lead-section {
+    background: var(--dark);
+    color: var(--paper);
+    padding: 36px 24px;
+    border-bottom: 0;
+  }
+  .lead-section h2 { color: var(--paper); font-size: 28px; letter-spacing: -0.03em; margin-bottom: 6px; }
+  .lead-section h2 .accent { font-size: 28px; }
+  .lead-section .lead-sub { font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.16em; color: var(--media-2); margin-bottom: 24px; }
+
+  .lead-form { display: flex; flex-direction: column; gap: 10px; }
+  .lead-form input, .lead-form select {
+    padding: 12px 14px;
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.18);
+    color: var(--paper);
+    font-family: var(--font-display); font-size: 14px;
+    outline: none;
+  }
+  .lead-form input::placeholder, .lead-form select { color: rgba(250,250,247,0.5); }
+  .lead-form input:focus, .lead-form select:focus { border-color: var(--orange); }
+  .lead-form .row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .lead-form select option { background: var(--dark); color: var(--paper); }
+  .lead-disclaimer { font-family: var(--font-mono); font-size: 10px; color: var(--media-2); text-transform: uppercase; letter-spacing: 0.14em; line-height: 1.6; margin-top: 6px; }
+
+
+
+  /* Avaliação inline no hero */
+  .hero-rating {
+    font-family: var(--font-mono); font-size: 14px; font-weight: 500;
+    color: var(--media); letter-spacing: 0.02em;
+    margin-left: 10px; vertical-align: middle;
+    white-space: nowrap;
+  }
+  .hero-rating-count { color: var(--media-2); }
+
+  /* Bloco Reputação */
+  .reputation-stat {
+    display: flex; align-items: baseline; gap: 16px;
+    padding: 18px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
+    margin: 16px 0 0;
+  }
+  .reputation-avg { font-size: 36px; font-weight: 500; letter-spacing: -0.035em; line-height: 1; font-variant-numeric: tabular-nums; }
+  .reputation-stars-row { display: flex; gap: 1px; color: var(--orange); font-size: 14px; }
+  .reputation-meta {
+    font-family: var(--font-mono); font-size: 11px; font-weight: 500;
+    color: var(--media-2); text-transform: uppercase; letter-spacing: 0.16em;
+  }
+
+  /* Filtros */
+  .review-filters {
+    display: flex; gap: 0; margin: 20px 0 0;
+    border-bottom: 1px solid var(--line);
+    overflow-x: auto;
+  }
+  .review-filter {
+    padding: 10px 16px; cursor: pointer;
+    font-family: var(--font-mono); font-size: 11px; font-weight: 500;
+    color: var(--media-2); text-transform: uppercase; letter-spacing: 0.14em;
+    background: transparent; border: none;
+    border-bottom: 2px solid transparent;
+    white-space: nowrap;
+  }
+  .review-filter.active { color: var(--ink); border-bottom-color: var(--orange); }
+
+  /* Lista de reviews */
+  .review-list { display: flex; flex-direction: column; gap: 0; margin-top: 0; }
+  .review-item { padding: 20px 0; border-bottom: 1px solid var(--line); }
+  .review-item:last-child { border-bottom: 0; }
+  .review-header {
+    display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+    margin-bottom: 10px;
+  }
+  .review-stars { color: var(--orange); font-size: 13px; letter-spacing: 1px; }
+  .review-author { font-size: 14px; font-weight: 500; letter-spacing: -0.01em; }
+  .review-badge {
+    font-family: var(--font-mono); font-size: 9px; font-weight: 500;
+    padding: 2px 8px; border: 1px solid var(--up); color: var(--up);
+    text-transform: uppercase; letter-spacing: 0.16em;
+  }
+  .review-badge-anon {
+    border-color: var(--line); color: var(--media-2);
+  }
+  .review-when {
+    font-family: var(--font-mono); font-size: 10px;
+    color: var(--media-2); text-transform: uppercase; letter-spacing: 0.14em;
+    margin-left: auto;
+  }
+  .review-text { font-size: 14px; line-height: 1.6; color: var(--ink); margin: 4px 0 0; }
+  .review-response {
+    background: var(--paper);
+    border-left: 2px solid var(--orange);
+    padding: 12px 14px; margin: 12px 0 0 0;
+  }
+  .review-response-label {
+    font-family: var(--font-mono); font-size: 10px; font-weight: 500;
+    color: var(--orange); text-transform: uppercase; letter-spacing: 0.16em;
+    margin-bottom: 6px;
+  }
+  .review-response-text { font-size: 13px; line-height: 1.55; color: var(--media); }
+
+  /* Action row */
+  .review-cta-row { display: flex; gap: 8px; margin-top: 24px; }
+  .review-cta-row .btn { flex: 1; }
+
+  /* Q&A público (legado v7 — mantido enquanto refatoramos) */
+  .qa-list { display: flex; flex-direction: column; gap: 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); margin-top: 16px; }
+  .qa-item { padding: 18px 0; border-bottom: 1px solid var(--line); }
+  .qa-item:last-child { border-bottom: 0; }
+  .qa-question {
+    font-size: 16px; font-weight: 500; letter-spacing: -0.02em;
+    color: var(--ink); margin-bottom: 8px;
+    display: flex; gap: 12px; align-items: baseline;
+  }
+  .qa-q-marker {
+    font-family: var(--font-mono); font-size: 11px; font-weight: 500;
+    color: var(--orange); text-transform: uppercase; letter-spacing: 0.16em;
+    flex-shrink: 0;
+  }
+  .qa-answer {
+    font-size: 14px; line-height: 1.6; color: var(--media);
+    padding-left: 28px; margin-bottom: 8px;
+  }
+  .qa-meta {
+    padding-left: 28px;
+    font-family: var(--font-mono); font-size: 10px; font-weight: 500;
+    color: var(--media-2); text-transform: uppercase; letter-spacing: 0.14em;
+    display: flex; gap: 14px;
+  }
+  .qa-cta-row { display: flex; gap: 8px; margin-top: 20px; }
+  .qa-cta-row .btn { flex: 1; }
+  .btn-secondary { background: var(--ink); color: var(--paper); }
+
+  .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); border: 0; }
+</style>
+</head>
+<body>
+<div class="page">
+<h2 class="sr-only">Mockup v3 da página pública aplicado ao design system Mercado Franquia.</h2>
+
+<!-- 1. BANNER FULL-WIDTH -->
+<div class="banner">
+  <div class="banner-text">
+    <div style="margin-bottom: 6px;">Banner full-width</div>
+    <div style="opacity: 0.7;">1920 × 600 — Capa visual da marca</div>
+  </div>
+</div>
+
+<!-- 2. HERO -->
+<div class="hero">
+  <div class="hero-top">
+    <div class="hero-logo">LOGO</div>
+    <div class="hero-id">
+      <div class="hero-segment">Alimentação</div>
+      <h1>Da Pá Virada <span class="hero-rating">★ 4.3 · <span class="hero-rating-count">124</span></span></h1>
+    </div>
+    
+  </div>
+
+  <p class="hero-tagline">
+    Leve a experiência do verdadeiro gelato pro Brasil. Negócio com alta margem e operação simples.
+  </p>
+
+  <div class="metrics">
+    <div class="metric">
+      <div class="metric-label">Investimento</div>
+      <div class="metric-value">R$ 139k–342k</div>
+    </div>
+    <div class="metric">
+      <div class="metric-label">Payback</div>
+      <div class="metric-value">22 meses</div>
+    </div>
+    <div class="metric">
+      <div class="metric-label">Unidades</div>
+      <div class="metric-value">62</div>
+    </div>
+  </div>
+
+  <button class="btn btn-primary">Quero ser franqueado →</button>
+</div>
+
+
+<!-- 3. STRIP DE SELOS -->
+<div class="selos-strip">
+  <div class="selo">
+    <div class="selo-label">Verificado</div>
+    <div class="selo-name">ABF Verified</div>
+  </div>
+  <div class="selo">
+    <div class="selo-label">Excelência 2025</div>
+    <div class="selo-name">Selo ABF</div>
+  </div>
+  <div class="selo">
+    <div class="selo-label">Reputação</div>
+    <div class="selo-name">RA 1000</div>
+  </div>
+  <div class="selo">
+    <div class="selo-label">Sustentável</div>
+    <div class="selo-name">B Corp</div>
+  </div>
+</div>
+
+<!-- 4. MODELOS -->
+<section>
+  <h2>Modelos <span class="accent">disponíveis</span></h2>
+  <div class="models" style="margin-top: 20px;">
+    <div class="model">
+      <div class="model-name">Loja</div>
+      <div class="model-row">
+        <span class="model-label">Investimento</span>
+        <span class="model-value">R$ 342k</span>
+      </div>
+      <div class="model-row">
+        <span class="model-label">Payback</span>
+        <span class="model-value">22 meses</span>
+      </div>
+    </div>
+    <div class="model">
+      <div class="model-name">Container</div>
+      <div class="model-row">
+        <span class="model-label">Investimento</span>
+        <span class="model-value">R$ 205k</span>
+      </div>
+      <div class="model-row">
+        <span class="model-label">Payback</span>
+        <span class="model-value">22 meses</span>
+      </div>
+    </div>
+    <div class="model">
+      <div class="model-name">Quiosque</div>
+      <div class="model-row">
+        <span class="model-label">Investimento</span>
+        <span class="model-value">R$ 139k</span>
+      </div>
+      <div class="model-row">
+        <span class="model-label">Payback</span>
+        <span class="model-value">22 meses</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- 5. SOBRE -->
+<section>
+  <h2>Sobre a <span class="accent">marca</span></h2>
+  <p class="about-text" style="margin-top: 16px;">
+    Gelato artesanal premium, feito sem gordura hidrogenada, com sabores autorais e versões veganas e sem açúcar. Modelo testado e validado, com 6 unidades próprias e franqueados em atividade.
+  </p>
+</section>
+
+<!-- 6. VÍDEO -->
+<section>
+  <h2>Conheça a <span class="accent">marca</span></h2>
+  <div class="video-frame" style="margin-top: 20px;">
+    <div class="play-btn">
+      <svg width="22" height="22" viewBox="0 0 16 16" style="margin-left: 3px;"><path d="M3 2L13 8L3 14V2Z" fill="#FAFAF7"/></svg>
+    </div>
+    <div class="video-caption">YouTube · 1:32</div>
+  </div>
+</section>
+
+<!-- 7. COMO FUNCIONA -->
+<section>
+  <h2>Como <span class="accent">funciona</span></h2>
+  <div class="steps" style="margin-top: 24px;">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <div class="step-title">Pré-qualificação</div>
+        <div class="step-desc">Apresentação e ficha inicial</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <div class="step-title">Análise da COF</div>
+        <div class="step-desc">Recebimento e análise da Circular de Oferta</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <div class="step-title">Contrato e ponto comercial</div>
+        <div class="step-desc">Assinatura e auxílio na escolha</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-body">
+        <div class="step-title">Treinamento e inauguração</div>
+        <div class="step-desc">60 a 90 dias da assinatura</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 8. DIFERENCIAIS -->
+<section>
+  <h2><span class="accent">Diferenciais</span></h2>
+  <ul class="diff" style="margin-top: 16px;">
+    <li>Produto premium difícil de substituir</li>
+    <li>Cardápio inclusivo (vegano, sem lactose, sem açúcar)</li>
+    <li>Sabores sazonais que fidelizam</li>
+    <li>Marketing pronto pra vender</li>
+    <li>Modelos de expansão flexíveis</li>
+  </ul>
+</section>
+
+<!-- 9. PERFIL -->
+<section>
+  <h2>Perfil <span class="accent">ideal</span></h2>
+  <p class="profile-text" style="margin-top: 16px;">
+    Empreendedor com perfil de gestão e dedicação ao negócio. Não é necessário experiência prévia em alimentação, mas é fundamental compromisso com padronização.
+  </p>
+</section>
+
+<!-- 10. GALERIA -->
+<section>
+  <h2><span class="accent">Veja</span> as lojas</h2>
+  <div class="gallery" style="margin-top: 16px;">
+    <div class="gallery-item">Foto 1</div>
+    <div class="gallery-item">Foto 2</div>
+    <div class="gallery-item">Foto 3</div>
+    <div class="gallery-item">Foto 4</div>
+    <div class="gallery-item">Foto 5</div>
+    <div class="gallery-item">+12</div>
+  </div>
+</section>
+
+
+
+
+<!-- 11. REPUTAÇÃO -->
+<section>
+  <h2><span class="accent">Reputação</span></h2>
+
+  <div class="reputation-stat">
+    <div class="reputation-avg">4.3</div>
+    <div style="display: flex; flex-direction: column; gap: 6px;">
+      <div class="reputation-stars-row">★ ★ ★ ★ ★</div>
+      <div class="reputation-meta">124 avaliações · 87% recomendam</div>
+    </div>
+  </div>
+
+  <div class="review-filters">
+    <button class="review-filter active">Todas</button>
+    <button class="review-filter">5 ★ (78)</button>
+    <button class="review-filter">4 ★ (24)</button>
+    <button class="review-filter">3 ★ (12)</button>
+    <button class="review-filter">2 ★ (6)</button>
+    <button class="review-filter">1 ★ (4)</button>
+  </div>
+
+  <div class="review-list">
+
+    <div class="review-item">
+      <div class="review-header">
+        <div class="review-stars">★ ★ ★ ★ ★</div>
+        <div class="review-author">Itamar L.</div>
+        <div class="review-badge">Franqueado verificado</div>
+        <div class="review-when">há 12 dias</div>
+      </div>
+      <p class="review-text">Investi em uma loja em 2023. Em 18 meses já tinha o payback. O suporte da rede pra escolher ponto comercial fez muita diferença — me pouparam de erros caros que eu provavelmente cometeria sozinho.</p>
+      <div class="review-response">
+        <div class="review-response-label">Resposta da marca · há 11 dias</div>
+        <div class="review-response-text">Itamar, valeu demais pelo depoimento. Você é referência no nosso programa de mentoria e estamos felizes em ter você na rede há 2 anos. Continue contando com a gente.</div>
+      </div>
+    </div>
+
+    <div class="review-item">
+      <div class="review-header">
+        <div class="review-stars">★ ★ ★ ★ ☆</div>
+        <div class="review-author">Mariana S.</div>
+        <div class="review-when">há 28 dias</div>
+      </div>
+      <p class="review-text">Negócio sólido e marca bem posicionada. Minha única ressalva é que o capital de giro recomendado parece subestimado pra cidades menores. Tive que ajustar pra cima nos primeiros 4 meses. Fora isso, tudo certo.</p>
+      <div class="review-response">
+        <div class="review-response-label">Resposta da marca · há 25 dias</div>
+        <div class="review-response-text">Olá, Mariana. Obrigado pelo feedback honesto. Estamos atualizando o material de capital de giro pra cidades de até 80k habitantes — sua observação está sendo incorporada à próxima revisão.</div>
+      </div>
+    </div>
+
+    <div class="review-item">
+      <div class="review-header">
+        <div class="review-stars">★ ★ ★ ★ ★</div>
+        <div class="review-author">Investidor anônimo</div>
+        <div class="review-badge review-badge-anon">Anônimo</div>
+        <div class="review-when">há 41 dias</div>
+      </div>
+      <p class="review-text">Pesquisei muito antes de escolher franqueador. Da Pá Virada respondeu todas as dúvidas em até 24h, mandou COF detalhada e indicou outros franqueados pra eu conversar. Transparência é o que mais importou pra mim.</p>
+    </div>
+
+    <div class="review-item">
+      <div class="review-header">
+        <div class="review-stars">★ ★ ★ ☆ ☆</div>
+        <div class="review-author">Carlos M.</div>
+        <div class="review-badge">Franqueado verificado</div>
+        <div class="review-when">há 60 dias</div>
+      </div>
+      <p class="review-text">A operação funciona bem mas o tempo de resposta do suporte caiu nos últimos meses. Demora mais que o ideal pra resolver questões de fornecedor. Espero que melhorem.</p>
+      <div class="review-response">
+        <div class="review-response-label">Resposta da marca · há 58 dias</div>
+        <div class="review-response-text">Carlos, lamentamos. Reorganizamos o time de suporte em março e estamos com novo tempo médio de resposta de 4h úteis. Vou pedir que entrem em contato pra alinhar pendências específicas.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="review-cta-row">
+    <button class="btn btn-ghost">Ver todas (124)</button>
+    <button class="btn btn-secondary">Avaliar essa franquia</button>
+  </div>
+</section>
+
+
+<!-- 12. FORM DE LEAD — SEÇÃO DARK -->
+<div class="lead-section">
+  <div class="lead-sub">Próximo passo</div>
+  <h2>Quero <span class="accent">saber</span> mais</h2>
+  <p style="font-size: 14px; line-height: 1.5; color: rgba(250,250,247,0.65); margin: 8px 0 24px; max-width: 480px;">
+    Preencha e a marca entra em contato. Você também recebe a análise comparativa da rede no Mercado Franquia.
+  </p>
+
+  <div class="lead-form">
+    <input type="text" placeholder="Nome completo" />
+    <input type="email" placeholder="E-mail" />
+    <input type="tel" placeholder="Telefone com DDD" />
+    <div class="row">
+      <input type="text" placeholder="Cidade" />
+      <input type="text" placeholder="UF" />
+    </div>
+    <select>
+      <option>Capital disponível</option>
+      <option>R$ 100 a 300 mil</option>
+      <option>R$ 300 a 500 mil</option>
+      <option>Acima de R$ 500 mil</option>
+    </select>
+    <button class="btn btn-primary" style="margin-top: 8px;">Enviar interesse →</button>
+    <p class="lead-disclaimer">Ao enviar, concordo com os termos e a política de privacidade (LGPD)</p>
+  </div>
+</div>
+
+</div>
+</body>
+</html>
