@@ -52,6 +52,41 @@
   margin: 0 auto;
 }
 
+/* Layout 2 colunas em desktop ≥ 1024px — Fatia 1.7. Banner e LeadForm
+   ficam FORA desse grid (full-width 100% do .page). */
+.twoColumn {
+  display: block;
+}
+@media (min-width: 1024px) {
+  .twoColumn {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 320px;
+    gap: 32px;
+    align-items: start;
+  }
+}
+.mainColumn {
+  min-width: 0; /* impede que conteudo overflow estoure o grid */
+}
+
+/* Sidebar sticky no desktop. align-self: start e top: 24px sao
+   essenciais pro sticky funcionar. max-height + overflow-y: auto
+   protege casos raros (viewport vertical pequeno, sidebar conteudo
+   grande). */
+.sidebar {
+  display: none;
+}
+@media (min-width: 1024px) {
+  .sidebar {
+    display: block;
+    position: sticky;
+    top: 24px;
+    align-self: start;
+    max-height: calc(100vh - 48px);
+    overflow-y: auto;
+  }
+}
+
 .section {
   padding: 40px 32px;
   border-bottom: 1px solid var(--line);
@@ -709,17 +744,14 @@
   border-bottom-color: var(--orange);
 }
 
-/* Lista de reviews — 2 cols desktop ≥ 1024, 1 col tablet/mobile */
+/* Lista de reviews — Fatia 1.7: 1 col em qualquer breakpoint. Coluna
+   principal ja é estreita por causa da sidebar ≥ 1024px, fica
+   confortavel pra leitura sem precisar de 2 cols. */
 .reviewList {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 0 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
   margin-top: 0;
-}
-@media (max-width: 1023px) {
-  .reviewList {
-    grid-template-columns: 1fr;
-  }
 }
 
 .reviewItem {
@@ -809,6 +841,122 @@
 .btnSecondary {
   background: var(--ink);
   color: var(--paper);
+}
+
+/* ========================================================================
+   SidebarCTA — Fatia 1.7
+   ======================================================================== */
+
+.sidebarCard {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  padding: 24px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+.sidebarLabel {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--media-2);
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  margin-bottom: 4px;
+}
+.sidebarValue {
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 500;
+  letter-spacing: -0.025em;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+  line-height: 1.1;
+  margin-bottom: 16px;
+}
+.sidebarCta {
+  /* usa .btn .btnPrimary do design system, padding compacto */
+  padding: 12px 18px;
+  font-size: 13px;
+  font-weight: 500;
+}
+.sidebarDivider {
+  height: 1px;
+  background: var(--line);
+  margin: 20px 0;
+  border: 0;
+}
+.sidebarSectionLabel {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--media-2);
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  margin-bottom: 10px;
+}
+.sidebarLink {
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--ink);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--line);
+}
+.sidebarLink:last-child {
+  border-bottom: 0;
+}
+.sidebarLink:hover {
+  color: var(--orange);
+}
+.sidebarLinkArrow {
+  font-family: var(--font-mono);
+  color: var(--media-2);
+  font-size: 12px;
+}
+.sidebarStat {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 6px 0;
+}
+.sidebarStatLabel {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--media-2);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+}
+.sidebarStatValue {
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+.sidebarBadge {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--ink);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  padding: 6px 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.sidebarBadge::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #0e8a4d;
+  flex-shrink: 0;
 }
 
 /* Empty state da Reputacao */
