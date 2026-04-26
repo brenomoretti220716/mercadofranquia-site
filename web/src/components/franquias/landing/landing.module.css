@@ -25,9 +25,19 @@
   -webkit-font-smoothing: antialiased;
 }
 
-/* Container do v9 — coluna max 720px com bordas line */
+/* Canvas externo — area fora da .page. Cinza-bege que combina com
+   paper, garante moldura visual em telas > 1280px. */
+.canvas {
+  background: #f0ede5;
+  min-height: 100vh;
+  width: 100%;
+}
+
+/* Container do v9 — Fatia 1.6 expande pra 1280px hibrido. Conteudo
+   narrativo continua estreito via .narrowText, grids ocupam o full
+   width. */
 .page {
-  max-width: 720px;
+  max-width: 1280px;
   margin: 0 auto;
   background: var(--paper);
   border-left: 1px solid var(--line);
@@ -35,12 +45,21 @@
   min-height: 100vh;
 }
 
-/* Body wrapper colado no canvas externo (#f0ede5 do mockup) — opcional,
-   o restante da plataforma define o background. */
+/* Wrapper interno pra conteudo de leitura (paragrafos longos). Mantem
+   legibilidade limitando linha a ~720px DENTRO de blocos full-width. */
+.narrowText {
+  max-width: 720px;
+  margin: 0 auto;
+}
 
 .section {
-  padding: 32px 24px;
+  padding: 40px 32px;
   border-bottom: 1px solid var(--line);
+}
+@media (max-width: 768px) {
+  .section {
+    padding: 32px 20px;
+  }
 }
 
 .heading {
@@ -48,7 +67,8 @@
   font-weight: 500;
   font-size: 26px;
   letter-spacing: -0.03em;
-  margin: 0 0 16px;
+  max-width: 720px;
+  margin: 0 auto 16px;
   color: var(--ink);
 }
 
@@ -70,12 +90,14 @@
   max-width: 540px;
 }
 
-/* Como funciona — stepper */
+/* Como funciona — stepper. Max 720px centralizado pra legibilidade
+   dentro do container 1280px. */
 .steps {
   display: flex;
   flex-direction: column;
   gap: 14px;
-  margin-top: 24px;
+  max-width: 720px;
+  margin: 24px auto 0;
 }
 .step {
   display: flex;
@@ -119,11 +141,12 @@
   margin: 0;
 }
 
-/* Diferenciais */
+/* Diferenciais — max 720px centralizado pra legibilidade */
 .diff {
   list-style: none;
   padding: 0;
-  margin: 16px 0 0;
+  max-width: 720px;
+  margin: 16px auto 0;
 }
 .diffItem {
   font-family: var(--font-display);
@@ -148,13 +171,13 @@
   margin-top: 8px;
 }
 
-/* Perfil ideal */
+/* Perfil ideal — centralizado dentro do container 1280px */
 .profileText {
   font-family: var(--font-display);
   font-size: 16px;
   line-height: 1.6;
-  max-width: 580px;
-  margin: 16px 0 0;
+  max-width: 720px;
+  margin: 16px auto 0;
   color: var(--ink);
 }
 
@@ -201,8 +224,13 @@
 
 /* Hero (logo + segmento + nome + tagline + métricas + CTA) */
 .hero {
-  padding: 32px 24px 28px;
+  padding: 48px 32px 40px;
   border-bottom: 1px solid var(--line);
+}
+@media (max-width: 768px) {
+  .hero {
+    padding: 32px 20px 28px;
+  }
 }
 .heroTop {
   display: flex;
@@ -434,14 +462,14 @@
   }
 }
 
-/* Sobre — paragrafo */
+/* Sobre — paragrafo, centralizado dentro do container 1280px */
 .aboutText {
   font-family: var(--font-display);
   font-size: 16px;
   line-height: 1.6;
   color: var(--ink);
-  max-width: 580px;
-  margin: 16px 0 0;
+  max-width: 720px;
+  margin: 16px auto 0;
   white-space: pre-wrap;
 }
 
@@ -488,12 +516,22 @@
   letter-spacing: 0.14em;
 }
 
-/* Galeria */
+/* Galeria — responsiva: 4 cols desktop ≥ 1024, 3 cols tablet, 2 cols mobile */
 .gallery {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 4px;
   margin-top: 16px;
+}
+@media (max-width: 1023px) {
+  .gallery {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+@media (max-width: 540px) {
+  .gallery {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 .galleryItem {
   aspect-ratio: 1;
@@ -520,12 +558,22 @@
   font-weight: 500;
 }
 
-/* Lead form — seção dark */
+/* Lead form — seção dark, full-width do container; conteudo interno
+   centralizado em max 480px pro form ficar confortavel de preencher. */
 .leadSection {
   background: var(--dark);
   color: var(--paper);
-  padding: 36px 24px;
+  padding: 56px 32px;
   border-bottom: 0;
+}
+.leadInner {
+  max-width: 480px;
+  margin: 0 auto;
+}
+@media (max-width: 768px) {
+  .leadSection {
+    padding: 40px 20px;
+  }
 }
 .leadKicker {
   font-family: var(--font-mono);
@@ -591,4 +639,188 @@
   letter-spacing: 0.14em;
   line-height: 1.6;
   margin-top: 6px;
+}
+
+/* ========================================================================
+   Reputacao (Reviews) — v9 redesign Fatia 1.6
+   ======================================================================== */
+
+/* Stat row: avg + estrelas + meta */
+.reputationStat {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  padding: 18px 0;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  margin: 16px 0 0;
+}
+.reputationAvg {
+  font-family: var(--font-display);
+  font-size: 36px;
+  font-weight: 500;
+  letter-spacing: -0.035em;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink);
+}
+.reputationStarsRow {
+  display: flex;
+  gap: 1px;
+  color: var(--orange);
+  font-size: 14px;
+}
+.reputationMeta {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--media-2);
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+}
+
+/* Filtros por estrela */
+.reviewFilters {
+  display: flex;
+  gap: 0;
+  margin: 20px 0 0;
+  border-bottom: 1px solid var(--line);
+  overflow-x: auto;
+}
+.reviewFilter {
+  padding: 10px 16px;
+  cursor: pointer;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--media-2);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  white-space: nowrap;
+}
+.reviewFilter:hover {
+  color: var(--ink);
+}
+.reviewFilterActive {
+  color: var(--ink);
+  border-bottom-color: var(--orange);
+}
+
+/* Lista de reviews — 2 cols desktop ≥ 1024, 1 col tablet/mobile */
+.reviewList {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0 32px;
+  margin-top: 0;
+}
+@media (max-width: 1023px) {
+  .reviewList {
+    grid-template-columns: 1fr;
+  }
+}
+
+.reviewItem {
+  padding: 20px 0;
+  border-bottom: 1px solid var(--line);
+}
+.reviewHeader {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+.reviewStars {
+  color: var(--orange);
+  font-size: 13px;
+  letter-spacing: 1px;
+  font-family: var(--font-display);
+}
+.reviewAuthor {
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+.reviewBadge {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 500;
+  padding: 2px 8px;
+  border: 1px solid #0e8a4d;
+  color: #0e8a4d;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+}
+.reviewBadgeAnon {
+  border-color: var(--line);
+  color: var(--media-2);
+}
+.reviewWhen {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--media-2);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  margin-left: auto;
+}
+.reviewText {
+  font-family: var(--font-display);
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--ink);
+  margin: 4px 0 0;
+}
+.reviewResponse {
+  background: var(--paper);
+  border-left: 3px solid var(--orange);
+  padding: 12px 14px;
+  margin: 12px 0 0 0;
+}
+.reviewResponseLabel {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--orange);
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  margin-bottom: 6px;
+}
+.reviewResponseText {
+  font-family: var(--font-display);
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--media);
+}
+
+/* Action row do footer da Reputacao */
+.reviewCtaRow {
+  display: flex;
+  gap: 8px;
+  margin-top: 24px;
+}
+.reviewCtaRow .btn {
+  flex: 1;
+}
+.btnSecondary {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+/* Empty state da Reputacao */
+.reputationEmpty {
+  text-align: center;
+  padding: 32px 0;
+}
+.reputationEmptyText {
+  font-family: var(--font-display);
+  font-size: 16px;
+  color: var(--ink);
+  max-width: 480px;
+  margin: 0 auto 24px;
+  line-height: 1.5;
 }

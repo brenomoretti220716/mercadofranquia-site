@@ -39,81 +39,83 @@ export default function LeadFormLanding({
 
   return (
     <section className={`${styles.landing} ${styles.leadSection}`}>
-      <div className={styles.leadKicker}>Próximo passo</div>
-      <h2 className={styles.leadHeading}>
-        Quero <span className={styles.accent}>saber</span> mais
-      </h2>
-      <p className={styles.leadSub}>
-        Preencha e a {franchiseName} entra em contato. Você também recebe a
-        análise comparativa da rede no Mercado Franquia.
-      </p>
-
-      <form className={styles.leadForm} onSubmit={onSubmit}>
-        <input
-          type="text"
-          name="name"
-          placeholder="Nome completo"
-          required
-          disabled={submitting || submitted}
-        />
-        <input
-          type="email"
-          name="email"
-          placeholder="E-mail"
-          required
-          disabled={submitting || submitted}
-        />
-        <input
-          type="tel"
-          name="phone"
-          placeholder="Telefone com DDD"
-          required
-          disabled={submitting || submitted}
-        />
-        <div className={styles.leadFormRow}>
-          <input
-            type="text"
-            name="city"
-            placeholder="Cidade"
-            disabled={submitting || submitted}
-          />
-          <input
-            type="text"
-            name="state"
-            placeholder="UF"
-            maxLength={2}
-            disabled={submitting || submitted}
-          />
-        </div>
-        <select
-          name="capital"
-          required
-          disabled={submitting || submitted}
-          defaultValue=""
-        >
-          <option value="" disabled>
-            Capital disponível
-          </option>
-          <option value="100-300">R$ 100 a 300 mil</option>
-          <option value="300-500">R$ 300 a 500 mil</option>
-          <option value="500+">Acima de R$ 500 mil</option>
-        </select>
-        <button
-          type="submit"
-          className={`${styles.btn} ${styles.btnPrimary}`}
-          style={{ marginTop: 8 }}
-          disabled={submitting || submitted}
-        >
-          {submitted
-            ? 'Interesse enviado ✓'
-            : submitting
-              ? 'Enviando...'
-              : 'Enviar interesse →'}
-        </button>
-        <p className={styles.leadDisclaimer}>
-          Ao enviar, concordo com os termos e a política de privacidade (LGPD)
+      <div className={styles.leadInner}>
+        <div className={styles.leadKicker}>Próximo passo</div>
+        <h2 className={styles.leadHeading}>
+          Quero <span className={styles.accent}>saber</span> mais
+        </h2>
+        <p className={styles.leadSub}>
+          Preencha e a {franchiseName} entra em contato. Você também recebe a
+          análise comparativa da rede no Mercado Franquia.
         </p>
-      </form>
+
+        <form className={styles.leadForm} onSubmit={onSubmit}>
+          <input
+            type="text"
+            name="name"
+            placeholder="Nome completo"
+            required
+            disabled={submitting || submitted}
+          />
+          <input
+            type="email"
+            name="email"
+            placeholder="E-mail"
+            required
+            disabled={submitting || submitted}
+          />
+          <input
+            type="tel"
+            name="phone"
+            placeholder="Telefone com DDD"
+            required
+            disabled={submitting || submitted}
+          />
+          <div className={styles.leadFormRow}>
+            <input
+              type="text"
+              name="city"
+              placeholder="Cidade"
+              disabled={submitting || submitted}
+            />
+            <input
+              type="text"
+              name="state"
+              placeholder="UF"
+              maxLength={2}
+              disabled={submitting || submitted}
+            />
+          </div>
+          <select
+            name="capital"
+            required
+            disabled={submitting || submitted}
+            defaultValue=""
+          >
+            <option value="" disabled>
+              Capital disponível
+            </option>
+            <option value="100-300">R$ 100 a 300 mil</option>
+            <option value="300-500">R$ 300 a 500 mil</option>
+            <option value="500+">Acima de R$ 500 mil</option>
+          </select>
+          <button
+            type="submit"
+            className={`${styles.btn} ${styles.btnPrimary}`}
+            style={{ marginTop: 8 }}
+            disabled={submitting || submitted}
+          >
+            {submitted
+              ? 'Interesse enviado ✓'
+              : submitting
+                ? 'Enviando...'
+                : 'Enviar interesse →'}
+          </button>
+          <p className={styles.leadDisclaimer}>
+            Ao enviar, concordo com os termos e a política de privacidade (LGPD)
+          </p>
+        </form>
+      </div>
     </section>
   )
 }
