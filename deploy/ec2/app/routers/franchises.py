@@ -16,6 +16,7 @@ import io
 import logging
 import re
 import uuid
+from datetime import datetime
 from decimal import Decimal, InvalidOperation
 from math import ceil
 from typing import Any, Literal, Optional
@@ -1285,6 +1286,24 @@ def create_additional_franchise(
 # ---------------------------------------------------------------------------
 
 
+class ProcessStep(BaseModel):
+    """Etapa do "Como funciona" da landing publica (Fatia 0.5)."""
+
+    model_config = ConfigDict(extra="forbid")
+    title: str = Field(..., min_length=1, max_length=200)
+    description: str = Field(..., min_length=1, max_length=500)
+
+
+class Testimonial(BaseModel):
+    """Depoimento exibido na landing publica (Fatia 0.5)."""
+
+    model_config = ConfigDict(extra="forbid")
+    name: str = Field(..., min_length=1, max_length=150)
+    role: str = Field(..., min_length=1, max_length=150)
+    photoUrl: Optional[str] = Field(None, max_length=500)
+    quote: str = Field(..., min_length=1, max_length=1000)
+
+
 class FranchiseEditBody(BaseModel):
     """Payload PATCH pro franqueador editar sua franquia (ou admin editar qualquer).
 
@@ -1330,6 +1349,25 @@ class FranchiseEditBody(BaseModel):
     contactPhone: Optional[str] = Field(None, max_length=191)
     contactEmail: Optional[str] = Field(None, max_length=191)
     contactWebsite: Optional[str] = Field(None, max_length=500)
+
+    # Landing redesign — Fatia 0.5 (alembic 66a4e030b691).
+    # Tab Informacoes
+    tagline: Optional[str] = Field(None, max_length=200)
+    differentials: Optional[list[str]] = Field(None, max_length=20)
+    idealFranchiseeProfile: Optional[str] = Field(None, max_length=10000)
+    processSteps: Optional[list[ProcessStep]] = Field(None, max_length=20)
+    testimonials: Optional[list[Testimonial]] = Field(None, max_length=20)
+    # Tab Midia & contato
+    bannerUrl: Optional[str] = Field(None, max_length=500)
+    phone: Optional[str] = Field(None, max_length=20)
+    whatsapp: Optional[str] = Field(None, max_length=20)
+    publicEmail: Optional[str] = Field(None, max_length=100)
+    instagramUrl: Optional[str] = Field(None, max_length=200)
+    facebookUrl: Optional[str] = Field(None, max_length=200)
+    linkedinUrl: Optional[str] = Field(None, max_length=200)
+    # Frescor (auto-update e endpoint dedicado entram em fatia futura)
+    totalUnitsUpdatedAt: Optional[datetime] = None
+    totalUnitsLastConfirmedAt: Optional[datetime] = None
 
 
 # Mapeia nomes do payload → colunas de ContactInfo

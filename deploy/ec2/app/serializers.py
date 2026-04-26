@@ -174,6 +174,21 @@ def serialize_franchise(
         "rankingPosition": ranking_position,
         "createdAt": _iso(f.createdAt),
         "updatedAt": _iso(f.updatedAt),
+        # Landing redesign — Fatia 0.5 (alembic 66a4e030b691).
+        "tagline": f.tagline,
+        "differentials": f.differentials,
+        "idealFranchiseeProfile": f.idealFranchiseeProfile,
+        "processSteps": f.processSteps,
+        "testimonials": f.testimonials,
+        "bannerUrl": f.bannerUrl,
+        "phone": f.phone,
+        "whatsapp": f.whatsapp,
+        "publicEmail": f.publicEmail,
+        "instagramUrl": f.instagramUrl,
+        "facebookUrl": f.facebookUrl,
+        "linkedinUrl": f.linkedinUrl,
+        "totalUnitsUpdatedAt": _iso(f.totalUnitsUpdatedAt),
+        "totalUnitsLastConfirmedAt": _iso(f.totalUnitsLastConfirmedAt),
     }
 
     if include_relations:
