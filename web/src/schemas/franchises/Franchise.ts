@@ -59,6 +59,8 @@ export interface Franchise {
   createdAt: Date
   updatedAt: Date
   averageRating?: number | null
+  reviewCount?: number | null
+  ratingSum?: number | null
   businessModels?: BusinessModel[]
   // Relacionamentos
   contactId?: number | null
