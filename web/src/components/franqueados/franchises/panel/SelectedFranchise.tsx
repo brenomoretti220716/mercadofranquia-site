@@ -2,52 +2,33 @@
 
 import dynamic from 'next/dynamic'
 import { useParams, useRouter, useSearchParams } from 'next/navigation'
-import { useContext, useState } from 'react'
+import { useRef } from 'react'
 
-import MediaCarousel from '@/src/components/ui/MediaCarousel'
-import ModalIncompleteProfile from '@/src/components/ui/ModalIncompleteProfile'
-import ModalRedirectLogin from '@/src/components/ui/ModalRedirectLogin'
-import VideoCarousel from '@/src/components/ui/VideoCarousel'
-import { AuthContext } from '@/src/contexts/AuthContext'
 import {
   sortDirectionToApi,
   useRankingFilters,
 } from '@/src/contexts/RankingContext'
-import {
-  useCheckFavorite,
-  useToggleFavorite,
-} from '@/src/hooks/franchises/useFavoriteMutations'
 import { useFranchiseRanking } from '@/src/hooks/franchises/useRanking'
-import { formatDateToBrazilian } from '@/src/utils/dateFormatters'
-import {
-  hasValidImages,
-  hasValidVideos,
-  normalizeGalleryUrls,
-} from '@/src/utils/franchiseImageUtils'
 
-import HeaderRanking from '@/src/components/ranking/HeaderRanking'
-import ModalRedirectSeccondStep from '@/src/components/ui/ModalRedirectSeccondStep'
-import { BusinessModelsSkeleton } from '@/src/components/ui/skeletons/BusinessModelSkeleton'
 import { CommentSectionSkeleton } from '@/src/components/ui/skeletons/CommentSectionSkeleton'
-import { isMember, useAuth } from '@/src/hooks/users/useAuth'
-import { useProfileCompletion } from '@/src/hooks/users/useProfileCompletion'
-import HeroTagline from '@/src/components/franquias/landing/HeroTagline'
+import BannerLanding from '@/src/components/franquias/landing/BannerLanding'
+import HeroLanding from '@/src/components/franquias/landing/HeroLanding'
+import SelosStripLanding from '@/src/components/franquias/landing/SelosStripLanding'
+import ModelosLanding from '@/src/components/franquias/landing/ModelosLanding'
+import SobreLanding from '@/src/components/franquias/landing/SobreLanding'
+import VideoLanding from '@/src/components/franquias/landing/VideoLanding'
 import ProcessStepperLanding from '@/src/components/franquias/landing/ProcessStepperLanding'
 import DifferentialsLanding from '@/src/components/franquias/landing/DifferentialsLanding'
 import IdealProfileLanding from '@/src/components/franquias/landing/IdealProfileLanding'
+import GaleriaLanding from '@/src/components/franquias/landing/GaleriaLanding'
+import LeadFormLanding from '@/src/components/franquias/landing/LeadFormLanding'
+import ContactFooterLanding from '@/src/components/franquias/landing/ContactFooterLanding'
+import landingStyles from '@/src/components/franquias/landing/landing.module.css'
+import { normalizeGalleryUrls } from '@/src/utils/franchiseImageUtils'
 
 interface SelectedFranchiseProps {
   selectedFranchise?: string
 }
-
-const loadBusinessModelsSection = () =>
-  import(
-    '@/src/components/franqueadores/panels/franchises/businessModels/BusinessModelsSection'
-  )
-
-const BusinessModelsSection = dynamic(loadBusinessModelsSection, {
-  loading: () => <BusinessModelsSkeleton />,
-})
 
 const loadCommentPanel = () =>
   import('@/src/components/franqueados/franchises/comments/CommentPanel')
@@ -56,22 +37,39 @@ const CommentPanel = dynamic(loadCommentPanel, {
   loading: () => <CommentSectionSkeleton />,
 })
 
+/**
+ * Pagina publica da franquia (rota /ranking/[franquia]).
+ *
+ * Layout v9 — 12 blocos verticalizados em coluna max 720px com bordas
+ * line. Cada bloco renderiza condicionalmente: ausente o dado, o
+ * bloco some (excecao: Banner, que mostra placeholder hachurado
+ * quando bannerUrl null).
+ *
+ * Ordem v9 (docs/mockups/pagina_publica_franquia_v9.html):
+ *   1. Banner full-width
+ *   2. Hero (logo + segmento + nome + tagline + 3 metricas + CTA)
+ *   3. Strip de selos (placeholder ate fatia futura)
+ *   4. Modelos (adaptativo: 0 → fallback investimento; 1+ → cards)
+ *   5. Sobre a marca (description + metas de ano)
+ *   6. Conheca a marca (video)
+ *   7. Como funciona (processSteps)
+ *   8. Diferenciais (differentials)
+ *   9. Perfil ideal (idealFranchiseeProfile)
+ *  10. Veja as lojas (galleryUrls)
+ *  11. Reputacao (CommentPanel legado — placeholder ate redesign)
+ *  12. Quero saber mais (LeadFormLanding em secao dark)
+ *  13. Canais de contato (ContactFooterLanding — extra v9)
+ */
 export default function SelectedFranchise({
   selectedFranchise,
 }: SelectedFranchiseProps) {
   const params = useParams()
   const searchParams = useSearchParams()
   const router = useRouter()
-  // Dynamic segment in the route is `[franquia]`, so we read that param
   const franchiseSlug = (params?.franquia as string) || selectedFranchise || ''
   const searchTerm = searchParams.get('search') || ''
 
-  const { isAuthenticated } = useContext(AuthContext)
-
-  const [isMemberModalOpen, setIsMemberModalOpen] = useState(false)
-  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false)
-  const [isIncompleteProfileModalOpen, setIsIncompleteProfileModalOpen] =
-    useState(false)
+  const leadSectionRef = useRef<HTMLDivElement>(null)
 
   const {
     isByDesc,
@@ -82,10 +80,9 @@ export default function SelectedFranchise({
     isByFranchiseFee,
     isByaverageMonthlyRevenue,
     valueFilters,
-    buildUrl,
   } = useRankingFilters()
 
-  const { franchise, nextFranchise, previousFranchise } = useFranchiseRanking({
+  const { franchise } = useFranchiseRanking({
     slug: franchiseSlug,
     search: searchTerm,
     nameSort: sortDirectionToApi(isByDesc),
@@ -109,46 +106,7 @@ export default function SelectedFranchise({
     segment: valueFilters.segment,
   })
 
-  const toggleFavorite = useToggleFavorite()
-  const { data: favoriteData } = useCheckFavorite(
-    franchiseSlug,
-    isAuthenticated,
-  )
-  const isFavorited = favoriteData?.isFavorited || false
-
-  const { payload } = useAuth()
-  const { data: profileCompletion } = useProfileCompletion(isAuthenticated)
-  const isValidMember = isMember(payload)
-
-  const handleFavoriteClick = () => {
-    if (!isAuthenticated) {
-      setIsLoginModalOpen(true)
-      return
-    }
-
-    // Check if profile is complete
-    if (profileCompletion && !profileCompletion.isComplete) {
-      setIsIncompleteProfileModalOpen(true)
-      return
-    }
-
-    if (isValidMember) {
-      setIsMemberModalOpen(true)
-      return
-    }
-
-    toggleFavorite.mutate(franchiseSlug)
-  }
-
-  const handleCancelModal = () => {
-    setIsLoginModalOpen(false)
-    setIsMemberModalOpen(false)
-    setIsIncompleteProfileModalOpen(false)
-  }
-
-  const handleBackToRanking = () => {
-    router.push('/ranking')
-  }
+  const handleBackToRanking = () => router.push('/ranking')
 
   if (!franchise) {
     return (
@@ -177,301 +135,99 @@ export default function SelectedFranchise({
     )
   }
 
+  const scrollToLead = () => {
+    leadSectionRef.current?.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start',
+    })
+  }
+
   return (
-    <>
-      <HeaderRanking
-        franchise={franchise}
-        nextFranchise={nextFranchise}
-        previousFranchise={previousFranchise}
-        isFavorited={isFavorited}
-        onFavoriteClick={handleFavoriteClick}
-        isLoading={toggleFavorite.isPending}
-        buildUrl={buildUrl}
+    <div className={`${landingStyles.landing} ${landingStyles.page}`}>
+      {/* 1. Banner full-width */}
+      <BannerLanding
+        url={franchise.bannerUrl}
+        alt={`Banner ${franchise.name}`}
       />
 
-      <div className="flex flex-col m-4 sm:m-5 md:m-10 w-auto min-h-screen gap-4 md:gap-5">
-        {/* Media Section - only show if at least one field exists */}
-        {(hasValidImages(franchise.thumbnailUrl, franchise.galleryUrls) ||
-          hasValidVideos(franchise.videoUrls)) && (
-          <div className="flex flex-col lg:flex-row gap-4 md:gap-5">
-            {/* Image Carousel - combines thumbnailUrl (first) + galleryUrls (rest) */}
-            {hasValidImages(franchise.thumbnailUrl, franchise.galleryUrls) ? (
-              <MediaCarousel
-                images={[
-                  ...(franchise.thumbnailUrl ? [franchise.thumbnailUrl] : []),
-                  ...normalizeGalleryUrls(franchise.galleryUrls),
-                ]}
-                fallbackImage="/assets/banner.jpg"
-                alt={franchise.name}
-                className="w-full"
-              />
-            ) : (
-              <MediaCarousel
-                images={[]}
-                fallbackImage="/assets/banner.jpg"
-                alt={franchise.name}
-                className="w-full"
-              />
-            )}
+      {/* 2. Hero */}
+      <HeroLanding
+        name={franchise.name}
+        segment={franchise.segment}
+        tagline={franchise.tagline}
+        logoUrl={franchise.logoUrl}
+        minimumInvestment={franchise.minimumInvestment}
+        maximumInvestment={franchise.maximumInvestment}
+        minimumReturnOnInvestment={franchise.minimumReturnOnInvestment}
+        maximumReturnOnInvestment={franchise.maximumReturnOnInvestment}
+        totalUnits={franchise.totalUnits}
+        onCtaClick={scrollToLead}
+      />
 
-            {/* Video Frame */}
-            {hasValidVideos(franchise.videoUrls) ? (
-              <VideoCarousel
-                videos={franchise.videoUrls}
-                title={`Vídeo da ${franchise.name}`}
-                className="w-full"
-                posterSrc={franchise.thumbnailUrl}
-                fallbackImage="/assets/banner.jpg"
-              />
-            ) : (
-              <VideoCarousel
-                videos={null}
-                title={`Vídeo da ${franchise.name}`}
-                className="w-full"
-                posterSrc={franchise.thumbnailUrl}
-                fallbackImage="/assets/banner.jpg"
-              />
-            )}
-          </div>
-        )}
+      {/* 3. Strip de selos (placeholder) */}
+      <SelosStripLanding selos={null} />
 
-        <div className="flex flex-col md:flex-row gap-4 md:gap-5">
-          {/* Card Principal */}
-          <div className="flex flex-col w-full bg-white rounded-2xl shadow-sm border border-border/50 transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
-            <div className="flex flex-col p-5 sm:p-6 md:p-10 gap-4 md:gap-5">
-              <h2 className="text-xl sm:text-2xl font-bold text-foreground">
-                {franchise.name}
-              </h2>
+      {/* 4. Modelos disponiveis (adaptativo) */}
+      <ModelosLanding
+        models={franchise.businessModels}
+        franchiseFallback={{
+          minimumInvestment: franchise.minimumInvestment,
+          maximumInvestment: franchise.maximumInvestment,
+          franchiseFee: franchise.franchiseFee,
+          minimumReturnOnInvestment: franchise.minimumReturnOnInvestment,
+          maximumReturnOnInvestment: franchise.maximumReturnOnInvestment,
+        }}
+      />
 
-              <HeroTagline tagline={franchise.tagline} />
+      {/* 5. Sobre a marca (description + metas) */}
+      <SobreLanding
+        description={franchise.description}
+        brandFoundationYear={franchise.brandFoundationYear}
+        franchiseStartYear={franchise.franchiseStartYear}
+        abfSince={franchise.abfSince}
+      />
 
-              <div className="flex flex-col">
-                <h3 className="text-lg sm:text-xl font-semibold text-foreground">
-                  Valor investimento
-                </h3>
-                <p className="font-normal text-sm sm:text-base text-muted-foreground">
-                  {franchise.minimumInvestment || 'Não informado'}
-                </p>
-              </div>
+      {/* 6. Conheca a marca (video) */}
+      <VideoLanding videoUrls={normalizeGalleryUrls(franchise.videoUrls)} />
 
-              <div className="flex flex-col">
-                <h3 className="text-lg sm:text-xl font-semibold text-foreground">
-                  Estado Sede
-                </h3>
-                <p className="font-normal text-sm sm:text-base text-muted-foreground">
-                  {franchise.headquarterState || 'Não informado'}
-                </p>
-              </div>
+      {/* 7. Como funciona */}
+      <ProcessStepperLanding steps={franchise.processSteps} />
 
-              <div className="flex flex-col">
-                <h3 className="text-lg sm:text-xl font-semibold text-foreground">
-                  Número de Unidades
-                </h3>
-                <p className="font-normal text-sm sm:text-base text-muted-foreground">
-                  {franchise.totalUnits?.toLocaleString('pt-BR') ||
-                    'Não informado'}
-                </p>
-              </div>
+      {/* 8. Diferenciais */}
+      <DifferentialsLanding items={franchise.differentials} />
 
-              <div className="flex flex-col">
-                <h3 className="text-lg sm:text-xl font-semibold text-foreground">
-                  Segmento de atuação da franquia
-                </h3>
-                <p className="font-normal text-sm sm:text-base text-muted-foreground">
-                  {franchise.segment || 'Não informado'}
-                </p>
-              </div>
+      {/* 9. Perfil ideal */}
+      <IdealProfileLanding text={franchise.idealFranchiseeProfile} />
 
-              <div className="flex flex-col">
-                <h3 className="text-lg sm:text-xl font-semibold text-foreground">
-                  Subsegmento primário
-                </h3>
-                <p className="font-normal text-sm sm:text-base text-muted-foreground">
-                  {franchise.subsegment || 'Não informado'}
-                </p>
-              </div>
+      {/* 10. Galeria */}
+      <GaleriaLanding urls={normalizeGalleryUrls(franchise.galleryUrls)} />
 
-              <div className="flex flex-col">
-                <h3 className="text-lg sm:text-xl font-semibold text-foreground">
-                  Tipo de Negócio
-                </h3>
-                <p className="font-normal text-sm sm:text-base text-muted-foreground">
-                  {franchise.businessType || 'Não informado'}
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* SideCard */}
-          <div className="flex flex-col w-full gap-4 md:gap-5">
-            {/* SideCard Top */}
-            <div className="flex flex-col w-full h-auto bg-white p-5 sm:p-6 md:p-10 rounded-2xl shadow-sm border border-border/50 transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
-              <h2 className="text-xl sm:text-2xl font-bold text-foreground">
-                Sobre o negócio
-              </h2>
-
-              <div className="flex flex-col mt-4 md:mt-5">
-                <h3 className="text-lg sm:text-xl font-semibold text-foreground">
-                  Fundação
-                </h3>
-                <p className="font-normal text-sm sm:text-base text-muted-foreground">
-                  {franchise.brandFoundationYear || 'Não informado'}
-                </p>
-              </div>
-
-              <div className="flex flex-col mt-4 md:mt-5">
-                <h3 className="text-lg sm:text-xl font-semibold text-foreground">
-                  Início da franquia
-                </h3>
-                <p className="font-normal text-sm sm:text-base text-muted-foreground">
-                  {franchise.franchiseStartYear || 'Não informado'}
-                </p>
-              </div>
-
-              <div className="flex flex-col mt-4 md:mt-5">
-                <h3 className="text-lg sm:text-xl font-semibold text-foreground">
-                  Associada ABF desde
-                </h3>
-                <p className="font-normal text-sm sm:text-base text-muted-foreground">
-                  {franchise.abfSince || 'Não informado'}
-                </p>
-              </div>
-            </div>
-
-            {/* SideCard Bottom */}
-            <div className="flex flex-col w-full h-auto bg-white p-5 sm:p-6 md:p-10 rounded-2xl shadow-sm border border-border/50 transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
-              <div className="flex flex-col">
-                <h2 className="text-xl sm:text-2xl font-bold text-foreground">
-                  Informações de contato
-                </h2>
-                <p className="text-sm sm:text-base text-muted-foreground">
-                  Última atualização pela franquia:{' '}
-                  {formatDateToBrazilian(franchise.updatedAt)}
-                </p>
-              </div>
-
-              {franchise.contact ? (
-                <>
-                  <div className="flex flex-col mt-4 md:mt-5">
-                    <h3 className="text-lg sm:text-xl font-semibold text-foreground">
-                      Telefone
-                    </h3>
-                    <p className="font-normal text-sm sm:text-base text-muted-foreground">
-                      {franchise.contact.phone || 'Não informado'}
-                    </p>
-                  </div>
-
-                  <div className="flex flex-col mt-4 md:mt-5">
-                    <h3 className="text-lg sm:text-xl font-semibold text-foreground">
-                      E-mail
-                    </h3>
-                    <p className="font-normal text-sm sm:text-base text-muted-foreground">
-                      {franchise.contact.email || 'Não informado'}
-                    </p>
-                  </div>
-
-                  <div className="flex flex-col mt-4 md:mt-5">
-                    <h3 className="text-lg sm:text-xl font-semibold text-foreground">
-                      Site
-                    </h3>
-                    {franchise.contact.website ? (
-                      <a
-                        href={franchise.contact.website}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="font-normal text-sm sm:text-base text-primary hover:text-primary/80 underline break-words transition-colors"
-                      >
-                        {franchise.contact.website}
-                      </a>
-                    ) : (
-                      <p className="font-normal text-sm sm:text-base text-muted-foreground">
-                        Não informado
-                      </p>
-                    )}
-                  </div>
-                </>
-              ) : (
-                <>
-                  <div className="flex flex-col mt-4 md:mt-5">
-                    <h3 className="text-lg sm:text-xl font-semibold text-foreground">
-                      Telefone
-                    </h3>
-                    <p className="font-normal text-sm sm:text-base text-muted-foreground">
-                      Não informado
-                    </p>
-                  </div>
-
-                  <div className="flex flex-col mt-4 md:mt-5">
-                    <h3 className="text-lg sm:text-xl font-semibold text-foreground">
-                      E-mail
-                    </h3>
-                    <p className="font-normal text-sm sm:text-base text-muted-foreground">
-                      Não informado
-                    </p>
-                  </div>
-
-                  <div className="flex flex-col mt-4 md:mt-5">
-                    <h3 className="text-lg sm:text-xl font-semibold text-foreground">
-                      Site
-                    </h3>
-                    <p className="font-normal text-sm sm:text-base text-muted-foreground">
-                      Não informado
-                    </p>
-                  </div>
-                </>
-              )}
-            </div>
-          </div>
-        </div>
-        {/* Detailed Description Section */}
-        {franchise.detailedDescription && (
-          <div className="flex flex-col gap-4">
-            <h2 className="font-bold text-xl sm:text-2xl md:text-3xl my-4 md:my-5 text-foreground">
-              Descrição
-            </h2>
-            <div className="bg-white rounded-2xl p-4 sm:p-6 md:p-8 shadow-sm border border-border/50 transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
-              <p className="text-foreground whitespace-pre-wrap text-sm sm:text-base break-words">
-                {franchise.detailedDescription}
-              </p>
-            </div>
-          </div>
-        )}
-        {/* Landing redesign blocks (Fatia 2) — renderizam so quando ha dados.
-            Ordem segue mockup v9: Como funciona → Diferenciais → Perfil ideal. */}
-        <ProcessStepperLanding steps={franchise.processSteps} />
-        <DifferentialsLanding items={franchise.differentials} />
-        <IdealProfileLanding text={franchise.idealFranchiseeProfile} />
-
-        {/* Business Models Section */}
-        {franchise.businessModels && franchise.businessModels.length > 0 && (
-          <BusinessModelsSection
-            franchiseId={franchiseSlug}
-            token={''}
-            isOwner={false}
-          />
-        )}
-      </div>
-
+      {/* 11. Reputacao — bloco legado de Reviews encapsulado em <section> v9 */}
       {franchiseSlug && (
-        <CommentPanel
-          franchiseId={franchiseSlug}
-          isReview={franchise.isReview}
-        />
+        <section
+          className={`${landingStyles.landing} ${landingStyles.section}`}
+        >
+          <h2 className={landingStyles.heading}>
+            <span className={landingStyles.accent}>Reputação</span>
+          </h2>
+          <CommentPanel
+            franchiseId={franchiseSlug}
+            isReview={franchise.isReview}
+          />
+        </section>
       )}
 
-      <ModalRedirectLogin
-        isOpen={isLoginModalOpen}
-        onClose={() => setIsLoginModalOpen(false)}
-      />
-      <ModalIncompleteProfile
-        isOpen={isIncompleteProfileModalOpen}
-        onClose={() => setIsIncompleteProfileModalOpen(false)}
-      />
+      {/* 12. Quero saber mais — secao dark, target do CTA do Hero */}
+      <div ref={leadSectionRef}>
+        <LeadFormLanding franchiseName={franchise.name} />
+      </div>
 
-      <ModalRedirectSeccondStep
-        isOpen={isMemberModalOpen}
-        onClose={handleCancelModal}
+      {/* 13. Canais de contato (extra v9, integra a sidecard antiga) */}
+      <ContactFooterLanding
+        phone={franchise.contact?.phone}
+        email={franchise.contact?.email}
+        website={franchise.contact?.website}
       />
-    </>
+    </div>
   )
 }
