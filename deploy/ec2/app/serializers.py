@@ -107,6 +107,14 @@ def serialize_business_model(bm: BusinessModel) -> dict[str, Any]:
 
 
 def serialize_review(r: Review) -> dict[str, Any]:
+    """
+    Inclui `author: { id, name } | null` espelhando o shape de
+    routers/reviews.py:_serialize_review. Mascara nome quando
+    `r.anonymous=True` retornando author=null. Requer
+    `selectinload(Review.author)` no query (ja feito em
+    routers/franchises.py:get_franchise).
+    """
+    author = getattr(r, "author", None)
     return {
         "id": r.id,
         "rating": r.rating,
@@ -117,6 +125,11 @@ def serialize_review(r: Review) -> dict[str, Any]:
         "authorId": r.authorId,
         "franchiseId": r.franchiseId,
         "createdAt": _iso(r.createdAt),
+        "author": (
+            None
+            if (author is None or r.anonymous)
+            else {"id": author.id, "name": author.name}
+        ),
     }
 
 
