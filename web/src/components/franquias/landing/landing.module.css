@@ -12,12 +12,8 @@
  *
  * Estetica editorial: bordas 1px, sem sombras, cantos retos, regra
  * dos tres laranjas por viewport, verde/vermelho so pra numero que
- * se move, acento Fraunces Italic em UMA palavra-chave por h2.
- *
- * Classes legadas (heroLogo, metrics, selo*, etc.) ainda existem como
- * aliases visuais pra nao quebrar componentes ainda nao migrados.
- * Cada componente migrado em Fase 3 troca pras classes novas; aliases
- * legados saem com o componente correspondente em Fase 4.
+ * se move, acento italic em UMA palavra-chave por h2 (via <em>
+ * dentro do .heading ou via .accent span).
  */
 
 .landing {
@@ -172,15 +168,6 @@
   text-transform: uppercase;
   color: var(--ink-900);
 }
-.tagUp {
-  border-color: var(--up-700);
-  color: var(--up-700);
-}
-.tagUp::before {
-  content: '●';
-  color: var(--up);
-}
-
 .textBlock {
   max-width: 680px;
   font-size: 16px;
@@ -422,19 +409,6 @@
     'calt' 0;
   font-variant-ligatures: none;
 }
-.kpiSub {
-  font-family: var(--mono);
-  font-size: 10px;
-  font-weight: 500;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--ink-800);
-}
-
-/* ============================================================
-   Hero LEGACY — alias temporario ate Fase 3.2 reescrever HeroLanding
-   ============================================================ */
-
 /* Logo da franquia no Hero v10 — 96x96 paper-warm com borda ink-300.
    Posicionado dentro de .heroNameRow (flex), alinhado pelo centro
    vertical com o h1. Some quando logoUrl null. */
@@ -446,93 +420,6 @@
   border: 1px solid var(--ink-300);
   object-fit: contain;
   flex-shrink: 0;
-}
-
-/* Metrics legacy (pre-KPI strip) */
-.metrics {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  border-top: var(--rule-strong);
-  border-bottom: var(--rule-strong);
-  margin-bottom: 20px;
-}
-.metric {
-  padding: 14px 12px;
-  border-right: var(--rule);
-}
-.metric:last-child {
-  border-right: 0;
-}
-.metricLabel {
-  margin-bottom: 6px;
-  font-family: var(--mono);
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--ink-800);
-}
-.metricValue {
-  font-family: var(--serif);
-  font-weight: 400;
-  font-size: 22px;
-  letter-spacing: -0.025em;
-  font-variant-numeric: tabular-nums;
-  color: var(--ink-900);
-  font-feature-settings:
-    'liga' 0,
-    'dlig' 0,
-    'calt' 0;
-  font-variant-ligatures: none;
-}
-
-/* ============================================================
-   Selos LEGACY — sai com SelosStripLanding em Fase 4
-   ============================================================ */
-
-.selosStrip {
-  display: flex;
-  align-items: stretch;
-  border-bottom: var(--rule);
-  background: var(--paper);
-  overflow-x: auto;
-}
-.selo {
-  flex: 1;
-  min-width: 0;
-  padding: 14px 12px;
-  border-right: var(--rule);
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  align-items: flex-start;
-}
-.selo:last-child {
-  border-right: 0;
-}
-.seloLabel {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-family: var(--mono);
-  font-size: 9px;
-  font-weight: 500;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--ink-500);
-}
-.seloLabel::before {
-  content: '';
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  background: var(--up);
-}
-.seloName {
-  font-size: 12px;
-  font-weight: 500;
-  letter-spacing: -0.01em;
-  color: var(--ink-900);
 }
 
 /* ============================================================
@@ -665,14 +552,6 @@
    About / profile — texto longo
    ============================================================ */
 
-.aboutText {
-  max-width: 680px;
-  margin: 0;
-  font-size: 16px;
-  line-height: 1.65;
-  color: var(--ink-900);
-  white-space: pre-wrap;
-}
 .profileText {
   max-width: 680px;
   margin: 0;
@@ -805,16 +684,6 @@
 .diffItem:last-child {
   border-bottom: 0;
 }
-.diffNum {
-  flex-shrink: 0;
-  padding-top: 2px;
-  font-family: var(--mono);
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  color: var(--ink-800);
-}
-
 /* ============================================================
    Galeria (4 cols, gap 4px, paper-3 bg)
    ============================================================ */
@@ -1257,17 +1126,14 @@
   .leadBullets li {
     grid-template-columns: 70px 1fr;
   }
-  .kpiStrip,
-  .metrics {
+  .kpiStrip {
     grid-template-columns: 1fr;
   }
-  .kpi,
-  .metric {
+  .kpi {
     border-right: 0;
     border-bottom: var(--rule);
   }
-  .kpi:last-child,
-  .metric:last-child {
+  .kpi:last-child {
     border-bottom: 0;
   }
   .modelsGrid {

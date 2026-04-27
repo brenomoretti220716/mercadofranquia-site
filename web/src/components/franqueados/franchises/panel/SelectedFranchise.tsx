@@ -11,7 +11,6 @@ import { useFranchiseRanking } from '@/src/hooks/franchises/useRanking'
 
 import BannerLanding from '@/src/components/franquias/landing/BannerLanding'
 import HeroLanding from '@/src/components/franquias/landing/HeroLanding'
-import SelosStripLanding from '@/src/components/franquias/landing/SelosStripLanding'
 import ModelosLanding from '@/src/components/franquias/landing/ModelosLanding'
 import SobreLanding from '@/src/components/franquias/landing/SobreLanding'
 import VideoLanding from '@/src/components/franquias/landing/VideoLanding'
@@ -21,7 +20,6 @@ import IdealProfileLanding from '@/src/components/franquias/landing/IdealProfile
 import GaleriaLanding from '@/src/components/franquias/landing/GaleriaLanding'
 import ReputacaoLanding from '@/src/components/franquias/landing/ReputacaoLanding'
 import LeadFormLanding from '@/src/components/franquias/landing/LeadFormLanding'
-import ContactFooterLanding from '@/src/components/franquias/landing/ContactFooterLanding'
 import landingStyles from '@/src/components/franquias/landing/landing.module.css'
 import { normalizeGalleryUrls } from '@/src/utils/franchiseImageUtils'
 
@@ -37,20 +35,21 @@ interface SelectedFranchiseProps {
  * bloco some (excecao: Banner, que mostra placeholder hachurado
  * quando bannerUrl null).
  *
- * Ordem v9 (docs/mockups/pagina_publica_franquia_v9.html):
+ * Ordem v10 (docs/mockups/pagina_publica_franquia_v10_handoff.html),
+ * funil de decisao do investidor:
  *   1. Banner full-width
- *   2. Hero (logo + segmento + nome + tagline + 3 metricas + CTA)
- *   3. Strip de selos (placeholder ate fatia futura)
- *   4. Modelos (adaptativo: 0 → fallback investimento; 1+ → cards)
- *   5. Sobre a marca (description + metas de ano)
- *   6. Conheca a marca (video)
- *   7. Como funciona (processSteps)
- *   8. Diferenciais (differentials)
- *   9. Perfil ideal (idealFranchiseeProfile)
- *  10. Veja as lojas (galleryUrls)
- *  11. Reputacao (CommentPanel legado — placeholder ate redesign)
- *  12. Quero saber mais (LeadFormLanding em secao dark)
- *  13. Canais de contato (ContactFooterLanding — extra v9)
+ *   2. Hero (logo+nome row + meta inline + KPI strip + CTA primario)
+ *   3. Modelos (adaptativo: ficha tecnica se 0 modelos; cards bege
+ *      com 5 metricas-chave per-modelo se >=1)
+ *   4. Diferenciais (numerados)
+ *   5. Sobre a marca (description em text-block 16px)
+ *   6. Vídeo (16/9 com YouTube embed direto ou play link)
+ *   7. Perfil ideal (text-block)
+ *   8. Como funciona (stepper Instrument Serif italic 64px)
+ *   9. Galeria (grid responsivo)
+ *  10. Reputacao (stat + filtro star bar + 5 reviews + link pra
+ *      pagina dedicada — Fatia 1.10)
+ *  11. Quero saber mais (LeadFormLanding em secao dark, 2 colunas)
  */
 export default function SelectedFranchise({
   selectedFranchise,
@@ -159,10 +158,7 @@ export default function SelectedFranchise({
         onCtaClick={scrollToLead}
       />
 
-      {/* 3. Strip de selos (placeholder) */}
-      <SelosStripLanding selos={null} />
-
-      {/* 4. Modelos disponiveis (adaptativo: ficha tecnica enxuta com 5
+      {/* 3. Modelos disponiveis (adaptativo: ficha tecnica enxuta com 5
           linhas se 0 modelos; cards bege per-modelo se >=1) */}
       <ModelosLanding
         models={franchise.businessModels}
@@ -178,38 +174,37 @@ export default function SelectedFranchise({
       {/*
         Ordem dos blocos a partir daqui segue o funil de decisao do
         investidor (definido na Fatia 1.8):
-          5. Diferenciais     — responde "porque vale o preco?" logo
+          4. Diferenciais     — responde "porque vale o preco?" logo
                                 apos os Modelos, antes do contexto.
-          6. Sobre a marca    — contexto editorial antes da experiencia
+          5. Sobre a marca    — contexto editorial antes da experiencia
                                 emocional.
-          7. Vídeo            — experiencia emocional / demo da marca.
-          8. Perfil ideal     — "eu sirvo?" antes de "como entro?".
-          9. Como funciona    — processo de entrada.
-         10. Galeria          — confirmacao visual depois do processo,
+          6. Vídeo            — experiencia emocional / demo da marca.
+          7. Perfil ideal     — "eu sirvo?" antes de "como entro?".
+          8. Como funciona    — processo de entrada.
+          9. Galeria          — confirmacao visual depois do processo,
                                 antes da reputacao.
       */}
 
-      {/* 5. Diferenciais */}
+      {/* 4. Diferenciais */}
       <DifferentialsLanding items={franchise.differentials} />
 
-      {/* 6. Sobre a marca (description) — metas de ano vivem no heroMeta */}
+      {/* 5. Sobre a marca (description) — metas de ano vivem no heroMeta */}
       <SobreLanding description={franchise.description} />
 
-      {/* 7. Conheca a marca (video) */}
+      {/* 6. Conheca a marca (video) */}
       <VideoLanding videoUrls={normalizeGalleryUrls(franchise.videoUrls)} />
 
-      {/* 8. Perfil ideal */}
+      {/* 7. Perfil ideal */}
       <IdealProfileLanding text={franchise.idealFranchiseeProfile} />
 
-      {/* 9. Como funciona */}
+      {/* 8. Como funciona */}
       <ProcessStepperLanding steps={franchise.processSteps} />
 
-      {/* 10. Galeria */}
+      {/* 9. Galeria */}
       <GaleriaLanding urls={normalizeGalleryUrls(franchise.galleryUrls)} />
 
-      {/* 11. Reputacao — bloco editorial v10 (substitui CommentPanel
-          legacy). Mostra ate 5 reviews + filtro star bar + link pra
-          pagina dedicada (Fatia 1.10). */}
+      {/* 10. Reputacao — stat + filtro star bar + 5 reviews + link pra
+          pagina dedicada (Fatia 1.10 backlog). */}
       <ReputacaoLanding
         reviews={franchise.reviews}
         averageRating={franchise.averageRating}
@@ -217,20 +212,13 @@ export default function SelectedFranchise({
         franchiseSlug={franchiseSlug}
       />
 
-      {/* 12. Quero saber mais — secao dark, target do CTA do Hero */}
+      {/* 11. Quero saber mais — secao dark, target do CTA do Hero */}
       <div ref={leadSectionRef}>
         <LeadFormLanding
           franchiseName={franchise.name}
           franchiseSegment={franchise.segment}
         />
       </div>
-
-      {/* 13. Canais de contato (extra v9, integra a sidecard antiga) */}
-      <ContactFooterLanding
-        phone={franchise.contact?.phone}
-        email={franchise.contact?.email}
-        website={franchise.contact?.website}
-      />
     </div>
   )
 }
