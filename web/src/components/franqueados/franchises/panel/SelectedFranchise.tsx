@@ -70,6 +70,7 @@ export default function SelectedFranchise({
   const searchTerm = searchParams.get('search') || ''
 
   const leadSectionRef = useRef<HTMLDivElement>(null)
+  const processStepperRef = useRef<HTMLDivElement>(null)
 
   const {
     isByDesc,
@@ -142,6 +143,13 @@ export default function SelectedFranchise({
     })
   }
 
+  const scrollToStepper = () => {
+    processStepperRef.current?.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start',
+    })
+  }
+
   return (
     <div className={`${landingStyles.landing} ${landingStyles.page}`}>
       {/* 1. Banner full-width */}
@@ -155,13 +163,16 @@ export default function SelectedFranchise({
         name={franchise.name}
         segment={franchise.segment}
         tagline={franchise.tagline}
-        logoUrl={franchise.logoUrl}
+        franchiseStartYear={franchise.franchiseStartYear}
+        headquarter={franchise.headquarter}
+        headquarterState={franchise.headquarterState}
+        totalUnits={franchise.totalUnits}
         minimumInvestment={franchise.minimumInvestment}
         maximumInvestment={franchise.maximumInvestment}
         minimumReturnOnInvestment={franchise.minimumReturnOnInvestment}
         maximumReturnOnInvestment={franchise.maximumReturnOnInvestment}
-        totalUnits={franchise.totalUnits}
         onCtaClick={scrollToLead}
+        onGhostClick={scrollToStepper}
       />
 
       {/* 3. Strip de selos (placeholder) */}
@@ -190,8 +201,10 @@ export default function SelectedFranchise({
       {/* 6. Conheca a marca (video) */}
       <VideoLanding videoUrls={normalizeGalleryUrls(franchise.videoUrls)} />
 
-      {/* 7. Como funciona */}
-      <ProcessStepperLanding steps={franchise.processSteps} />
+      {/* 7. Como funciona — target do CTA ghost do Hero */}
+      <div ref={processStepperRef}>
+        <ProcessStepperLanding steps={franchise.processSteps} />
+      </div>
 
       {/* 8. Diferenciais */}
       <DifferentialsLanding items={franchise.differentials} />
