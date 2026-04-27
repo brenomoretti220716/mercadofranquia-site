@@ -27,6 +27,13 @@ export interface BusinessModel {
   storeArea?: number | null
   calculationBaseRoyaltie?: string | null
   calculationBaseAdFee?: string | null
+
+  // Fatia 1.8.1 (alembic e7a3f1d8b9c2) — investment total + payback per
+  // modelo. Mesma observacao dos campos acima: so o /franchises/{slug}
+  // (e /ranking) retornam; legacy /business-models/franchise/{slug}
+  // ainda nao.
+  investment?: number | null
+  payback?: number | null
 }
 
 async function fetchBusinessModelsByFranchise(
