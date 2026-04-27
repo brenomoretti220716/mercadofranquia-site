@@ -21,8 +21,12 @@
  */
 
 .landing {
-  /* Paleta canonica do handoff Mercado Franquia */
-  --paper: #f4f1ea;
+  /* Paleta — divergencia consciente do handoff Mercado Franquia.
+     Fundo principal #FFFFFF (era #F4F1EA). O off-white quente vira
+     --paper-warm, reservado pra blocos de destaque caso a caso (a
+     definir nas fases seguintes). --paper-2 e --paper-3 mantem-se. */
+  --paper: #ffffff;
+  --paper-warm: #f4f1ea;
   --paper-2: #ece8de;
   --paper-3: #e3ded1;
   --white: #ffffff;
@@ -207,7 +211,7 @@
 }
 .ctaGhost:hover {
   background: var(--ink-900);
-  color: var(--paper);
+  color: var(--paper-warm);
   border-color: var(--ink-900);
 }
 .ctaBlock {
@@ -486,7 +490,7 @@
 }
 .btnInk {
   background: var(--ink-900);
-  color: var(--paper);
+  color: var(--paper-warm);
 }
 .btnGhost {
   background: transparent;
@@ -1063,7 +1067,7 @@
 .pageBtnActive {
   background: var(--ink-900);
   border-color: var(--ink-900);
-  color: var(--paper);
+  color: var(--paper-warm);
 }
 .pageBtnDisabled {
   color: var(--ink-500);
@@ -1076,7 +1080,7 @@
 
 .leadSection {
   background: var(--ink-900);
-  color: var(--paper);
+  color: var(--paper-warm);
   padding: 64px 48px;
 }
 .leadGrid {
@@ -1099,7 +1103,7 @@
   font-size: 56px;
   line-height: 1.02;
   letter-spacing: -0.035em;
-  color: var(--paper);
+  color: var(--paper-warm);
   font-feature-settings:
     'liga' 0,
     'dlig' 0,
@@ -1116,7 +1120,7 @@
   margin: 0 0 24px;
   font-size: 15px;
   line-height: 1.65;
-  color: var(--paper);
+  color: var(--paper-warm);
 }
 .leadBullets {
   list-style: none;
@@ -1133,7 +1137,7 @@
   border-bottom: 1px solid rgba(255, 255, 255, 0.3);
   font-size: 14px;
   line-height: 1.5;
-  color: var(--paper);
+  color: var(--paper-warm);
 }
 .leadBullets li::before {
   content: '';
@@ -1180,7 +1184,7 @@
   border-radius: 0;
   font-family: inherit;
   font-size: 14px;
-  color: var(--paper);
+  color: var(--paper-warm);
   outline: none;
 }
 .leadForm input::placeholder {
@@ -1214,7 +1218,7 @@
   color: rgba(244, 241, 234, 0.85);
 }
 .leadSub b {
-  color: var(--paper);
+  color: var(--paper-warm);
   font-weight: 700;
 }
 
