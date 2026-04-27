@@ -59,6 +59,11 @@ export interface Franchise {
   createdAt: Date
   updatedAt: Date
   averageRating?: number | null
+  // Counters denormalizados (atualizados via trigger/refresh apos cada
+  // novo Review). Backend serializa em /franchises/{slug} e /ranking.
+  reviewCount?: number | null
+  ratingSum?: number | null
+  favoritesCount?: number | null
   businessModels?: BusinessModel[]
   // Relacionamentos
   contactId?: number | null

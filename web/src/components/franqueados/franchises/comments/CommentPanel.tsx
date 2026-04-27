@@ -166,7 +166,9 @@ export default function CommentPanel({
         <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 mb-4">
           <div className="flex flex-col gap-1 sm:gap-2 flex-1">
             <h3 className="font-manrope font-bold text-lg sm:text-xl">
-              {review.anonymous ? 'Usuário Anônimo' : review.authorName}
+              {review.anonymous
+                ? 'Usuário Anônimo'
+                : (review.author?.name ?? 'Anônimo')}
             </h3>
             <p className="font-manrope text-gray-600 text-sm sm:text-base">
               {formatDate(review.createdAt)}

@@ -9,6 +9,35 @@ export interface BusinessModel {
   franchiseId: string
   createdAt: string
   updatedAt: string
+
+  // Fatia 1.8.1 — dataset financeiro por modelo. Todos optional/nullable
+  // porque a populacao depende do endpoint:
+  //   - /api/franchises/{slug} e /ranking (serialize_business_model em
+  //     serializers.py) retornam os 9 campos.
+  //   - /api/business-models/franchise/{slug} (router legacy
+  //     business_models.py:_serialize) ainda nao retorna — sera
+  //     atualizado na Fatia 1.8.2 (editor de franquia).
+  // Numeric(15,2) e Numeric(5,2) viram number via _num() no backend.
+  franchiseFee?: number | null
+  royalties?: number | null
+  advertisingFee?: number | null
+  workingCapital?: number | null
+  setupCapital?: number | null
+  averageMonthlyRevenue?: number | null
+  storeArea?: number | null
+  calculationBaseRoyaltie?: string | null
+  calculationBaseAdFee?: string | null
+
+  // Fatia 1.8.1 (alembic e7a3f1d8b9c2) — investment total + payback per
+  // modelo. Mesma observacao dos campos acima: so o /franchises/{slug}
+  // (e /ranking) retornam; legacy /business-models/franchise/{slug}
+  // ainda nao.
+  investment?: number | null
+  payback?: number | null
+
+  // Fatia 1.8.1 (alembic b5a2c91e7f4d) — rentabilidade media em % sobre
+  // faturamento.
+  profitability?: number | null
 }
 
 async function fetchBusinessModelsByFranchise(

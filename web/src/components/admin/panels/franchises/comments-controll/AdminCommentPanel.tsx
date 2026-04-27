@@ -165,7 +165,7 @@ export default function AdminCommentPanel({
                             <h3 className="font-manrope font-bold text-xl">
                               {review.anonymous
                                 ? 'Usuário Anônimo'
-                                : review.authorName}
+                                : (review.author?.name ?? 'Anônimo')}
                             </h3>
                             <p className="text-gray-600">
                               {formatDate(review.createdAt)}

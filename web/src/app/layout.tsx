@@ -2,7 +2,9 @@ import type { Metadata } from 'next'
 import {
   Inter,
   Inter_Tight as InterTight,
-  Fraunces,
+  Instrument_Serif as InstrumentSerif,
+  IBM_Plex_Sans as IBMPlexSans,
+  IBM_Plex_Mono as IBMPlexMono,
   JetBrains_Mono as JetBrainsMono,
   Plus_Jakarta_Sans as PlusJakartaSans,
 } from 'next/font/google'
@@ -29,11 +31,30 @@ const interTight = InterTight({
   display: 'swap',
 })
 
-const fraunces = Fraunces({
+// Fatia 1.8 — handoff editorial v10.
+// Instrument Serif (substitui Fraunces — variable axes do Fraunces
+// renderizavam glifos display dramaticos demais em tamanhos grandes;
+// Instrument Serif tem desenho consistente em qualquer tamanho).
+// Escopado via .landing no CSS module; nao afeta admin/editor.
+const instrumentSerif = InstrumentSerif({
   subsets: ['latin'],
   weight: ['400'],
-  style: ['italic'],
-  variable: '--font-fraunces',
+  style: ['normal', 'italic'],
+  variable: '--font-instrument-serif',
+  display: 'swap',
+})
+
+const ibmPlexSans = IBMPlexSans({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700'],
+  variable: '--font-ibm-plex-sans',
+  display: 'swap',
+})
+
+const ibmPlexMono = IBMPlexMono({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700'],
+  variable: '--font-ibm-plex-mono',
   display: 'swap',
 })
 
@@ -65,7 +86,7 @@ export default function RootLayout({
   return (
     <html
       lang="pt-br"
-      className={`${inter.variable} ${plusJakartaSans.variable} ${interTight.variable} ${fraunces.variable} ${jetbrainsMono.variable}`}
+      className={`${inter.variable} ${plusJakartaSans.variable} ${interTight.variable} ${instrumentSerif.variable} ${ibmPlexSans.variable} ${ibmPlexMono.variable} ${jetbrainsMono.variable}`}
     >
       <body className={`${inter.className} antialiased`}>
         <Providers>{children}</Providers>

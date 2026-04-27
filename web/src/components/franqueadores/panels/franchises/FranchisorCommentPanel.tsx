@@ -244,7 +244,7 @@ export default function FranchisorCommentPanel() {
                         <h3 className="font-manrope font-bold text-xl text-foreground">
                           {review.anonymous
                             ? 'Usuário Anônimo'
-                            : review.authorName}
+                            : (review.author?.name ?? 'Anônimo')}
                         </h3>
                         <p className="font-manrope text-muted-foreground">
                           {formatDate(review.createdAt)}

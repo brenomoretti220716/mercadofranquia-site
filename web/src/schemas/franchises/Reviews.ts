@@ -49,7 +49,9 @@ export const CreateReviewSchema = z.object({
   franchiseId: z.string().min(1, 'ID da franquia é obrigatório'),
 })
 
-// ✅ Schema para respostas dos franqueadores
+// ✅ Schema para respostas dos franqueadores. author pode vir null
+// se o User original foi deletado (FK ondelete=RESTRICT impede, mas
+// a defensiva eh barata e prepara pro caso de mascara futura).
 export const ReviewResponseSchema = z.object({
   id: z.number(),
   content: z.string(),
@@ -57,16 +59,22 @@ export const ReviewResponseSchema = z.object({
   updatedAt: z.string().or(z.date()),
   reviewId: z.number(),
   authorId: z.string(),
-  author: z.object({
-    id: z.string(),
-    name: z.string(),
-    role: z.string(),
-  }),
+  author: z
+    .object({
+      id: z.string(),
+      name: z.string(),
+      role: z.string(),
+    })
+    .nullable(),
 })
 
 export const ReviewSchema = z.object({
   id: z.number(),
-  authorName: z.string(),
+  // Backend retorna author: { id, name } | null. Quando review.anonymous=true,
+  // o backend mascara o nome retornando author=null (PII protegida). Quando
+  // anonymous=false, author traz id+name do User. Substitui o campo
+  // authorName antigo que ja nao era retornado por nenhum endpoint backend.
+  author: z.object({ id: z.string(), name: z.string() }).nullable(),
   email: z.string().optional(),
   cpf: z.string().optional(),
   anonymous: z.boolean(),
@@ -77,11 +85,13 @@ export const ReviewSchema = z.object({
   franchiseId: z.string().optional(),
   isActive: z.boolean().default(true), // ✅ Adicionado campo isActive
   responses: z.array(ReviewResponseSchema).optional(), // ✅ Adicionado campo responses
-  franchise: z.object({
-    id: z.string(),
-    name: z.string(),
-    slug: z.string().optional(),
-  }),
+  franchise: z
+    .object({
+      id: z.string(),
+      name: z.string(),
+      slug: z.string().optional(),
+    })
+    .optional(),
 })
 
 export const ReviewsListSchema = z.object({

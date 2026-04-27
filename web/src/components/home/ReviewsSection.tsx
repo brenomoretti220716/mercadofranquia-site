@@ -26,7 +26,7 @@ function getInitials(name: string): string {
 
 function mapReviewsToCards(reviews: ApiReview[]): ReviewCard[] {
   return reviews.map((review) => {
-    const resolvedName = review.authorName
+    const resolvedName = review.author?.name ?? 'Anônimo'
     const name = review.anonymous ? 'Anônimo' : resolvedName || 'Usuário'
     const franchiseName = review.franchise?.name
     const franchiseSlug = review.franchise?.slug

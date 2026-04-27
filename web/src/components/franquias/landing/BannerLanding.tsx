@@ -6,9 +6,10 @@ interface BannerLandingProps {
 }
 
 /**
- * Banner full-width (240px). Quando bannerUrl e null, renderiza
- * placeholder hachurado da paleta v9 — o bloco NAO some, ele apenas
- * fica com aspecto generico ate o franqueador subir o asset.
+ * Banner full-width (240px) — handoff editorial v10. Quando bannerUrl
+ * eh null, renderiza placeholder hachurado (linhas laranja 8% sobre
+ * ink-900) com texto mono uppercase. Bloco nunca some — espaco
+ * preservado ate o franqueador subir o asset.
  */
 export default function BannerLanding({ url, alt }: BannerLandingProps) {
   return (

@@ -46,7 +46,12 @@ from app.security import (
     require_any_role,
     require_role,
 )
-from app.serializers import parse_gallery_urls, parse_video_urls, serialize_franchise
+from app.serializers import (
+    _load_response_authors,
+    parse_gallery_urls,
+    parse_video_urls,
+    serialize_franchise,
+)
 from app.services import hubspot_client
 from app.storage import delete_uploaded_file, save_image_upload
 from app.utils.video_url import is_valid_video_url
@@ -580,11 +585,25 @@ def get_franchise_ranking(
             status_code=status.HTTP_404_NOT_FOUND, detail="Franchise not found"
         )
 
-    # Load the full franchise for the current one.
+    # Load the full franchise for the current one — espelha as relacoes
+    # do GET /franchises/{slug} pra o payload trazer businessModels +
+    # reviews + responses + author. Sem isso, o serializer descarta as
+    # relacoes (lazy load + sessao fechada) e o ModelosLanding cai no
+    # Cenário A mesmo quando ha BusinessModels no DB.
     current = db.scalar(
-        select(Franchise).where(Franchise.id == ordered[idx][0])
+        select(Franchise)
+        .where(Franchise.id == ordered[idx][0])
+        .options(
+            selectinload(Franchise.contact),
+            selectinload(Franchise.owner),
+            selectinload(Franchise.business_models),
+            selectinload(Franchise.reviews).selectinload(Review.author),
+            selectinload(Franchise.reviews).selectinload(Review.responses),
+        )
     )
     assert current is not None
+
+    response_authors = _load_response_authors(db, list(current.reviews or []))
 
     def _neighbor(offset: int) -> Optional[str]:
         j = idx + offset
@@ -595,7 +614,11 @@ def get_franchise_ranking(
     return {
         "data": {
             "franchiseWithRanking": {
-                **serialize_franchise(current),
+                **serialize_franchise(
+                    current,
+                    include_relations=True,
+                    response_authors=response_authors,
+                ),
                 "rankingPosition": idx + 1,
             },
             "nextFranchiseWithRanking": _neighbor(1),
@@ -624,6 +647,7 @@ def get_franchise(
             selectinload(Franchise.owner),
             selectinload(Franchise.business_models),
             selectinload(Franchise.reviews).selectinload(Review.author),
+            selectinload(Franchise.reviews).selectinload(Review.responses),
         )
     )
     franchise = db.scalars(stmt).first()
@@ -636,7 +660,14 @@ def get_franchise(
         if not (is_admin or is_owner):
             raise HTTPException(status_code=404, detail="Franchise not found")
 
-    return {"data": serialize_franchise(franchise, include_relations=True)}
+    response_authors = _load_response_authors(db, list(franchise.reviews or []))
+    return {
+        "data": serialize_franchise(
+            franchise,
+            include_relations=True,
+            response_authors=response_authors,
+        )
+    }
 
 
 # ===========================================================================
