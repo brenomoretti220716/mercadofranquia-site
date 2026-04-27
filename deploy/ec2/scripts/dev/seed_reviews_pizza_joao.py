@@ -88,6 +88,19 @@ FRANCHISE_FIELDS = {
     # Numeric(15,2) em REAIS — formatBRL no frontend faz n / 1000.
     "minimumInvestment": 139000,
     "maximumInvestment": 342000,
+    "franchiseFee": 50000,  # taxa de franquia — Numeric(15,2)
+    "workingCapital": 50000,  # capital de giro — Numeric(15,2)
+    "setupCapital": 30000,  # capital de instalacao — Numeric(15,2)
+    "averageMonthlyRevenue": 180000,  # faturamento medio — Numeric(15,2)
+    # Numeric(5,2) em percentual.
+    "royalties": 6.0,
+    "advertisingFee": 2.0,
+    # int em m².
+    "storeArea": 80,
+    # String(191) — base de calculo. Nome da coluna tem typo no model:
+    # "calculationBaseRoyaltie" (singular sem y).
+    "calculationBaseRoyaltie": "Faturamento bruto",
+    "calculationBaseAdFee": "Faturamento bruto",
     # Midias — placeholders coloridos (placehold.co) ate assets reais.
     "logoUrl": "https://placehold.co/200x200/E8552B/FFFFFF?text=PJ",
     "bannerUrl": (
@@ -322,6 +335,15 @@ def _update_franchise_fields(cur, franchise_id: str) -> None:
             "maximumReturnOnInvestment" = %(maximumReturnOnInvestment)s,
             "minimumInvestment" = %(minimumInvestment)s,
             "maximumInvestment" = %(maximumInvestment)s,
+            "franchiseFee" = %(franchiseFee)s,
+            "workingCapital" = %(workingCapital)s,
+            "setupCapital" = %(setupCapital)s,
+            "averageMonthlyRevenue" = %(averageMonthlyRevenue)s,
+            royalties = %(royalties)s,
+            "advertisingFee" = %(advertisingFee)s,
+            "storeArea" = %(storeArea)s,
+            "calculationBaseRoyaltie" = %(calculationBaseRoyaltie)s,
+            "calculationBaseAdFee" = %(calculationBaseAdFee)s,
             "logoUrl" = %(logoUrl)s,
             "bannerUrl" = %(bannerUrl)s,
             "thumbnailUrl" = %(thumbnailUrl)s,
