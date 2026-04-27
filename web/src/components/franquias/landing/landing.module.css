@@ -263,16 +263,6 @@
 
 .banner {
   height: 240px;
-  background: var(--ink-900);
-  background-image: repeating-linear-gradient(
-    45deg,
-    transparent 0 12px,
-    rgba(232, 85, 43, 0.08) 12px 13px
-  );
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--ink-200);
   overflow: hidden;
 }
 .bannerImg {
@@ -280,22 +270,6 @@
   height: 100%;
   object-fit: cover;
   display: block;
-}
-.bannerText {
-  font-family: var(--mono);
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  text-align: center;
-  line-height: 1.6;
-}
-.bannerText em {
-  display: block;
-  opacity: 0.8;
-  font-style: normal;
-  font-weight: 400;
-  margin-top: 6px;
 }
 
 /* ============================================================
@@ -409,15 +383,16 @@
     'calt' 0;
   font-variant-ligatures: none;
 }
-/* Logo da franquia no Hero v10 — 96x96 paper-warm com borda ink-300.
+/* Logo da franquia no Hero v10 — 96x96 transparente, sem moldura.
    Posicionado dentro de .heroNameRow (flex), alinhado pelo centro
-   vertical com o h1. Some quando logoUrl null. */
+   vertical com o h1. Some quando logoUrl null.
+   Hotfix Fatia 1.8 pos-deploy: drop background paper-warm + border
+   ink-300 que viravam moldura em logos com fundo proprio (ex: Kumon
+   PNG com fundo azul claro). */
 .heroLogo {
   display: block;
   width: 96px;
   height: 96px;
-  background: var(--paper-warm);
-  border: 1px solid var(--ink-300);
   object-fit: contain;
   flex-shrink: 0;
 }
