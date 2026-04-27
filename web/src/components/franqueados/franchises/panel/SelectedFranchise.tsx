@@ -219,7 +219,10 @@ export default function SelectedFranchise({
 
       {/* 12. Quero saber mais — secao dark, target do CTA do Hero */}
       <div ref={leadSectionRef}>
-        <LeadFormLanding franchiseName={franchise.name} />
+        <LeadFormLanding
+          franchiseName={franchise.name}
+          franchiseSegment={franchise.segment}
+        />
       </div>
 
       {/* 13. Canais de contato (extra v9, integra a sidecard antiga) */}
