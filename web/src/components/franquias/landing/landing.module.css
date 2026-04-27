@@ -96,7 +96,7 @@
   margin: 0 0 22px;
   font-family: var(--serif);
   font-weight: 400;
-  font-size: 42px;
+  font-size: 38px;
   letter-spacing: -0.025em;
   line-height: 1;
   color: var(--ink-900);
@@ -105,6 +105,15 @@
     'dlig' 0,
     'calt' 0;
   font-variant-ligatures: none;
+}
+/* Pattern semantico pro accent — usar <em>palavra</em> dentro do h2.
+   Tem o mesmo visual do <span className={styles.accent}> mas eh mais
+   semantico (ja que o italic eh enfase tipografica genuina). Funciona
+   alongside .accent — ambos coexistem. */
+.heading em {
+  font-style: italic;
+  color: var(--accent-600);
+  font-weight: 400;
 }
 
 .accent {

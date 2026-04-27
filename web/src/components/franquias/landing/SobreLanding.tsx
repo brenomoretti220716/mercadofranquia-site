@@ -22,7 +22,7 @@ export default function SobreLanding({ description }: SobreLandingProps) {
   return (
     <section className={`${styles.landing} ${styles.section}`}>
       <h2 className={styles.heading}>
-        Sobre a <span className={styles.accent}>marca</span>
+        Sobre a <em>marca</em>
       </h2>
       <p className={styles.textBlock}>{description}</p>
     </section>
