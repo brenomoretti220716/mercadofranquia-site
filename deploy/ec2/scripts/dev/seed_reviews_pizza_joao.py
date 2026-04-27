@@ -168,27 +168,46 @@ GALLERY_URLS = [
 BUSINESS_MODELS = [
     {
         "name": "Loja",
-        "description": (
-            "Loja completa com 80m². Investimento R$ 342k, payback estimado "
-            "de 22 meses. Modelo flagship em vias de alto fluxo."
-        ),
+        "description": "Modelo flagship em vias de alto fluxo.",
         "photoUrl": "https://placehold.co/600x400/0B0B0D/E3DED1?text=Loja",
+        # Fatia 1.8.1 — dataset financeiro per-modelo.
+        "franchiseFee": 50000,
+        "royalties": 6.0,
+        "advertisingFee": 2.0,
+        "workingCapital": 50000,
+        "setupCapital": 30000,
+        "averageMonthlyRevenue": 180000,
+        "storeArea": 80,
+        "calculationBaseRoyaltie": "Faturamento bruto",
+        "calculationBaseAdFee": "Faturamento bruto",
     },
     {
         "name": "Container",
-        "description": (
-            "Container modular com 35m². Investimento R$ 205k, payback "
-            "estimado de 22 meses. Setup rápido e portátil."
-        ),
+        "description": "Setup rápido e portátil, ideal pra praças e eventos.",
         "photoUrl": "https://placehold.co/600x400/0B0B0D/E3DED1?text=Container",
+        "franchiseFee": 35000,
+        "royalties": 5.0,
+        "advertisingFee": 2.0,
+        "workingCapital": 35000,
+        "setupCapital": 20000,
+        "averageMonthlyRevenue": 110000,
+        "storeArea": 35,
+        "calculationBaseRoyaltie": "Faturamento bruto",
+        "calculationBaseAdFee": "Faturamento bruto",
     },
     {
         "name": "Quiosque",
-        "description": (
-            "Quiosque compacto com 12m². Investimento R$ 139k, payback "
-            "estimado de 22 meses. Ideal pra shoppings."
-        ),
+        "description": "Modelo compacto pra shoppings e centros comerciais.",
         "photoUrl": "https://placehold.co/600x400/0B0B0D/E3DED1?text=Quiosque",
+        "franchiseFee": 25000,
+        "royalties": 4.5,
+        "advertisingFee": 2.0,
+        "workingCapital": 25000,
+        "setupCapital": 15000,
+        "averageMonthlyRevenue": 75000,
+        "storeArea": 12,
+        "calculationBaseRoyaltie": "Faturamento bruto",
+        "calculationBaseAdFee": "Faturamento bruto",
     },
 ]
 
@@ -359,40 +378,81 @@ def _update_franchise_fields(cur, franchise_id: str) -> None:
 
 
 def _ensure_business_models(cur, franchise_id: str) -> None:
-    """Idempotente — lookup por (franchiseId, name); insere ou atualiza."""
+    """Idempotente — lookup por (franchiseId, name); insere ou atualiza.
+
+    Inclui dataset financeiro per-modelo (Fatia 1.8.1):
+    franchiseFee, royalties, advertisingFee, workingCapital,
+    setupCapital, averageMonthlyRevenue, storeArea,
+    calculationBaseRoyaltie, calculationBaseAdFee.
+    """
     for bm in BUSINESS_MODELS:
         cur.execute(
             'SELECT id FROM "BusinessModel" WHERE "franchiseId" = %s AND name = %s',
             (franchise_id, bm["name"]),
         )
         row = cur.fetchone()
+        params = {
+            "name": bm["name"],
+            "description": bm["description"],
+            "photoUrl": bm["photoUrl"],
+            "franchiseId": franchise_id,
+            "franchiseFee": bm["franchiseFee"],
+            "royalties": bm["royalties"],
+            "advertisingFee": bm["advertisingFee"],
+            "workingCapital": bm["workingCapital"],
+            "setupCapital": bm["setupCapital"],
+            "averageMonthlyRevenue": bm["averageMonthlyRevenue"],
+            "storeArea": bm["storeArea"],
+            "calculationBaseRoyaltie": bm["calculationBaseRoyaltie"],
+            "calculationBaseAdFee": bm["calculationBaseAdFee"],
+        }
         if row is None:
             bm_id = _deterministic_id(f"{franchise_id}-bm-{bm['name']}")
+            params["id"] = bm_id
             cur.execute(
                 """
                 INSERT INTO "BusinessModel" (
                     id, name, description, "photoUrl", "franchiseId",
+                    "franchiseFee", royalties, "advertisingFee",
+                    "workingCapital", "setupCapital", "averageMonthlyRevenue",
+                    "storeArea", "calculationBaseRoyaltie",
+                    "calculationBaseAdFee",
                     "createdAt", "updatedAt"
                 )
-                VALUES (%s, %s, %s, %s, %s, NOW(), NOW())
+                VALUES (
+                    %(id)s, %(name)s, %(description)s, %(photoUrl)s,
+                    %(franchiseId)s,
+                    %(franchiseFee)s, %(royalties)s, %(advertisingFee)s,
+                    %(workingCapital)s, %(setupCapital)s,
+                    %(averageMonthlyRevenue)s,
+                    %(storeArea)s, %(calculationBaseRoyaltie)s,
+                    %(calculationBaseAdFee)s,
+                    NOW(), NOW()
+                )
                 """,
-                (
-                    bm_id,
-                    bm["name"],
-                    bm["description"],
-                    bm["photoUrl"],
-                    franchise_id,
-                ),
+                params,
             )
             print(f"  + business model '{bm['name']}' id={bm_id}")
         else:
+            params["id"] = row[0]
             cur.execute(
                 """
                 UPDATE "BusinessModel"
-                SET description = %s, "photoUrl" = %s, "updatedAt" = NOW()
-                WHERE id = %s
+                SET description = %(description)s,
+                    "photoUrl" = %(photoUrl)s,
+                    "franchiseFee" = %(franchiseFee)s,
+                    royalties = %(royalties)s,
+                    "advertisingFee" = %(advertisingFee)s,
+                    "workingCapital" = %(workingCapital)s,
+                    "setupCapital" = %(setupCapital)s,
+                    "averageMonthlyRevenue" = %(averageMonthlyRevenue)s,
+                    "storeArea" = %(storeArea)s,
+                    "calculationBaseRoyaltie" = %(calculationBaseRoyaltie)s,
+                    "calculationBaseAdFee" = %(calculationBaseAdFee)s,
+                    "updatedAt" = NOW()
+                WHERE id = %(id)s
                 """,
-                (bm["description"], bm["photoUrl"], row[0]),
+                params,
             )
             print(f"  ~ business model '{bm['name']}' updated id={row[0]}")
 
