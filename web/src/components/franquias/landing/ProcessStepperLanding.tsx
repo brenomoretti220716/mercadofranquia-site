@@ -6,11 +6,16 @@ interface ProcessStepperLandingProps {
 }
 
 /**
- * Bloco "Como funciona" do v9. Titulo h2 fixo:
- *   "Como **funciona**" (funciona em Fraunces italic laranja).
+ * Bloco "Como funciona" do v10. Layout editorial:
+ *   kicker "Processo" -> h2 "Como funciona" (palavra 'funciona'
+ *   italic accent) -> .steps com cada etapa em row:
+ *     stepNum (Instrument Serif italic 64px laranja, width 72px)
+ *     stepBody com stepTitle (Instrument Serif 24px) + stepDesc
+ *     (15px ink-900 line-height 1.55).
+ *   Border-bottom 1px ink-300 entre steps; ultimo sem border.
  *
- * Numeros das etapas em Fraunces italic laranja, 32px.
- * Renderiza nada quando steps vazio/null.
+ * Some o bloco inteiro quando steps null/empty. Numeracao 1-based
+ * automatica (nao depende do JSON).
  */
 export default function ProcessStepperLanding({
   steps,
@@ -18,6 +23,7 @@ export default function ProcessStepperLanding({
   if (!steps || steps.length === 0) return null
   return (
     <section className={`${styles.landing} ${styles.section}`}>
+      <div className={styles.kicker}>Processo</div>
       <h2 className={styles.heading}>
         Como <span className={styles.accent}>funciona</span>
       </h2>
