@@ -46,7 +46,6 @@ export default function VideoLanding({ videoUrls }: VideoLandingProps) {
 
   return (
     <section className={`${styles.landing} ${styles.section}`}>
-      <div className={styles.kicker}>Vídeo institucional</div>
       <h2 className={styles.heading}>
         Conheça a <span className={styles.accent}>marca</span>
       </h2>

@@ -21,7 +21,6 @@ export default function SobreLanding({ description }: SobreLandingProps) {
 
   return (
     <section className={`${styles.landing} ${styles.section}`}>
-      <div className={styles.kicker}>Sobre a marca</div>
       <h2 className={styles.heading}>
         Sobre a <span className={styles.accent}>marca</span>
       </h2>

@@ -162,7 +162,6 @@ export default function ModelosLanding({
     const revText = formatBRL(averageMonthlyRevenue)
     return (
       <section className={`${styles.landing} ${styles.section}`}>
-        <div className={styles.kicker}>Investimento</div>
         <h2 className={styles.heading}>
           Como investir nessa <span className={styles.accent}>rede</span>
         </h2>
@@ -222,7 +221,6 @@ export default function ModelosLanding({
 
   return (
     <section className={`${styles.landing} ${styles.section}`}>
-      <div className={styles.kicker}>Modelos</div>
       <h2 className={styles.heading}>
         Modelos <span className={styles.accent}>disponíveis</span>
       </h2>

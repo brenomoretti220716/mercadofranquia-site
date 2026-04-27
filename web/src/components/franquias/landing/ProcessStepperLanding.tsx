@@ -23,7 +23,6 @@ export default function ProcessStepperLanding({
   if (!steps || steps.length === 0) return null
   return (
     <section className={`${styles.landing} ${styles.section}`}>
-      <div className={styles.kicker}>Processo</div>
       <h2 className={styles.heading}>
         Como <span className={styles.accent}>funciona</span>
       </h2>
