@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import {
   Inter,
   Inter_Tight as InterTight,
-  Fraunces,
+  Instrument_Serif as InstrumentSerif,
   IBM_Plex_Sans as IBMPlexSans,
   IBM_Plex_Mono as IBMPlexMono,
   JetBrains_Mono as JetBrainsMono,
@@ -32,19 +32,15 @@ const interTight = InterTight({
 })
 
 // Fatia 1.8 — handoff editorial v10.
-// Fraunces ganha style 'normal' (alem do 'italic' ja usado) pra valores
-// grandes em display serif (KPI strip, hero name, rep avg etc). Escopado
-// via .landing no CSS module; nao afeta admin/editor.
-//
-// Axes opsz + SOFT habilitados pra controlar opsz fixo em 14 e SOFT 0 no
-// CSS via font-variation-settings, evitando glifos dramaticos em tamanhos
-// grandes (88px hero, 38px h2). next/font exige modo variavel (sem weight
-// estatico) quando usamos axes — peso eh setado via font-weight no CSS.
-const fraunces = Fraunces({
+// Instrument Serif (substitui Fraunces — variable axes do Fraunces
+// renderizavam glifos display dramaticos demais em tamanhos grandes;
+// Instrument Serif tem desenho consistente em qualquer tamanho).
+// Escopado via .landing no CSS module; nao afeta admin/editor.
+const instrumentSerif = InstrumentSerif({
   subsets: ['latin'],
+  weight: ['400'],
   style: ['normal', 'italic'],
-  axes: ['opsz', 'SOFT'],
-  variable: '--font-fraunces',
+  variable: '--font-instrument-serif',
   display: 'swap',
 })
 
@@ -90,7 +86,7 @@ export default function RootLayout({
   return (
     <html
       lang="pt-br"
-      className={`${inter.variable} ${plusJakartaSans.variable} ${interTight.variable} ${fraunces.variable} ${ibmPlexSans.variable} ${ibmPlexMono.variable} ${jetbrainsMono.variable}`}
+      className={`${inter.variable} ${plusJakartaSans.variable} ${interTight.variable} ${instrumentSerif.variable} ${ibmPlexSans.variable} ${ibmPlexMono.variable} ${jetbrainsMono.variable}`}
     >
       <body className={`${inter.className} antialiased`}>
         <Providers>{children}</Providers>

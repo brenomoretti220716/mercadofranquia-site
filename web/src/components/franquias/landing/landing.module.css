@@ -45,7 +45,7 @@
   --rule-strong: 1px solid var(--ink-500);
   --rule-thick: 2px solid var(--ink-900);
 
-  --serif: var(--font-fraunces), 'GT Sectra', Georgia, serif;
+  --serif: var(--font-instrument-serif), 'GT Sectra', Georgia, serif;
   --sans: var(--font-ibm-plex-sans), -apple-system, BlinkMacSystemFont,
     sans-serif;
   --mono: var(--font-ibm-plex-mono), 'SF Mono', Menlo, monospace;
@@ -99,10 +99,6 @@
     'dlig' 0,
     'calt' 0;
   font-variant-ligatures: none;
-  font-optical-sizing: none;
-  font-variation-settings:
-    'opsz' 14,
-    'SOFT' 0;
 }
 
 .accent {
@@ -116,10 +112,6 @@
     'dlig' 0,
     'calt' 0;
   font-variant-ligatures: none;
-  font-optical-sizing: none;
-  font-variation-settings:
-    'opsz' 14,
-    'SOFT' 0;
 }
 
 .kicker {
@@ -298,10 +290,6 @@
     'dlig' 0,
     'calt' 0;
   font-variant-ligatures: none;
-  font-optical-sizing: none;
-  font-variation-settings:
-    'opsz' 14,
-    'SOFT' 0;
 }
 .heroName em {
   font-style: italic;
@@ -361,10 +349,6 @@
     'dlig' 0,
     'calt' 0;
   font-variant-ligatures: none;
-  font-optical-sizing: none;
-  font-variation-settings:
-    'opsz' 14,
-    'SOFT' 0;
 }
 .kpiSub {
   font-family: var(--mono);
@@ -435,10 +419,6 @@
     'dlig' 0,
     'calt' 0;
   font-variant-ligatures: none;
-  font-optical-sizing: none;
-  font-variation-settings:
-    'opsz' 14,
-    'SOFT' 0;
 }
 
 /* Metrics legacy (pre-KPI strip) */
@@ -477,10 +457,6 @@
     'dlig' 0,
     'calt' 0;
   font-variant-ligatures: none;
-  font-optical-sizing: none;
-  font-variation-settings:
-    'opsz' 14,
-    'SOFT' 0;
 }
 
 /* ============================================================
@@ -603,10 +579,6 @@
     'dlig' 0,
     'calt' 0;
   font-variant-ligatures: none;
-  font-optical-sizing: none;
-  font-variation-settings:
-    'opsz' 14,
-    'SOFT' 0;
 }
 .modelRow {
   display: flex;
@@ -633,10 +605,6 @@
     'dlig' 0,
     'calt' 0;
   font-variant-ligatures: none;
-  font-optical-sizing: none;
-  font-variation-settings:
-    'opsz' 14,
-    'SOFT' 0;
 }
 
 /* Aliases legados (.modelLabel/.modelValue) — sai em Fase 3.3 */
@@ -662,10 +630,6 @@
     'dlig' 0,
     'calt' 0;
   font-variant-ligatures: none;
-  font-optical-sizing: none;
-  font-variation-settings:
-    'opsz' 14,
-    'SOFT' 0;
 }
 
 /* ============================================================
@@ -797,10 +761,6 @@
     'dlig' 0,
     'calt' 0;
   font-variant-ligatures: none;
-  font-optical-sizing: none;
-  font-variation-settings:
-    'opsz' 14,
-    'SOFT' 0;
 }
 .stepBody {
   flex: 1;
@@ -819,10 +779,6 @@
     'dlig' 0,
     'calt' 0;
   font-variant-ligatures: none;
-  font-optical-sizing: none;
-  font-variation-settings:
-    'opsz' 14,
-    'SOFT' 0;
 }
 .stepDesc {
   margin: 0;
@@ -928,10 +884,6 @@
     'dlig' 0,
     'calt' 0;
   font-variant-ligatures: none;
-  font-optical-sizing: none;
-  font-variation-settings:
-    'opsz' 14,
-    'SOFT' 0;
 }
 .repStars {
   font-size: 16px;
@@ -1025,10 +977,6 @@
     'dlig' 0,
     'calt' 0;
   font-variant-ligatures: none;
-  font-optical-sizing: none;
-  font-variation-settings:
-    'opsz' 14,
-    'SOFT' 0;
 }
 .repAnon {
   padding: 2px 8px;
@@ -1157,10 +1105,6 @@
     'dlig' 0,
     'calt' 0;
   font-variant-ligatures: none;
-  font-optical-sizing: none;
-  font-variation-settings:
-    'opsz' 14,
-    'SOFT' 0;
 }
 .leadHeading em,
 .leadHeading .accent {
