@@ -4,18 +4,17 @@ import styles from './landing.module.css'
 interface ModelosLandingProps {
   models?: BusinessModel[] | null
   // Cenário A (sem modelos OU modelos sem dado nas 5 metricas-chave) —
-  // agregados da Franchise pra ficha tecnica.
-  // Cenário B (com modelos populados) le diretamente de cada
-  // BusinessModel, ignorando esses props.
+  // agregados da Franchise pra ficha tecnica enxuta com 5 linhas:
+  // Investimento inicial, Payback, Faturamento medio, Area necessaria,
+  // Capital de giro. Royalties / taxa de franquia / propaganda foram
+  // dropados dessa secao pra alinhar com o Cenário B (cards) que ja nao
+  // mostra eles — ficam reservados pra Fatia 1.9 (ranges agregados).
   minimumInvestment?: number | null
   maximumInvestment?: number | null
   minimumReturnOnInvestment?: number | null
   maximumReturnOnInvestment?: number | null
-  franchiseFee?: number | null
-  royalties?: number | null
-  advertisingFee?: number | null
+  averageMonthlyRevenue?: number | null
   workingCapital?: number | null
-  setupCapital?: number | null
   storeArea?: number | null
 }
 
@@ -136,11 +135,8 @@ export default function ModelosLanding({
   maximumInvestment,
   minimumReturnOnInvestment,
   maximumReturnOnInvestment,
-  franchiseFee,
-  royalties,
-  advertisingFee,
+  averageMonthlyRevenue,
   workingCapital,
-  setupCapital,
   storeArea,
 }: ModelosLandingProps) {
   const visibleModels = (models ?? []).filter(
@@ -153,16 +149,17 @@ export default function ModelosLanding({
     isPresent(maximumInvestment) ||
     isPresent(minimumReturnOnInvestment) ||
     isPresent(maximumReturnOnInvestment) ||
-    isPresent(franchiseFee) ||
-    isPresent(royalties) ||
-    isPresent(advertisingFee) ||
+    isPresent(averageMonthlyRevenue) ||
     isPresent(workingCapital) ||
     isPresent(storeArea)
 
   if (!hasVisibleModels && !hasAnyFinancial) return null
 
   if (!hasVisibleModels) {
-    // Cenário A: ficha tecnica
+    // Cenário A: ficha tecnica enxuta com 5 linhas (investimento, payback,
+    // faturamento, area, capital de giro). Royalties/taxa de franquia/
+    // propaganda dropados — ficam pra Fatia 1.9 (ranges agregados).
+    const revText = formatBRL(averageMonthlyRevenue)
     return (
       <section className={`${styles.landing} ${styles.section}`}>
         <div className={styles.kicker}>Investimento</div>
@@ -180,40 +177,6 @@ export default function ModelosLanding({
               </span>
             </div>
           )}
-          {isPresent(franchiseFee) && (
-            <div className={styles.investimentoRow}>
-              <span className={styles.investimentoLabel}>Taxa de franquia</span>
-              <span className={styles.investimentoValue}>
-                {formatBRL(franchiseFee)}
-              </span>
-            </div>
-          )}
-          {isPresent(royalties) && (
-            <div className={styles.investimentoRow}>
-              <span className={styles.investimentoLabel}>Royalties</span>
-              <span className={styles.investimentoValue}>
-                {formatPercent(royalties)} sobre faturamento
-              </span>
-            </div>
-          )}
-          {isPresent(advertisingFee) && (
-            <div className={styles.investimentoRow}>
-              <span className={styles.investimentoLabel}>
-                Taxa de propaganda
-              </span>
-              <span className={styles.investimentoValue}>
-                {formatPercent(advertisingFee)} sobre faturamento
-              </span>
-            </div>
-          )}
-          {isPresent(workingCapital) && (
-            <div className={styles.investimentoRow}>
-              <span className={styles.investimentoLabel}>Capital de giro</span>
-              <span className={styles.investimentoValue}>
-                {formatBRL(workingCapital)}
-              </span>
-            </div>
-          )}
           {(isPresent(minimumReturnOnInvestment) ||
             isPresent(maximumReturnOnInvestment)) && (
             <div className={styles.investimentoRow}>
@@ -226,10 +189,26 @@ export default function ModelosLanding({
               </span>
             </div>
           )}
+          {revText && (
+            <div className={styles.investimentoRow}>
+              <span className={styles.investimentoLabel}>
+                Faturamento médio
+              </span>
+              <span className={styles.investimentoValue}>{revText}/mês</span>
+            </div>
+          )}
           {isPresent(storeArea) && (
             <div className={styles.investimentoRow}>
               <span className={styles.investimentoLabel}>Área necessária</span>
               <span className={styles.investimentoValue}>{storeArea}m²</span>
+            </div>
+          )}
+          {isPresent(workingCapital) && (
+            <div className={styles.investimentoRow}>
+              <span className={styles.investimentoLabel}>Capital de giro</span>
+              <span className={styles.investimentoValue}>
+                {formatBRL(workingCapital)}
+              </span>
             </div>
           )}
         </div>
