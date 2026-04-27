@@ -66,7 +66,11 @@ export const ReviewResponseSchema = z.object({
 
 export const ReviewSchema = z.object({
   id: z.number(),
-  authorName: z.string(),
+  // Backend retorna author: { id, name } | null. Quando review.anonymous=true,
+  // o backend mascara o nome retornando author=null (PII protegida). Quando
+  // anonymous=false, author traz id+name do User. Substitui o campo
+  // authorName antigo que ja nao era retornado por nenhum endpoint backend.
+  author: z.object({ id: z.string(), name: z.string() }).nullable(),
   email: z.string().optional(),
   cpf: z.string().optional(),
   anonymous: z.boolean(),
@@ -77,11 +81,13 @@ export const ReviewSchema = z.object({
   franchiseId: z.string().optional(),
   isActive: z.boolean().default(true), // ✅ Adicionado campo isActive
   responses: z.array(ReviewResponseSchema).optional(), // ✅ Adicionado campo responses
-  franchise: z.object({
-    id: z.string(),
-    name: z.string(),
-    slug: z.string().optional(),
-  }),
+  franchise: z
+    .object({
+      id: z.string(),
+      name: z.string(),
+      slug: z.string().optional(),
+    })
+    .optional(),
 })
 
 export const ReviewsListSchema = z.object({
