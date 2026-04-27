@@ -544,32 +544,31 @@
    Modelos
    ============================================================ */
 
-.models {
+/* Cenário B — cards bege flutuando com gap, sem bordas externas.
+   Cada card eh autonomo (background paper-warm), separados por gap 16px.
+   A unica linha dentro do card eh o divisor entre nome e dataset
+   (modelCardHead) e entre as 4 metricas primarias e as 5 secundarias
+   (regra .modelRowPrimary + .modelRow:not(.modelRowPrimary)). */
+.modelsGrid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  border: var(--rule-strong);
-  background: var(--white);
+  gap: 16px;
 }
-.model {
-  padding: 24px;
-  border-right: var(--rule);
+.modelCard {
+  padding: 28px 24px;
   background: var(--paper-warm);
 }
-.model:last-child {
-  border-right: 0;
-}
-.modelHead {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  padding-bottom: 12px;
+.modelCardHead {
+  padding-bottom: 14px;
   margin-bottom: 18px;
-  border-bottom: var(--rule);
+  border-bottom: 1px solid var(--ink-300);
 }
-.modelName {
+.modelCardName {
+  margin: 0;
   font-family: var(--serif);
   font-weight: 400;
-  font-size: 26px;
+  font-size: 28px;
+  line-height: 1;
   letter-spacing: -0.02em;
   color: var(--ink-900);
   font-feature-settings:
@@ -578,12 +577,32 @@
     'calt' 0;
   font-variant-ligatures: none;
 }
+.modelCardData {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin: 0;
+  padding: 0;
+}
 .modelRow {
   display: flex;
+  align-items: baseline;
   justify-content: space-between;
-  padding: 8px 0;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(199, 199, 206, 0.3);
 }
-.modelRowLabel {
+.modelRow:last-child {
+  border-bottom: 0;
+}
+/* Primeira nao-primary depois das primary ganha o divisor mais forte —
+   separa as 4 metricas operacionais das 5 financeiras. */
+.modelRowPrimary + .modelRow:not(.modelRowPrimary) {
+  margin-top: 6px;
+  padding-top: 14px;
+  border-top: 1px solid var(--ink-300);
+}
+.modelRow dt {
+  margin: 0;
   font-family: var(--mono);
   font-size: 10px;
   font-weight: 600;
@@ -591,12 +610,12 @@
   text-transform: uppercase;
   color: var(--ink-800);
 }
-.modelRowValue {
+.modelRow dd {
+  margin: 0;
   font-family: var(--serif);
-  font-weight: 400;
   font-size: 17px;
-  letter-spacing: -0.015em;
   font-variant-numeric: tabular-nums;
+  text-align: right;
   color: var(--ink-900);
   font-feature-settings:
     'liga' 0,
@@ -604,27 +623,8 @@
     'calt' 0;
   font-variant-ligatures: none;
 }
-
-/* Footer dos cards (Cenário B) — royalties globais abaixo do grid. */
-.modelsFooter {
-  margin-top: 16px;
-  padding: 16px 24px;
-  border-top: var(--rule);
-  border-bottom: var(--rule);
-}
-.modelsFooterLabel {
-  margin-bottom: 6px;
-  font-family: var(--mono);
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--ink-800);
-}
-.modelsFooterText {
-  font-size: 14px;
-  line-height: 1.5;
-  color: var(--ink-900);
+.modelRowPrimary dd {
+  font-size: 19px;
 }
 
 /* Tabela editorial "Como investir nessa rede" (Cenário A) — usada
@@ -658,31 +658,6 @@
   letter-spacing: -0.015em;
   font-variant-numeric: tabular-nums;
   text-align: right;
-  color: var(--ink-900);
-  font-feature-settings:
-    'liga' 0,
-    'dlig' 0,
-    'calt' 0;
-  font-variant-ligatures: none;
-}
-
-/* Aliases legados (.modelLabel/.modelValue) — sai em Fase 3.3 */
-.modelLabel {
-  display: block;
-  margin-bottom: 2px;
-  font-family: var(--mono);
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--ink-800);
-}
-.modelValue {
-  font-family: var(--serif);
-  font-weight: 400;
-  font-size: 17px;
-  letter-spacing: -0.015em;
-  font-variant-numeric: tabular-nums;
   color: var(--ink-900);
   font-feature-settings:
     'liga' 0,
@@ -1302,20 +1277,21 @@
     font-size: 36px;
   }
   .kpiStrip,
-  .models,
   .metrics {
     grid-template-columns: 1fr;
   }
   .kpi,
-  .model,
   .metric {
     border-right: 0;
     border-bottom: var(--rule);
   }
   .kpi:last-child,
-  .model:last-child,
   .metric:last-child {
     border-bottom: 0;
+  }
+  .modelsGrid {
+    grid-template-columns: 1fr;
+    gap: 12px;
   }
   .leadGrid {
     grid-template-columns: 1fr;
