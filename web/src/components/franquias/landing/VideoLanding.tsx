@@ -1,3 +1,6 @@
+'use client'
+
+import { useState } from 'react'
 import styles from './landing.module.css'
 
 interface VideoLandingProps {
@@ -21,31 +24,61 @@ function youtubeIdFromUrl(url: string): string | null {
 }
 
 /**
- * Bloco "Conheca a marca" do v9. h2 fixo "Conheca a **marca**".
- * Le franchise.videoUrls (lista parseada do TEXT do banco). Pega o
- * primeiro url; se for YouTube, embed; caso contrario, <video> nativo.
- * Some se nao houver nenhuma url valida.
+ * Bloco "Conheca a marca" do v10. Layout editorial:
+ *   kicker "Vídeo institucional" -> h2 "Conheça a marca" (palavra
+ *   'marca' italic accent) -> .video container 16/9 max-width 900px
+ *   ink-900 bg + border ink-500.
+ *
+ * Click-to-play: estado inicial mostra o play button 72px laranja
+ * accent-600 sobre fundo dark. Click carrega o iframe (YouTube com
+ * autoplay+mute pra contornar a politica de autoplay dos browsers)
+ * ou <video> tag (assets diretos). Evita carregar o iframe pesado
+ * antes do usuario querer ver, e mantem a estetica editorial em
+ * vez do branding do YouTube.
+ *
+ * Some o bloco inteiro quando nao ha videoUrl valida.
  */
 export default function VideoLanding({ videoUrls }: VideoLandingProps) {
+  const [playing, setPlaying] = useState(false)
   const url = (videoUrls ?? []).find((u) => u && u.trim())
   if (!url) return null
   const ytId = youtubeIdFromUrl(url)
 
   return (
     <section className={`${styles.landing} ${styles.section}`}>
+      <div className={styles.kicker}>Vídeo institucional</div>
       <h2 className={styles.heading}>
         Conheça a <span className={styles.accent}>marca</span>
       </h2>
-      <div className={styles.videoFrame}>
-        {ytId ? (
-          <iframe
-            src={`https://www.youtube.com/embed/${ytId}`}
-            title="Vídeo institucional"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-          />
+      <div className={styles.video}>
+        {playing ? (
+          ytId ? (
+            <iframe
+              src={`https://www.youtube.com/embed/${ytId}?autoplay=1&mute=1`}
+              title="Vídeo institucional"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            />
+          ) : (
+            <video src={url} controls autoPlay muted preload="metadata" />
+          )
         ) : (
-          <video src={url} controls preload="metadata" />
+          <button
+            type="button"
+            aria-label="Reproduzir vídeo institucional"
+            className={styles.play}
+            onClick={() => setPlaying(true)}
+          >
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 16 16"
+              style={{ marginLeft: 3 }}
+              aria-hidden="true"
+            >
+              <path d="M3 2L13 8L3 14V2Z" fill="var(--paper)" />
+            </svg>
+          </button>
         )}
       </div>
     </section>
