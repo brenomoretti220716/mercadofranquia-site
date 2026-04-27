@@ -99,6 +99,10 @@
     'dlig' 0,
     'calt' 0;
   font-variant-ligatures: none;
+  font-optical-sizing: none;
+  font-variation-settings:
+    'opsz' 14,
+    'SOFT' 0;
 }
 
 .accent {
@@ -112,6 +116,10 @@
     'dlig' 0,
     'calt' 0;
   font-variant-ligatures: none;
+  font-optical-sizing: none;
+  font-variation-settings:
+    'opsz' 14,
+    'SOFT' 0;
 }
 
 .kicker {
@@ -290,6 +298,10 @@
     'dlig' 0,
     'calt' 0;
   font-variant-ligatures: none;
+  font-optical-sizing: none;
+  font-variation-settings:
+    'opsz' 14,
+    'SOFT' 0;
 }
 .heroName em {
   font-style: italic;
@@ -349,6 +361,10 @@
     'dlig' 0,
     'calt' 0;
   font-variant-ligatures: none;
+  font-optical-sizing: none;
+  font-variation-settings:
+    'opsz' 14,
+    'SOFT' 0;
 }
 .kpiSub {
   font-family: var(--mono);
@@ -419,6 +435,10 @@
     'dlig' 0,
     'calt' 0;
   font-variant-ligatures: none;
+  font-optical-sizing: none;
+  font-variation-settings:
+    'opsz' 14,
+    'SOFT' 0;
 }
 
 /* Metrics legacy (pre-KPI strip) */
@@ -457,6 +477,10 @@
     'dlig' 0,
     'calt' 0;
   font-variant-ligatures: none;
+  font-optical-sizing: none;
+  font-variation-settings:
+    'opsz' 14,
+    'SOFT' 0;
 }
 
 /* ============================================================
@@ -579,6 +603,10 @@
     'dlig' 0,
     'calt' 0;
   font-variant-ligatures: none;
+  font-optical-sizing: none;
+  font-variation-settings:
+    'opsz' 14,
+    'SOFT' 0;
 }
 .modelRow {
   display: flex;
@@ -605,6 +633,10 @@
     'dlig' 0,
     'calt' 0;
   font-variant-ligatures: none;
+  font-optical-sizing: none;
+  font-variation-settings:
+    'opsz' 14,
+    'SOFT' 0;
 }
 
 /* Aliases legados (.modelLabel/.modelValue) — sai em Fase 3.3 */
@@ -630,6 +662,10 @@
     'dlig' 0,
     'calt' 0;
   font-variant-ligatures: none;
+  font-optical-sizing: none;
+  font-variation-settings:
+    'opsz' 14,
+    'SOFT' 0;
 }
 
 /* ============================================================
@@ -761,6 +797,10 @@
     'dlig' 0,
     'calt' 0;
   font-variant-ligatures: none;
+  font-optical-sizing: none;
+  font-variation-settings:
+    'opsz' 14,
+    'SOFT' 0;
 }
 .stepBody {
   flex: 1;
@@ -779,6 +819,10 @@
     'dlig' 0,
     'calt' 0;
   font-variant-ligatures: none;
+  font-optical-sizing: none;
+  font-variation-settings:
+    'opsz' 14,
+    'SOFT' 0;
 }
 .stepDesc {
   margin: 0;
@@ -884,6 +928,10 @@
     'dlig' 0,
     'calt' 0;
   font-variant-ligatures: none;
+  font-optical-sizing: none;
+  font-variation-settings:
+    'opsz' 14,
+    'SOFT' 0;
 }
 .repStars {
   font-size: 16px;
@@ -977,6 +1025,10 @@
     'dlig' 0,
     'calt' 0;
   font-variant-ligatures: none;
+  font-optical-sizing: none;
+  font-variation-settings:
+    'opsz' 14,
+    'SOFT' 0;
 }
 .repAnon {
   padding: 2px 8px;
@@ -1105,6 +1157,10 @@
     'dlig' 0,
     'calt' 0;
   font-variant-ligatures: none;
+  font-optical-sizing: none;
+  font-variation-settings:
+    'opsz' 14,
+    'SOFT' 0;
 }
 .leadHeading em,
 .leadHeading .accent {

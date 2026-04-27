@@ -35,10 +35,15 @@ const interTight = InterTight({
 // Fraunces ganha style 'normal' (alem do 'italic' ja usado) pra valores
 // grandes em display serif (KPI strip, hero name, rep avg etc). Escopado
 // via .landing no CSS module; nao afeta admin/editor.
+//
+// Axes opsz + SOFT habilitados pra controlar opsz fixo em 14 e SOFT 0 no
+// CSS via font-variation-settings, evitando glifos dramaticos em tamanhos
+// grandes (88px hero, 38px h2). next/font exige modo variavel (sem weight
+// estatico) quando usamos axes — peso eh setado via font-weight no CSS.
 const fraunces = Fraunces({
   subsets: ['latin'],
-  weight: ['400'],
   style: ['normal', 'italic'],
+  axes: ['opsz', 'SOFT'],
   variable: '--font-fraunces',
   display: 'swap',
 })
