@@ -163,6 +163,7 @@ export default function SelectedFranchise({
         name={franchise.name}
         segment={franchise.segment}
         tagline={franchise.tagline}
+        logoUrl={franchise.logoUrl}
         franchiseStartYear={franchise.franchiseStartYear}
         headquarter={franchise.headquarter}
         headquarterState={franchise.headquarterState}

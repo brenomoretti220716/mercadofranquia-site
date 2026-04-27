@@ -379,25 +379,16 @@
   align-items: center;
   margin-bottom: 20px;
 }
+/* Logo da franquia no Hero v10 — 80x80 paper-warm com borda ink-300.
+   Fallback: se logoUrl null, componente nao renderiza o <img>. */
 .heroLogo {
-  width: 64px;
-  height: 64px;
-  background: var(--paper);
-  border: var(--rule);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: var(--mono);
-  font-size: 10px;
-  color: var(--ink-500);
-  flex-shrink: 0;
-  overflow: hidden;
-}
-.heroLogo img {
-  width: 100%;
-  height: 100%;
+  display: block;
+  width: 80px;
+  height: 80px;
+  margin-bottom: 20px;
+  background: var(--paper-warm);
+  border: 1px solid var(--ink-300);
   object-fit: contain;
-  padding: 4px;
 }
 .heroId {
   flex: 1;
@@ -1277,5 +1268,9 @@
   }
   .repAvg {
     font-size: 48px;
+  }
+  .heroLogo {
+    width: 64px;
+    height: 64px;
   }
 }

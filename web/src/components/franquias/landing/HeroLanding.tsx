@@ -1,9 +1,13 @@
+import Image from 'next/image'
+import { getFranchiseImageUrl } from '@/src/utils/franchiseImageUtils'
 import styles from './landing.module.css'
 
 interface HeroLandingProps {
   name: string
   segment?: string | null
   tagline?: string | null
+  /** Logo da marca, 80x80 com borda editorial. Some se null/invalido. */
+  logoUrl?: string | null
   /** Pra hero-meta "Fundada em {year}". */
   franchiseStartYear?: number | null
   /** Pra hero-meta "Sede {headquarter}, {headquarterState}". */
@@ -86,6 +90,7 @@ export default function HeroLanding({
   name,
   segment,
   tagline,
+  logoUrl,
   franchiseStartYear,
   headquarter,
   headquarterState,
@@ -102,8 +107,23 @@ export default function HeroLanding({
       ? `${headquarter}, ${headquarterState}`
       : (headquarter ?? headquarterState ?? null)
 
+  // getFranchiseImageUrl valida formato; URLs ja sao absolutas no DB
+  // (placehold.co local, S3 em prod). Sem prefixo NEXT_PUBLIC_API_URL.
+  const safeLogoUrl = getFranchiseImageUrl(logoUrl)
+
   return (
     <section className={`${styles.landing} ${styles.section}`}>
+      {safeLogoUrl ? (
+        <Image
+          src={safeLogoUrl}
+          alt={name}
+          width={80}
+          height={80}
+          className={styles.heroLogo}
+          unoptimized
+        />
+      ) : null}
+
       {segment ? (
         <div className={styles.heroTags}>
           <span className={styles.tag}>{segment}</span>
