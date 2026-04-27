@@ -511,6 +511,32 @@ class BusinessModel(Base):
         onupdate=func.now(),
     )
 
+    # Fatia 1.8.1 — dataset financeiro por modelo (alembic c4d8e9a1b3f2).
+    # Tipos espelham Franchise pra consistency. Todos nullable.
+    franchiseFee: Mapped[Optional[Decimal]] = mapped_column(
+        "franchiseFee", Numeric(15, 2)
+    )
+    royalties: Mapped[Optional[Decimal]] = mapped_column(Numeric(5, 2))
+    advertisingFee: Mapped[Optional[Decimal]] = mapped_column(
+        "advertisingFee", Numeric(5, 2)
+    )
+    workingCapital: Mapped[Optional[Decimal]] = mapped_column(
+        "workingCapital", Numeric(15, 2)
+    )
+    setupCapital: Mapped[Optional[Decimal]] = mapped_column(
+        "setupCapital", Numeric(15, 2)
+    )
+    averageMonthlyRevenue: Mapped[Optional[Decimal]] = mapped_column(
+        "averageMonthlyRevenue", Numeric(15, 2)
+    )
+    storeArea: Mapped[Optional[int]] = mapped_column("storeArea")
+    calculationBaseRoyaltie: Mapped[Optional[str]] = mapped_column(
+        "calculationBaseRoyaltie", String(191)
+    )
+    calculationBaseAdFee: Mapped[Optional[str]] = mapped_column(
+        "calculationBaseAdFee", String(191)
+    )
+
     franchise: Mapped["Franchise"] = relationship(back_populates="business_models")
 
 

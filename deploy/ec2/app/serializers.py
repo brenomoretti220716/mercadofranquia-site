@@ -99,6 +99,10 @@ def serialize_owner(o: Optional[User]) -> Optional[dict[str, Any]]:
 
 
 def serialize_business_model(bm: BusinessModel) -> dict[str, Any]:
+    """
+    Inclui dataset financeiro por modelo (Fatia 1.8.1). Decimal->float
+    via _num pra payload JSON.
+    """
     return {
         "id": bm.id,
         "name": bm.name,
@@ -107,6 +111,15 @@ def serialize_business_model(bm: BusinessModel) -> dict[str, Any]:
         "franchiseId": bm.franchiseId,
         "createdAt": _iso(bm.createdAt),
         "updatedAt": _iso(bm.updatedAt),
+        "franchiseFee": _num(bm.franchiseFee),
+        "royalties": _num(bm.royalties),
+        "advertisingFee": _num(bm.advertisingFee),
+        "workingCapital": _num(bm.workingCapital),
+        "setupCapital": _num(bm.setupCapital),
+        "averageMonthlyRevenue": _num(bm.averageMonthlyRevenue),
+        "storeArea": bm.storeArea,
+        "calculationBaseRoyaltie": bm.calculationBaseRoyaltie,
+        "calculationBaseAdFee": bm.calculationBaseAdFee,
     }
 
 
