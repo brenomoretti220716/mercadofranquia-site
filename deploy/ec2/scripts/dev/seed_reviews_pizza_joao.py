@@ -180,6 +180,9 @@ BUSINESS_MODELS = [
         "storeArea": 80,
         "calculationBaseRoyaltie": "Faturamento bruto",
         "calculationBaseAdFee": "Faturamento bruto",
+        # Fatia 1.8.1 segunda migration — investment total + payback.
+        "investment": 342000,
+        "payback": 24,
     },
     {
         "name": "Container",
@@ -194,6 +197,8 @@ BUSINESS_MODELS = [
         "storeArea": 35,
         "calculationBaseRoyaltie": "Faturamento bruto",
         "calculationBaseAdFee": "Faturamento bruto",
+        "investment": 205000,
+        "payback": 22,
     },
     {
         "name": "Quiosque",
@@ -208,6 +213,8 @@ BUSINESS_MODELS = [
         "storeArea": 12,
         "calculationBaseRoyaltie": "Faturamento bruto",
         "calculationBaseAdFee": "Faturamento bruto",
+        "investment": 139000,
+        "payback": 18,
     },
 ]
 
@@ -405,6 +412,8 @@ def _ensure_business_models(cur, franchise_id: str) -> None:
             "storeArea": bm["storeArea"],
             "calculationBaseRoyaltie": bm["calculationBaseRoyaltie"],
             "calculationBaseAdFee": bm["calculationBaseAdFee"],
+            "investment": bm["investment"],
+            "payback": bm["payback"],
         }
         if row is None:
             bm_id = _deterministic_id(f"{franchise_id}-bm-{bm['name']}")
@@ -416,7 +425,7 @@ def _ensure_business_models(cur, franchise_id: str) -> None:
                     "franchiseFee", royalties, "advertisingFee",
                     "workingCapital", "setupCapital", "averageMonthlyRevenue",
                     "storeArea", "calculationBaseRoyaltie",
-                    "calculationBaseAdFee",
+                    "calculationBaseAdFee", investment, payback,
                     "createdAt", "updatedAt"
                 )
                 VALUES (
@@ -426,7 +435,7 @@ def _ensure_business_models(cur, franchise_id: str) -> None:
                     %(workingCapital)s, %(setupCapital)s,
                     %(averageMonthlyRevenue)s,
                     %(storeArea)s, %(calculationBaseRoyaltie)s,
-                    %(calculationBaseAdFee)s,
+                    %(calculationBaseAdFee)s, %(investment)s, %(payback)s,
                     NOW(), NOW()
                 )
                 """,
@@ -449,6 +458,8 @@ def _ensure_business_models(cur, franchise_id: str) -> None:
                     "storeArea" = %(storeArea)s,
                     "calculationBaseRoyaltie" = %(calculationBaseRoyaltie)s,
                     "calculationBaseAdFee" = %(calculationBaseAdFee)s,
+                    investment = %(investment)s,
+                    payback = %(payback)s,
                     "updatedAt" = NOW()
                 WHERE id = %(id)s
                 """,
