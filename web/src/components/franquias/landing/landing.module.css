@@ -728,6 +728,9 @@
 .steps {
   display: flex;
   flex-direction: column;
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
 .step {
   display: flex;
@@ -1277,6 +1280,9 @@
   }
   .gallery {
     grid-template-columns: repeat(2, 1fr);
+  }
+  .step {
+    gap: 16px;
   }
   .stepNum {
     font-size: 44px;

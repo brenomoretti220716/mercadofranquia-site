@@ -7,15 +7,18 @@ interface ProcessStepperLandingProps {
 
 /**
  * Bloco "Como funciona" do v10. Layout editorial:
- *   kicker "Processo" -> h2 "Como funciona" (palavra 'funciona'
- *   italic accent) -> .steps com cada etapa em row:
+ *   h2 "Como funciona" (palavra 'funciona' em italic accent via <em>)
+ *   <ol> com cada etapa em <li>:
  *     stepNum (Instrument Serif italic 64px laranja, width 72px)
  *     stepBody com stepTitle (Instrument Serif 24px) + stepDesc
- *     (15px ink-900 line-height 1.55).
- *   Border-bottom 1px ink-300 entre steps; ultimo sem border.
+ *     opcional (15px ink-900 line-height 1.55).
+ *   Border-bottom 1px ink-300 entre <li>s; ultimo sem border.
  *
- * Some o bloco inteiro quando steps null/empty. Numeracao 1-based
- * automatica (nao depende do JSON).
+ * Numeracao 1-based (idx + 1) — independente de qualquer rotulo no
+ * JSON. Description renderiza so quando presente; titulo eh sempre
+ * obrigatorio (.title).
+ *
+ * Some o bloco inteiro quando steps null/empty.
  */
 export default function ProcessStepperLanding({
   steps,
@@ -24,19 +27,21 @@ export default function ProcessStepperLanding({
   return (
     <section className={`${styles.landing} ${styles.section}`}>
       <h2 className={styles.heading}>
-        Como <span className={styles.accent}>funciona</span>
+        Como <em>funciona</em>
       </h2>
-      <div className={styles.steps}>
-        {steps.map((step, i) => (
-          <div key={`${i}-${step.title}`} className={styles.step}>
-            <div className={styles.stepNum}>{i + 1}</div>
+      <ol className={styles.steps}>
+        {steps.map((step, idx) => (
+          <li key={`${idx}-${step.title}`} className={styles.step}>
+            <div className={styles.stepNum}>{idx + 1}</div>
             <div className={styles.stepBody}>
-              <h3 className={styles.stepTitle}>{step.title}</h3>
-              <p className={styles.stepDesc}>{step.description}</p>
+              <div className={styles.stepTitle}>{step.title}</div>
+              {step.description && (
+                <div className={styles.stepDesc}>{step.description}</div>
+              )}
             </div>
-          </div>
+          </li>
         ))}
-      </div>
+      </ol>
     </section>
   )
 }
