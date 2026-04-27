@@ -685,76 +685,40 @@
    Video
    ============================================================ */
 
-.video {
-  position: relative;
-  aspect-ratio: 16 / 9;
-  max-width: 900px;
-  background: var(--ink-900);
-  border: var(--rule-strong);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.video iframe,
-.video video {
-  width: 100%;
-  height: 100%;
-  border: 0;
-  display: block;
-}
-.play {
-  width: 72px;
-  height: 72px;
-  border-radius: 50%;
-  background: var(--accent-600);
-  border: 0;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* Aliases legados (sai em Fase 3.5) */
 .videoFrame {
   position: relative;
   aspect-ratio: 16 / 9;
   max-width: 900px;
   background: var(--ink-900);
-  border: var(--rule-strong);
+  border: 1px solid var(--ink-500);
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
+  margin: 0;
 }
-.videoFrame iframe,
-.videoFrame video {
+.videoFrame iframe {
   width: 100%;
   height: 100%;
   border: 0;
   display: block;
 }
+/* Play button — usado SOMENTE como link out quando o videoUrl nao eh
+   YouTube (nao da pra embedar). Para YouTube, o iframe ja embeda
+   diretamente sem precisar do play button. */
 .playBtn {
-  position: absolute;
-  z-index: 1;
-  width: 72px;
-  height: 72px;
-  border-radius: 50%;
-  background: var(--accent-600);
-  border: 0;
-  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 72px;
+  height: 72px;
+  background: var(--accent-600);
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  text-decoration: none;
 }
-.videoCaption {
-  position: absolute;
-  bottom: 12px;
-  left: 16px;
-  font-family: var(--mono);
-  font-size: 10px;
-  text-transform: uppercase;
-  letter-spacing: 0.14em;
-  color: var(--ink-300);
+.playBtn:hover {
+  background: var(--accent-700);
 }
 
 /* ============================================================
