@@ -1,21 +1,24 @@
 import type { BusinessModel } from '@/src/hooks/businessModels/useBusinessModels'
 import styles from './landing.module.css'
 
-interface FranchiseLikeForFallback {
-  minimumInvestment?: number | null
-  maximumInvestment?: number | null
-  franchiseFee?: number | null
-  minimumReturnOnInvestment?: number | null
-  maximumReturnOnInvestment?: number | null
+interface AggregateRange {
+  min?: number | null
+  max?: number | null
 }
 
 interface ModelosLandingProps {
   models?: BusinessModel[] | null
   /**
-   * Fallback usado quando a franquia tem 0 modelos: monta um cardzinho
-   * unico com os numeros diretos da Franchise.
+   * Valores agregados da Franchise pra preencher os cards. Usado em
+   * TODOS os cards porque BusinessModel nao tem investment/payback
+   * por modelo no DB ainda.
+   *
+   * TODO (fatia futura): estender BusinessModel com colunas
+   * minimumInvestment/maximumInvestment/payback/area pra cada card
+   * carregar valores proprios em vez de repetir o agregado.
    */
-  franchiseFallback?: FranchiseLikeForFallback
+  aggregateInvestment?: AggregateRange
+  aggregatePayback?: AggregateRange
 }
 
 function formatBRL(n?: number | null): string | null {
@@ -30,80 +33,75 @@ function formatBRL(n?: number | null): string | null {
 function investmentRange(min?: number | null, max?: number | null): string {
   const a = formatBRL(min)
   const b = formatBRL(max)
-  if (a && b && a !== b) return `${a}–${b}`
+  if (a && b && a !== b) {
+    const bSuffix = b.replace(/^R\$\s*/, '')
+    return `${a.replace(/k$/, '')}–${bSuffix}`
+  }
   return a ?? b ?? '—'
 }
 
+function paybackRange(min?: number | null, max?: number | null): string {
+  if (min && max && min !== max) return `${min}–${max} meses`
+  if (min) return `${min} meses`
+  if (max) return `${max} meses`
+  return '—'
+}
+
 /**
- * Bloco "Modelos disponiveis" do v9. Comportamento adaptativo:
+ * Bloco "Modelos disponíveis" do v10. Layout editorial:
+ *   kicker "Modelos" -> h2 "Modelos disponiveis" (ultima palavra italic
+ *   accent) -> grid 3 cols com cards de modelo. Cada card tem
+ *   modelName em Instrument Serif 26px + 2 linhas (Investimento /
+ *   Payback) com label mono uppercase + value Instrument Serif 17px
+ *   tabular.
  *
- * - 0 modelos cadastrados: bloco fica oculto se a Franchise tambem
- *   nao tem investimento direto. Caso contrario, renderiza um card
- *   unico "Investimento" com os valores agregados da propria
- *   Franchise.
- * - 1+ modelos: cards lado a lado com nome + descricao do modelo.
+ * Some o bloco inteiro quando nao ha modelos (drop do fallback do v9
+ * que renderizava card unico com agregado da Franchise — agora se nao
+ * ha modelos, a secao some e o agregado aparece so na KPI strip do
+ * Hero).
  *
- * NOTA tecnica: a interface BusinessModel atual nao tem investment
- * nem payback por modelo (so name/description/photoUrl). O mockup v9
- * pede esses numeros por modelo — fatia futura precisa estender o
- * model BusinessModel pra carregar esses campos. Por ora, renderizo
- * name + description nos cards.
+ * Campos do mockup nao mapeados:
+ *   - tags "Físico/Modular/Compacto" (BusinessModel.category)
+ *   - linha "Área" (BusinessModel.area)
+ *   - investment/payback per-modelo (BusinessModel.minimumInvestment etc)
+ *   Cada card hoje mostra os valores AGREGADOS da Franchise repetidos
+ *   ate as colunas existirem no model.
  */
 export default function ModelosLanding({
   models,
-  franchiseFallback,
+  aggregateInvestment,
+  aggregatePayback,
 }: ModelosLandingProps) {
-  const hasModels = models && models.length > 0
+  if (!models || models.length === 0) return null
 
-  if (!hasModels) {
-    const inv = investmentRange(
-      franchiseFallback?.minimumInvestment,
-      franchiseFallback?.maximumInvestment,
-    )
-    const fee = formatBRL(franchiseFallback?.franchiseFee)
-    if (inv === '—' && !fee) return null
-    return (
-      <section className={`${styles.landing} ${styles.section}`}>
-        <h2 className={styles.heading}>
-          <span className={styles.accent}>Investimento</span>
-        </h2>
-        <div className={styles.models} style={{ gridTemplateColumns: '1fr' }}>
-          <div className={styles.model}>
-            {inv !== '—' && (
-              <div className={styles.modelRow}>
-                <span className={styles.modelLabel}>Investimento total</span>
-                <span className={styles.modelValue}>{inv}</span>
-              </div>
-            )}
-            {fee && (
-              <div className={styles.modelRow}>
-                <span className={styles.modelLabel}>Taxa de franquia</span>
-                <span className={styles.modelValue}>{fee}</span>
-              </div>
-            )}
-          </div>
-        </div>
-      </section>
-    )
-  }
+  const invText = investmentRange(
+    aggregateInvestment?.min,
+    aggregateInvestment?.max,
+  )
+  const payText = paybackRange(aggregatePayback?.min, aggregatePayback?.max)
 
   return (
     <section className={`${styles.landing} ${styles.section}`}>
+      <div className={styles.kicker}>Modelos</div>
       <h2 className={styles.heading}>
         Modelos <span className={styles.accent}>disponíveis</span>
       </h2>
       <div className={styles.models}>
         {models.map((m) => (
           <div key={m.id} className={styles.model}>
-            <div className={styles.modelName}>{m.name}</div>
-            <div className={styles.modelRow}>
-              <span
-                className={styles.modelValue}
-                style={{ fontSize: 13, fontWeight: 400 }}
-              >
-                {m.description}
-              </span>
+            <div className={styles.modelHead}>
+              <div className={styles.modelName}>{m.name}</div>
             </div>
+            <div className={styles.modelRow}>
+              <span className={styles.modelRowLabel}>Investimento</span>
+              <span className={styles.modelRowValue}>{invText}</span>
+            </div>
+            <div className={styles.modelRow}>
+              <span className={styles.modelRowLabel}>Payback</span>
+              <span className={styles.modelRowValue}>{payText}</span>
+            </div>
+            {/* TODO: linha Area + tags categoria — campos nao existem
+                em BusinessModel ainda. */}
           </div>
         ))}
       </div>
