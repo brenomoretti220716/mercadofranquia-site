@@ -34,6 +34,10 @@ export interface BusinessModel {
   // ainda nao.
   investment?: number | null
   payback?: number | null
+
+  // Fatia 1.8.1 (alembic b5a2c91e7f4d) — rentabilidade media em % sobre
+  // faturamento.
+  profitability?: number | null
 }
 
 async function fetchBusinessModelsByFranchise(
