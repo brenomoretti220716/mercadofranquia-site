@@ -537,6 +537,12 @@ class BusinessModel(Base):
         "calculationBaseAdFee", String(191)
     )
 
+    # Fatia 1.8.1 (alembic e7a3f1d8b9c2) — investment total + payback per
+    # modelo. Sem name override porque colunas sao lowercase no DB
+    # (mesmo padrao de royalties).
+    investment: Mapped[Optional[Decimal]] = mapped_column(Numeric(15, 2))
+    payback: Mapped[Optional[int]] = mapped_column()
+
     franchise: Mapped["Franchise"] = relationship(back_populates="business_models")
 
 

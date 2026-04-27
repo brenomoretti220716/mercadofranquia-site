@@ -120,6 +120,8 @@ def serialize_business_model(bm: BusinessModel) -> dict[str, Any]:
         "storeArea": bm.storeArea,
         "calculationBaseRoyaltie": bm.calculationBaseRoyaltie,
         "calculationBaseAdFee": bm.calculationBaseAdFee,
+        "investment": _num(bm.investment),
+        "payback": bm.payback,
     }
 
 
