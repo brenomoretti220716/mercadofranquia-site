@@ -78,6 +78,8 @@
   max-width: 1200px;
   margin: 0 auto;
   background: var(--paper);
+  border-left: 1px solid var(--ink-300);
+  border-right: 1px solid var(--ink-300);
   min-height: 100vh;
 }
 
@@ -1227,6 +1229,10 @@
    ============================================================ */
 
 @media (max-width: 768px) {
+  .page {
+    border-left: 0;
+    border-right: 0;
+  }
   .section {
     padding: 28px 20px;
   }
