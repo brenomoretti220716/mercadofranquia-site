@@ -318,29 +318,37 @@
   color: var(--ink-900);
 }
 
-/* Lista vertical de metadados do Hero — label fixo a esquerda (110px),
-   valor a direita. Substitui o flex-wrap inline antigo que apertava em
-   desktop e quebrava feio em mobile. */
+/* Hero meta — desktop inline com bullets, mobile vertical alinhado.
+   Estrutura HTML eh sempre a mesma (heroMetaRow > heroMetaLabel +
+   heroMetaValue). Comportamento muda por breakpoint via media query.
+   Inline aproveita o espaco horizontal do desktop; vertical no mobile
+   evita quebra feia e apertamento. */
 .heroMeta {
   display: flex;
-  flex-direction: column;
-  gap: 8px;
-  margin-bottom: 28px;
-}
-.heroMetaRow {
-  display: grid;
-  grid-template-columns: 110px 1fr;
+  flex-wrap: wrap;
   align-items: baseline;
+  gap: 0;
+  margin-bottom: 28px;
   font-family: var(--mono);
   font-size: 11px;
+  line-height: 1.7;
   letter-spacing: 0.08em;
   text-transform: uppercase;
+}
+.heroMetaRow {
+  display: inline;
+}
+.heroMetaRow + .heroMetaRow::before {
+  content: '·';
+  margin: 0 10px;
+  color: var(--ink-500);
 }
 .heroMetaLabel {
   font-weight: 500;
   color: var(--ink-800);
 }
 .heroMetaValue {
+  margin-left: 6px;
   font-weight: 700;
   color: var(--ink-900);
 }
@@ -1297,8 +1305,22 @@
     width: 64px;
     height: 64px;
   }
+  .heroMeta {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    line-height: 1.4;
+  }
   .heroMetaRow {
-    grid-template-columns: 90px 1fr;
+    display: grid;
+    grid-template-columns: 100px 1fr;
+    align-items: baseline;
     font-size: 10px;
+  }
+  .heroMetaRow + .heroMetaRow::before {
+    content: none;
+  }
+  .heroMetaValue {
+    margin-left: 0;
   }
 }
