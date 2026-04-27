@@ -46,7 +46,12 @@ from app.security import (
     require_any_role,
     require_role,
 )
-from app.serializers import parse_gallery_urls, parse_video_urls, serialize_franchise
+from app.serializers import (
+    _load_response_authors,
+    parse_gallery_urls,
+    parse_video_urls,
+    serialize_franchise,
+)
 from app.services import hubspot_client
 from app.storage import delete_uploaded_file, save_image_upload
 from app.utils.video_url import is_valid_video_url
@@ -624,6 +629,7 @@ def get_franchise(
             selectinload(Franchise.owner),
             selectinload(Franchise.business_models),
             selectinload(Franchise.reviews).selectinload(Review.author),
+            selectinload(Franchise.reviews).selectinload(Review.responses),
         )
     )
     franchise = db.scalars(stmt).first()
@@ -636,7 +642,14 @@ def get_franchise(
         if not (is_admin or is_owner):
             raise HTTPException(status_code=404, detail="Franchise not found")
 
-    return {"data": serialize_franchise(franchise, include_relations=True)}
+    response_authors = _load_response_authors(db, list(franchise.reviews or []))
+    return {
+        "data": serialize_franchise(
+            franchise,
+            include_relations=True,
+            response_authors=response_authors,
+        )
+    }
 
 
 # ===========================================================================

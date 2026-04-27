@@ -16,11 +16,15 @@ from datetime import datetime
 from decimal import Decimal
 from typing import Any, Optional
 
+from sqlalchemy import select
+from sqlalchemy.orm import Session
+
 from app.models import (
     BusinessModel,
     ContactInfo,
     Franchise,
     Review,
+    ReviewResponse,
     User,
 )
 
@@ -106,15 +110,78 @@ def serialize_business_model(bm: BusinessModel) -> dict[str, Any]:
     }
 
 
-def serialize_review(r: Review) -> dict[str, Any]:
+def _serialize_response(
+    rr: ReviewResponse, author: Optional[User]
+) -> dict[str, Any]:
+    """
+    Espelha routers/reviews.py:_serialize_response.
+
+    NOTA: ReviewResponse nao tem coluna `anonymous` no model, entao nao
+    ha mascara analoga ao Review.anonymous. Respostas sao sempre publicas
+    e atribuiveis. Se uma fatia futura adicionar anonimato a ReviewResponse,
+    aplicar a mesma logica de mascarar `name` server-side aqui.
+    """
+    return {
+        "id": rr.id,
+        "content": rr.content,
+        "reviewId": rr.reviewId,
+        "authorId": rr.authorId,
+        "createdAt": _iso(rr.createdAt),
+        "updatedAt": _iso(rr.updatedAt),
+        "author": (
+            {"id": author.id, "name": author.name, "role": author.role}
+            if author is not None
+            else None
+        ),
+    }
+
+
+def _load_response_authors(
+    db: Session, reviews: list[Review]
+) -> dict[str, User]:
+    """
+    Batch-load dos User rows de cada autor de ReviewResponse na lista de
+    reviews. Necessario porque ReviewResponse nao tem `author` relationship
+    declarada (so authorId FK), entao SQLAlchemy nao traz junto via
+    selectinload(Review.responses) sozinho.
+
+    Espelha routers/reviews.py:_load_response_authors.
+    """
+    author_ids: set[str] = set()
+    for r in reviews:
+        for rr in getattr(r, "responses", []) or []:
+            if rr.authorId:
+                author_ids.add(rr.authorId)
+    if not author_ids:
+        return {}
+    users = db.scalars(select(User).where(User.id.in_(author_ids))).all()
+    return {u.id: u for u in users}
+
+
+def serialize_review(
+    r: Review,
+    *,
+    response_authors: Optional[dict[str, User]] = None,
+) -> dict[str, Any]:
     """
     Inclui `author: { id, name } | null` espelhando o shape de
     routers/reviews.py:_serialize_review. Mascara nome quando
     `r.anonymous=True` retornando author=null. Requer
     `selectinload(Review.author)` no query (ja feito em
     routers/franchises.py:get_franchise).
+
+    Tambem inclui `responses: [...]` quando a relacao Review.responses
+    foi pre-carregada (selectinload). Os autores das responses sao
+    resolvidos via `response_authors` (dict authorId -> User), que o
+    caller deve montar via _load_response_authors. Se o map for None,
+    cada response sai com author=null.
     """
     author = getattr(r, "author", None)
+    ra_map = response_authors or {}
+    responses_payload = [
+        _serialize_response(rr, ra_map.get(rr.authorId))
+        for rr in (getattr(r, "responses", []) or [])
+    ]
     return {
         "id": r.id,
         "rating": r.rating,
@@ -130,6 +197,7 @@ def serialize_review(r: Review) -> dict[str, Any]:
             if (author is None or r.anonymous)
             else {"id": author.id, "name": author.name}
         ),
+        "responses": responses_payload,
     }
 
 
@@ -138,6 +206,7 @@ def serialize_franchise(
     *,
     include_relations: bool = False,
     ranking_position: Optional[int] = None,
+    response_authors: Optional[dict[str, User]] = None,
 ) -> dict[str, Any]:
     payload: dict[str, Any] = {
         "id": f.id,
@@ -211,6 +280,8 @@ def serialize_franchise(
             serialize_business_model(bm) for bm in (f.business_models or [])
         ]
         payload["reviews"] = [
-            serialize_review(r) for r in (f.reviews or []) if r.isActive
+            serialize_review(r, response_authors=response_authors)
+            for r in (f.reviews or [])
+            if r.isActive
         ]
     return payload

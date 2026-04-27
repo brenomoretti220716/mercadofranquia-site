@@ -49,7 +49,9 @@ export const CreateReviewSchema = z.object({
   franchiseId: z.string().min(1, 'ID da franquia é obrigatório'),
 })
 
-// ✅ Schema para respostas dos franqueadores
+// ✅ Schema para respostas dos franqueadores. author pode vir null
+// se o User original foi deletado (FK ondelete=RESTRICT impede, mas
+// a defensiva eh barata e prepara pro caso de mascara futura).
 export const ReviewResponseSchema = z.object({
   id: z.number(),
   content: z.string(),
@@ -57,11 +59,13 @@ export const ReviewResponseSchema = z.object({
   updatedAt: z.string().or(z.date()),
   reviewId: z.number(),
   authorId: z.string(),
-  author: z.object({
-    id: z.string(),
-    name: z.string(),
-    role: z.string(),
-  }),
+  author: z
+    .object({
+      id: z.string(),
+      name: z.string(),
+      role: z.string(),
+    })
+    .nullable(),
 })
 
 export const ReviewSchema = z.object({
