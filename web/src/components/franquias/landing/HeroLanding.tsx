@@ -137,26 +137,30 @@ export default function HeroLanding({
 
       {tagline ? <p className={styles.tagline}>{tagline}</p> : null}
 
-      <div className={styles.heroMeta}>
-        {franchiseStartYear ? (
-          <span>
-            <span>Fundada em</span>
-            <b>{franchiseStartYear}</b>
-          </span>
-        ) : null}
-        {sedeText ? (
-          <span>
-            <span>Sede</span>
-            <b>{sedeText}</b>
-          </span>
-        ) : null}
-        {typeof totalUnits === 'number' ? (
-          <span>
-            <b>{totalUnits.toLocaleString('pt-BR')}</b>
-            <span style={{ marginLeft: 6 }}>unidades</span>
-          </span>
-        ) : null}
-      </div>
+      {(franchiseStartYear || sedeText || typeof totalUnits === 'number') && (
+        <div className={styles.heroMeta}>
+          {franchiseStartYear ? (
+            <div className={styles.heroMetaRow}>
+              <span className={styles.heroMetaLabel}>Fundada em</span>
+              <span className={styles.heroMetaValue}>{franchiseStartYear}</span>
+            </div>
+          ) : null}
+          {sedeText ? (
+            <div className={styles.heroMetaRow}>
+              <span className={styles.heroMetaLabel}>Sede</span>
+              <span className={styles.heroMetaValue}>{sedeText}</span>
+            </div>
+          ) : null}
+          {typeof totalUnits === 'number' ? (
+            <div className={styles.heroMetaRow}>
+              <span className={styles.heroMetaLabel}>Unidades</span>
+              <span className={styles.heroMetaValue}>
+                {totalUnits.toLocaleString('pt-BR')}
+              </span>
+            </div>
+          ) : null}
+        </div>
+      )}
 
       <div className={styles.kpiStrip}>
         <div className={styles.kpi}>

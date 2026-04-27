@@ -318,22 +318,31 @@
   color: var(--ink-900);
 }
 
+/* Lista vertical de metadados do Hero — label fixo a esquerda (110px),
+   valor a direita. Substitui o flex-wrap inline antigo que apertava em
+   desktop e quebrava feio em mobile. */
 .heroMeta {
   display: flex;
-  gap: 28px;
-  flex-wrap: wrap;
+  flex-direction: column;
+  gap: 8px;
   margin-bottom: 28px;
+}
+.heroMetaRow {
+  display: grid;
+  grid-template-columns: 110px 1fr;
+  align-items: baseline;
   font-family: var(--mono);
   font-size: 11px;
-  font-weight: 500;
   letter-spacing: 0.08em;
   text-transform: uppercase;
+}
+.heroMetaLabel {
+  font-weight: 500;
   color: var(--ink-800);
 }
-.heroMeta b {
-  color: var(--ink-900);
+.heroMetaValue {
   font-weight: 700;
-  margin-left: 6px;
+  color: var(--ink-900);
 }
 
 .kpiStrip {
@@ -1287,5 +1296,9 @@
   .heroLogo {
     width: 64px;
     height: 64px;
+  }
+  .heroMetaRow {
+    grid-template-columns: 90px 1fr;
+    font-size: 10px;
   }
 }
