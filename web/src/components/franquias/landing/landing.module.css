@@ -369,53 +369,31 @@
    Hero LEGACY — alias temporario ate Fase 3.2 reescrever HeroLanding
    ============================================================ */
 
+/* Hero v10 — grid 2 cols (logo + content). Quando logoUrl null, o
+   componente seta data-no-logo e o grid colapsa pra 1 col. */
 .hero {
-  padding: 40px 48px;
-  border-bottom: var(--rule);
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 28px;
+  align-items: start;
 }
-.heroTop {
-  display: flex;
-  gap: 16px;
-  align-items: center;
-  margin-bottom: 20px;
+.hero[data-no-logo='true'] {
+  grid-template-columns: 1fr;
 }
-/* Logo da franquia no Hero v10 — 80x80 paper-warm com borda ink-300.
-   Fallback: se logoUrl null, componente nao renderiza o <img>. */
 .heroLogo {
   display: block;
-  width: 80px;
-  height: 80px;
-  margin-bottom: 20px;
+  width: 96px;
+  height: 96px;
   background: var(--paper-warm);
   border: 1px solid var(--ink-300);
   object-fit: contain;
+  flex-shrink: 0;
 }
-.heroId {
-  flex: 1;
+.heroContent {
+  /* Coluna direita do hero — segura toda a hierarquia textual + KPI
+     strip + CTAs. min-width: 0 evita grid blowout em viewports
+     estreitas. */
   min-width: 0;
-}
-.heroSegment {
-  font-family: var(--mono);
-  font-size: 11px;
-  font-weight: 500;
-  color: var(--ink-500);
-  text-transform: uppercase;
-  letter-spacing: 0.16em;
-  margin-bottom: 4px;
-}
-.heroH1 {
-  margin: 0;
-  font-family: var(--serif);
-  font-weight: 400;
-  font-size: 56px;
-  line-height: 1;
-  letter-spacing: -0.035em;
-  color: var(--ink-900);
-  font-feature-settings:
-    'liga' 0,
-    'dlig' 0,
-    'calt' 0;
-  font-variant-ligatures: none;
 }
 
 /* Metrics legacy (pre-KPI strip) */
@@ -1306,6 +1284,10 @@
   }
   .repAvg {
     font-size: 48px;
+  }
+  .hero {
+    grid-template-columns: 1fr;
+    gap: 16px;
   }
   .heroLogo {
     width: 64px;

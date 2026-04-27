@@ -112,88 +112,96 @@ export default function HeroLanding({
   const safeLogoUrl = getFranchiseImageUrl(logoUrl)
 
   return (
-    <section className={`${styles.landing} ${styles.section}`}>
+    <section
+      className={`${styles.landing} ${styles.section} ${styles.hero}`}
+      data-no-logo={safeLogoUrl ? undefined : 'true'}
+    >
       {safeLogoUrl ? (
         <Image
           src={safeLogoUrl}
           alt={name}
-          width={80}
-          height={80}
+          width={96}
+          height={96}
           className={styles.heroLogo}
           unoptimized
         />
       ) : null}
 
-      {segment ? (
-        <div className={styles.heroTags}>
-          <span className={styles.tag}>{segment}</span>
-        </div>
-      ) : null}
-
-      <div className={styles.kicker}>Ficha da rede</div>
-
-      <h1 className={styles.heroName}>{renderHeroName(name)}</h1>
-
-      {tagline ? <p className={styles.tagline}>{tagline}</p> : null}
-
-      <div className={styles.heroMeta}>
-        {franchiseStartYear ? (
-          <span>
-            <span>Fundada em</span>
-            <b>{franchiseStartYear}</b>
-          </span>
-        ) : null}
-        {sedeText ? (
-          <span>
-            <span>Sede</span>
-            <b>{sedeText}</b>
-          </span>
-        ) : null}
-        {typeof totalUnits === 'number' ? (
-          <span>
-            <b>{totalUnits.toLocaleString('pt-BR')}</b>
-            <span style={{ marginLeft: 6 }}>unidades</span>
-          </span>
-        ) : null}
-      </div>
-
-      <div className={styles.kpiStrip}>
-        <div className={styles.kpi}>
-          <div className={styles.micro}>Investimento</div>
-          <div className={styles.kpiValue}>
-            {investmentRange(minimumInvestment, maximumInvestment)}
+      <div className={styles.heroContent}>
+        {segment ? (
+          <div className={styles.heroTags}>
+            <span className={styles.tag}>{segment}</span>
           </div>
-          {/* TODO: kpiSub "Inclui royalty" — campo nao existe no DB. */}
-        </div>
-        <div className={styles.kpi}>
-          <div className={styles.micro}>Payback</div>
-          <div className={styles.kpiValue}>
-            {paybackRange(minimumReturnOnInvestment, maximumReturnOnInvestment)}
-          </div>
-        </div>
-        <div className={styles.kpi}>
-          <div className={styles.micro}>Unidades em operação</div>
-          <div className={styles.kpiValue}>
-            {typeof totalUnits === 'number'
-              ? totalUnits.toLocaleString('pt-BR')
-              : '—'}
-          </div>
-        </div>
-      </div>
+        ) : null}
 
-      <div className={styles.ctaRow}>
-        <button type="button" className={styles.cta} onClick={onCtaClick}>
-          Quero ser franqueado →
-        </button>
-        {onGhostClick ? (
-          <button
-            type="button"
-            className={`${styles.cta} ${styles.ctaGhost}`}
-            onClick={onGhostClick}
-          >
-            Como funciona
+        <div className={styles.kicker}>Ficha da rede</div>
+
+        <h1 className={styles.heroName}>{renderHeroName(name)}</h1>
+
+        {tagline ? <p className={styles.tagline}>{tagline}</p> : null}
+
+        <div className={styles.heroMeta}>
+          {franchiseStartYear ? (
+            <span>
+              <span>Fundada em</span>
+              <b>{franchiseStartYear}</b>
+            </span>
+          ) : null}
+          {sedeText ? (
+            <span>
+              <span>Sede</span>
+              <b>{sedeText}</b>
+            </span>
+          ) : null}
+          {typeof totalUnits === 'number' ? (
+            <span>
+              <b>{totalUnits.toLocaleString('pt-BR')}</b>
+              <span style={{ marginLeft: 6 }}>unidades</span>
+            </span>
+          ) : null}
+        </div>
+
+        <div className={styles.kpiStrip}>
+          <div className={styles.kpi}>
+            <div className={styles.micro}>Investimento</div>
+            <div className={styles.kpiValue}>
+              {investmentRange(minimumInvestment, maximumInvestment)}
+            </div>
+            {/* TODO: kpiSub "Inclui royalty" — campo nao existe no DB. */}
+          </div>
+          <div className={styles.kpi}>
+            <div className={styles.micro}>Payback</div>
+            <div className={styles.kpiValue}>
+              {paybackRange(
+                minimumReturnOnInvestment,
+                maximumReturnOnInvestment,
+              )}
+            </div>
+          </div>
+          <div className={styles.kpi}>
+            <div className={styles.micro}>Unidades em operação</div>
+            <div className={styles.kpiValue}>
+              {typeof totalUnits === 'number'
+                ? totalUnits.toLocaleString('pt-BR')
+                : '—'}
+            </div>
+          </div>
+        </div>
+
+        <div className={styles.ctaRow}>
+          <button type="button" className={styles.cta} onClick={onCtaClick}>
+            Quero ser franqueado →
           </button>
-        ) : null}
+          {onGhostClick ? (
+            <button
+              type="button"
+              className={`${styles.cta} ${styles.ctaGhost}`}
+              onClick={onGhostClick}
+            >
+              Como funciona
+            </button>
+          ) : null}
+        </div>
       </div>
     </section>
   )
