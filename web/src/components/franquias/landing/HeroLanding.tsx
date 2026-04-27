@@ -20,8 +20,6 @@ interface HeroLandingProps {
   maximumReturnOnInvestment?: number | null
   /** CTA primario "Quero ser franqueado →" rola pro lead form. */
   onCtaClick?: () => void
-  /** CTA ghost "Como funciona" rola pro stepper. Opcional. */
-  onGhostClick?: () => void
 }
 
 function formatBRL(n?: number | null): string | null {
@@ -100,7 +98,6 @@ export default function HeroLanding({
   minimumReturnOnInvestment,
   maximumReturnOnInvestment,
   onCtaClick,
-  onGhostClick,
 }: HeroLandingProps) {
   const sedeText =
     headquarter && headquarterState
@@ -190,15 +187,6 @@ export default function HeroLanding({
         <button type="button" className={styles.cta} onClick={onCtaClick}>
           Quero ser franqueado →
         </button>
-        {onGhostClick ? (
-          <button
-            type="button"
-            className={`${styles.cta} ${styles.ctaGhost}`}
-            onClick={onGhostClick}
-          >
-            Como funciona
-          </button>
-        ) : null}
       </div>
     </section>
   )

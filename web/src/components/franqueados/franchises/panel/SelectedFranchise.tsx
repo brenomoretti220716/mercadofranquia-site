@@ -70,7 +70,6 @@ export default function SelectedFranchise({
   const searchTerm = searchParams.get('search') || ''
 
   const leadSectionRef = useRef<HTMLDivElement>(null)
-  const processStepperRef = useRef<HTMLDivElement>(null)
 
   const {
     isByDesc,
@@ -143,13 +142,6 @@ export default function SelectedFranchise({
     })
   }
 
-  const scrollToStepper = () => {
-    processStepperRef.current?.scrollIntoView({
-      behavior: 'smooth',
-      block: 'start',
-    })
-  }
-
   return (
     <div className={`${landingStyles.landing} ${landingStyles.page}`}>
       {/* 1. Banner full-width */}
@@ -173,7 +165,6 @@ export default function SelectedFranchise({
         minimumReturnOnInvestment={franchise.minimumReturnOnInvestment}
         maximumReturnOnInvestment={franchise.maximumReturnOnInvestment}
         onCtaClick={scrollToLead}
-        onGhostClick={scrollToStepper}
       />
 
       {/* 3. Strip de selos (placeholder) */}
@@ -201,8 +192,7 @@ export default function SelectedFranchise({
                                 emocional.
           7. Vídeo            — experiencia emocional / demo da marca.
           8. Perfil ideal     — "eu sirvo?" antes de "como entro?".
-          9. Como funciona    — processo de entrada (target do CTA
-                                ghost do Hero via processStepperRef).
+          9. Como funciona    — processo de entrada.
          10. Galeria          — confirmacao visual depois do processo,
                                 antes da reputacao.
       */}
@@ -219,10 +209,8 @@ export default function SelectedFranchise({
       {/* 8. Perfil ideal */}
       <IdealProfileLanding text={franchise.idealFranchiseeProfile} />
 
-      {/* 9. Como funciona — target do CTA ghost do Hero */}
-      <div ref={processStepperRef}>
-        <ProcessStepperLanding steps={franchise.processSteps} />
-      </div>
+      {/* 9. Como funciona */}
+      <ProcessStepperLanding steps={franchise.processSteps} />
 
       {/* 10. Galeria */}
       <GaleriaLanding urls={normalizeGalleryUrls(franchise.galleryUrls)} />
