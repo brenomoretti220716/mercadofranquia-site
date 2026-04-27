@@ -183,6 +183,8 @@ BUSINESS_MODELS = [
         # Fatia 1.8.1 segunda migration — investment total + payback.
         "investment": 342000,
         "payback": 24,
+        # Fatia 1.8.1 terceira migration — rentabilidade % sobre faturamento.
+        "profitability": 18.0,
     },
     {
         "name": "Container",
@@ -199,6 +201,7 @@ BUSINESS_MODELS = [
         "calculationBaseAdFee": "Faturamento bruto",
         "investment": 205000,
         "payback": 22,
+        "profitability": 22.0,
     },
     {
         "name": "Quiosque",
@@ -215,6 +218,7 @@ BUSINESS_MODELS = [
         "calculationBaseAdFee": "Faturamento bruto",
         "investment": 139000,
         "payback": 18,
+        "profitability": 25.0,
     },
 ]
 
@@ -414,6 +418,7 @@ def _ensure_business_models(cur, franchise_id: str) -> None:
             "calculationBaseAdFee": bm["calculationBaseAdFee"],
             "investment": bm["investment"],
             "payback": bm["payback"],
+            "profitability": bm["profitability"],
         }
         if row is None:
             bm_id = _deterministic_id(f"{franchise_id}-bm-{bm['name']}")
@@ -425,7 +430,7 @@ def _ensure_business_models(cur, franchise_id: str) -> None:
                     "franchiseFee", royalties, "advertisingFee",
                     "workingCapital", "setupCapital", "averageMonthlyRevenue",
                     "storeArea", "calculationBaseRoyaltie",
-                    "calculationBaseAdFee", investment, payback,
+                    "calculationBaseAdFee", investment, payback, profitability,
                     "createdAt", "updatedAt"
                 )
                 VALUES (
@@ -436,6 +441,7 @@ def _ensure_business_models(cur, franchise_id: str) -> None:
                     %(averageMonthlyRevenue)s,
                     %(storeArea)s, %(calculationBaseRoyaltie)s,
                     %(calculationBaseAdFee)s, %(investment)s, %(payback)s,
+                    %(profitability)s,
                     NOW(), NOW()
                 )
                 """,
@@ -460,6 +466,7 @@ def _ensure_business_models(cur, franchise_id: str) -> None:
                     "calculationBaseAdFee" = %(calculationBaseAdFee)s,
                     investment = %(investment)s,
                     payback = %(payback)s,
+                    profitability = %(profitability)s,
                     "updatedAt" = NOW()
                 WHERE id = %(id)s
                 """,
