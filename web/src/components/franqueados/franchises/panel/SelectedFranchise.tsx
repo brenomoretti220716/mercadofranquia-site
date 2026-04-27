@@ -192,22 +192,37 @@ export default function SelectedFranchise({
         storeArea={franchise.storeArea}
       />
 
-      {/* 5. Sobre a marca (description) — metas de ano vivem no heroMeta */}
+      {/*
+        Ordem dos blocos a partir daqui segue o funil de decisao do
+        investidor (definido na Fatia 1.8):
+          5. Diferenciais     — responde "porque vale o preco?" logo
+                                apos os Modelos, antes do contexto.
+          6. Sobre a marca    — contexto editorial antes da experiencia
+                                emocional.
+          7. Vídeo            — experiencia emocional / demo da marca.
+          8. Perfil ideal     — "eu sirvo?" antes de "como entro?".
+          9. Como funciona    — processo de entrada (target do CTA
+                                ghost do Hero via processStepperRef).
+         10. Galeria          — confirmacao visual depois do processo,
+                                antes da reputacao.
+      */}
+
+      {/* 5. Diferenciais */}
+      <DifferentialsLanding items={franchise.differentials} />
+
+      {/* 6. Sobre a marca (description) — metas de ano vivem no heroMeta */}
       <SobreLanding description={franchise.description} />
 
-      {/* 6. Conheca a marca (video) */}
+      {/* 7. Conheca a marca (video) */}
       <VideoLanding videoUrls={normalizeGalleryUrls(franchise.videoUrls)} />
 
-      {/* 7. Como funciona — target do CTA ghost do Hero */}
+      {/* 8. Perfil ideal */}
+      <IdealProfileLanding text={franchise.idealFranchiseeProfile} />
+
+      {/* 9. Como funciona — target do CTA ghost do Hero */}
       <div ref={processStepperRef}>
         <ProcessStepperLanding steps={franchise.processSteps} />
       </div>
-
-      {/* 8. Diferenciais */}
-      <DifferentialsLanding items={franchise.differentials} />
-
-      {/* 9. Perfil ideal */}
-      <IdealProfileLanding text={franchise.idealFranchiseeProfile} />
 
       {/* 10. Galeria */}
       <GaleriaLanding urls={normalizeGalleryUrls(franchise.galleryUrls)} />
