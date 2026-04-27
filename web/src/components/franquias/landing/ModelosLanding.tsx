@@ -3,19 +3,20 @@ import styles from './landing.module.css'
 
 interface ModelosLandingProps {
   models?: BusinessModel[] | null
-  // Cenário A (sem modelos) — agregados da Franchise pra ficha tecnica.
-  // Cenário B (com modelos) le diretamente de cada BusinessModel,
-  // ignorando esses props.
+  // Cenário A (sem modelos OU modelos sem dado nas 5 metricas-chave) —
+  // agregados da Franchise pra ficha tecnica.
+  // Cenário B (com modelos populados) le diretamente de cada
+  // BusinessModel, ignorando esses props.
   minimumInvestment?: number | null
   maximumInvestment?: number | null
   minimumReturnOnInvestment?: number | null
   maximumReturnOnInvestment?: number | null
   franchiseFee?: number | null
-  royalties?: number | null // %
-  advertisingFee?: number | null // %
+  royalties?: number | null
+  advertisingFee?: number | null
   workingCapital?: number | null
   setupCapital?: number | null
-  storeArea?: number | null // m²
+  storeArea?: number | null
 }
 
 function formatBRL(n?: number | null): string | null {
@@ -60,49 +61,40 @@ function isPresent(v: number | null | undefined): v is number {
 interface RowSpec {
   label: string
   value: string
-  primary?: boolean
 }
 
 /**
- * Monta a sequencia de rows pra um BusinessModel — so as linhas com
- * dado entram. Order: 4 metricas operacionais primary (investment,
- * payback, faturamento, area) + 5 financeiras secundarias (taxa de
- * franquia, royalties, propaganda, capital de giro, capital de
- * instalacao). Cards com todos os campos null entregam array vazio
- * — caller decide se renderiza o card mesmo assim ou pula.
+ * Constroi as 5 metricas-chave de um BusinessModel — so as linhas com
+ * dado entram. Ordem fixa:
+ *   1. Investimento
+ *   2. Payback
+ *   3. Faturamento medio
+ *   4. Rentabilidade media
+ *   5. Area
+ *
+ * Os outros campos do BusinessModel (taxa franquia, royalties, propaganda,
+ * capital giro, capital instalacao) ficam ocultos da pagina publica nesta
+ * fatia. Vao alimentar o sistema de ranges agregados na Fatia 1.9 (ver
+ * HANDOFF.md). Continuam sendo coletados pelo editor.
  */
 function buildModelRows(m: BusinessModel): RowSpec[] {
   const rows: RowSpec[] = []
   const inv = formatBRL(m.investment)
-  if (inv) rows.push({ label: 'Investimento', value: inv, primary: true })
+  if (inv) rows.push({ label: 'Investimento', value: inv })
   if (isPresent(m.payback))
-    rows.push({ label: 'Payback', value: `${m.payback} meses`, primary: true })
+    rows.push({ label: 'Payback', value: `${m.payback} meses` })
   const rev = formatBRL(m.averageMonthlyRevenue)
-  if (rev)
-    rows.push({
-      label: 'Faturamento médio',
-      value: `${rev}/mês`,
-      primary: true,
-    })
+  if (rev) rows.push({ label: 'Faturamento médio', value: `${rev}/mês` })
+  const prof = formatPercent(m.profitability)
+  if (prof) rows.push({ label: 'Rentabilidade média', value: prof })
   if (isPresent(m.storeArea))
-    rows.push({ label: 'Área', value: `${m.storeArea}m²`, primary: true })
-
-  const fee = formatBRL(m.franchiseFee)
-  if (fee) rows.push({ label: 'Taxa de franquia', value: fee })
-  const royaltiesText = formatPercent(m.royalties)
-  if (royaltiesText) rows.push({ label: 'Royalties', value: royaltiesText })
-  const adFeeText = formatPercent(m.advertisingFee)
-  if (adFeeText) rows.push({ label: 'Taxa de propaganda', value: adFeeText })
-  const wc = formatBRL(m.workingCapital)
-  if (wc) rows.push({ label: 'Capital de giro', value: wc })
-  const sc = formatBRL(m.setupCapital)
-  if (sc) rows.push({ label: 'Capital de instalação', value: sc })
-
+    rows.push({ label: 'Área', value: `${m.storeArea}m²` })
   return rows
 }
 
 function ModelCard({ model }: { model: BusinessModel }) {
   const rows = buildModelRows(model)
+  if (rows.length === 0) return null
   return (
     <article className={styles.modelCard}>
       <header className={styles.modelCardHead}>
@@ -110,14 +102,7 @@ function ModelCard({ model }: { model: BusinessModel }) {
       </header>
       <dl className={styles.modelCardData}>
         {rows.map((r) => (
-          <div
-            key={r.label}
-            className={
-              r.primary
-                ? `${styles.modelRow} ${styles.modelRowPrimary}`
-                : styles.modelRow
-            }
-          >
+          <div key={r.label} className={styles.modelRow}>
             <dt>{r.label}</dt>
             <dd>{r.value}</dd>
           </div>
@@ -130,20 +115,20 @@ function ModelCard({ model }: { model: BusinessModel }) {
 /**
  * Bloco adaptativo de modelos / investimento.
  *
- * Cenário A — sem businessModels: ficha tecnica em tabela editorial
- *   (kicker "Investimento" + h2 "Como investir nessa rede" com 'rede'
- *   em italic accent + linhas label-mono / value-serif). So renderiza
- *   linhas com dado.
+ * Cenário A — sem businessModels OU modelos todos sem as 5 metricas-chave
+ *   populadas: ficha tecnica em tabela editorial usando os agregados da
+ *   Franchise (kicker "Investimento" + h2 "Como investir nessa rede"
+ *   com 'rede' em italic accent + linhas label-mono / value-serif).
+ *   So renderiza linhas com dado.
  *
- * Cenário B — com businessModels: cards bege paper-warm flutuando com
- *   gap 16px, sem bordas externas. Cada card tem 4 metricas primary
- *   (Investimento, Payback, Faturamento, Area) + ate 5 financeiras
- *   secundarias (Taxa de franquia, Royalties, Propaganda, Capital de
- *   giro, Capital de instalacao). Footer de royalties globais NAO
- *   existe mais — cada card tem royalties proprio.
+ * Cenário B — modelos com pelo menos 1 das 5 metricas-chave populada:
+ *   cards bege paper-warm flutuando com gap 16px, sem bordas externas.
+ *   Cada card mostra ate 5 metricas (Investimento, Payback, Faturamento
+ *   medio, Rentabilidade media, Area). data-count no grid faz layout
+ *   adaptativo: 1 modelo full-width, 2 em duas cols, 3+ em tres cols.
  *
- * Some o bloco inteiro quando nao ha modelos E nenhum campo financeiro
- * tem dado.
+ * Some o bloco inteiro quando nao ha modelos populados E nenhum agregado
+ * da Franchise tem dado.
  */
 export default function ModelosLanding({
   models,
@@ -158,7 +143,10 @@ export default function ModelosLanding({
   setupCapital,
   storeArea,
 }: ModelosLandingProps) {
-  const hasModels = models !== null && models !== undefined && models.length > 0
+  const visibleModels = (models ?? []).filter(
+    (m) => buildModelRows(m).length > 0,
+  )
+  const hasVisibleModels = visibleModels.length > 0
 
   const hasAnyFinancial =
     isPresent(minimumInvestment) ||
@@ -171,9 +159,9 @@ export default function ModelosLanding({
     isPresent(workingCapital) ||
     isPresent(storeArea)
 
-  if (!hasModels && !hasAnyFinancial) return null
+  if (!hasVisibleModels && !hasAnyFinancial) return null
 
-  if (!hasModels) {
+  if (!hasVisibleModels) {
     // Cenário A: ficha tecnica
     return (
       <section className={`${styles.landing} ${styles.section}`}>
@@ -249,17 +237,18 @@ export default function ModelosLanding({
     )
   }
 
-  // Cenário B: cards bege flutuando com dataset financeiro per-card.
-  // Footer de royalties globais foi dropado — cada card carrega o
-  // proprio royalties no dataset secundario.
+  // Cenário B: cards bege flutuando com 5 metricas-chave per modelo.
+  // data-count cap em 3: 1 modelo = full, 2 = meio, 3+ = tres cols.
+  const dataCount = Math.min(visibleModels.length, 3)
+
   return (
     <section className={`${styles.landing} ${styles.section}`}>
       <div className={styles.kicker}>Modelos</div>
       <h2 className={styles.heading}>
         Modelos <span className={styles.accent}>disponíveis</span>
       </h2>
-      <div className={styles.modelsGrid}>
-        {models.map((m) => (
+      <div className={styles.modelsGrid} data-count={dataCount}>
+        {visibleModels.map((m) => (
           <ModelCard key={m.id} model={m} />
         ))}
       </div>

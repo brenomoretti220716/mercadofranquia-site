@@ -546,13 +546,23 @@
 
 /* Cenário B — cards bege flutuando com gap, sem bordas externas.
    Cada card eh autonomo (background paper-warm), separados por gap 16px.
-   A unica linha dentro do card eh o divisor entre nome e dataset
-   (modelCardHead) e entre as 4 metricas primarias e as 5 secundarias
-   (regra .modelRowPrimary + .modelRow:not(.modelRowPrimary)). */
+   Mostram 5 metricas-chave (Investimento, Payback, Faturamento medio,
+   Rentabilidade media, Area). Os outros campos do BusinessModel
+   continuam no DB mas ocultos da pagina publica nesta fatia (Fatia 1.9
+   vai usa-los pra ranges agregados — ver HANDOFF.md).
+
+   Layout adaptativo via data-count: 1 modelo full-width, 2 em duas
+   colunas, 3+ em tres (Math.min(count, 3) no componente). */
 .modelsGrid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 16px;
+}
+.modelsGrid[data-count='1'] {
+  grid-template-columns: 1fr;
+}
+.modelsGrid[data-count='2'] {
+  grid-template-columns: repeat(2, 1fr);
 }
 .modelCard {
   padding: 28px 24px;
@@ -594,13 +604,6 @@
 .modelRow:last-child {
   border-bottom: 0;
 }
-/* Primeira nao-primary depois das primary ganha o divisor mais forte —
-   separa as 4 metricas operacionais das 5 financeiras. */
-.modelRowPrimary + .modelRow:not(.modelRowPrimary) {
-  margin-top: 6px;
-  padding-top: 14px;
-  border-top: 1px solid var(--ink-300);
-}
 .modelRow dt {
   margin: 0;
   font-family: var(--mono);
@@ -613,7 +616,7 @@
 .modelRow dd {
   margin: 0;
   font-family: var(--serif);
-  font-size: 17px;
+  font-size: 19px;
   font-variant-numeric: tabular-nums;
   text-align: right;
   color: var(--ink-900);
@@ -622,9 +625,6 @@
     'dlig' 0,
     'calt' 0;
   font-variant-ligatures: none;
-}
-.modelRowPrimary dd {
-  font-size: 19px;
 }
 
 /* Tabela editorial "Como investir nessa rede" (Cenário A) — usada
