@@ -235,6 +235,8 @@ def serialize_franchise(
         "setupCapital": _num(f.setupCapital),
         "workingCapital": _num(f.workingCapital),
         "storeArea": f.storeArea,
+        "calculationBaseRoyaltie": f.calculationBaseRoyaltie,
+        "calculationBaseAdFee": f.calculationBaseAdFee,
         "videoUrls": parse_video_urls(f.videoUrl),
         "thumbnailUrl": f.thumbnailUrl,
         "galleryUrls": parse_gallery_urls(f.galleryUrls),
