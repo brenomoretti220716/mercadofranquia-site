@@ -585,11 +585,25 @@ def get_franchise_ranking(
             status_code=status.HTTP_404_NOT_FOUND, detail="Franchise not found"
         )
 
-    # Load the full franchise for the current one.
+    # Load the full franchise for the current one — espelha as relacoes
+    # do GET /franchises/{slug} pra o payload trazer businessModels +
+    # reviews + responses + author. Sem isso, o serializer descarta as
+    # relacoes (lazy load + sessao fechada) e o ModelosLanding cai no
+    # Cenário A mesmo quando ha BusinessModels no DB.
     current = db.scalar(
-        select(Franchise).where(Franchise.id == ordered[idx][0])
+        select(Franchise)
+        .where(Franchise.id == ordered[idx][0])
+        .options(
+            selectinload(Franchise.contact),
+            selectinload(Franchise.owner),
+            selectinload(Franchise.business_models),
+            selectinload(Franchise.reviews).selectinload(Review.author),
+            selectinload(Franchise.reviews).selectinload(Review.responses),
+        )
     )
     assert current is not None
+
+    response_authors = _load_response_authors(db, list(current.reviews or []))
 
     def _neighbor(offset: int) -> Optional[str]:
         j = idx + offset
@@ -600,7 +614,11 @@ def get_franchise_ranking(
     return {
         "data": {
             "franchiseWithRanking": {
-                **serialize_franchise(current),
+                **serialize_franchise(
+                    current,
+                    include_relations=True,
+                    response_authors=response_authors,
+                ),
                 "rankingPosition": idx + 1,
             },
             "nextFranchiseWithRanking": _neighbor(1),
