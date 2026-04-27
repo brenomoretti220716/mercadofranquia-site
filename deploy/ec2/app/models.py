@@ -543,6 +543,10 @@ class BusinessModel(Base):
     investment: Mapped[Optional[Decimal]] = mapped_column(Numeric(15, 2))
     payback: Mapped[Optional[int]] = mapped_column()
 
+    # Fatia 1.8.1 (alembic b5a2c91e7f4d) — rentabilidade media em % sobre
+    # faturamento. Mesmo padrao de Numeric(5,2) de royalties/advertisingFee.
+    profitability: Mapped[Optional[Decimal]] = mapped_column(Numeric(5, 2))
+
     franchise: Mapped["Franchise"] = relationship(back_populates="business_models")
 
 
