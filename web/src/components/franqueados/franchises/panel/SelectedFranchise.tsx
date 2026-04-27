@@ -1,6 +1,5 @@
 'use client'
 
-import dynamic from 'next/dynamic'
 import { useParams, useRouter, useSearchParams } from 'next/navigation'
 import { useRef } from 'react'
 
@@ -10,7 +9,6 @@ import {
 } from '@/src/contexts/RankingContext'
 import { useFranchiseRanking } from '@/src/hooks/franchises/useRanking'
 
-import { CommentSectionSkeleton } from '@/src/components/ui/skeletons/CommentSectionSkeleton'
 import BannerLanding from '@/src/components/franquias/landing/BannerLanding'
 import HeroLanding from '@/src/components/franquias/landing/HeroLanding'
 import SelosStripLanding from '@/src/components/franquias/landing/SelosStripLanding'
@@ -21,6 +19,7 @@ import ProcessStepperLanding from '@/src/components/franquias/landing/ProcessSte
 import DifferentialsLanding from '@/src/components/franquias/landing/DifferentialsLanding'
 import IdealProfileLanding from '@/src/components/franquias/landing/IdealProfileLanding'
 import GaleriaLanding from '@/src/components/franquias/landing/GaleriaLanding'
+import ReputacaoLanding from '@/src/components/franquias/landing/ReputacaoLanding'
 import LeadFormLanding from '@/src/components/franquias/landing/LeadFormLanding'
 import ContactFooterLanding from '@/src/components/franquias/landing/ContactFooterLanding'
 import landingStyles from '@/src/components/franquias/landing/landing.module.css'
@@ -29,13 +28,6 @@ import { normalizeGalleryUrls } from '@/src/utils/franchiseImageUtils'
 interface SelectedFranchiseProps {
   selectedFranchise?: string
 }
-
-const loadCommentPanel = () =>
-  import('@/src/components/franqueados/franchises/comments/CommentPanel')
-
-const CommentPanel = dynamic(loadCommentPanel, {
-  loading: () => <CommentSectionSkeleton />,
-})
 
 /**
  * Pagina publica da franquia (rota /ranking/[franquia]).
@@ -215,20 +207,15 @@ export default function SelectedFranchise({
       {/* 10. Galeria */}
       <GaleriaLanding urls={normalizeGalleryUrls(franchise.galleryUrls)} />
 
-      {/* 11. Reputacao — bloco legado de Reviews encapsulado em <section> v9 */}
-      {franchiseSlug && (
-        <section
-          className={`${landingStyles.landing} ${landingStyles.section}`}
-        >
-          <h2 className={landingStyles.heading}>
-            <span className={landingStyles.accent}>Reputação</span>
-          </h2>
-          <CommentPanel
-            franchiseId={franchiseSlug}
-            isReview={franchise.isReview}
-          />
-        </section>
-      )}
+      {/* 11. Reputacao — bloco editorial v10 (substitui CommentPanel
+          legacy). Mostra ate 5 reviews + filtro star bar + link pra
+          pagina dedicada (Fatia 1.10). */}
+      <ReputacaoLanding
+        reviews={franchise.reviews}
+        averageRating={franchise.averageRating}
+        reviewCount={franchise.reviewCount}
+        franchiseSlug={franchiseSlug}
+      />
 
       {/* 12. Quero saber mais — secao dark, target do CTA do Hero */}
       <div ref={leadSectionRef}>

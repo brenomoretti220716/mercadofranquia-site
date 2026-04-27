@@ -206,15 +206,26 @@
   background: var(--accent-700);
   border-color: var(--accent-700);
 }
+/* CTA ghost — botao standalone (nao mais modifier de .cta).
+   Repropositado pra "Ver todas as N avaliacoes →" no bloco Reputacao
+   apos remocao do CTA ghost do Hero (commit 56d17ed). */
 .ctaGhost {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 18px;
   background: transparent;
-  border-color: var(--ink-900);
+  border: 1px solid var(--ink-900);
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 600;
   color: var(--ink-900);
+  cursor: pointer;
+  text-decoration: none;
 }
 .ctaGhost:hover {
   background: var(--ink-900);
   color: var(--paper-warm);
-  border-color: var(--ink-900);
 }
 .ctaBlock {
   display: block;
@@ -926,44 +937,53 @@
   font-weight: 700;
 }
 
-.repFilters {
+/* Filtro star bar — 6 celulas (Todas + 5/4/3/2/1 estrelas). Active vira
+   inverted dark; disabled fica opacity 0.3. Substitui .repFilters/.repSort
+   antigos. */
+.starbar {
   display: flex;
-  gap: 0;
-  flex-wrap: wrap;
-  border-bottom: var(--rule-strong);
+  align-items: stretch;
+  border-bottom: 1px solid var(--ink-300);
 }
-.repFilter {
-  padding: 12px 18px;
+.starbarCell {
+  flex: 1;
+  padding: 14px 8px;
   background: transparent;
-  border: none;
-  border-bottom: 2px solid transparent;
-  font-family: var(--mono);
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--ink-800);
-  white-space: nowrap;
+  border: 0;
+  border-right: 1px solid var(--ink-300);
+  text-align: center;
   cursor: pointer;
+  transition: background 0.1s;
 }
-.repFilterActive {
-  color: var(--ink-900);
-  border-bottom-color: var(--accent-600);
+.starbarCell:last-child {
+  border-right: 0;
 }
-.repFilterDisabled {
-  color: var(--ink-500);
+.starbarCell:hover:not(.starbarCellDisabled):not(.starbarCellActive) {
+  background: var(--paper-warm);
+}
+.starbarCellActive {
+  background: var(--ink-900);
+  color: var(--paper-warm);
+}
+.starbarCellDisabled {
+  opacity: 0.3;
   cursor: not-allowed;
 }
-.repSort {
-  margin-left: auto;
-  align-self: center;
-  padding-right: 14px;
+.starbarRating {
+  margin-bottom: 4px;
   font-family: var(--mono);
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.14em;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--ink-800);
+  color: inherit;
+}
+.starbarCount {
+  font-family: var(--serif);
+  font-size: 19px;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  color: inherit;
 }
 
 .repList {
@@ -971,7 +991,7 @@
   flex-direction: column;
 }
 .repItem {
-  padding: 20px 0;
+  padding: 22px 0;
   border-bottom: var(--rule);
 }
 .repItem:last-child {
@@ -1001,7 +1021,7 @@
     'calt' 0;
   font-variant-ligatures: none;
 }
-.repAnon {
+.repBadgeAnon {
   padding: 2px 8px;
   border: 1px solid var(--ink-800);
   font-family: var(--mono);
@@ -1031,7 +1051,7 @@
   max-width: 760px;
   margin: 14px 0 0;
   padding: 14px 18px;
-  background: var(--paper-2);
+  background: var(--paper-warm);
   border-left: 3px solid var(--accent-600);
 }
 .repResponseLabel {
@@ -1049,17 +1069,21 @@
   color: var(--ink-800);
 }
 
-.repPag {
+/* Footer do bloco Reputacao — counter de quantas estao mostrando + grupo
+   de CTAs (link "Ver todas" + "+ Avaliar"). Substitui .repPag/pageBtn*
+   antigos. Pagina dedicada de avaliacoes (Fatia 1.10) tem paginacao
+   completa. */
+.repActions {
   display: flex;
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 12px;
   margin-top: 8px;
-  padding: 20px 0 0;
-  border-top: var(--rule-strong);
+  padding: 24px 0 0;
+  border-top: 1px solid var(--ink-500);
 }
-.repPagInfo {
+.repCounter {
   font-family: var(--mono);
   font-size: 11px;
   font-weight: 600;
@@ -1067,30 +1091,30 @@
   text-transform: uppercase;
   color: var(--ink-800);
 }
-.repPagControls {
-  display: flex;
-  gap: 4px;
-}
-.pageBtn {
-  min-width: 30px;
-  padding: 7px 11px;
-  background: transparent;
-  border: 1px solid var(--ink-500);
-  font-family: var(--mono);
-  font-size: 11px;
-  font-weight: 600;
-  text-align: center;
+.repCounter b {
   color: var(--ink-900);
+  font-weight: 700;
+}
+.repCtaGroup {
+  display: flex;
+  gap: 10px;
+}
+.ctaAdd {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 18px;
+  background: transparent;
+  border: 1px solid var(--ink-300);
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink-800);
   cursor: pointer;
 }
-.pageBtnActive {
-  background: var(--ink-900);
+.ctaAdd:hover {
   border-color: var(--ink-900);
-  color: var(--paper-warm);
-}
-.pageBtnDisabled {
-  color: var(--ink-500);
-  cursor: not-allowed;
+  color: var(--ink-900);
 }
 
 /* ============================================================
