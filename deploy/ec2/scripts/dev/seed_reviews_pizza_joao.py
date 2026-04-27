@@ -103,9 +103,10 @@ FRANCHISE_FIELDS = {
     "calculationBaseAdFee": "Faturamento bruto",
     # Midias — placeholders coloridos (placehold.co) ate assets reais.
     "logoUrl": "https://placehold.co/200x200/E8552B/FFFFFF?text=PJ",
-    "bannerUrl": (
-        "https://placehold.co/1920x600/0B0B0D/E8552B?text=Pizza+do+Jo%C3%A3o"
-    ),
+    # Placeholder sobrio — fundo dark uniforme sem texto, pra nao
+    # competir visualmente com o h1 96px do Hero. text=+ resolve um
+    # espaco em branco no placehold.co.
+    "bannerUrl": "https://placehold.co/1920x600/0B0B0D/2A2A31?text=+",
     "thumbnailUrl": (
         "https://placehold.co/600x400/E3DED1/0B0B0D?text=Pizza+do+Jo%C3%A3o"
     ),
