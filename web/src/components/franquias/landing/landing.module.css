@@ -279,12 +279,12 @@
   display: flex;
   gap: 8px;
   flex-wrap: wrap;
-  margin-bottom: 20px;
+  margin-bottom: 14px;
 }
 
 .heroName {
-  margin: 14px 0 18px;
-  max-width: 720px;
+  flex: 1;
+  margin: 0;
   font-family: var(--serif);
   font-weight: 400;
   font-size: 96px;
@@ -296,6 +296,14 @@
     'dlig' 0,
     'calt' 0;
   font-variant-ligatures: none;
+}
+/* Linha horizontal logo + h1 alinhados pelo centro vertical. Logo 96px
+   e h1 96px (line-height 0.95) ficam praticamente da mesma altura. */
+.heroNameRow {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  margin-bottom: 18px;
 }
 .heroName em {
   font-style: italic;
@@ -369,17 +377,9 @@
    Hero LEGACY — alias temporario ate Fase 3.2 reescrever HeroLanding
    ============================================================ */
 
-/* Hero v10 — grid 2 cols (logo + content). Quando logoUrl null, o
-   componente seta data-no-logo e o grid colapsa pra 1 col. */
-.hero {
-  display: grid;
-  grid-template-columns: auto 1fr;
-  gap: 28px;
-  align-items: start;
-}
-.hero[data-no-logo='true'] {
-  grid-template-columns: 1fr;
-}
+/* Logo da franquia no Hero v10 — 96x96 paper-warm com borda ink-300.
+   Posicionado dentro de .heroNameRow (flex), alinhado pelo centro
+   vertical com o h1. Some quando logoUrl null. */
 .heroLogo {
   display: block;
   width: 96px;
@@ -388,12 +388,6 @@
   border: 1px solid var(--ink-300);
   object-fit: contain;
   flex-shrink: 0;
-}
-.heroContent {
-  /* Coluna direita do hero — segura toda a hierarquia textual + KPI
-     strip + CTAs. min-width: 0 evita grid blowout em viewports
-     estreitas. */
-  min-width: 0;
 }
 
 /* Metrics legacy (pre-KPI strip) */
@@ -1285,8 +1279,9 @@
   .repAvg {
     font-size: 48px;
   }
-  .hero {
-    grid-template-columns: 1fr;
+  .heroNameRow {
+    flex-direction: column;
+    align-items: flex-start;
     gap: 16px;
   }
   .heroLogo {
