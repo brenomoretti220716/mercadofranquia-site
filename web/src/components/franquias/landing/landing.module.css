@@ -604,6 +604,67 @@
   font-variant-ligatures: none;
 }
 
+/* Footer dos cards (Cenário B) — royalties globais abaixo do grid. */
+.modelsFooter {
+  margin-top: 16px;
+  padding: 16px 24px;
+  border-top: var(--rule);
+  border-bottom: var(--rule);
+}
+.modelsFooterLabel {
+  margin-bottom: 6px;
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-800);
+}
+.modelsFooterText {
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--ink-900);
+}
+
+/* Tabela editorial "Como investir nessa rede" (Cenário A) — usada
+   quando a franquia nao tem businessModels mas tem dados financeiros. */
+.investimentoTable {
+  display: flex;
+  flex-direction: column;
+  border-top: var(--rule-strong);
+}
+.investimentoRow {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 0;
+  border-bottom: var(--rule);
+}
+.investimentoLabel {
+  flex-shrink: 0;
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-800);
+}
+.investimentoValue {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: 17px;
+  letter-spacing: -0.015em;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  color: var(--ink-900);
+  font-feature-settings:
+    'liga' 0,
+    'dlig' 0,
+    'calt' 0;
+  font-variant-ligatures: none;
+}
+
 /* Aliases legados (.modelLabel/.modelValue) — sai em Fase 3.3 */
 .modelLabel {
   display: block;

@@ -179,17 +179,19 @@ export default function SelectedFranchise({
       {/* 3. Strip de selos (placeholder) */}
       <SelosStripLanding selos={null} />
 
-      {/* 4. Modelos disponiveis */}
+      {/* 4. Modelos disponiveis (adaptativo: ficha tecnica se 0 modelos,
+          cards + royalties globais se >=1) */}
       <ModelosLanding
         models={franchise.businessModels}
-        aggregateInvestment={{
-          min: franchise.minimumInvestment,
-          max: franchise.maximumInvestment,
-        }}
-        aggregatePayback={{
-          min: franchise.minimumReturnOnInvestment,
-          max: franchise.maximumReturnOnInvestment,
-        }}
+        minimumInvestment={franchise.minimumInvestment}
+        maximumInvestment={franchise.maximumInvestment}
+        minimumReturnOnInvestment={franchise.minimumReturnOnInvestment}
+        maximumReturnOnInvestment={franchise.maximumReturnOnInvestment}
+        franchiseFee={franchise.franchiseFee}
+        royalties={franchise.royalties}
+        advertisingFee={franchise.advertisingFee}
+        workingCapital={franchise.workingCapital}
+        storeArea={franchise.storeArea}
       />
 
       {/* 5. Sobre a marca (description + metas) */}
