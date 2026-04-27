@@ -88,7 +88,23 @@ FRANCHISE_FIELDS = {
     # Numeric(15,2) em REAIS — formatBRL no frontend faz n / 1000.
     "minimumInvestment": 139000,
     "maximumInvestment": 342000,
+    # Midias — placeholders coloridos (placehold.co) ate assets reais.
+    "logoUrl": "https://placehold.co/200x200/E8552B/FFFFFF?text=PJ",
+    "bannerUrl": (
+        "https://placehold.co/1920x600/0B0B0D/E8552B?text=Pizza+do+Jo%C3%A3o"
+    ),
+    "thumbnailUrl": (
+        "https://placehold.co/600x400/E3DED1/0B0B0D?text=Pizza+do+Jo%C3%A3o"
+    ),
 }
+
+
+# Franchise.videoUrl eh TEXT JSON-encoded — serializer parse_video_urls
+# decodifica e expoe como videoUrls (plural) no payload da API. Stash como
+# array de 1 item.
+VIDEO_URLS = [
+    "https://www.youtube.com/embed/dQw4w9WgXcQ",
+]
 
 
 PROCESS_STEPS = [
@@ -125,10 +141,10 @@ DIFFERENTIALS = [
 
 
 GALLERY_URLS = [
-    "https://placehold.co/600x600/E3DED1/6B6B75?text=Foto+1",
-    "https://placehold.co/600x600/E3DED1/6B6B75?text=Foto+2",
-    "https://placehold.co/600x600/E3DED1/6B6B75?text=Foto+3",
-    "https://placehold.co/600x600/E3DED1/6B6B75?text=Foto+4",
+    "https://placehold.co/800x800/E3DED1/0B0B0D?text=Loja+1",
+    "https://placehold.co/800x800/E3DED1/0B0B0D?text=Loja+2",
+    "https://placehold.co/800x800/E3DED1/0B0B0D?text=Loja+3",
+    "https://placehold.co/800x800/E3DED1/0B0B0D?text=Loja+4",
 ]
 
 
@@ -290,6 +306,7 @@ def _update_franchise_fields(cur, franchise_id: str) -> None:
     params["processSteps"] = json.dumps(PROCESS_STEPS)
     params["differentials"] = json.dumps(DIFFERENTIALS)
     params["galleryUrls"] = json.dumps(GALLERY_URLS)
+    params["videoUrl"] = json.dumps(VIDEO_URLS)
     cur.execute(
         """
         UPDATE "Franchise"
@@ -305,6 +322,10 @@ def _update_franchise_fields(cur, franchise_id: str) -> None:
             "maximumReturnOnInvestment" = %(maximumReturnOnInvestment)s,
             "minimumInvestment" = %(minimumInvestment)s,
             "maximumInvestment" = %(maximumInvestment)s,
+            "logoUrl" = %(logoUrl)s,
+            "bannerUrl" = %(bannerUrl)s,
+            "thumbnailUrl" = %(thumbnailUrl)s,
+            "videoUrl" = %(videoUrl)s,
             "processSteps" = %(processSteps)s::jsonb,
             differentials = %(differentials)s::jsonb,
             "galleryUrls" = %(galleryUrls)s,
