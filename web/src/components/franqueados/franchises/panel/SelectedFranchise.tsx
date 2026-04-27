@@ -194,13 +194,8 @@ export default function SelectedFranchise({
         storeArea={franchise.storeArea}
       />
 
-      {/* 5. Sobre a marca (description + metas) */}
-      <SobreLanding
-        description={franchise.description}
-        brandFoundationYear={franchise.brandFoundationYear}
-        franchiseStartYear={franchise.franchiseStartYear}
-        abfSince={franchise.abfSince}
-      />
+      {/* 5. Sobre a marca (description) — metas de ano vivem no heroMeta */}
+      <SobreLanding description={franchise.description} />
 
       {/* 6. Conheca a marca (video) */}
       <VideoLanding videoUrls={normalizeGalleryUrls(franchise.videoUrls)} />

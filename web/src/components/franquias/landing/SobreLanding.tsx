@@ -2,50 +2,30 @@ import styles from './landing.module.css'
 
 interface SobreLandingProps {
   description?: string | null
-  /** Ano de fundacao da marca — vai num kicker mono abaixo do paragrafo. */
-  brandFoundationYear?: number | null
-  /** Ano em que comecou a franquear. */
-  franchiseStartYear?: number | null
-  /** Ano de associacao a ABF. */
-  abfSince?: number | null
 }
 
 /**
- * Bloco "Sobre a marca" do v9. h2 fixo "Sobre a **marca**". Renderiza
- * o description da Franchise. Os meta-dados (anos) saem em uma linha
- * mono abaixo, separados por bullet — opcional, some quando todos
- * vazios.
+ * Bloco "Sobre a marca" do v10. Layout editorial:
+ *   kicker "Sobre a marca" -> h2 "Sobre a marca" (palavra 'marca' italic
+ *   accent) -> textBlock 16px ink-900 max-width 680px com a description
+ *   da Franchise.
  *
- * Some o bloco inteiro se NAO houver description nem nenhum meta-dado.
+ * As metas de ano (Fundada em / Franqueia desde / ABF desde) sairam
+ * desse bloco — agora vivem no heroMeta do Hero (junto com Sede e
+ * unidades).
+ *
+ * Some o bloco inteiro quando description vazia/null.
  */
-export default function SobreLanding({
-  description,
-  brandFoundationYear,
-  franchiseStartYear,
-  abfSince,
-}: SobreLandingProps) {
-  const hasDescription = description && description.trim()
-  const metas: string[] = []
-  if (brandFoundationYear) metas.push(`Fundada em ${brandFoundationYear}`)
-  if (franchiseStartYear) metas.push(`Franqueia desde ${franchiseStartYear}`)
-  if (abfSince) metas.push(`ABF desde ${abfSince}`)
-
-  if (!hasDescription && metas.length === 0) return null
+export default function SobreLanding({ description }: SobreLandingProps) {
+  if (!description || !description.trim()) return null
 
   return (
     <section className={`${styles.landing} ${styles.section}`}>
+      <div className={styles.kicker}>Sobre a marca</div>
       <h2 className={styles.heading}>
         Sobre a <span className={styles.accent}>marca</span>
       </h2>
-      {hasDescription && <p className={styles.aboutText}>{description}</p>}
-      {metas.length > 0 && (
-        <p
-          className={styles.metricLabel}
-          style={{ marginTop: hasDescription ? 16 : 4 }}
-        >
-          {metas.join(' · ')}
-        </p>
-      )}
+      <p className={styles.textBlock}>{description}</p>
     </section>
   )
 }
