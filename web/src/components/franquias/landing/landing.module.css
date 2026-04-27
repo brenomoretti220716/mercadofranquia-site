@@ -553,6 +553,7 @@
 .model {
   padding: 24px;
   border-right: var(--rule);
+  background: var(--paper-warm);
 }
 .model:last-child {
   border-right: 0;
