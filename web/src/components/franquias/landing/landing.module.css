@@ -42,8 +42,6 @@
   --down: #c1362b;
 
   --rule: 1px solid var(--ink-300);
-  --rule-strong: 1px solid var(--ink-500);
-  --rule-thick: 2px solid var(--ink-900);
 
   --serif: var(--font-instrument-serif), 'GT Sectra', Georgia, serif;
   --sans: var(--font-ibm-plex-sans), -apple-system, BlinkMacSystemFont,
@@ -358,8 +356,8 @@
 .kpiStrip {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  border-top: var(--rule-strong);
-  border-bottom: var(--rule-strong);
+  border-top: var(--rule);
+  border-bottom: var(--rule);
 }
 .kpi {
   padding: 24px;
@@ -428,7 +426,7 @@
 .modelCardHead {
   padding-bottom: 14px;
   margin-bottom: 18px;
-  border-bottom: 1px solid var(--ink-300);
+  border-bottom: var(--rule);
 }
 .modelCardName {
   margin: 0;
@@ -456,7 +454,7 @@
   align-items: baseline;
   justify-content: space-between;
   padding: 10px 0;
-  border-bottom: 1px solid rgba(199, 199, 206, 0.3);
+  border-bottom: var(--rule);
 }
 .modelRow:last-child {
   border-bottom: 0;
@@ -489,7 +487,7 @@
 .investimentoTable {
   display: flex;
   flex-direction: column;
-  border-top: var(--rule-strong);
+  border-top: var(--rule);
 }
 .investimentoRow {
   display: flex;
@@ -544,7 +542,7 @@
   aspect-ratio: 16 / 9;
   max-width: 900px;
   background: var(--ink-900);
-  border: 1px solid var(--ink-500);
+  border: var(--rule);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -742,8 +740,8 @@
   align-items: baseline;
   gap: 28px;
   padding: 20px 0;
-  border-top: var(--rule-thick);
-  border-bottom: var(--rule-strong);
+  border-top: var(--rule);
+  border-bottom: var(--rule);
 }
 .repAvg {
   font-family: var(--serif);
@@ -783,14 +781,14 @@
 .starbar {
   display: flex;
   align-items: stretch;
-  border-bottom: 1px solid var(--ink-300);
+  border-bottom: var(--rule);
 }
 .starbarCell {
   flex: 1;
   padding: 14px 8px;
   background: transparent;
   border: 0;
-  border-right: 1px solid var(--ink-300);
+  border-right: var(--rule);
   text-align: center;
   cursor: pointer;
   transition: background 0.1s;
@@ -921,7 +919,7 @@
   gap: 12px;
   margin-top: 8px;
   padding: 24px 0 0;
-  border-top: 1px solid var(--ink-500);
+  border-top: var(--rule);
 }
 .repCounter {
   font-family: var(--mono);
@@ -945,7 +943,7 @@
   gap: 8px;
   padding: 11px 18px;
   background: transparent;
-  border: 1px solid var(--ink-300);
+  border: var(--rule);
   font-family: var(--sans);
   font-size: 13px;
   font-weight: 600;
