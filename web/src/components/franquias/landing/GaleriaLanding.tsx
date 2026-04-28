@@ -1,46 +1,81 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import styles from './landing.module.css'
 
 interface GaleriaLandingProps {
   urls?: string[] | null
 }
 
-const VISIBLE = 5
-
 /**
  * Bloco "Veja as lojas" do v10 — hero foto grande no topo + thumbs row
  * horizontal embaixo. Estilo Airbnb sem lightbox.
  *
- * Interacao:
- *   - Clicar em qualquer thumb troca a foto do hero (e a thumb fica
- *     ativa, com outline accent-600).
- *   - Clicar no hero nao faz nada (sem lightbox).
- *   - Clicar na thumb com badge "+N" tambem so vira ativa (mostra a 5a
- *     foto, badge some porque o thumb ficou active).
+ * Navegação:
+ *   - Setas ←/→ no hero navegam circularmente entre TODAS as fotos
+ *   - ArrowLeft/ArrowRight no teclado fazem o mesmo
+ *   - Click em qualquer thumb troca foto do hero
  *
  * Render:
- *   - 5 thumbs visiveis no desktop, 4 em mobile (5a thumb hidden via
- *     media query :nth-child(5)).
- *   - Se total > 5: primeiras 4 thumbs normais + 5a com badge "+N"
- *     overlay (N = total - 4).
- *   - Se total <= 5: todas thumbs sem badge.
+ *   - Thumbs num row horizontal com scroll lateral (overflow-x: auto).
+ *     5 thumbs cabem na viewport desktop, 4 no mobile — o resto fica
+ *     acessível via scroll.
+ *   - Quando currentIdx muda, auto-scrolla pra centralizar a thumb
+ *     ativa via scrollTo({ behavior: 'smooth' }).
  *
  * Some o bloco inteiro quando urls null/empty.
  */
 export default function GaleriaLanding({ urls }: GaleriaLandingProps) {
   const [currentIdx, setCurrentIdx] = useState(0)
+  const thumbsContainerRef = useRef<HTMLDivElement>(null)
+
+  const total = urls?.length ?? 0
+
+  const goPrev = useCallback(() => {
+    setCurrentIdx((i) => (i - 1 + total) % total)
+  }, [total])
+
+  const goNext = useCallback(() => {
+    setCurrentIdx((i) => (i + 1) % total)
+  }, [total])
+
+  // Suporte a teclado: setas esquerda/direita
+  useEffect(() => {
+    if (total === 0) return
+    const onKey = (e: KeyboardEvent) => {
+      // Pula se foco está em input/textarea/contenteditable
+      const target = e.target as HTMLElement | null
+      if (target) {
+        const tag = target.tagName
+        if (tag === 'INPUT' || tag === 'TEXTAREA' || target.isContentEditable) {
+          return
+        }
+      }
+      if (e.key === 'ArrowLeft') goPrev()
+      else if (e.key === 'ArrowRight') goNext()
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [goPrev, goNext, total])
+
+  // Auto-scroll do row de thumbs pra centralizar a ativa quando currentIdx muda
+  useEffect(() => {
+    const container = thumbsContainerRef.current
+    if (!container) return
+    const activeThumb = container.children[currentIdx] as
+      | HTMLElement
+      | undefined
+    if (!activeThumb) return
+
+    const containerWidth = container.clientWidth
+    const thumbLeft = activeThumb.offsetLeft
+    const thumbWidth = activeThumb.clientWidth
+    const targetScroll = thumbLeft - containerWidth / 2 + thumbWidth / 2
+
+    container.scrollTo({ left: targetScroll, behavior: 'smooth' })
+  }, [currentIdx])
 
   if (!urls || urls.length === 0) return null
-
-  const total = urls.length
-  const showOverflow = total > VISIBLE
-  const overflowCount = total - (VISIBLE - 1)
-
-  // Thumbs renderizadas: se overflow, primeiras 5 (4 normais + 5a com
-  // badge); se nao, todas.
-  const thumbsToRender = showOverflow ? urls.slice(0, VISIBLE) : urls
 
   return (
     <section className={`${styles.landing} ${styles.section}`}>
@@ -54,17 +89,37 @@ export default function GaleriaLanding({ urls }: GaleriaLandingProps) {
           alt={`Foto ${currentIdx + 1}`}
           className={styles.galleryHeroImg}
         />
+
+        {total > 1 && (
+          <>
+            <button
+              type="button"
+              aria-label="Foto anterior"
+              className={`${styles.galleryHeroNav} ${styles.galleryHeroNavPrev}`}
+              onClick={goPrev}
+            >
+              ←
+            </button>
+            <button
+              type="button"
+              aria-label="Próxima foto"
+              className={`${styles.galleryHeroNav} ${styles.galleryHeroNavNext}`}
+              onClick={goNext}
+            >
+              →
+            </button>
+          </>
+        )}
+
         <div className={styles.galleryHeroCounter}>
           {String(currentIdx + 1).padStart(2, '0')} /{' '}
           {String(total).padStart(2, '0')}
         </div>
       </div>
 
-      <div className={styles.galleryThumbs}>
-        {thumbsToRender.map((url, idx) => {
+      <div className={styles.galleryThumbs} ref={thumbsContainerRef}>
+        {urls.map((url, idx) => {
           const isActive = idx === currentIdx
-          const isLastWithOverflow =
-            idx === VISIBLE - 1 && showOverflow && !isActive
           return (
             <button
               key={idx}
@@ -78,11 +133,6 @@ export default function GaleriaLanding({ urls }: GaleriaLandingProps) {
               onClick={() => setCurrentIdx(idx)}
             >
               <img src={url} alt="" className={styles.galleryThumbImg} />
-              {isLastWithOverflow && (
-                <div className={styles.galleryThumbOverflow}>
-                  <span>+{overflowCount}</span>
-                </div>
-              )}
             </button>
           )
         })}
