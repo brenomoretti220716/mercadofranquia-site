@@ -22,10 +22,12 @@ Politica de UPSERT (consolidada das 6 perguntas editoriais):
     - dataSource: set apenas em INSERTs ou rows com dataSource IS NULL.
     - abfUpdatedAt e lastScrapedAt: sempre atualiza (sao fatos).
 
-Limitacao da v1:
-  - Insert/update de BusinessModel NAO esta implementado nesta versao.
-    Aparece no diff (planejado) mas nao executa em --apply. Proxima
-    iteracao depois de validar Franchise.
+BusinessModel:
+  - Pra cada franquia (matched OU created), insere os business_models do
+    ABF apenas se a franquia atual tem 0 BMs no DB. Se ja tem qualquer
+    BM, pula (preserva trabalho anterior + idempotencia em re-execucao).
+  - Campos NULL no INSERT pra description e photoUrl (migration tornou
+    nullable). Frontend deve ter fallback.
 
 Uso:
     .venv/bin/python scripts/apply_enrichment.py --limit 10            # smoke
@@ -158,6 +160,52 @@ def parse_numeric(val: Any) -> tuple[Optional[float], Optional[str]]:
     return (num, s)
 
 
+def normalize_rate(
+    rate_raw: Any, base_raw: Any, max_pct: float
+) -> tuple[Optional[float], Optional[str]]:
+    """Normaliza taxa percentual (royalties ou advertising) com sanity check.
+
+    Retorna (numero|None, observation|None):
+    - Se rate/base contem "fixo", "r$", "reais" -> retorna (None, rate_raw)
+      e o numero fica fora do NUMERIC pra evitar corrupcao silenciosa.
+    - Se parse_numeric falha -> (None, rate_raw) — texto livre tipo "VARIAVEL".
+    - Se valor extraido cai fora de [0, max_pct] -> (None, rate_raw) —
+      sanity check, % acima desse limite e' quase certeza valor fixo
+      mal-rotulado (royalties historicamente 0-30%, ad fee 0-10%).
+    - Caso contrario -> (numero, observation_se_houver_texto_extra).
+
+    max_pct: 30 pra royalties, 10 pra advertisingFee (limites empiricos do
+    franchising brasileiro).
+    """
+    rate_str = str(rate_raw).strip() if rate_raw is not None else ""
+    base_str = str(base_raw).strip() if base_raw is not None else ""
+
+    if not rate_str and not base_str:
+        return (None, None)
+
+    # Sinal explicito de valor fixo (R$, "reais", "fixo")
+    combined_lower = (rate_str + " " + base_str).lower()
+    is_fixed = any(
+        kw in combined_lower for kw in ("fixo", "r$", "reais")
+    )
+    if is_fixed:
+        return (None, rate_str or None)
+
+    # Tenta extrair numero (parse_numeric ja existe pra outros usos)
+    num, obs_from_parser = parse_numeric(rate_str)
+    if num is None:
+        # Texto livre tipo "VARIAVEL" ou vazio
+        return (None, rate_str or None)
+
+    # Sanity check: % deve estar na faixa esperada
+    if num < 0 or num > max_pct:
+        return (None, rate_str)
+
+    # Numero valido. Se rate tem texto alem do numero (ex: "5% sobre faturamento"),
+    # mantem texto bruto em observation pra contexto.
+    return (num, obs_from_parser)
+
+
 def parse_date_br(s: Optional[str]) -> Optional[date]:
     """Parse 'DD/MM/YYYY' -> date. Retorna None em qualquer falha."""
     if not s:
@@ -275,6 +323,66 @@ def compute_diff_update(abf: dict, db: dict) -> dict[str, dict]:
     return diff
 
 
+def build_business_model_payload(
+    bm: dict, franchise_id: str
+) -> dict[str, Any]:
+    """Constroi payload pra INSERT de 1 BusinessModel a partir do JSON ABF.
+
+    Politica de ranges: usa _min como valor unico (decisao 3 do gap analysis,
+    _max descartado nesta fatia). Politica de royalties/advertising: parser
+    tenta extrair numero do .._rate; se falha, fica NULL e o texto vai pra
+    ..Observation.
+    """
+    # Normaliza royalties com sanity range 0-30%
+    royalties_num, royalties_obs = normalize_rate(
+        bm.get("royalties_rate"), bm.get("royalties_base"), max_pct=30
+    )
+    # Normaliza advertising fee com sanity range 0-10%
+    ad_num, ad_obs = normalize_rate(
+        bm.get("advertising_fee_rate"),
+        bm.get("advertising_fee_base"),
+        max_pct=10,
+    )
+
+    # Se ABF traz uma 'observation' propria, mescla com texto bruto do rate
+    royalties_obs_extra = bm.get("royalties_observation")
+    if royalties_obs_extra:
+        royalties_obs = (
+            f"{royalties_obs} ({royalties_obs_extra})"
+            if royalties_obs
+            else royalties_obs_extra
+        )
+    ad_obs_extra = bm.get("advertising_fee_observation")
+    if ad_obs_extra:
+        ad_obs = f"{ad_obs} ({ad_obs_extra})" if ad_obs else ad_obs_extra
+
+    area_min = bm.get("area_m2_min")
+
+    return {
+        "id": uuid.uuid4().hex,
+        "name": bm.get("name") or "Modelo",
+        "description": None,  # nullable apos migration; franqueador preenche no claim
+        "photoUrl": None,  # idem
+        "franchiseId": franchise_id,
+        "franchiseFee": bm.get("franchise_fee_min"),
+        "royalties": royalties_num,
+        "royaltiesObservation": royalties_obs,
+        "advertisingFee": ad_num,
+        "advertisingFeeObservation": ad_obs,
+        "workingCapital": bm.get("working_capital_min"),
+        "setupCapital": bm.get("capital_installation_min"),
+        "averageMonthlyRevenue": None,  # ABF nao traz por modelo
+        "storeArea": int(area_min) if area_min is not None else None,
+        "calculationBaseRoyaltie": bm.get("royalties_base"),
+        "calculationBaseAdFee": bm.get("advertising_fee_base"),
+        "investment": bm.get("investment_total_min"),
+        "payback": bm.get("payback_months_min"),
+        "profitability": None,  # ABF nao traz
+        "headquarter": bm.get("headquarter"),
+        "totalUnits": bm.get("total_units"),
+    }
+
+
 def compute_diff_insert(abf: dict) -> dict[str, Any]:
     """Diff pra INSERT de Franchise nova (sem match no DB)."""
     return {
@@ -314,6 +422,18 @@ def load_db_franchises(engine) -> list[dict]:
     return [dict(r._mapping) for r in rows]
 
 
+def load_business_model_counts(engine) -> dict[str, int]:
+    """Retorna {franchiseId: count} pra todos os BMs existentes."""
+    with engine.connect() as conn:
+        rows = conn.execute(
+            text(
+                'SELECT "franchiseId", COUNT(*) AS n FROM "BusinessModel" '
+                'GROUP BY "franchiseId"'
+            )
+        ).all()
+    return {r._mapping["franchiseId"]: r._mapping["n"] for r in rows}
+
+
 def apply_update(engine, db_id: str, diff: dict) -> None:
     """Aplica UPDATE em uma Franchise. Caller controla transacao externa."""
     if not diff:
@@ -325,6 +445,22 @@ def apply_update(engine, db_id: str, diff: dict) -> None:
         params[f"p_{col}"] = info["abf_value"]
     sql = text(
         f'UPDATE "Franchise" SET {", ".join(sets)}, "updatedAt" = NOW() WHERE id = :id'
+    )
+    with engine.begin() as conn:
+        conn.execute(sql, params)
+
+
+def apply_insert_business_model(engine, payload: dict) -> None:
+    """Insert 1 BusinessModel. Caller controla transacao."""
+    cols = list(payload.keys())
+    placeholders = [f":p_{c}" for c in cols]
+    quoted = ", ".join(f'"{c}"' for c in cols)
+    params = {f"p_{c}": v for c, v in payload.items()}
+    sql = text(
+        f"""
+        INSERT INTO "BusinessModel" ({quoted}, "createdAt", "updatedAt")
+        VALUES ({", ".join(placeholders)}, NOW(), NOW())
+        """
     )
     with engine.begin() as conn:
         conn.execute(sql, params)
@@ -375,10 +511,21 @@ def write_summary(summary: dict, mode: str) -> str:
     for bucket, n in summary["score_distribution"].items():
         lines.append(f"  {bucket}: {n}")
     lines.append("")
+    lines.append("BusinessModels:")
+    lines.append(
+        f"  Will insert:      {summary['business_models_to_insert']}"
+    )
+    lines.append(
+        f"  Skipped (DB ja tem): {summary['business_models_skipped_existing']}"
+    )
+    lines.append("")
     if summary.get("applied"):
         lines.append(f"APPLIED to DB:")
-        lines.append(f"  Franchise UPDATE: {summary['applied']['updates']}")
-        lines.append(f"  Franchise INSERT: {summary['applied']['inserts']}")
+        lines.append(f"  Franchise UPDATE:    {summary['applied']['updates']}")
+        lines.append(f"  Franchise INSERT:    {summary['applied']['inserts']}")
+        lines.append(
+            f"  BusinessModel INSERT: {summary['applied']['bm_inserts']}"
+        )
         if summary["applied"].get("errors"):
             lines.append(f"  Errors:           {len(summary['applied']['errors'])}")
             for e in summary["applied"]["errors"][:5]:
@@ -433,8 +580,10 @@ def main():
     if args.limit:
         abf_samples = abf_samples[: args.limit]
     db_franchises = load_db_franchises(engine)
+    bm_counts = load_business_model_counts(engine)
     print(f"  ABF: {len(abf_samples)} fichas")
-    print(f"  DB:  {len(db_franchises)} franquias")
+    print(f"  DB:  {len(db_franchises)} franquias, "
+          f"{sum(bm_counts.values())} BusinessModels")
 
     # 2. Match + diff
     print("\n[2/3] Matching + diff...")
@@ -445,6 +594,8 @@ def main():
         "skipped_claimed": 0,
         "will_enrich": 0,
         "will_create": 0,
+        "business_models_to_insert": 0,
+        "business_models_skipped_existing": 0,
         "score_distribution": {
             "1.00": 0,
             "0.95": 0,
@@ -498,21 +649,71 @@ def main():
                 item["diff"] = compute_diff_update(abf, db_match)
                 summary["will_enrich"] += 1
 
+        # ----------------------------------------------------------------
+        # BusinessModels — insere apenas se franquia tem 0 BMs no DB.
+        # Skipped_claimed nao recebe BMs (skip total da franquia).
+        # ----------------------------------------------------------------
+        abf_bms = abf.get("business_models") or []
+        item["business_models"] = []
+
+        if item["match_status"] == "skipped_claimed":
+            item["business_models_action"] = "skipped_claimed"
+        elif not abf_bms:
+            item["business_models_action"] = "no_abf_bms"
+        else:
+            existing_bm_count = (
+                bm_counts.get(item["match_db_id"], 0) if db_match else 0
+            )
+            if existing_bm_count > 0:
+                item["business_models_action"] = "skipped_existing"
+                item["business_models_existing_count"] = existing_bm_count
+                summary["business_models_skipped_existing"] += existing_bm_count
+            else:
+                item["business_models_action"] = "will_insert"
+                # franchise_id placeholder pra will_create — resolvido em apply
+                franchise_id = item["match_db_id"] or "<NEW_FRANCHISE_ID>"
+                payloads = [
+                    build_business_model_payload(bm, franchise_id)
+                    for bm in abf_bms
+                ]
+                item["business_models"] = payloads
+                summary["business_models_to_insert"] += len(payloads)
+
         items.append(item)
 
     # 3. Apply (se --apply)
     if not is_dry_run:
         print("\n[3/3] Applying to DB...")
-        applied = {"updates": 0, "inserts": 0, "errors": []}
+        applied = {
+            "updates": 0,
+            "inserts": 0,
+            "bm_inserts": 0,
+            "errors": [],
+        }
         for item in items:
             try:
+                franchise_id = None
                 if item["match_status"] == "will_enrich" and item.get("diff"):
                     apply_update(engine, item["match_db_id"], item["diff"])
                     applied["updates"] += 1
+                    franchise_id = item["match_db_id"]
                 elif item["match_status"] == "will_create":
                     new_id = apply_insert(engine, item["insert_payload"])
                     item["created_db_id"] = new_id
                     applied["inserts"] += 1
+                    franchise_id = new_id
+
+                # Insere BMs se policy permite e franchise foi tocada
+                if (
+                    franchise_id is not None
+                    and item.get("business_models_action") == "will_insert"
+                ):
+                    for bm_payload in item["business_models"]:
+                        # Resolve <NEW_FRANCHISE_ID> placeholder
+                        bm_payload = dict(bm_payload)
+                        bm_payload["franchiseId"] = franchise_id
+                        apply_insert_business_model(engine, bm_payload)
+                        applied["bm_inserts"] += 1
             except Exception as e:
                 applied["errors"].append(f"{item['abf_slug']}: {e}")
         summary["applied"] = applied
