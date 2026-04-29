@@ -216,12 +216,6 @@
     "source_url": "https://franquias.portaldofranchising.com.br/franquia-carol-coxinhas/"
   },
   {
-    "slug": "franquia-casa",
-    "segment": "casa-e-construcao",
-    "segment_name": "Casa e Construção",
-    "source_url": "https://franquias.portaldofranchising.com.br/franquia-casa/"
-  },
-  {
     "slug": "franquia-casa-bauducco",
     "segment": "alimentacao",
     "segment_name": "Alimentação",
@@ -318,12 +312,6 @@
     "source_url": "https://franquias.portaldofranchising.com.br/franquia-coife-odonto/"
   },
   {
-    "slug": "franquia-comunicacao",
-    "segment": "comunicacao-informatica-e-eletronicos",
-    "segment_name": "Comunicação, Informática e Eletrônicos",
-    "source_url": "https://franquias.portaldofranchising.com.br/franquia-comunicacao/"
-  },
-  {
     "slug": "franquia-convex-brasil",
     "segment": "moda",
     "segment_name": "Moda",
@@ -366,12 +354,6 @@
     "source_url": "https://franquias.portaldofranchising.com.br/franquia-de-lavanderia-bonasecco/"
   },
   {
-    "slug": "franquia-de-limpeza",
-    "segment": "limpeza-e-conservacao",
-    "segment_name": "Limpeza e Conservação",
-    "source_url": "https://franquias.portaldofranchising.com.br/franquia-de-limpeza/"
-  },
-  {
     "slug": "franquia-decor-colors",
     "segment": "casa-e-construcao",
     "segment_name": "Casa e Construção",
@@ -402,12 +384,6 @@
     "source_url": "https://franquias.portaldofranchising.com.br/franquia-drywash-servicos-automotivos/"
   },
   {
-    "slug": "franquia-educacao",
-    "segment": "servicos-educacionais",
-    "segment_name": "Educação",
-    "source_url": "https://franquias.portaldofranchising.com.br/franquia-educacao/"
-  },
-  {
     "slug": "franquia-emagrecentro-estetica",
     "segment": "saude-beleza-e-bem-estar",
     "segment_name": "Saúde, Beleza e Bem-Estar",
@@ -424,12 +400,6 @@
     "segment": "servicos-educacionais",
     "segment_name": "Educação",
     "source_url": "https://franquias.portaldofranchising.com.br/franquia-ensina-mais/"
-  },
-  {
-    "slug": "franquia-entretenimento",
-    "segment": "entretenimento-e-lazer",
-    "segment_name": "Entretenimento e Lazer",
-    "source_url": "https://franquias.portaldofranchising.com.br/franquia-entretenimento/"
   },
   {
     "slug": "franquia-espacolaser",
@@ -568,12 +538,6 @@
     "segment": "alimentacao",
     "segment_name": "Alimentação",
     "source_url": "https://franquias.portaldofranchising.com.br/franquia-honest-market-brasil/"
-  },
-  {
-    "slug": "franquia-hotelaria",
-    "segment": "hotelaria-e-turismo",
-    "segment_name": "Hotelaria e Turismo",
-    "source_url": "https://franquias.portaldofranchising.com.br/franquia-hotelaria/"
   },
   {
     "slug": "franquia-influx-escola-de-idiomas",

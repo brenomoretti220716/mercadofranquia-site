@@ -51,3 +51,5 @@ scripts/abf_scraper/assets/
 scripts/abf_scraper/output/parsed/
 scripts/abf_scraper/output/db_franchises.json
 scripts/abf_scraper/output/db_business_models.json
+scripts/abf_scraper/output/enrichment_diff.json
+scripts/abf_scraper/output/enrichment_summary.txt
