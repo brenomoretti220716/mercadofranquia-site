@@ -44,7 +44,7 @@ except ImportError:
     sys.exit("Missing dependency: pip install sqlparse")
 
 
-DEFAULT_DB_URL = "postgresql://mf_user:mf_senha_forte_2026@localhost:5432/mercadofranquia"
+DEFAULT_DB_URL = "postgresql://mf_user:${DB_PASSWORD}@localhost:5432/mercadofranquia"
 DEFAULT_DUMP = "/home/ubuntu/franchise_db_dump.sql"
 
 

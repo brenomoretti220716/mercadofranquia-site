@@ -43,7 +43,7 @@ except ImportError:
 
 
 DEFAULT_SQLITE_PATH = "/home/ubuntu/abf.db"
-DEFAULT_DB_URL = "postgresql://mf_user:mf_senha_forte_2026@localhost:5432/mercadofranquia"
+DEFAULT_DB_URL = "postgresql://mf_user:${DB_PASSWORD}@localhost:5432/mercadofranquia"
 BATCH_SIZE = 500
 
 logger = logging.getLogger("migrate")
