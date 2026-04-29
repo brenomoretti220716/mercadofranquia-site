@@ -42,8 +42,6 @@
   --down: #c1362b;
 
   --rule: 1px solid var(--ink-300);
-  --rule-strong: 1px solid var(--ink-500);
-  --rule-thick: 2px solid var(--ink-900);
 
   --serif: var(--font-instrument-serif), 'GT Sectra', Georgia, serif;
   --sans: var(--font-ibm-plex-sans), -apple-system, BlinkMacSystemFont,
@@ -358,8 +356,8 @@
 .kpiStrip {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  border-top: var(--rule-strong);
-  border-bottom: var(--rule-strong);
+  border-top: var(--rule);
+  border-bottom: var(--rule);
 }
 .kpi {
   padding: 24px;
@@ -428,7 +426,7 @@
 .modelCardHead {
   padding-bottom: 14px;
   margin-bottom: 18px;
-  border-bottom: 1px solid var(--ink-300);
+  border-bottom: var(--rule);
 }
 .modelCardName {
   margin: 0;
@@ -456,7 +454,7 @@
   align-items: baseline;
   justify-content: space-between;
   padding: 10px 0;
-  border-bottom: 1px solid rgba(199, 199, 206, 0.3);
+  border-bottom: var(--rule);
 }
 .modelRow:last-child {
   border-bottom: 0;
@@ -489,7 +487,7 @@
 .investimentoTable {
   display: flex;
   flex-direction: column;
-  border-top: var(--rule-strong);
+  border-top: var(--rule);
 }
 .investimentoRow {
   display: flex;
@@ -544,7 +542,7 @@
   aspect-ratio: 16 / 9;
   max-width: 900px;
   background: var(--ink-900);
-  border: 1px solid var(--ink-500);
+  border: var(--rule);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -660,43 +658,112 @@
   border-bottom: 0;
 }
 /* ============================================================
-   Galeria (4 cols, gap 4px, paper-3 bg)
+   Galeria v10 — hero + thumbs row (estilo Airbnb sem lightbox)
    ============================================================ */
 
-.gallery {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 4px;
-}
-.galleryItem {
-  aspect-ratio: 1;
+.galleryHero {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  margin-bottom: 4px;
   background: var(--paper-3);
-  background-image: repeating-linear-gradient(
-    135deg,
-    rgba(0, 0, 0, 0.05) 0 1px,
-    transparent 1px 8px
-  );
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: var(--mono);
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--ink-800);
   overflow: hidden;
 }
-.galleryItem img {
+.galleryHeroImg {
+  display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
-.galleryMore {
+.galleryHeroCounter {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  padding: 6px 10px;
+  background: rgba(11, 11, 13, 0.6);
   font-family: var(--mono);
-  font-size: 12px;
-  font-weight: 700;
-  color: var(--ink-900);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--white);
+}
+
+.galleryHeroNav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 44px;
+  height: 44px;
+  background: rgba(11, 11, 13, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  color: white;
+  cursor: pointer;
+  font-size: 18px;
+  font-family: inherit;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+  z-index: 1;
+}
+
+.galleryHeroNav:hover {
+  background: rgba(11, 11, 13, 0.85);
+}
+
+.galleryHeroNavPrev {
+  left: 12px;
+}
+
+.galleryHeroNavNext {
+  right: 12px;
+}
+
+.galleryThumbs {
+  display: flex;
+  gap: 4px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-behavior: smooth;
+  scrollbar-width: thin;
+  scrollbar-color: var(--ink-300) transparent;
+}
+.galleryThumbs::-webkit-scrollbar {
+  height: 6px;
+}
+.galleryThumbs::-webkit-scrollbar-track {
+  background: transparent;
+}
+.galleryThumbs::-webkit-scrollbar-thumb {
+  background: var(--ink-300);
+  border-radius: 0;
+}
+.galleryThumb {
+  position: relative;
+  flex: 0 0 calc((100% - 16px) / 5);
+  min-width: calc((100% - 16px) / 5);
+  aspect-ratio: 1;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  opacity: 0.6;
+  transition: opacity 0.2s;
+  overflow: hidden;
+}
+.galleryThumb:hover {
+  opacity: 0.85;
+}
+.galleryThumbActive {
+  opacity: 1;
+  outline: 2px solid var(--accent-600);
+  outline-offset: -2px;
+}
+.galleryThumbImg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 /* ============================================================
@@ -708,8 +775,8 @@
   align-items: baseline;
   gap: 28px;
   padding: 20px 0;
-  border-top: var(--rule-thick);
-  border-bottom: var(--rule-strong);
+  border-top: var(--rule);
+  border-bottom: var(--rule);
 }
 .repAvg {
   font-family: var(--serif);
@@ -743,20 +810,33 @@
   font-weight: 700;
 }
 
+/* Estado vazio do bloco Reputacao — usado quando reviewCount === 0 ou
+   array de reviews chega vazio (defensivo contra dados orfaos). */
+.repStatRight {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.repStarsEmpty {
+  color: var(--ink-300);
+  font-size: 16px;
+  letter-spacing: 2px;
+}
+
 /* Filtro star bar — 6 celulas (Todas + 5/4/3/2/1 estrelas). Active vira
    inverted dark; disabled fica opacity 0.3. Substitui .repFilters/.repSort
    antigos. */
 .starbar {
   display: flex;
   align-items: stretch;
-  border-bottom: 1px solid var(--ink-300);
+  border-bottom: var(--rule);
 }
 .starbarCell {
   flex: 1;
   padding: 14px 8px;
   background: transparent;
   border: 0;
-  border-right: 1px solid var(--ink-300);
+  border-right: var(--rule);
   text-align: center;
   cursor: pointer;
   transition: background 0.1s;
@@ -887,7 +967,7 @@
   gap: 12px;
   margin-top: 8px;
   padding: 24px 0 0;
-  border-top: 1px solid var(--ink-500);
+  border-top: var(--rule);
 }
 .repCounter {
   font-family: var(--mono);
@@ -911,7 +991,7 @@
   gap: 8px;
   padding: 11px 18px;
   background: transparent;
-  border: 1px solid var(--ink-300);
+  border: var(--rule);
   font-family: var(--sans);
   font-size: 13px;
   font-weight: 600;
@@ -1119,8 +1199,23 @@
     grid-template-columns: 1fr;
     gap: 36px;
   }
-  .gallery {
-    grid-template-columns: repeat(2, 1fr);
+  .galleryHero {
+    aspect-ratio: 4 / 3;
+  }
+  .galleryThumb {
+    flex: 0 0 calc((100% - 12px) / 4);
+    min-width: calc((100% - 12px) / 4);
+  }
+  .galleryHeroNav {
+    width: 36px;
+    height: 36px;
+    font-size: 16px;
+  }
+  .galleryHeroNavPrev {
+    left: 8px;
+  }
+  .galleryHeroNavNext {
+    right: 8px;
   }
   .step {
     gap: 16px;
