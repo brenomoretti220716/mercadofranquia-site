@@ -65,7 +65,8 @@ function formatRelativeDate(value: string | Date): string {
  * Link "Ver todas" carrega o filtro via query string pra rota
  * dedicada /ranking/{slug}/avaliacoes (Fatia 1.10).
  *
- * Some o bloco inteiro quando reviewCount === 0.
+ * Estado vazio (reviewCount === 0 ou array vazio): bloco continua
+ * visivel com convite "Seja o primeiro a avaliar essa franquia".
  */
 export default function ReputacaoLanding({
   reviews,
@@ -94,7 +95,9 @@ export default function ReputacaoLanding({
         )
       : null
 
-  if (safeReviewCount === 0) return null
+  // Estado vazio (nenhuma avaliacao) renderiza convite ao usuario.
+  // Defensivo: tambem trata caso de dados orfaos (reviewCount > 0 mas array vazio).
+  const isEmpty = safeReviewCount === 0 || safeReviews.length === 0
 
   const filteredReviews =
     activeFilter === 'all'
@@ -117,116 +120,147 @@ export default function ReputacaoLanding({
         <span className={styles.accent}>Reputação</span>
       </h2>
 
-      <div className={styles.repStat}>
-        <div className={styles.repAvg}>{avg.toFixed(1)}</div>
-        <div>
-          <div className={styles.repStars}>{renderStars(avg)}</div>
-          <div className={styles.repMeta}>
-            <b>{safeReviewCount}</b> avaliações
-            {recommendPct !== null && (
-              <>
-                {' · '}
-                <b>{recommendPct}%</b> recomendam
-              </>
-            )}
+      {isEmpty ? (
+        <>
+          <div className={styles.repStat}>
+            <div className={styles.repAvg}>—</div>
+            <div className={styles.repStatRight}>
+              <div className={styles.repStarsEmpty} aria-label="Sem avaliações">
+                ★ ★ ★ ★ ★
+              </div>
+              <div className={styles.repMeta}>Ainda sem avaliações</div>
+            </div>
           </div>
-        </div>
-      </div>
 
-      <div className={styles.starbar} role="tablist">
-        <button
-          type="button"
-          role="tab"
-          aria-selected={activeFilter === 'all'}
-          className={
-            activeFilter === 'all'
-              ? `${styles.starbarCell} ${styles.starbarCellActive}`
-              : styles.starbarCell
-          }
-          onClick={() => setActiveFilter('all')}
-        >
-          <div className={styles.starbarRating}>Todas</div>
-          <div className={styles.starbarCount}>{safeReviews.length}</div>
-        </button>
-        {([5, 4, 3, 2, 1] as const).map((rating) => {
-          const count = countByRating[rating]
-          const disabled = count === 0
-          const active = activeFilter === rating
-          const classes = [styles.starbarCell]
-          if (active) classes.push(styles.starbarCellActive)
-          if (disabled) classes.push(styles.starbarCellDisabled)
-          return (
+          <p className={styles.textBlock} style={{ marginTop: '20px' }}>
+            Seja o primeiro a avaliar essa franquia. Sua experiência ajuda
+            outros investidores a tomar decisões.
+          </p>
+
+          {/* TODO: re-habilitar onClick quando ReviewCreateModal existir (Fatia 1.X). */}
+          <button
+            type="button"
+            className={styles.ctaAdd}
+            style={{ marginTop: '16px' }}
+          >
+            + Avaliar essa franquia
+          </button>
+        </>
+      ) : (
+        <>
+          <div className={styles.repStat}>
+            <div className={styles.repAvg}>{avg.toFixed(1)}</div>
+            <div>
+              <div className={styles.repStars}>{renderStars(avg)}</div>
+              <div className={styles.repMeta}>
+                <b>{safeReviewCount}</b> avaliações
+                {recommendPct !== null && (
+                  <>
+                    {' · '}
+                    <b>{recommendPct}%</b> recomendam
+                  </>
+                )}
+              </div>
+            </div>
+          </div>
+
+          <div className={styles.starbar} role="tablist">
             <button
-              key={rating}
               type="button"
               role="tab"
-              aria-selected={active}
-              disabled={disabled}
-              className={classes.join(' ')}
-              onClick={() => {
-                if (!disabled) setActiveFilter(rating)
-              }}
+              aria-selected={activeFilter === 'all'}
+              className={
+                activeFilter === 'all'
+                  ? `${styles.starbarCell} ${styles.starbarCellActive}`
+                  : styles.starbarCell
+              }
+              onClick={() => setActiveFilter('all')}
             >
-              <div className={styles.starbarRating}>{rating}★</div>
-              <div className={styles.starbarCount}>{count}</div>
+              <div className={styles.starbarRating}>Todas</div>
+              <div className={styles.starbarCount}>{safeReviews.length}</div>
             </button>
-          )
-        })}
-      </div>
+            {([5, 4, 3, 2, 1] as const).map((rating) => {
+              const count = countByRating[rating]
+              const disabled = count === 0
+              const active = activeFilter === rating
+              const classes = [styles.starbarCell]
+              if (active) classes.push(styles.starbarCellActive)
+              if (disabled) classes.push(styles.starbarCellDisabled)
+              return (
+                <button
+                  key={rating}
+                  type="button"
+                  role="tab"
+                  aria-selected={active}
+                  disabled={disabled}
+                  className={classes.join(' ')}
+                  onClick={() => {
+                    if (!disabled) setActiveFilter(rating)
+                  }}
+                >
+                  <div className={styles.starbarRating}>{rating}★</div>
+                  <div className={styles.starbarCount}>{count}</div>
+                </button>
+              )
+            })}
+          </div>
 
-      <div className={styles.repList}>
-        {visibleReviews.map((review) => {
-          const response = review.responses?.[0] ?? null
-          const authorName = review.anonymous
-            ? 'Investidor'
-            : (review.author?.name ?? 'Investidor')
-          return (
-            <article key={review.id} className={styles.repItem}>
-              <div className={styles.repHeader}>
-                <span className={styles.repStarsRow}>
-                  {renderStars(review.rating)}
-                </span>
-                <span className={styles.repAuthor}>{authorName}</span>
-                {review.anonymous && (
-                  <span className={styles.repBadgeAnon}>Anônimo</span>
-                )}
-                <span className={styles.repWhen}>
-                  {formatDate(review.createdAt)}
-                </span>
-              </div>
-              <p className={styles.repText}>{review.comment}</p>
-              {response && (
-                <div className={styles.repResponse}>
-                  <div className={styles.repResponseLabel}>
-                    Resposta da marca · {formatRelativeDate(response.createdAt)}
+          <div className={styles.repList}>
+            {visibleReviews.map((review) => {
+              const response = review.responses?.[0] ?? null
+              const authorName = review.anonymous
+                ? 'Investidor'
+                : (review.author?.name ?? 'Investidor')
+              return (
+                <article key={review.id} className={styles.repItem}>
+                  <div className={styles.repHeader}>
+                    <span className={styles.repStarsRow}>
+                      {renderStars(review.rating)}
+                    </span>
+                    <span className={styles.repAuthor}>{authorName}</span>
+                    {review.anonymous && (
+                      <span className={styles.repBadgeAnon}>Anônimo</span>
+                    )}
+                    <span className={styles.repWhen}>
+                      {formatDate(review.createdAt)}
+                    </span>
                   </div>
-                  <div className={styles.repResponseText}>
-                    {response.content}
-                  </div>
-                </div>
+                  <p className={styles.repText}>{review.comment}</p>
+                  {response && (
+                    <div className={styles.repResponse}>
+                      <div className={styles.repResponseLabel}>
+                        Resposta da marca ·{' '}
+                        {formatRelativeDate(response.createdAt)}
+                      </div>
+                      <div className={styles.repResponseText}>
+                        {response.content}
+                      </div>
+                    </div>
+                  )}
+                </article>
+              )
+            })}
+          </div>
+
+          <div className={styles.repActions}>
+            <div className={styles.repCounter}>
+              Mostrando <b>{Math.min(VISIBLE_LIMIT, totalCount)}</b> de{' '}
+              <b>{totalCount}</b>
+            </div>
+            <div className={styles.repCtaGroup}>
+              {totalCount > VISIBLE_LIMIT && (
+                <Link href={seeAllHref} className={styles.ctaGhost}>
+                  Ver todas as {totalCount} avaliações →
+                </Link>
               )}
-            </article>
-          )
-        })}
-      </div>
-
-      <div className={styles.repActions}>
-        <div className={styles.repCounter}>
-          Mostrando <b>{Math.min(VISIBLE_LIMIT, totalCount)}</b> de{' '}
-          <b>{totalCount}</b>
-        </div>
-        <div className={styles.repCtaGroup}>
-          {totalCount > VISIBLE_LIMIT && (
-            <Link href={seeAllHref} className={styles.ctaGhost}>
-              Ver todas as {totalCount} avaliações →
-            </Link>
-          )}
-          {/* TODO: wire pro modal de criar avaliacao em fatia futura. */}
-          <button type="button" className={styles.ctaAdd}>
-            + Avaliar
-          </button>
-        </div>
-      </div>
+              {/* TODO: wire pro modal de criar avaliacao em fatia futura. */}
+              <button type="button" className={styles.ctaAdd}>
+                + Avaliar
+              </button>
+            </div>
+          </div>
+        </>
+      )}
     </section>
   )
 }

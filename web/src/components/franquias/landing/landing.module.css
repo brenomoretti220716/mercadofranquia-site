@@ -810,6 +810,19 @@
   font-weight: 700;
 }
 
+/* Estado vazio do bloco Reputacao — usado quando reviewCount === 0 ou
+   array de reviews chega vazio (defensivo contra dados orfaos). */
+.repStatRight {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.repStarsEmpty {
+  color: var(--ink-300);
+  font-size: 16px;
+  letter-spacing: 2px;
+}
+
 /* Filtro star bar — 6 celulas (Todas + 5/4/3/2/1 estrelas). Active vira
    inverted dark; disabled fica opacity 0.3. Substitui .repFilters/.repSort
    antigos. */
