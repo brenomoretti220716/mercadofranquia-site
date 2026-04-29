@@ -625,6 +625,12 @@ class Review(Base):
         nullable=False,
         server_default=func.now(),
     )
+    updatedAt: Mapped[datetime] = mapped_column(
+        "updatedAt",
+        DateTime(timezone=False),
+        nullable=False,
+        server_default=func.now(),
+    )
     franchiseId: Mapped[str] = mapped_column(
         "franchiseId",
         String(191),
