@@ -1075,6 +1075,96 @@
 }
 
 /* ============================================================
+   Contact section (Fatia 1.9) — dark, coluna unica empilhada,
+   substitui o LeadFormLanding original. Reaproveita os tokens da
+   .leadSection (ink-900 + paper-warm + #ff8a5c) pra coerencia visual.
+   ============================================================ */
+
+.contactSection {
+  background: var(--ink-900);
+  color: var(--paper-warm);
+  padding: 64px 48px;
+}
+.contactInner {
+  max-width: 720px;
+  margin: 0 auto;
+}
+.contactInner .kicker {
+  color: #ff8a5c;
+  margin-bottom: 16px;
+}
+.contactInner .kicker::before {
+  background: var(--accent-600);
+}
+.contactH2 {
+  margin: 0 0 28px;
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: 56px;
+  line-height: 1.02;
+  letter-spacing: -0.035em;
+  color: var(--paper-warm);
+  font-feature-settings:
+    'liga' 0,
+    'dlig' 0,
+    'calt' 0;
+  font-variant-ligatures: none;
+}
+.contactH2 em {
+  font-style: italic;
+  color: #ff8a5c;
+}
+
+.channels {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.3);
+}
+.channel {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}
+.channelLink {
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  align-items: baseline;
+  gap: 16px;
+  padding: 18px 0;
+  text-decoration: none;
+  color: var(--paper-warm);
+  transition: color 0.12s;
+}
+.channelLink:hover {
+  color: #ff8a5c;
+}
+.channelLabel {
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #ff8a5c;
+}
+.channelValue {
+  font-family: var(--sans);
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: -0.005em;
+  color: inherit;
+  word-break: break-word;
+}
+
+/* Estado vazio: paragrafo intro + CTA. Reutiliza .ctaBlock global. */
+.contactEmptyText {
+  max-width: 540px;
+  margin: 0 0 28px;
+  font-size: 15px;
+  line-height: 1.65;
+  color: var(--paper-warm);
+  opacity: 0.9;
+}
+
+/* ============================================================
    Mobile (< 768px) — handoff v10
    ============================================================ */
 
@@ -1088,6 +1178,20 @@
   }
   .leadSection {
     padding: 40px 20px;
+  }
+  .contactSection {
+    padding: 40px 20px;
+  }
+  .contactH2 {
+    font-size: 36px;
+  }
+  .channelLink {
+    grid-template-columns: 100px 1fr;
+    gap: 12px;
+    padding: 14px 0;
+  }
+  .channelValue {
+    font-size: 14px;
   }
   .heroName {
     font-size: 56px;

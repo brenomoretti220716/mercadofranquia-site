@@ -85,6 +85,17 @@ export interface Franchise {
   // linkedin/totalUnitsUpdatedAt/totalUnitsLastConfirmedAt) entram conforme
   // virem requeridos pelo frontend.
   bannerUrl?: string | null
+
+  // Landing redesign — Fatia 1.9 (ContactBlock). Campos diretos da
+  // Franchise consumidos pelo bloco de contato. Convivem com a relacao
+  // legada `contact` (ContactInfo: phone/email/website) — o ContactBlock
+  // faz fallback Franchise direto > ContactInfo.
+  phone?: string | null
+  whatsapp?: string | null
+  publicEmail?: string | null
+  instagramUrl?: string | null
+  facebookUrl?: string | null
+  linkedinUrl?: string | null
 }
 
 export interface ContactInfo {
