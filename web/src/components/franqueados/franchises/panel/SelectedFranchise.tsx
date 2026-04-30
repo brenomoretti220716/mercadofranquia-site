@@ -19,7 +19,7 @@ import DifferentialsLanding from '@/src/components/franquias/landing/Differentia
 import IdealProfileLanding from '@/src/components/franquias/landing/IdealProfileLanding'
 import GaleriaLanding from '@/src/components/franquias/landing/GaleriaLanding'
 import ReputacaoLanding from '@/src/components/franquias/landing/ReputacaoLanding'
-import LeadFormLanding from '@/src/components/franquias/landing/LeadFormLanding'
+import ContactBlock from '@/src/components/franquias/landing/ContactBlock'
 import landingStyles from '@/src/components/franquias/landing/landing.module.css'
 import { normalizeGalleryUrls } from '@/src/utils/franchiseImageUtils'
 
@@ -49,7 +49,8 @@ interface SelectedFranchiseProps {
  *   9. Galeria (grid responsivo)
  *  10. Reputacao (stat + filtro star bar + 5 reviews + link pra
  *      pagina dedicada — Fatia 1.10)
- *  11. Quero saber mais (LeadFormLanding em secao dark, 2 colunas)
+ *  11. Contato direto (ContactBlock em secao dark, canais oficiais
+ *      com fallback Franchise direto > ContactInfo legado — Fatia 1.9)
  */
 export default function SelectedFranchise({
   selectedFranchise,
@@ -212,12 +213,10 @@ export default function SelectedFranchise({
         franchiseSlug={franchiseSlug}
       />
 
-      {/* 11. Quero saber mais — secao dark, target do CTA do Hero */}
+      {/* 11. Contato direto — secao dark com canais oficiais da marca,
+          target do CTA do Hero. Substitui o LeadFormLanding (Fatia 1.9). */}
       <div ref={leadSectionRef}>
-        <LeadFormLanding
-          franchiseName={franchise.name}
-          franchiseSegment={franchise.segment}
-        />
+        <ContactBlock franchise={franchise} />
       </div>
     </div>
   )
