@@ -325,10 +325,20 @@ def parse_franchise(slug: str, raw_html: str, segment_info: dict) -> dict:
         if fallback:
             result["logo_url"] = fallback.group(0)
 
-    # 7. og:image (banner)
+    # 7. og:image (= logo na maioria das fichas, não é banner real)
     og = soup.find("meta", {"property": "og:image"})
     if og and og.get("content"):
         result["og_image"] = og["content"]
+
+    # 7b. banner real — <img class="main-img lazyload" data-src="...">
+    # Naming variavel: capa-{date}.jpg, testeira-new.jpg, header-...jpg, etc.
+    # Cobertura ~92% das fichas; anchor robusto e a classe CSS, nao filename.
+    # data-src e usado por causa de lazy loading (src fica vazio ou placeholder).
+    banner_img = soup.select_one("img.main-img.lazyload")
+    if banner_img:
+        banner_src = banner_img.get("data-src", "")
+        if banner_src.startswith("https://"):
+            result["banner_url"] = banner_src
 
     # 8. galeria — imgs em /mini-site/ com sufixo numérico
     gallery = []
@@ -480,6 +490,7 @@ def parse_all():
             "total_units": d.get("total_units"),
             "gallery_count": len(d.get("gallery_urls", [])),
             "has_logo": bool(d.get("logo_url")),
+            "has_banner": bool(d.get("banner_url")),
             "abf_updated_at": d.get("abf_updated_at"),
         })
     aggregate.sort(key=lambda x: x["slug"])
@@ -503,6 +514,8 @@ def download_assets():
         slug = d["slug"]
         urls = []
         if d.get("logo_url"): urls.append(("logo", d["logo_url"]))
+        if d.get("banner_url") and d["banner_url"] not in [u[1] for u in urls]:
+            urls.append(("banner", d["banner_url"]))
         if d.get("og_image") and d["og_image"] not in [u[1] for u in urls]:
             urls.append(("og", d["og_image"]))
         for i, u in enumerate(d.get("gallery_urls", [])):

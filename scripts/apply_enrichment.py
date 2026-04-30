@@ -53,7 +53,7 @@ from sqlalchemy import create_engine, text
 # ============================================================================
 # Paths + config
 # ============================================================================
-SCRAPER_ROOT = Path("/Users/brenomoretti/Developer/mercadofranquia/scripts/abf_scraper")
+SCRAPER_ROOT = Path(__file__).resolve().parent / "abf_scraper"
 PARSED_DIR = SCRAPER_ROOT / "output" / "parsed"
 OUTPUT_DIR = SCRAPER_ROOT / "output"
 

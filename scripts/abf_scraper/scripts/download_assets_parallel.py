@@ -17,12 +17,17 @@ ASSETS.mkdir(exist_ok=True)
 UA = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36"
 
 
+import ssl
+import certifi
+SSL_CTX = ssl.create_default_context(cafile=certifi.where())
+
+
 def download_one(url: str, dest: Path) -> tuple[bool, str]:
     if dest.exists() and dest.stat().st_size > 0:
         return (True, "skip")
     try:
         req = urllib.request.Request(url, headers={"User-Agent": UA})
-        with urllib.request.urlopen(req, timeout=15) as r:
+        with urllib.request.urlopen(req, timeout=15, context=SSL_CTX) as r:
             data = r.read()
         if len(data) < 200:
             return (False, "too_small")
@@ -46,6 +51,12 @@ def main():
             if ext not in ("svg", "png", "jpg", "jpeg", "webp"):
                 ext = "jpg"
             tasks.append((d["logo_url"], slug_dir / f"logo.{ext}"))
+
+        if d.get("banner_url"):
+            ext = d["banner_url"].split(".")[-1].split("?")[0].lower()
+            if ext not in ("svg", "png", "jpg", "jpeg", "webp"):
+                ext = "jpg"
+            tasks.append((d["banner_url"], slug_dir / f"banner.{ext}"))
 
         for i, url in enumerate(d.get("gallery_urls", [])):
             ext = url.split(".")[-1].split("?")[0].lower()
