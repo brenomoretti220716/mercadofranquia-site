@@ -262,7 +262,9 @@
    ============================================================ */
 
 .banner {
-  height: 240px;
+  aspect-ratio: 1920 / 600;
+  width: 100%;
+  background-color: var(--ink-900);
   overflow: hidden;
 }
 .bannerImg {
@@ -1082,6 +1084,9 @@
   .page {
     border-left: 0;
     border-right: 0;
+  }
+  .banner {
+    aspect-ratio: 3 / 2;
   }
   .section {
     padding: 28px 20px;
