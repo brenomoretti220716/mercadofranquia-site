@@ -43,3 +43,13 @@ deploy/ec2/systemd/mf-api.service
 # Local dev wrappers/scripts (per-machine, not shipped)
 deploy/ec2/app/main_local.py
 deploy/ec2/dev-start.sh
+
+# ABF scraper artefatos pesados / dados de terceiros / DB local
+# Reproduzivel via `python3 scripts/abf_scraper/scripts/abf_scraper.py all`
+scripts/abf_scraper/html_cache/
+scripts/abf_scraper/assets/
+scripts/abf_scraper/output/parsed/
+scripts/abf_scraper/output/db_franchises.json
+scripts/abf_scraper/output/db_business_models.json
+scripts/abf_scraper/output/enrichment_diff.json
+scripts/abf_scraper/output/enrichment_summary.txt

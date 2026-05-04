@@ -20,6 +20,7 @@ from sqlalchemy.orm import Session, selectinload
 from app.db import get_db
 from app.models import Franchise, Review, ReviewResponse, User
 from app.profile_completion import compute_completion
+from app.services.review_service import recalculate_franchise_aggregates
 from app.security import (
     JwtPayload,
     assert_franchise_owner,
@@ -59,6 +60,7 @@ def _serialize_review(r: Review) -> dict[str, Any]:
         "franchiseId": r.franchiseId,
         "authorId": r.authorId,
         "createdAt": _iso(r.createdAt),
+        "updatedAt": _iso(r.updatedAt),
     }
     if author is not None:
         payload["author"] = (
@@ -71,8 +73,13 @@ def _serialize_review(r: Review) -> dict[str, Any]:
 
 class CreateReviewBody(BaseModel):
     rating: int = Field(ge=1, le=5)
-    comment: str = Field(min_length=1, max_length=4000)
+    comment: str = Field(min_length=30, max_length=1000)
     anonymous: bool = False
+
+
+class UpdateReviewBody(BaseModel):
+    rating: Optional[int] = Field(default=None, ge=1, le=5)
+    comment: Optional[str] = Field(default=None, min_length=30, max_length=1000)
 
 
 # ---------------------------------------------------------------------------
@@ -221,19 +228,111 @@ def create_review(
         isActive=True,
     )
     db.add(review)
+    db.flush()  # garante que o INSERT da review e visivel pra COUNT no helper
 
-    # Update franchise aggregates transactionally (SQLAlchemy flushes on commit).
-    franchise.reviewCount = (franchise.reviewCount or 0) + 1
-    franchise.ratingSum = (franchise.ratingSum or 0) + body.rating
-    new_count = franchise.reviewCount
-    franchise.averageRating = (
-        float(franchise.ratingSum) / new_count if new_count > 0 else None
-    )
+    # Recalcular agregados via SELECT COUNT/SUM/AVG WHERE isActive=true.
+    # Mais robusto que incremental — evita drift se houver inconsistencia.
+    recalculate_franchise_aggregates(db, franchise.id)
 
     db.commit()
     db.refresh(review)
     db.refresh(review, attribute_names=["author"])
     return _serialize_review(review)
+
+
+# ---------------------------------------------------------------------------
+# PATCH /reviews/{review_id} (autor edita propria avaliacao)
+# ---------------------------------------------------------------------------
+
+@router.patch("/{review_id}", summary="Editar propria avaliacao")
+def update_review(
+    review_id: int,
+    body: UpdateReviewBody,
+    db: Session = Depends(get_db),
+    current: JwtPayload = Depends(get_current_user),
+) -> dict[str, Any]:
+    """Permite ao autor editar a propria avaliacao.
+
+    - Auth: precisa ser o autor da review.
+    - Pode mudar rating, comment ou ambos.
+    - updatedAt vira NOW() em qualquer mudanca.
+    - Se rating mudou, recalcula agregados da Franchise.
+    """
+    review = db.scalar(select(Review).where(Review.id == review_id))
+    if review is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Avaliacao nao encontrada",
+        )
+
+    if review.authorId != current.id:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Voce so pode editar suas proprias avaliacoes",
+        )
+
+    rating_changed = False
+    if body.rating is not None and body.rating != review.rating:
+        review.rating = body.rating
+        rating_changed = True
+
+    if body.comment is not None:
+        review.comment = body.comment
+
+    review.updatedAt = datetime.utcnow()
+
+    db.flush()
+
+    if rating_changed:
+        recalculate_franchise_aggregates(db, review.franchiseId)
+
+    db.commit()
+    db.refresh(review)
+    db.refresh(review, attribute_names=["author"])
+
+    return _serialize_review(review)
+
+
+# ---------------------------------------------------------------------------
+# DELETE /reviews/{review_id} (autor deleta propria avaliacao)
+# ---------------------------------------------------------------------------
+
+@router.delete("/{review_id}", summary="Deletar propria avaliacao")
+def delete_review(
+    review_id: int,
+    db: Session = Depends(get_db),
+    current: JwtPayload = Depends(get_current_user),
+) -> dict[str, str]:
+    """Permite ao autor deletar a propria avaliacao (hard delete).
+
+    - Auth: precisa ser o autor da review.
+    - Side: ReviewResponse vinculada e deletada via CASCADE.
+    - Recalcula agregados da Franchise.
+    """
+    review = db.scalar(select(Review).where(Review.id == review_id))
+    if review is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Avaliacao nao encontrada",
+        )
+
+    if review.authorId != current.id:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Voce so pode deletar suas proprias avaliacoes",
+        )
+
+    # Salvar franchiseId ANTES do delete (objeto vira detached depois)
+    franchise_id = review.franchiseId
+
+    db.delete(review)
+    db.flush()
+
+    recalculate_franchise_aggregates(db, franchise_id)
+
+    db.commit()
+
+    return {"message": "Avaliacao removida com sucesso"}
 
 
 # ===========================================================================
@@ -429,20 +528,11 @@ def toggle_review_status(
             "message": f"Review already {'active' if body.isActive else 'inactive'}",
         }
 
-    rating = review.rating
-    delta_count = 1 if body.isActive else -1
-    delta_sum = rating if body.isActive else -rating
-
     review.isActive = body.isActive
 
     if franchise is not None:
-        new_count = max(0, (franchise.reviewCount or 0) + delta_count)
-        new_sum = (franchise.ratingSum or 0) + delta_sum
-        franchise.reviewCount = new_count
-        franchise.ratingSum = new_sum
-        franchise.averageRating = (
-            float(new_sum) / new_count if new_count > 0 else None
-        )
+        db.flush()  # garante que o toggle de isActive afete o COUNT no helper
+        recalculate_franchise_aggregates(db, franchise.id)
 
     db.commit()
     db.refresh(review)

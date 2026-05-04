@@ -1,0 +1,504 @@
+{
+  "Franchise": [
+    {
+      "name": "id",
+      "type": "character varying",
+      "nullable": false,
+      "default": ""
+    },
+    {
+      "name": "name",
+      "type": "character varying",
+      "nullable": false,
+      "default": ""
+    },
+    {
+      "name": "sku",
+      "type": "character varying",
+      "nullable": true,
+      "default": ""
+    },
+    {
+      "name": "slug",
+      "type": "character varying",
+      "nullable": true,
+      "default": ""
+    },
+    {
+      "name": "headquarterState",
+      "type": "character varying",
+      "nullable": true,
+      "default": ""
+    },
+    {
+      "name": "segment",
+      "type": "character varying",
+      "nullable": true,
+      "default": ""
+    },
+    {
+      "name": "subsegment",
+      "type": "character varying",
+      "nullable": true,
+      "default": ""
+    },
+    {
+      "name": "businessType",
+      "type": "text",
+      "nullable": true,
+      "default": ""
+    },
+    {
+      "name": "franchiseStartYear",
+      "type": "integer",
+      "nullable": true,
+      "default": ""
+    },
+    {
+      "name": "abfSince",
+      "type": "integer",
+      "nullable": true,
+      "default": ""
+    },
+    {
+      "name": "videoUrl",
+      "type": "text",
+      "nullable": true,
+      "default": ""
+    },
+    {
+      "name": "updatedAt",
+      "type": "timestamp without time zone",
+      "nullable": false,
+      "default": ""
+    },
+    {
+      "name": "createdAt",
+      "type": "timestamp without time zone",
+      "nullable": false,
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "contactId",
+      "type": "integer",
+      "nullable": true,
+      "default": ""
+    },
+    {
+      "name": "ownerId",
+      "type": "character varying",
+      "nullable": true,
+      "default": ""
+    },
+    {
+      "name": "isActive",
+      "type": "boolean",
+      "nullable": false,
+      "default": "true"
+    },
+    {
+      "name": "brandFoundationYear",
+      "type": "integer",
+      "nullable": true,
+      "default": ""
+    },
+    {
+      "name": "description",
+      "type": "text",
+      "nullable": true,
+      "default": ""
+    },
+    {
+      "name": "detailedDescription",
+      "type": "text",
+      "nullable": true,
+      "default": ""
+    },
+    {
+      "name": "headquarter",
+      "type": "character varying",
+      "nullable": true,
+      "default": ""
+    },
+    {
+      "name": "isAbfAssociated",
+      "type": "boolean",
+      "nullable": true,
+      "default": ""
+    },
+    {
+      "name": "logoUrl",
+      "type": "character varying",
+      "nullable": true,
+      "default": ""
+    },
+    {
+      "name": "totalUnits",
+      "type": "integer",
+      "nullable": true,
+      "default": ""
+    },
+    {
+      "name": "totalUnitsInBrazil",
+      "type": "integer",
+      "nullable": true,
+      "default": ""
+    },
+    {
+      "name": "thumbnailUrl",
+      "type": "character varying",
+      "nullable": true,
+      "default": ""
+    },
+    {
+      "name": "lastScrapedAt",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "default": ""
+    },
+    {
+      "name": "scrapedWebsite",
+      "type": "character varying",
+      "nullable": true,
+      "default": ""
+    },
+    {
+      "name": "calculationBaseAdFee",
+      "type": "character varying",
+      "nullable": true,
+      "default": ""
+    },
+    {
+      "name": "calculationBaseRoyaltie",
+      "type": "character varying",
+      "nullable": true,
+      "default": ""
+    },
+    {
+      "name": "galleryUrls",
+      "type": "text",
+      "nullable": true,
+      "default": ""
+    },
+    {
+      "name": "isReview",
+      "type": "boolean",
+      "nullable": false,
+      "default": "true"
+    },
+    {
+      "name": "averageRating",
+      "type": "double precision",
+      "nullable": true,
+      "default": ""
+    },
+    {
+      "name": "ratingSum",
+      "type": "integer",
+      "nullable": false,
+      "default": "0"
+    },
+    {
+      "name": "reviewCount",
+      "type": "integer",
+      "nullable": false,
+      "default": "0"
+    },
+    {
+      "name": "unitsEvolution",
+      "type": "character varying",
+      "nullable": true,
+      "default": ""
+    },
+    {
+      "name": "favoritesCount",
+      "type": "integer",
+      "nullable": false,
+      "default": "0"
+    },
+    {
+      "name": "isSponsored",
+      "type": "boolean",
+      "nullable": false,
+      "default": "false"
+    },
+    {
+      "name": "sponsorPlacements",
+      "type": "jsonb",
+      "nullable": false,
+      "default": ""
+    },
+    {
+      "name": "minimumInvestment",
+      "type": "numeric",
+      "nullable": true,
+      "default": ""
+    },
+    {
+      "name": "maximumInvestment",
+      "type": "numeric",
+      "nullable": true,
+      "default": ""
+    },
+    {
+      "name": "minimumReturnOnInvestment",
+      "type": "integer",
+      "nullable": true,
+      "default": ""
+    },
+    {
+      "name": "maximumReturnOnInvestment",
+      "type": "integer",
+      "nullable": true,
+      "default": ""
+    },
+    {
+      "name": "franchiseFee",
+      "type": "numeric",
+      "nullable": true,
+      "default": ""
+    },
+    {
+      "name": "averageMonthlyRevenue",
+      "type": "numeric",
+      "nullable": true,
+      "default": ""
+    },
+    {
+      "name": "royalties",
+      "type": "numeric",
+      "nullable": true,
+      "default": ""
+    },
+    {
+      "name": "advertisingFee",
+      "type": "numeric",
+      "nullable": true,
+      "default": ""
+    },
+    {
+      "name": "setupCapital",
+      "type": "numeric",
+      "nullable": true,
+      "default": ""
+    },
+    {
+      "name": "workingCapital",
+      "type": "numeric",
+      "nullable": true,
+      "default": ""
+    },
+    {
+      "name": "storeArea",
+      "type": "integer",
+      "nullable": true,
+      "default": ""
+    },
+    {
+      "name": "status",
+      "type": "character varying",
+      "nullable": false,
+      "default": "'APPROVED'::character varying"
+    },
+    {
+      "name": "tagline",
+      "type": "character varying",
+      "nullable": true,
+      "default": ""
+    },
+    {
+      "name": "differentials",
+      "type": "jsonb",
+      "nullable": true,
+      "default": ""
+    },
+    {
+      "name": "idealFranchiseeProfile",
+      "type": "text",
+      "nullable": true,
+      "default": ""
+    },
+    {
+      "name": "processSteps",
+      "type": "jsonb",
+      "nullable": true,
+      "default": ""
+    },
+    {
+      "name": "testimonials",
+      "type": "jsonb",
+      "nullable": true,
+      "default": ""
+    },
+    {
+      "name": "bannerUrl",
+      "type": "character varying",
+      "nullable": true,
+      "default": ""
+    },
+    {
+      "name": "phone",
+      "type": "character varying",
+      "nullable": true,
+      "default": ""
+    },
+    {
+      "name": "whatsapp",
+      "type": "character varying",
+      "nullable": true,
+      "default": ""
+    },
+    {
+      "name": "publicEmail",
+      "type": "character varying",
+      "nullable": true,
+      "default": ""
+    },
+    {
+      "name": "instagramUrl",
+      "type": "character varying",
+      "nullable": true,
+      "default": ""
+    },
+    {
+      "name": "facebookUrl",
+      "type": "character varying",
+      "nullable": true,
+      "default": ""
+    },
+    {
+      "name": "linkedinUrl",
+      "type": "character varying",
+      "nullable": true,
+      "default": ""
+    },
+    {
+      "name": "totalUnitsUpdatedAt",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "default": ""
+    },
+    {
+      "name": "totalUnitsLastConfirmedAt",
+      "type": "timestamp without time zone",
+      "nullable": true,
+      "default": ""
+    }
+  ],
+  "BusinessModel": [
+    {
+      "name": "id",
+      "type": "character varying",
+      "nullable": false,
+      "default": ""
+    },
+    {
+      "name": "name",
+      "type": "character varying",
+      "nullable": false,
+      "default": ""
+    },
+    {
+      "name": "description",
+      "type": "text",
+      "nullable": false,
+      "default": ""
+    },
+    {
+      "name": "photoUrl",
+      "type": "character varying",
+      "nullable": false,
+      "default": ""
+    },
+    {
+      "name": "franchiseId",
+      "type": "character varying",
+      "nullable": false,
+      "default": ""
+    },
+    {
+      "name": "createdAt",
+      "type": "timestamp without time zone",
+      "nullable": false,
+      "default": "CURRENT_TIMESTAMP"
+    },
+    {
+      "name": "updatedAt",
+      "type": "timestamp without time zone",
+      "nullable": false,
+      "default": ""
+    },
+    {
+      "name": "franchiseFee",
+      "type": "numeric",
+      "nullable": true,
+      "default": ""
+    },
+    {
+      "name": "royalties",
+      "type": "numeric",
+      "nullable": true,
+      "default": ""
+    },
+    {
+      "name": "advertisingFee",
+      "type": "numeric",
+      "nullable": true,
+      "default": ""
+    },
+    {
+      "name": "workingCapital",
+      "type": "numeric",
+      "nullable": true,
+      "default": ""
+    },
+    {
+      "name": "setupCapital",
+      "type": "numeric",
+      "nullable": true,
+      "default": ""
+    },
+    {
+      "name": "averageMonthlyRevenue",
+      "type": "numeric",
+      "nullable": true,
+      "default": ""
+    },
+    {
+      "name": "storeArea",
+      "type": "integer",
+      "nullable": true,
+      "default": ""
+    },
+    {
+      "name": "calculationBaseRoyaltie",
+      "type": "character varying",
+      "nullable": true,
+      "default": ""
+    },
+    {
+      "name": "calculationBaseAdFee",
+      "type": "character varying",
+      "nullable": true,
+      "default": ""
+    },
+    {
+      "name": "investment",
+      "type": "numeric",
+      "nullable": true,
+      "default": ""
+    },
+    {
+      "name": "payback",
+      "type": "integer",
+      "nullable": true,
+      "default": ""
+    },
+    {
+      "name": "profitability",
+      "type": "numeric",
+      "nullable": true,
+      "default": ""
+    }
+  ]
+}

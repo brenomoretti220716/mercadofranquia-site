@@ -547,6 +547,18 @@ class BusinessModel(Base):
     # faturamento. Mesmo padrao de Numeric(5,2) de royalties/advertisingFee.
     profitability: Mapped[Optional[Decimal]] = mapped_column(Numeric(5, 2))
 
+    # Fatia ABF refresh (alembic 3c59cb1b21a4) — royalty/adFee expressivo
+    # com type + fixed amount em centavos. Type constrained via CHECK pra
+    # PERCENTAGE / FIXED / VARIABLE / NONE.
+    royaltyType: Mapped[Optional[str]] = mapped_column("royaltyType", String(20))
+    royaltyFixedAmount: Mapped[Optional[int]] = mapped_column(
+        "royaltyFixedAmount", Integer
+    )
+    adFeeType: Mapped[Optional[str]] = mapped_column("adFeeType", String(20))
+    adFeeFixedAmount: Mapped[Optional[int]] = mapped_column(
+        "adFeeFixedAmount", Integer
+    )
+
     franchise: Mapped["Franchise"] = relationship(back_populates="business_models")
 
 
@@ -621,6 +633,12 @@ class Review(Base):
     comment: Mapped[str] = mapped_column(Text, nullable=False)
     createdAt: Mapped[datetime] = mapped_column(
         "createdAt",
+        DateTime(timezone=False),
+        nullable=False,
+        server_default=func.now(),
+    )
+    updatedAt: Mapped[datetime] = mapped_column(
+        "updatedAt",
         DateTime(timezone=False),
         nullable=False,
         server_default=func.now(),
