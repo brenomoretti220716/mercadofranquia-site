@@ -1,0 +1,61 @@
+==============================================================================
+=== ABF Refresh — Apply Plan ===
+==============================================================================
+
+Scrape novo: 183 fichas, 233 BMs
+
+WILL_SKIP (whitelist): 0
+
+WILL_OVERRIDE (matched): 183
+WILL_CREATE (no match): 0
+
+CAMPOS_OVERRIDE counts:
+  abfUpdatedAt                   183
+  detailedDescription            183
+  isAbfAssociated                183
+  lastScrapedAt                  183
+  bannerUrl                      177
+  scrapedWebsite                 177
+  galleryUrls                    174
+  logoUrl                        173
+  videoUrl                       150
+  description                    149
+  idealFranchiseeProfile         139
+  segment                        99
+  tagline                        51
+  totalUnits                     49
+  minimumInvestment              49
+  name                           29
+  headquarter                    22
+  maximumInvestment              3
+
+BMs DELETE (override targets): 232
+BMs INSERT: 233 (233 override + 0 create)
+
+Royalty type breakdown (BMs novos):
+  PERCENTAGE   151
+  FIXED        38
+  VARIABLE     13
+  NONE         31
+
+Ad fee type breakdown:
+  PERCENTAGE   122
+  FIXED        37
+  VARIABLE     12
+  NONE         62
+
+STALE (em prod com abfUpdatedAt mas ausentes do scrape novo): 3
+  ~ giuliana-flores (Giuliana Flores)
+  ~ blow (Blow)
+  ~ evolve-energia-solar (Evolve Energia Solar)
+  (NÃO TOCADAS, log only)
+
+
+=== APPLY EXECUTADO ===
+{
+  "updated": 183,
+  "created": 0,
+  "bms_deleted": 232,
+  "bms_inserted": 233,
+  "errors": []
+}

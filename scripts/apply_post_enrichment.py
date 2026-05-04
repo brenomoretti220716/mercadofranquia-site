@@ -142,9 +142,12 @@ def preflight(
                         (db_slug, json.dumps(new_urls, ensure_ascii=False))
                     )
 
-        # ---- Banner: SET se DB.bannerUrl IS NULL e file existe ----
-        cur_banner = (db_state.get(db_slug) or {}).get("bannerUrl")
-        if cur_banner is None:
+        # ---- Banner: SET se DB.bannerUrl IS NULL OU rewrite se hot-linked ----
+        # Patch A (refresh): inicialmente era so "set if null". Refresh popula
+        # bannerUrl com URL portaldofranchising via override, entao precisa
+        # rewrite tambem (mesma logica de logo/gallery).
+        cur_banner = (db_state.get(db_slug) or {}).get("bannerUrl") or ""
+        if cur_banner == "" or HOT_LINK_HOST in cur_banner:
             banner_file = find_file_by_stem(scan_dir, "banner")
             if banner_file:
                 ext = banner_file.suffix.lstrip(".")
@@ -213,20 +216,23 @@ def apply_db(
             stats["gallery_ok"] += 1
 
         # Banner
+        # Patch A (refresh): preflight ja gate "NULL ou hot-linked", entao
+        # UPDATE nao precisa filtro adicional. WHERE slug + clause anterior
+        # "AND bannerUrl IS NULL" era do deploy original (set-only).
         for db_slug, new_url in banner_sets:
             file_path = ASSETS_ROOT / db_slug / Path(new_url).name
             if not file_path.exists():
                 print(f"  WARN banner {db_slug}: file {file_path.name} missing — skip")
                 stats["banner_skip"] += 1
                 continue
-            conn.execute(
-                text(
-                    'UPDATE "Franchise" SET "bannerUrl" = :url '
-                    'WHERE slug = :slug AND "bannerUrl" IS NULL'
-                ),
+            res = conn.execute(
+                text('UPDATE "Franchise" SET "bannerUrl" = :url WHERE slug = :slug'),
                 {"url": new_url, "slug": db_slug},
             )
-            stats["banner_ok"] += 1
+            if res.rowcount == 0:
+                stats["banner_skip"] += 1
+            else:
+                stats["banner_ok"] += 1
     return stats
 
 

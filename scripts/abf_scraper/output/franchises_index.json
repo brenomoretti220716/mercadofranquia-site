@@ -138,12 +138,6 @@
     "source_url": "https://franquias.portaldofranchising.com.br/franquia-billy-the-grill-alimentacao/"
   },
   {
-    "slug": "franquia-blow",
-    "segment": "saude-beleza-e-bem-estar",
-    "segment_name": "Saúde, Beleza e Bem-Estar",
-    "source_url": "https://franquias.portaldofranchising.com.br/franquia-blow/"
-  },
-  {
     "slug": "franquia-bono-pneus-servicos-automotivos",
     "segment": "servicos-automotivos",
     "segment_name": "Serviços Automotivos",
@@ -408,12 +402,6 @@
     "source_url": "https://franquias.portaldofranchising.com.br/franquia-espacolaser/"
   },
   {
-    "slug": "franquia-evolve-energia-solar",
-    "segment": "servicos-e-outros-negocios",
-    "segment_name": "Serviços e Outros Negócios",
-    "source_url": "https://franquias.portaldofranchising.com.br/franquia-evolve-energia-solar/"
-  },
-  {
     "slug": "franquia-evydhence-pericia-automotiva",
     "segment": "servicos-automotivos",
     "segment_name": "Serviços Automotivos",
@@ -490,12 +478,6 @@
     "segment": "alimentacao",
     "segment_name": "Alimentação",
     "source_url": "https://franquias.portaldofranchising.com.br/franquia-giraffas-alimentacao/"
-  },
-  {
-    "slug": "franquia-giuliana-flores",
-    "segment": "servicos-e-outros-negocios",
-    "segment_name": "Serviços e Outros Negócios",
-    "source_url": "https://franquias.portaldofranchising.com.br/franquia-giuliana-flores/"
   },
   {
     "slug": "franquia-griletto-alimentacao",
@@ -964,6 +946,12 @@
     "segment": "saude-beleza-e-bem-estar",
     "segment_name": "Saúde, Beleza e Bem-Estar",
     "source_url": "https://franquias.portaldofranchising.com.br/franquia-sorrix/"
+  },
+  {
+    "slug": "franquia-soulier",
+    "segment": "moda",
+    "segment_name": "Moda",
+    "source_url": "https://franquias.portaldofranchising.com.br/franquia-soulier/"
   },
   {
     "slug": "franquia-spoleto-alimentacao",

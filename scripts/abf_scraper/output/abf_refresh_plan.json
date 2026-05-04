@@ -1,0 +1,20 @@
+{
+  "skip_whitelist": [],
+  "override_count": 183,
+  "create_count": 0,
+  "claimed_warning": [],
+  "stale_fichas": [
+    {
+      "db_slug": "giuliana-flores",
+      "name": "Giuliana Flores"
+    },
+    {
+      "db_slug": "blow",
+      "name": "Blow"
+    },
+    {
+      "db_slug": "evolve-energia-solar",
+      "name": "Evolve Energia Solar"
+    }
+  ]
+}

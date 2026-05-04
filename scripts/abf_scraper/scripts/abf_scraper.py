@@ -25,9 +25,11 @@ Premissas:
 - Cada modelo de negócio gera 1 bloco completo no HTML
 """
 import argparse
+import html
 import json
 import os
 import re
+import ssl
 import time
 import urllib.request
 import urllib.error
@@ -35,7 +37,12 @@ from pathlib import Path
 from datetime import datetime
 from typing import Optional
 
+import certifi
 from bs4 import BeautifulSoup
+
+# SSL context com bundle do certifi pra evitar
+# CERTIFICATE_VERIFY_FAILED em macOS (Python framework usa cacert antigo).
+SSL_CTX = ssl.create_default_context(cafile=certifi.where())
 
 ROOT = Path(__file__).parent.parent  # /home/claude/abf_scraper
 OUTPUT = ROOT / "output"
@@ -83,7 +90,7 @@ def http_get(url: str, timeout: int = 30) -> Optional[str]:
     """GET simples com user-agent. Retorna None em erro."""
     req = urllib.request.Request(url, headers={"User-Agent": UA})
     try:
-        with urllib.request.urlopen(req, timeout=timeout) as resp:
+        with urllib.request.urlopen(req, timeout=timeout, context=SSL_CTX) as resp:
             data = resp.read()
             try:
                 return data.decode("utf-8")
@@ -97,7 +104,7 @@ def http_get(url: str, timeout: int = 30) -> Optional[str]:
 def http_get_binary(url: str, timeout: int = 30) -> Optional[bytes]:
     req = urllib.request.Request(url, headers={"User-Agent": UA})
     try:
-        with urllib.request.urlopen(req, timeout=timeout) as resp:
+        with urllib.request.urlopen(req, timeout=timeout, context=SSL_CTX) as resp:
             return resp.read()
     except (urllib.error.URLError, urllib.error.HTTPError, TimeoutError) as e:
         print(f"  ! HTTP error: {e}")
@@ -241,6 +248,30 @@ def _payback_months(s: str) -> tuple[Optional[int], Optional[int]]:
     return (int(nums[0]), int(nums[1]))
 
 
+def _extract_section_text(html_block: str) -> Optional[str]:
+    """Converte um bloco HTML em texto limpo preservando paragrafos.
+
+    Used pra detailed_description e ideal_franchisee_profile.
+    - <br /> -> \n
+    - </p> -> \n\n
+    - <img> e outras tags -> removidas
+    - HTML entities -> decoded
+    - whitespace -> normalizado
+    """
+    if not html_block:
+        return None
+    body = re.sub(r"<br\s*/?>", "\n", html_block, flags=re.IGNORECASE)
+    body = re.sub(r"</p>", "\n\n", body, flags=re.IGNORECASE)
+    body = re.sub(r"<[^>]+>", "", body)
+    body = html.unescape(body)
+    # normaliza whitespace mas preserva quebras de paragrafo
+    body = re.sub(r"[ \t]+", " ", body)
+    body = re.sub(r"\n[ \t]+", "\n", body)
+    body = re.sub(r"\n{3,}", "\n\n", body)
+    body = body.strip()
+    return body if body else None
+
+
 def _kv_following(text: str, label: str) -> Optional[str]:
     """encontra `label\\nvalor` no texto."""
     lines = text.split("\n")
@@ -350,6 +381,56 @@ def parse_franchise(slug: str, raw_html: str, segment_info: dict) -> dict:
             seen.add(src)
     result["gallery_urls"] = gallery
 
+    # 8b. video_url — primeiro YouTube/Vimeo embedado no carousel-main-video
+    # Naming variavel: as URLs aparecem como text content em script JS que monta
+    # iframes dinamicos. Pegamos a primeira (schema do Franchise.videoUrl e text
+    # unico, frontend renderiza 1 video no hero).
+    m_video = re.search(
+        r'(?:https?://)?(?:www\.)?'
+        r'(youtube\.com/watch\?v=[\w-]+|youtu\.be/[\w-]+|vimeo\.com/\d+)',
+        cleaned,
+    )
+    if m_video:
+        url = m_video.group(0)
+        if not url.startswith("http"):
+            url = "https://" + url
+        result["video_url"] = url
+
+    # 8c. detailed_description — bloco "Sobre a franquia X"
+    # Texto editorial rico (1-2K chars), separado do meta_description (155 chars).
+    # Vai pra Franchise.detailedDescription. Limite 5000 chars.
+    m_desc = re.search(
+        r'<h2[^>]*>Sobre a franquia[^<]*</h2>(.*?)'
+        r'(?:<h2[^>]*>|<hr\s+class="border-separator)',
+        cleaned,
+        re.DOTALL | re.IGNORECASE,
+    )
+    if m_desc:
+        body = _extract_section_text(m_desc.group(1))
+        # Threshold 200 chars: descarta placeholder tipo "Conheca abaixo..." +
+        # imagem. Aceita so texto editorial real.
+        if body and len(body) >= 200:
+            result["detailed_description"] = body[:5000] + (
+                "..." if len(body) > 5000 else ""
+            )
+
+    # 8d. ideal_franchisee_profile — bloco "Perfil do franqueado X"
+    # Mesma tecnica do 8c, marker diferente. Vai pra Franchise.idealFranchiseeProfile.
+    m_profile = re.search(
+        r'<h2[^>]*>Perfil do franqueado[^<]*</h2>(.*?)'
+        r'(?:<h2[^>]*>|<hr\s+class="border-separator)',
+        cleaned,
+        re.DOTALL | re.IGNORECASE,
+    )
+    if m_profile:
+        body = _extract_section_text(m_profile.group(1))
+        # Threshold 150 chars: descarta intro curta ("Conheca o perfil...") +
+        # imagem. Frontend renderiza skip-if-null pra evitar bloco confuso.
+        if body and len(body) >= 150:
+            result["ideal_franchisee_profile"] = body[:5000] + (
+                "..." if len(body) > 5000 else ""
+            )
+
     # 9. modelos de negócio — bloco "Investimento para um/uma X"
     # cada bloco tem tabela financeira + retorno + sede + unidades + área + propaganda + royalties
     models = []
@@ -446,9 +527,13 @@ def parse_franchise(slug: str, raw_html: str, segment_info: dict) -> dict:
     return result
 
 
-def parse_all():
+def parse_all(slugs_filter: Optional[set] = None):
     index_path = OUTPUT / "franchises_index.json"
     franchises = json.loads(index_path.read_text())
+
+    if slugs_filter:
+        franchises = [f for f in franchises if f["slug"] in slugs_filter]
+        print(f"[parse] filtro: {len(franchises)} fichas em {sorted(slugs_filter)}")
 
     parsed_dir = OUTPUT / "parsed"
     successes, failures = 0, []
@@ -551,13 +636,21 @@ def download_assets():
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("command", choices=["discover", "fetch", "parse", "download-assets", "all"])
+    parser.add_argument(
+        "--slugs",
+        help="Comma-separated slug filter (parse only). Ex: --slugs franquia-cacau-show-valor,franquia-altenburg",
+    )
     args = parser.parse_args()
+
+    slugs_filter = None
+    if args.slugs:
+        slugs_filter = {s.strip() for s in args.slugs.split(",") if s.strip()}
 
     if args.command in ("discover", "all"):
         discover()
     if args.command in ("fetch", "all"):
         fetch_all()
     if args.command in ("parse", "all"):
-        parse_all()
+        parse_all(slugs_filter=slugs_filter)
     if args.command in ("download-assets", "all"):
         download_assets()
