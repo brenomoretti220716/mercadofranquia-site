@@ -1,0 +1,80 @@
+{
+  "slug": "crysbella",
+  "name": "Crysbella",
+  "url_source": "https://encontresuafranquia.com.br/franquia/crysbella/",
+  "scraped_at": "2026-04-30T23:30:21+00:00",
+  "logo_url": "https://encontresuafranquia.com.br/wp-content/uploads/2026/01/crysbella.jpg",
+  "description_short": "Crysbella, franquia de calçados colecionáveis: referência em moda desde 2014. Calçados com estilo e exclusividade. Saiba mais aqui!",
+  "description_long": "A Crysbella é uma marca que se destaca no segmento de calçados e moda, especialmente por sua proposta inovadora de calçados colecionáveis. Fundada em 2014, a empresa rapidamente se posicionou como uma referência ao oferecer produtos que aliam estilo e exclusividade, características que atraem consumidores que buscam diferenciação no mercado de moda. O conceito de calçados colecionáveis permite que a Crysbella se destaque em um setor altamente competitivo, proporcionando aos clientes a possibilidade de adquirir peças únicas e de edição limitada. O modelo de franquia da Crysbella, iniciado em 2018, foi desenvolvido como uma estratégia para expandir a presença da marca e levar seus produtos a um público mais amplo. A ausência de cobrança de royalties para as lojas franqueadas é um diferencial atrativo para investidores, facilitando a adesão de novos franqueados ao modelo de negócios. Essa abordagem permite que os franqueados concentrem seus esforços em proporcionar experiências de compra diferenciadas, ao mesmo tempo em que mantêm uma operação rentável. A Crysbella busca crescer de forma sustentável, priorizando a qualidade dos serviços e produtos oferecidos. A lógica de crescimento da marca está centrada na criação de uma rede de franquias que valorize a identidade da marca e seu compromisso com a exclusividade. Dessa forma, a Crysbella consegue manter um padrão elevado em todas as unidades, assegurando que os consumidores tenham acesso a produtos e serviços que refletem a essência da marca. Sobre a franquia Fundada em 2014, a Crysbella iniciou sua operação de franquias em 2018, com o objetivo de expandir sua presença no mercado brasileiro de moda e calçados. A estratégia de expansão da marca é focada na criação de experiências de compra únicas, que destacam a exclusividade e a qualidade dos produtos. Atualmente, a franquia conta com duas unidades franqueadas, e sua abordagem sem cobrança de royalties para lojas garante uma operação mais simplificada e atrativa para novos investidores. O posicionamento da Crysbella no mercado brasileiro é de uma marca que valoriza a inovação e a exclusividade, buscando sempre atender às necessidades de um público exigente. Modelo de negócio A Crysbella opera por meio de um modelo de franquia que prioriza a exclusividade e a inovação em calçados. As unidades franqueadas são projetadas para oferecer uma experiência de compra diferenciada, com produtos que se destacam por suas características únicas e colecionáveis. A lógica operacional da franquia é centrada na valorização do produto e no atendimento ao consumidor, garantindo que cada cliente encontre algo especial em cada visita. A ausência de cobrança de royalties para as lojas é um aspecto que facilita a operação dos franqueados, permitindo que eles foquem na excelência do atendimento e na gestão eficiente da unidade. Perfil do público atendido O público atendido pela Crysbella é composto principalmente por consumidores que valorizam exclusividade, qualidade e inovação em moda. São pessoas que apreciam o conceito de calçados colecionáveis e buscam por produtos que expressem sua individualidade e estilo pessoal. Este segmento de mercado é relevante no Brasil, pois há uma demanda crescente por produtos diferenciados que ofereçam mais do que apenas funcionalidade, mas também um senso de identidade e pertencimento. Estrutura da rede Atualmente, a Crysbella conta com duas unidades franqueadas, refletindo uma abordagem de expansão cuidadosa e estratégica. A marca não possui unidades próprias, concentrando seus esforços em estabelecer uma rede de franquias que mantenha a identidade e os valores da marca. O alcance geográfico da Crysbella está em expansão, com planos de crescimento que visam aumentar a presença da marca em diversas regiões do Brasil, sempre buscando franqueados que compartilhem da visão e dos objetivos da empresa. Dados da Franquia",
+  "founded_year": 2014,
+  "franchise_start_year": 2018,
+  "own_units": null,
+  "franchised_units": 2,
+  "total_units": 2,
+  "min_investment": 65000,
+  "max_investment": 65000,
+  "investment_range_text": "R$ 65.000",
+  "franchise_fee": null,
+  "franchise_fee_text": "Não informado",
+  "working_capital": null,
+  "working_capital_text": "Não informado",
+  "investment_tier": "Até R$ 105 mil",
+  "business_models": [
+    {
+      "tag": "loja",
+      "royalties_text": "Não Cobra",
+      "royalties_pct": 0.0,
+      "royalties_base": null,
+      "royalties_is_fixed": false,
+      "ad_fee_text": "R$ 500-Fixo Mensal",
+      "ad_fee_pct": null,
+      "ad_fee_base": "R$ 500-Fixo Mensal",
+      "ad_fee_is_fixed": true,
+      "avg_revenue_text": "R$ 50.000",
+      "avg_revenue": 50000,
+      "avg_profit_text": "Não informado",
+      "avg_profit": null,
+      "payback_text": "18 a 24",
+      "payback_min_months": 18,
+      "payback_max_months": 24
+    }
+  ],
+  "_quality_flags": {
+    "has_logo": true,
+    "has_description_long": true,
+    "has_description_short": true,
+    "has_investment": true,
+    "has_units": true,
+    "has_payback": true,
+    "bm_count": 1,
+    "fields_extracted": 12,
+    "fields_total_known": 13,
+    "fields_filled": 9,
+    "fields_not_informed": [
+      "Taxa de franquia",
+      "Capital de giro",
+      "Lucro médio"
+    ],
+    "description_usable": true,
+    "description_appears_templated": true,
+    "layout_unrecognized": false,
+    "has_corruption": false,
+    "parser_flags": [
+      "ad_fee_fixed_value"
+    ]
+  },
+  "_raw_fields": {
+    "Fundação": "2014",
+    "Início da franquia": "2018",
+    "Unidades franqueadas": "2",
+    "Investimento total": "R$ 65.000",
+    "Taxa de franquia": "Não informado",
+    "Capital de giro": "Não informado",
+    "Royalties": "Não Cobra (loja)",
+    "Taxa de publicidade": "R$ 500-Fixo Mensal (loja)",
+    "Faturamento médio": "R$ 50.000 (loja)",
+    "Lucro médio": "Não informado",
+    "Prazo de retorno (meses)": "18 a 24 (loja)",
+    "Faixa de Investimento": "Franquias de Até R$ 105 mil"
+  }
+}

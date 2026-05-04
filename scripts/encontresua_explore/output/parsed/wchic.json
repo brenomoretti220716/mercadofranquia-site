@@ -1,0 +1,82 @@
+{
+  "slug": "wchic",
+  "name": "Wchic",
+  "url_source": "https://encontresuafranquia.com.br/franquia/wchic/",
+  "scraped_at": "2026-04-30T23:30:22+00:00",
+  "logo_url": "https://encontresuafranquia.com.br/wp-content/uploads/2026/01/wchic.jpg",
+  "description_short": "Wchic, franquia de \"Outros Negócios\" e \"Serviços\", oferece soluções inovadoras desde 2014, preenchendo nichos específicos no mercado brasileiro.",
+  "description_long": "A Wchic é uma franquia que se insere na categoria de “Outros Negócios” e “Serviços”, destacando-se como uma opção inovadora no mercado brasileiro desde a sua fundação em 2014. A marca busca preencher nichos específicos no setor de serviços, oferecendo soluções que se alinham com as necessidades contemporâneas de seus clientes. Ao adotar um modelo de negócio baseado em franquias, a Wchic visa expandir sua presença de maneira sustentável, permitindo que empreendedores locais se tornem parte de sua rede. Essa estratégia de crescimento não só amplia o alcance da marca, mas também contribui para o fortalecimento de economias locais por meio do empreendedorismo. Desde o início de sua operação como franquia, a Wchic tem se concentrado em estabelecer uma base sólida de unidades franqueadas, focando em um modelo que proporciona flexibilidade e rentabilidade aos franqueados. A lógica por trás desse modelo é a criação de unidades móveis, que oferecem maior agilidade e menor custo de operação. O prazo de retorno, estimado entre 29 a 60 meses, é um indicativo da viabilidade econômica dessas unidades, atraindo investidores que buscam um retorno de investimento dentro de um prazo razoável. O crescimento da Wchic é sustentado por uma abordagem que valoriza a inovação e a adaptação às tendências de mercado. A marca se posiciona como uma facilitadora de serviços, integrando tecnologia e atendimento personalizado para atender às demandas de um público diversificado. Essa combinação de fatores torna a franquia uma opção atraente tanto para consumidores quanto para empreendedores, que veem na Wchic uma oportunidade de participar de um segmento em expansão. Sobre a franquia A Wchic foi fundada em 2014 e, no mesmo ano, iniciou suas atividades no setor de franquias. Desde o início, a franquia adotou uma estratégia de expansão focada na criação de unidades móveis, o que permite uma maior flexibilidade operacional e a possibilidade de alcançar diferentes mercados com eficiência. A marca tem se posicionado de maneira estratégica no mercado brasileiro, buscando preencher lacunas específicas no setor de serviços. Com três unidades franqueadas atualmente, a Wchic continua a explorar oportunidades de crescimento, mantendo um foco em inovação e excelência no atendimento ao cliente. Modelo de negócio O modelo de negócio da Wchic baseia-se principalmente na operação de unidades móveis, que oferecem uma série de vantagens em termos de custos e flexibilidade. Essa abordagem permite que os franqueados adaptem suas operações conforme as demandas de mercado, sem os altos custos associados a um ponto fixo. A lógica operacional envolve a prestação de serviços que podem ser levados diretamente ao local onde o cliente está, aumentando assim a conveniência e a satisfação do consumidor. A franquia não divulga informações específicas sobre taxa de franquia ou capital de giro, mas enfatiza a viabilidade e o potencial de retorno de suas unidades, estimado entre 29 a 60 meses. Perfil do público atendido A Wchic atende a um público diversificado que busca soluções práticas e inovadoras na área de serviços. O segmento existe no Brasil devido à crescente demanda por conveniência e personalização, impulsionada por mudanças nos hábitos de consumo e pela adoção de novas tecnologias. O público-alvo inclui consumidores que valorizam a praticidade e a agilidade na prestação de serviços, bem como aqueles que buscam experiências personalizadas e de alta qualidade. A franquia se destaca por sua capacidade de adaptar seus serviços às necessidades específicas de seus clientes, tornando-se uma opção atraente no mercado. Estrutura da rede Atualmente, a Wchic opera com três unidades franqueadas, sem informações disponíveis sobre unidades próprias. A estrutura da rede é projetada para maximizar a eficiência operacional, utilizando unidades móveis que permitem uma cobertura geográfica mais ampla e flexível. Essa abordagem facilita a expansão da franquia em diferentes regiões, adaptando-se às necessidades locais e explorando novos mercados de maneira estratégica. Dados da Franquia",
+  "founded_year": 2014,
+  "franchise_start_year": 2014,
+  "own_units": null,
+  "franchised_units": 3,
+  "total_units": 3,
+  "min_investment": 45000,
+  "max_investment": 55000,
+  "investment_range_text": "R$ 45.000 / R$ 55.000",
+  "franchise_fee": null,
+  "franchise_fee_text": "Não informado",
+  "working_capital": null,
+  "working_capital_text": "Não informado",
+  "investment_tier": "Até R$ 50 mil",
+  "business_models": [
+    {
+      "tag": "unidades móveis",
+      "royalties_text": "R$ 2.500 - Fixo Mensal",
+      "royalties_pct": null,
+      "royalties_base": "R$ 2.500 - Fixo Mensal",
+      "royalties_is_fixed": true,
+      "ad_fee_text": "R$ 1.300 - Fixo Mensal",
+      "ad_fee_pct": null,
+      "ad_fee_base": "R$ 1.300 - Fixo Mensal",
+      "ad_fee_is_fixed": true,
+      "avg_revenue_text": "Não informado",
+      "avg_revenue": null,
+      "avg_profit_text": "Não informado",
+      "avg_profit": null,
+      "payback_text": "29 a 60",
+      "payback_min_months": 29,
+      "payback_max_months": 60
+    }
+  ],
+  "_quality_flags": {
+    "has_logo": true,
+    "has_description_long": true,
+    "has_description_short": true,
+    "has_investment": true,
+    "has_units": true,
+    "has_payback": true,
+    "bm_count": 1,
+    "fields_extracted": 12,
+    "fields_total_known": 13,
+    "fields_filled": 8,
+    "fields_not_informed": [
+      "Taxa de franquia",
+      "Capital de giro",
+      "Faturamento médio",
+      "Lucro médio"
+    ],
+    "description_usable": true,
+    "description_appears_templated": true,
+    "layout_unrecognized": false,
+    "has_corruption": false,
+    "parser_flags": [
+      "royalties_fixed_value",
+      "ad_fee_fixed_value"
+    ]
+  },
+  "_raw_fields": {
+    "Fundação": "2014",
+    "Início da franquia": "2014",
+    "Unidades franqueadas": "3",
+    "Investimento total": "R$ 45.000 / R$ 55.000",
+    "Taxa de franquia": "Não informado",
+    "Capital de giro": "Não informado",
+    "Royalties": "R$ 2.500 - Fixo Mensal (unidades móveis)",
+    "Taxa de publicidade": "R$ 1.300 - Fixo Mensal (unidades móveis)",
+    "Faturamento médio": "Não informado",
+    "Lucro médio": "Não informado",
+    "Prazo de retorno (meses)": "29 a 60 (unidades móveis)",
+    "Faixa de Investimento": "Franquias de Até R$ 50 mil"
+  }
+}

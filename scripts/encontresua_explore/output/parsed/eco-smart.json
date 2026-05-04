@@ -1,0 +1,81 @@
+{
+  "slug": "eco-smart",
+  "name": "Eco Smart Lavanderia",
+  "url_source": "https://encontresuafranquia.com.br/franquia/eco-smart/",
+  "scraped_at": "2026-04-30T23:30:21+00:00",
+  "logo_url": "https://encontresuafranquia.com.br/wp-content/uploads/2026/01/eco-smart-lavanderia.jpg",
+  "description_short": "Eco Smart Lavanderia oferece soluções práticas e sustentáveis no setor de lavanderias, destacando-se por serviços de alta qualidade.",
+  "description_long": "A Eco Smart Lavanderia surge como uma alternativa inovadora, focada em atender consumidores que buscam serviços de alta qualidade com menor impacto ambiental. Fundada em 2021, a empresa rapidamente se posicionou como uma referência em práticas ecológicas, adotando tecnologias que reduzem o consumo de água e energia, além de utilizar produtos biodegradáveis em seus processos de limpeza.O setor de lavanderias e serviços de limpeza tem ganhado destaque no Brasil, especialmente com o aumento da demanda por soluções práticas e sustentáveis. O crescimento da Eco Smart Lavanderia é sustentado por um modelo de franquia que se iniciou em 2022. Este modelo permite que empresários locais adotem práticas sustentáveis, ao mesmo tempo em que se beneficiam de uma marca já consolidada no mercado. A estratégia de franquia da empresa foca na capacitação dos franqueados, garantindo que todos sigam os padrões de qualidade e sustentabilidade que são a marca registrada do negócio. Além disso, a Eco Smart Lavanderia busca continuamente inovações tecnológicas que possam ser incorporadas à sua operação, fortalecendo ainda mais sua proposta de valor. O mercado brasileiro de lavanderias é vasto e diversificado, com uma crescente demanda por serviços que ofereçam conveniência e eficiência. A Eco Smart Lavanderia se destaca nesse cenário ao oferecer soluções que não apenas atendem às necessidades básicas de limpeza, mas também contribuem para a preservação ambiental. Isso é particularmente atraente para consumidores conscientes, que desejam minimizar seu impacto ecológico sem abrir mão da qualidade. Ao oferecer um serviço diferenciado, a Eco Smart Lavanderia consegue atrair um público fiel e expandir sua presença no mercado. Sobre a franquia A Eco Smart Lavanderia foi fundada em 2021 e iniciou seu modelo de franquia em 2022, refletindo um rápido crescimento e adaptação ao mercado. Com uma estratégia focada na expansão por meio de franquias, a marca busca fortalecer sua presença em diversas regiões do Brasil. A empresa se posiciona como uma alternativa sustentável no setor de lavanderias, enfatizando o uso de tecnologias e práticas que minimizam o impacto ambiental. Ao longo de sua curta trajetória, a Eco Smart Lavanderia já conta com uma unidade própria e doze unidades franqueadas, demonstrando o sucesso de sua estratégia de expansão. Modelo de negócio O modelo de negócio da Eco Smart Lavanderia é baseado na operação de unidades que oferecem serviços de lavanderia com um forte apelo ecológico. Cada unidade é equipada com tecnologia que reduz o consumo de recursos naturais, como água e energia, e utiliza produtos de limpeza biodegradáveis. Os franqueados recebem treinamentos e suporte contínuo para garantir que os padrões de qualidade e sustentabilidade sejam mantidos. A lógica operacional envolve a padronização de processos e a adoção de sistemas de gestão que otimizam o atendimento ao cliente, garantindo eficiência e satisfação. Esse modelo permite que a Eco Smart Lavanderia se diferencie no mercado, atraindo consumidores que valorizam práticas sustentáveis. Perfil do público atendido A Eco Smart Lavanderia atende um público diversificado, mas com um interesse comum em práticas sustentáveis e conveniência. Os consumidores típicos incluem famílias urbanas, profissionais que valorizam o tempo e a praticidade, e indivíduos com uma consciência ambiental elevada. O segmento de lavanderias no Brasil existe devido à crescente demanda por serviços que economizam tempo e oferecem soluções práticas para o dia a dia. O foco em sustentabilidade atende a um nicho de mercado cada vez mais preocupado com questões ambientais, o que contribui para a fidelização dos clientes. Estrutura da rede Atualmente, a Eco Smart Lavanderia possui uma estrutura composta por uma unidade própria e doze unidades franqueadas. A rede tem um alcance geográfico crescente, com presença em várias regiões do Brasil, à medida que continua a expandir sua operação por meio do modelo de franquia. Essa expansão é facilitada por um foco em práticas sustentáveis e inovação, que atraem tanto franqueados quanto consumidores finais. Dados da Franquia",
+  "founded_year": 2021,
+  "franchise_start_year": 2022,
+  "own_units": 1,
+  "franchised_units": 12,
+  "total_units": 13,
+  "min_investment": 187500,
+  "max_investment": 220000,
+  "investment_range_text": "R$ 187.500 / R$ 220.000",
+  "franchise_fee": null,
+  "franchise_fee_text": "Não informado",
+  "working_capital": null,
+  "working_capital_text": "Não informado",
+  "investment_tier": "Até R$ 200 mil",
+  "business_models": [
+    {
+      "tag": "loja",
+      "royalties_text": "5,00% - Faturamento",
+      "royalties_pct": 5.0,
+      "royalties_base": "Faturamento",
+      "royalties_is_fixed": false,
+      "ad_fee_text": "R$ 250 - Fixo Mensal",
+      "ad_fee_pct": null,
+      "ad_fee_base": "R$ 250 - Fixo Mensal",
+      "ad_fee_is_fixed": true,
+      "avg_revenue_text": "R$ 30.000",
+      "avg_revenue": 30000,
+      "avg_profit_text": "Não informado",
+      "avg_profit": null,
+      "payback_text": "24 a 48",
+      "payback_min_months": 24,
+      "payback_max_months": 48
+    }
+  ],
+  "_quality_flags": {
+    "has_logo": true,
+    "has_description_long": true,
+    "has_description_short": true,
+    "has_investment": true,
+    "has_units": true,
+    "has_payback": true,
+    "bm_count": 1,
+    "fields_extracted": 13,
+    "fields_total_known": 13,
+    "fields_filled": 10,
+    "fields_not_informed": [
+      "Taxa de franquia",
+      "Capital de giro",
+      "Lucro médio"
+    ],
+    "description_usable": true,
+    "description_appears_templated": true,
+    "layout_unrecognized": false,
+    "has_corruption": false,
+    "parser_flags": [
+      "ad_fee_fixed_value"
+    ]
+  },
+  "_raw_fields": {
+    "Fundação": "2021",
+    "Início da franquia": "2022",
+    "Unidades próprias": "1",
+    "Unidades franqueadas": "12",
+    "Investimento total": "R$ 187.500 / R$ 220.000",
+    "Taxa de franquia": "Não informado",
+    "Capital de giro": "Não informado",
+    "Royalties": "5,00% - Faturamento (loja)",
+    "Taxa de publicidade": "R$ 250 - Fixo Mensal (loja)",
+    "Faturamento médio": "R$ 30.000 (loja)",
+    "Lucro médio": "Não informado",
+    "Prazo de retorno (meses)": "24 a 48 (loja)",
+    "Faixa de Investimento": "Franquias de Até R$ 200 mil"
+  }
+}

@@ -1,0 +1,83 @@
+{
+  "slug": "vai-voando",
+  "name": "Vai Voando",
+  "url_source": "https://encontresuafranquia.com.br/franquia/vai-voando/",
+  "scraped_at": "2026-04-30T23:30:22+00:00",
+  "logo_url": "https://encontresuafranquia.com.br/wp-content/uploads/2026/04/Vai-voando.jpg",
+  "description_short": "Vai Voando é uma franquia de agências de turismo que democratiza o acesso a viagens no Brasil, oferecendo soluções acessíveis desde 2009.",
+  "description_long": "A Vai Voando é uma franquia que opera no setor de agências de turismo, inserida no amplo segmento de hotelaria e turismo. Desde sua fundação em 2009, a marca tem se destacado por oferecer soluções acessíveis para viagens, buscando democratizar o acesso ao turismo no Brasil. O turismo, como um dos setores mais dinâmicos da economia global, apresenta uma diversidade de oportunidades de negócios, e a Vai Voando soube explorar essa realidade ao expandir seus serviços através de um modelo de franquia acessível e adaptável. O crescimento da Vai Voando está vinculado à sua estratégia de oferecer um modelo de franquia que permite aos franqueados operarem com flexibilidade, o que é crucial em um mercado tão volátil quanto o de turismo. A marca se posiciona como uma facilitadora de viagens, atuando principalmente em regiões onde o acesso a serviços de viagem pode ser limitado. Esse modelo de negócios visa não apenas o lucro, mas também a inclusão social e econômica, ao permitir que mais pessoas tenham a oportunidade de viajar e conhecer novos destinos. O modelo de franquia da Vai Voando é caracterizado por um enfoque na simplicidade operacional e no suporte contínuo ao franqueado. Isso é especialmente relevante em um setor onde a experiência do cliente e a personalização do serviço são fundamentais. A franquia oferece treinamento e suporte para garantir que os franqueados possam operar com eficiência e proporcionar um excelente atendimento ao cliente. A lógica de crescimento da Vai Voando está ancorada na expansão através de franqueados que compartilham a visão de tornar o turismo mais acessível a todos. Desde o início do seu sistema de franquias em 2019, a Vai Voando tem se expandido rapidamente, com um número significativo de unidades franqueadas em operação. Esse crescimento reflete uma tendência de mercado onde consumidores buscam cada vez mais soluções de viagem personalizadas e acessíveis. A franquia se destaca por sua capacidade de adaptação às mudanças do mercado, garantindo que seus serviços permaneçam relevantes e competitivos. Com isso, a Vai Voando se consolida como uma opção atraente para investidores que desejam entrar no setor de turismo através de um modelo de negócios já testado e comprovado. Sobre a franquia A Vai Voando foi fundada em 2009, mas iniciou seu modelo de franchising apenas em 2019. Esta decisão estratégica permitiu à marca consolidar seu modelo de negócios antes de expandir através de franquias. A estratégia de expansão da Vai Voando tem se concentrado em ampliar sua presença no mercado brasileiro, aproveitando o crescimento do turismo interno. Seu posicionamento no mercado baseia-se em oferecer soluções de viagem acessíveis e adaptáveis, o que tem atraído tanto consumidores quanto potenciais franqueados. A marca continua a crescer, com 356 unidades franqueadas já em operação. Modelo de negócio A franquia Vai Voando opera com um modelo de negócio que prioriza a flexibilidade e a simplicidade operacional. As unidades franqueadas funcionam como agências de turismo, oferecendo uma variedade de serviços que incluem a venda de passagens, pacotes de viagem e outras soluções turísticas. O sucesso do modelo de negócio está na capacidade de adaptação às necessidades locais, permitindo que cada unidade ofereça serviços personalizados de acordo com a demanda regional. A estrutura de royalties e taxas de publicidade é variável, refletindo o faturamento e as necessidades específicas de cada loja, o que permite uma gestão financeira mais eficiente por parte dos franqueados. Perfil do público atendido O público-alvo da Vai Voando é composto por consumidores que buscam soluções acessíveis e práticas para suas necessidades de viagem. Este público inclui famílias, jovens, e viajantes a negócios que procuram otimizar custos sem abrir mão da qualidade. No Brasil, o segmento de turismo é impulsionado por uma crescente classe média que valoriza experiências de viagem, bem como por uma infraestrutura turística em expansão. A Vai Voando atende a essa demanda oferecendo serviços personalizados e acessíveis, tornando-se uma escolha popular entre viajantes que priorizam custo-benefício. Estrutura da rede Atualmente, a Vai Voando possui 356 unidades franqueadas distribuídas pelo Brasil. A ausência de unidades próprias sugere um foco total na expansão através de franquias, o que permite um crescimento mais ágil e capilarizado. A marca busca consolidar sua presença nacionalmente, contribuindo para a democratização do acesso ao turismo em diversas regiões do país. Essa estrutura de rede é fundamental para o alcance geográfico da Vai Voando, permitindo que a marca atenda a uma base de clientes diversificada e em constante crescimento. Dados da Franquia",
+  "founded_year": 2009,
+  "franchise_start_year": 2019,
+  "own_units": null,
+  "franchised_units": 356,
+  "total_units": 356,
+  "min_investment": 20000,
+  "max_investment": 30000,
+  "investment_range_text": "R$ 20.000 / R$ 30.000",
+  "franchise_fee": null,
+  "franchise_fee_text": "Não informado",
+  "working_capital": null,
+  "working_capital_text": "Não informado",
+  "investment_tier": "Até R$ 30 mil",
+  "business_models": [
+    {
+      "tag": "loja",
+      "royalties_text": "Variável Faturamento",
+      "royalties_pct": null,
+      "royalties_base": "Variável Faturamento",
+      "royalties_is_fixed": false,
+      "ad_fee_text": "Variável Fixo Mensal",
+      "ad_fee_pct": null,
+      "ad_fee_base": "Variável Fixo Mensal",
+      "ad_fee_is_fixed": true,
+      "avg_revenue_text": "R$ 100.000",
+      "avg_revenue": 100000,
+      "avg_profit_text": "Não informado",
+      "avg_profit": null,
+      "payback_text": "8 a 15",
+      "payback_min_months": 8,
+      "payback_max_months": 15
+    }
+  ],
+  "_quality_flags": {
+    "has_logo": true,
+    "has_description_long": true,
+    "has_description_short": true,
+    "has_investment": true,
+    "has_units": true,
+    "has_payback": true,
+    "bm_count": 1,
+    "fields_extracted": 13,
+    "fields_total_known": 13,
+    "fields_filled": 8,
+    "fields_not_informed": [
+      "Unidades próprias",
+      "Taxa de franquia",
+      "Capital de giro",
+      "Lucro médio"
+    ],
+    "description_usable": true,
+    "description_appears_templated": true,
+    "layout_unrecognized": false,
+    "has_corruption": false,
+    "parser_flags": [
+      "rate_unparseable",
+      "ad_fee_fixed_value"
+    ]
+  },
+  "_raw_fields": {
+    "Fundação": "2009",
+    "Início da franquia": "2019",
+    "Unidades próprias": "Não informado",
+    "Unidades franqueadas": "356",
+    "Investimento total": "R$ 20.000 / R$ 30.000",
+    "Taxa de franquia": "Não informado",
+    "Capital de giro": "Não informado",
+    "Royalties": "Variável Faturamento (loja)",
+    "Taxa de publicidade": "Variável Fixo Mensal (loja)",
+    "Faturamento médio": "R$ 100.000",
+    "Lucro médio": "Não informado",
+    "Prazo de retorno (meses)": "8 a 15 (loja)",
+    "Faixa de Investimento": "Franquias de Até R$ 30 mil"
+  }
+}

@@ -1,0 +1,83 @@
+{
+  "slug": "prime-saude",
+  "name": "Prime Saúde",
+  "url_source": "https://encontresuafranquia.com.br/franquia/prime-saude/",
+  "scraped_at": "2026-04-30T23:30:22+00:00",
+  "logo_url": "https://encontresuafranquia.com.br/wp-content/uploads/2026/01/prime-saude.jpg",
+  "description_short": "Prime Saúde oferece franquias no setor de saúde, beleza e bem-estar, focando em serviços médicos acessíveis e de qualidade desde 1992.",
+  "description_long": "Prime Saúde é uma franquia que opera no setor de saúde, beleza e bem-estar, com foco em serviços médicos. Fundada em 1992, a empresa estabeleceu suas bases em um mercado que, a cada ano, demonstra crescente demanda por serviços de saúde acessíveis e de qualidade. O Brasil, com sua vasta população e desafios no sistema público de saúde, representa um terreno fértil para negócios que oferecem soluções nessa área. Prime Saúde se destaca por proporcionar acesso a serviços médicos de forma simplificada, buscando atender às necessidades de um público diversificado que busca bem-estar físico e mental. Desde o início do sistema de franquias em 2003, Prime Saúde tem expandido sua presença no território nacional. A marca se posiciona como uma alternativa viável para empreendedores que desejam investir no setor de saúde, sem a necessidade de conhecimentos técnicos específicos, mas com o suporte de uma rede estruturada. O modelo de franquia adotado permite que os franqueados ofereçam um leque de serviços médicos e de bem-estar, utilizando a reputação e a metodologia da marca para atrair e fidelizar clientes. Esse modelo de crescimento é sustentado por um compromisso com a qualidade e a inovação, aspectos fundamentais em um mercado tão dinâmico como o da saúde. A lógica de crescimento da Prime Saúde está ancorada na expansão por meio de franquias, o que permite que a marca amplie sua presença de forma ágil e eficiente. O sistema de franquias oferece vantagens tanto para a empresa quanto para os franqueados, que se beneficiam do reconhecimento da marca e de um modelo de negócio testado. Além disso, Prime Saúde não cobra taxa de publicidade, o que pode ser um diferencial atrativo para investidores que buscam reduzir custos operacionais. O retorno do investimento é projetado para ocorrer em um prazo de 24 a 36 meses, o que evidencia a viabilidade econômica do negócio. Sobre a franquia Prime Saúde foi fundada em 1992, entrando no mercado de franquias em 2003. Desde então, a marca tem focado sua estratégia de expansão na criação de unidades franqueadas, permitindo a disseminação de seu modelo de negócio em diversas regiões do Brasil. A empresa se posiciona como uma solução acessível e de qualidade no setor de saúde, beleza e bem-estar, atendendo uma demanda crescente por serviços médicos privados. A estratégia de expansão da Prime Saúde busca consolidar sua presença no mercado brasileiro, aproveitando a crescente demanda por serviços de saúde eficientes e acessíveis. Modelo de negócio O modelo de negócio da Prime Saúde é baseado na operação de unidades franqueadas que oferecem um portfólio diversificado de serviços médicos e de bem-estar. A operação das unidades é estruturada para que franqueados, mesmo sem formação específica na área de saúde, possam gerenciar o negócio com eficácia. A marca oferece suporte contínuo aos franqueados, garantindo que os padrões de qualidade e atendimento sejam mantidos. A Prime Saúde adota uma política de royalties de 35% sobre o faturamento líquido, o que incentiva a eficiência operacional e o foco na satisfação do cliente. A ausência de taxa de publicidade também é um ponto positivo, permitindo que os franqueados invistam mais na operação local. Perfil do público atendido O público-alvo da Prime Saúde é composto por indivíduos e famílias que buscam serviços médicos privados de qualidade e acessíveis. Esse segmento é impulsionado pela busca crescente por bem-estar e saúde preventiva no Brasil, onde o sistema público de saúde enfrenta desafios significativos. Os clientes da Prime Saúde valorizam a conveniência e a confiança em serviços que contribuem para a melhoria de sua qualidade de vida. O mercado brasileiro apresenta uma demanda sólida por serviços que combinem eficiência e custo-benefício, características que a Prime Saúde busca oferecer em suas operações. Estrutura da rede Embora o número exato de unidades próprias e franqueadas da Prime Saúde não tenha sido informado, a franquia possui uma presença significativa no mercado brasileiro. O alcance geográfico da rede permite que a marca atenda a um público diversificado em várias regiões do país. A expansão contínua da rede é parte da estratégia da Prime Saúde para garantir que seus serviços sejam acessíveis a um número crescente de pessoas, mantendo o compromisso com a qualidade e a inovação no setor de saúde. Dados da Franquia",
+  "founded_year": 1992,
+  "franchise_start_year": 2003,
+  "own_units": null,
+  "franchised_units": null,
+  "total_units": null,
+  "min_investment": 98000,
+  "max_investment": 98000,
+  "investment_range_text": "R$ 98.000",
+  "franchise_fee": null,
+  "franchise_fee_text": "Não informado",
+  "working_capital": null,
+  "working_capital_text": "Não informado",
+  "investment_tier": "Até R$ 105 mil",
+  "business_models": [
+    {
+      "tag": "loja",
+      "royalties_text": "35,00% - Fat. Líq.",
+      "royalties_pct": 35.0,
+      "royalties_base": "Fat. Líq.",
+      "royalties_is_fixed": false,
+      "ad_fee_text": "Não Cobra",
+      "ad_fee_pct": 0.0,
+      "ad_fee_base": null,
+      "ad_fee_is_fixed": false,
+      "avg_revenue_text": "R$ 80.000",
+      "avg_revenue": 80000,
+      "avg_profit_text": "Não informado",
+      "avg_profit": null,
+      "payback_text": "24 a 36",
+      "payback_min_months": 24,
+      "payback_max_months": 36
+    }
+  ],
+  "_quality_flags": {
+    "has_logo": true,
+    "has_description_long": true,
+    "has_description_short": true,
+    "has_investment": true,
+    "has_units": false,
+    "has_payback": true,
+    "bm_count": 1,
+    "fields_extracted": 13,
+    "fields_total_known": 13,
+    "fields_filled": 8,
+    "fields_not_informed": [
+      "Unidades próprias",
+      "Unidades franqueadas",
+      "Taxa de franquia",
+      "Capital de giro",
+      "Lucro médio"
+    ],
+    "description_usable": true,
+    "description_appears_templated": true,
+    "layout_unrecognized": false,
+    "has_corruption": false,
+    "parser_flags": [
+      "royalties_pct_above_30_sanity"
+    ]
+  },
+  "_raw_fields": {
+    "Fundação": "1992",
+    "Início da franquia": "2003",
+    "Unidades próprias": "Não informado",
+    "Unidades franqueadas": "Não informado",
+    "Investimento total": "R$ 98.000",
+    "Taxa de franquia": "Não informado",
+    "Capital de giro": "Não informado",
+    "Royalties": "35,00% - Fat. Líq. (loja)",
+    "Taxa de publicidade": "Não Cobra (loja)",
+    "Faturamento médio": "R$ 80.000 (loja)",
+    "Lucro médio": "Não informado",
+    "Prazo de retorno (meses)": "24 a 36 (loja)",
+    "Faixa de Investimento": "Franquias de Até R$ 105 mil"
+  }
+}

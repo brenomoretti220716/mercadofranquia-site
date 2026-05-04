@@ -1,0 +1,81 @@
+{
+  "slug": "lojasleve",
+  "name": "Lojas Leve",
+  "url_source": "https://encontresuafranquia.com.br/franquia/lojasleve/",
+  "scraped_at": "2026-04-30T23:30:21+00:00",
+  "logo_url": "https://encontresuafranquia.com.br/wp-content/uploads/2026/01/lojas-leve.jpg",
+  "description_short": "Lojas Leve, é uma franquia de lojas de roupas. Variedade em moda adulto e infantil e cama mesa e banho desde 2005.",
+  "description_long": "A Lojas Leve é uma rede de franquias que atua no segmento de moda, oferecendo uma ampla gama de produtos que inclui moda masculina, feminina, infantil e artigos de cama. Fundada em 2005, a marca rapidamente se estabeleceu no mercado brasileiro, atraindo consumidores com suas coleções diversificadas e acessíveis. A proposta da Lojas Leve é oferecer aos clientes uma experiência de compra completa, onde toda a família pode encontrar roupas e acessórios que atendam às suas necessidades diárias e ocasiões especiais. Além de vestuário, a rede também disponibiliza produtos de cama, o que amplia seu apelo e mercado consumidor. Desde o início, a Lojas Leve adotou o modelo de franquia como estratégia de expansão, permitindo um crescimento rápido e eficiente em diferentes regiões do Brasil. A escolha pelo franchising possibilitou à marca atingir um público maior, aproveitando a expertise de franqueados locais para adaptar o negócio às características e demandas específicas de cada mercado. Este modelo de negócio tem se mostrado eficaz na consolidação da marca, que hoje conta com uma rede de 31 unidades franqueadas espalhadas pelo país. A lógica de crescimento da Lojas Leve está centrada na combinação de produtos de qualidade com preços competitivos, buscando sempre inovar em suas coleções para acompanhar as tendências do mercado. A marca investe em marketing e publicidade para fortalecer sua imagem e atrair novos consumidores, além de oferecer suporte contínuo aos franqueados para garantir o sucesso das operações. A taxa de royalties sobre compras e a taxa de publicidade variável são parte do modelo de negócio, contribuindo para a manutenção da identidade e qualidade da marca em todas as unidades. Sobre a franquia A Lojas Leve foi fundada em 2005 e, no mesmo ano, iniciou sua expansão através do sistema de franquias. A estratégia de expansão baseou-se na abertura de unidades franqueadas, permitindo um crescimento mais ágil e a consolidação da marca no mercado brasileiro. Desde então, a rede tem se posicionado como uma alternativa acessível e diversificada no setor de moda, alcançando um público amplo e variado. A presença em diversas regiões do Brasil reflete o sucesso dessa estratégia, que busca continuamente fortalecer a marca e expandir sua base de consumidores. Modelo de negócio O modelo de negócio da Lojas Leve é baseado na operação de unidades franqueadas, onde cada loja é gerida por um franqueado que recebe suporte contínuo da franqueadora. As lojas oferecem uma variedade de produtos de moda e artigos de cama, adaptando o mix de produtos às demandas locais. A lógica operacional inclui a cobrança de royalties sobre as compras, o que garante que as lojas mantenham padrões de qualidade e estejam alinhadas com a proposta da marca. A taxa de publicidade variável permite que cada unidade participe de estratégias de marketing que visam fortalecer a presença da Lojas Leve no mercado. Perfil do público atendido A Lojas Leve atende um público diversificado, que inclui homens, mulheres e crianças de diferentes faixas etárias. O consumidor típico busca produtos de moda que aliem qualidade e preço acessível, com um interesse crescente em acompanhar tendências e novidades. No Brasil, o segmento de moda é impulsionado pela diversidade cultural e climática, o que aumenta a demanda por produtos variados e adaptáveis. A presença de artigos de cama nas lojas também atrai consumidores que buscam conveniência e praticidade em suas compras. Estrutura da rede Atualmente, a Lojas Leve opera com 31 unidades franqueadas em diversas regiões do Brasil, o que evidencia sua capacidade de adaptação e expansão em diferentes mercados. A estratégia de crescimento tem se concentrado na abertura de novas franquias, aproveitando o conhecimento local dos franqueados para otimizar as operações e atender melhor ao público. Essa estrutura tem sido fundamental para a consolidação da marca como uma referência no segmento de moda e vestuário no país. Dados da Franquia",
+  "founded_year": 2005,
+  "franchise_start_year": 2005,
+  "own_units": null,
+  "franchised_units": 31,
+  "total_units": 31,
+  "min_investment": 200000,
+  "max_investment": 200000,
+  "investment_range_text": "R$ 200.000",
+  "franchise_fee": null,
+  "franchise_fee_text": "Não informado",
+  "working_capital": null,
+  "working_capital_text": "Não informado",
+  "investment_tier": "Até R$ 200 mil",
+  "business_models": [
+    {
+      "tag": "loja",
+      "royalties_text": "4,00% Compras",
+      "royalties_pct": 4.0,
+      "royalties_base": "Compras",
+      "royalties_is_fixed": false,
+      "ad_fee_text": "Variável Serviços",
+      "ad_fee_pct": null,
+      "ad_fee_base": "Variável Serviços",
+      "ad_fee_is_fixed": false,
+      "avg_revenue_text": "Não informado",
+      "avg_revenue": null,
+      "avg_profit_text": "Não informado",
+      "avg_profit": null,
+      "payback_text": "6 a 12",
+      "payback_min_months": 6,
+      "payback_max_months": 12
+    }
+  ],
+  "_quality_flags": {
+    "has_logo": true,
+    "has_description_long": true,
+    "has_description_short": true,
+    "has_investment": true,
+    "has_units": true,
+    "has_payback": true,
+    "bm_count": 1,
+    "fields_extracted": 12,
+    "fields_total_known": 13,
+    "fields_filled": 7,
+    "fields_not_informed": [
+      "Taxa de franquia",
+      "Capital de giro",
+      "Faturamento médio",
+      "Lucro médio"
+    ],
+    "description_usable": true,
+    "description_appears_templated": true,
+    "layout_unrecognized": false,
+    "has_corruption": false,
+    "parser_flags": [
+      "rate_unparseable"
+    ]
+  },
+  "_raw_fields": {
+    "Fundação": "2005",
+    "Início da franquia": "2005",
+    "Unidades franqueadas": "31",
+    "Investimento total": "R$ 200.000",
+    "Taxa de franquia": "Não informado",
+    "Capital de giro": "Não informado",
+    "Royalties": "4,00% Compras (loja)",
+    "Taxa de publicidade": "Variável Serviços (loja)",
+    "Faturamento médio": "Não informado",
+    "Lucro médio": "Não informado",
+    "Prazo de retorno (meses)": "6 a 12 (loja)",
+    "Faixa de Investimento": "Franquias de Até R$ 200 mil"
+  }
+}

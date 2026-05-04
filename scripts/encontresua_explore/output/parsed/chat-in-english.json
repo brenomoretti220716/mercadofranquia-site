@@ -1,0 +1,82 @@
+{
+  "slug": "chat-in-english",
+  "name": "Chat In English",
+  "url_source": "https://encontresuafranquia.com.br/franquia/chat-in-english/",
+  "scraped_at": "2026-04-30T23:30:21+00:00",
+  "logo_url": "https://encontresuafranquia.com.br/wp-content/uploads/2026/04/chat-in-english.jpg",
+  "description_short": "Chat In English é uma franquia de educação especializada no ensino de inglês, oferecendo métodos inovadores desde 1961 para aprendizado efetivo.",
+  "description_long": "Chat In English é uma franquia que opera no setor de educação, com foco em idiomas, especificamente no ensino de inglês. Fundada inicialmente em 1961, a marca se posicionou ao longo das décadas como uma referência no ensino do idioma, adaptando-se às mudanças tecnológicas e metodológicas no campo da educação. O inglês, sendo uma língua amplamente utilizada no mundo dos negócios, turismo e comunicação internacional, representa uma habilidade essencial para muitos brasileiros que buscam melhorar suas oportunidades profissionais e pessoais. O modelo de negócios da Chat In English evoluiu ao longo do tempo para se adaptar às necessidades do mercado e às novas demandas dos consumidores. Em 2016, a empresa decidiu expandir suas operações através do sistema de franquias, permitindo que empreendedores locais replicassem seu modelo de sucesso em diferentes regiões. Esta decisão foi impulsionada pelo desejo de alcançar um público mais amplo e aumentar sua presença nacional, oferecendo uma solução educacional de qualidade que é facilmente escalável e adaptável. A lógica de crescimento da franquia baseia-se na simplicidade e eficácia de seu método de ensino, que visa proporcionar aos alunos uma experiência prática e envolvente. Este enfoque é especialmente atraente para aqueles que desejam adquirir fluência no idioma de forma rápida e eficiente. A marca se beneficia de um sistema de franquia que não cobra royalties, o que pode ser um atrativo significativo para potenciais franqueados interessados em investir no setor educacional sem os custos recorrentes associados a outras franquias. Sobre a franquia Chat In English foi fundada em 1961, estabelecendo-se como uma instituição de ensino de idiomas respeitada com uma longa tradição no mercado. Em 2016, a empresa iniciou seu processo de expansão por meio de franquias, buscando ampliar sua presença no Brasil e alcançar novos mercados. A estratégia de expansão é baseada em oferecer um método de ensino eficaz e adaptável, sem a cobrança de royalties, o que torna a franquia atraente para investidores. A marca se posiciona como uma opção acessível e prática para aqueles que desejam aprender inglês de maneira eficiente. Modelo de negócio O modelo de negócio da Chat In English é focado em fornecer uma experiência de aprendizado prática e direta para seus alunos. As unidades da franquia operam com um formato de ensino que prioriza a conversação, permitindo que os alunos pratiquem e melhorem suas habilidades de comunicação em inglês de forma rápida. Este método é apoiado por materiais didáticos inovadores e suporte contínuo aos franqueados, garantindo que a qualidade do ensino seja mantida em todas as unidades. As franquias são operadas tanto por unidades próprias quanto franqueadas, com uma estrutura que permite flexibilidade e adaptação às necessidades locais. Perfil do público atendido A Chat In English atende principalmente adultos e jovens adultos que buscam aprimorar suas habilidades em inglês para fins profissionais e pessoais. O público-alvo inclui estudantes universitários, profissionais que necessitam do inglês para suas carreiras e indivíduos que desejam viajar ou se comunicar melhor em contextos internacionais. O aprendizado de inglês é uma demanda crescente no Brasil, impulsionada pela globalização e pela necessidade de comunicação em um mercado de trabalho cada vez mais competitivo. Estrutura da rede Atualmente, a Chat In English possui um total de seis unidades, sendo cinco delas próprias e uma franqueada. Esta estrutura permite à marca manter um controle de qualidade rigoroso, ao mesmo tempo em que expande sua presença por meio de parcerias franqueadas. O alcance geográfico da rede ainda está em fase de crescimento, com potencial para se expandir em diversas regiões do Brasil, aproveitando a crescente demanda por educação de idiomas no país. Dados da Franquia",
+  "founded_year": 1961,
+  "franchise_start_year": 2016,
+  "own_units": 5,
+  "franchised_units": 1,
+  "total_units": 6,
+  "min_investment": 120000,
+  "max_investment": 200000,
+  "investment_range_text": "R$ 120.000 / R$ 200.000",
+  "franchise_fee": null,
+  "franchise_fee_text": "Não informado",
+  "working_capital": null,
+  "working_capital_text": "Não informado",
+  "investment_tier": "Até R$ 200 mil",
+  "business_models": [
+    {
+      "tag": "loja",
+      "royalties_text": "Não Cobra",
+      "royalties_pct": 0.0,
+      "royalties_base": null,
+      "royalties_is_fixed": false,
+      "ad_fee_text": "Variavel-Fat. Bruto",
+      "ad_fee_pct": null,
+      "ad_fee_base": "Variavel-Fat. Bruto",
+      "ad_fee_is_fixed": false,
+      "avg_revenue_text": "Não informado",
+      "avg_revenue": null,
+      "avg_profit_text": "Não informado",
+      "avg_profit": null,
+      "payback_text": "24 a 36",
+      "payback_min_months": 24,
+      "payback_max_months": 36
+    }
+  ],
+  "_quality_flags": {
+    "has_logo": true,
+    "has_description_long": true,
+    "has_description_short": true,
+    "has_investment": true,
+    "has_units": true,
+    "has_payback": true,
+    "bm_count": 1,
+    "fields_extracted": 13,
+    "fields_total_known": 13,
+    "fields_filled": 8,
+    "fields_not_informed": [
+      "Taxa de franquia",
+      "Capital de giro",
+      "Faturamento médio",
+      "Lucro médio"
+    ],
+    "description_usable": true,
+    "description_appears_templated": true,
+    "layout_unrecognized": false,
+    "has_corruption": false,
+    "parser_flags": [
+      "rate_unparseable"
+    ]
+  },
+  "_raw_fields": {
+    "Fundação": "1961",
+    "Início da franquia": "2016",
+    "Unidades próprias": "5",
+    "Unidades franqueadas": "1",
+    "Investimento total": "R$ 120.000 / R$ 200.000",
+    "Taxa de franquia": "Não informado",
+    "Capital de giro": "Não informado",
+    "Royalties": "Não Cobra (loja)",
+    "Taxa de publicidade": "Variavel-Fat. Bruto (oja)",
+    "Faturamento médio": "Não informado",
+    "Lucro médio": "Não informado",
+    "Prazo de retorno (meses)": "24 a 36 (loja)",
+    "Faixa de Investimento": "Franquias de Até R$ 200 mil"
+  }
+}

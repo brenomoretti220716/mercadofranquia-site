@@ -1,0 +1,81 @@
+{
+  "slug": "mary-help",
+  "name": "Mary Help",
+  "url_source": "https://encontresuafranquia.com.br/franquia/mary-help/",
+  "scraped_at": "2026-04-30T23:30:21+00:00",
+  "logo_url": "https://encontresuafranquia.com.br/wp-content/uploads/2026/01/mary-help.jpg",
+  "description_short": "Mary Help - diaristas faxineiras, babás, cuidadores, cozinheiras: franquia referência em serviços domésticos e cuidado especializado no Brasil.",
+  "description_long": "O setor de serviços de limpeza e conservação no Brasil tem se expandido significativamente nos últimos anos, refletindo uma demanda crescente por conveniência e profissionalismo em atividades domésticas e de cuidado pessoal. A Mary Help, uma franquia especializada em fornecer serviços de diaristas, faxineiras, babás, cuidadores e cozinheiras, se destaca nesse cenário ao oferecer soluções práticas e confiáveis para o público brasileiro. Fundada em 2011, a marca rapidamente se posicionou como uma opção viável tanto para consumidores que buscam serviços de qualidade quanto para empreendedores interessados em investir em um segmento promissor. O modelo de franquia adotado pela Mary Help foi concebido para facilitar a expansão e garantir a padronização dos serviços prestados, assegurando que cada unidade mantenha os padrões de qualidade da marca. A lógica por trás desse crescimento é baseada na simplicidade operacional e na alta demanda por serviços domésticos qualificados, especialmente em áreas urbanas onde o ritmo de vida acelerado limita o tempo disponível para tarefas domésticas. A franquia se beneficia de uma estrutura que permite rápida adaptação às necessidades locais, ao mesmo tempo em que mantém uma identidade de marca coesa e reconhecível. A Mary Help oferece aos seus franqueados um modelo de negócio que não exige grandes investimentos iniciais, mas que garante um retorno relativamente rápido, estimado entre 12 a 14 meses. Esse aspecto é particularmente atraente para novos empreendedores que buscam um ponto de entrada no mercado de serviços, sem as complicações e custos associados a operações de maior escala. Além disso, a franquia se destaca por sua abordagem flexível em relação a royalties e taxas de publicidade, permitindo que cada unidade adapte suas operações às condições específicas de seu mercado local. Com uma abordagem que prioriza a qualidade e a confiabilidade, a Mary Help conquistou um lugar de destaque no setor de serviços de limpeza e conservação. A marca não apenas atende à crescente demanda por serviços terceirizados, como também contribui para a profissionalização do setor, estabelecendo padrões que beneficiam tanto os consumidores quanto os profissionais que atuam na área. O compromisso da franquia com a excelência e a inovação continua a impulsionar seu crescimento e a solidificar sua posição no mercado brasileiro. Sobre a franquia Mary Help foi fundada em 2011, no mesmo ano em que iniciou suas operações como franquia. Desde então, a marca tem se expandido de forma significativa, refletindo uma estratégia de crescimento bem-sucedida que se concentra na demanda por serviços domésticos e de cuidado pessoal. A franquia se posiciona como uma solução confiável e acessível no mercado brasileiro, oferecendo serviços que vão desde limpeza e conservação até cuidados pessoais, como babás e cuidadores. Com 163 unidades franqueadas, a Mary Help conseguiu estabelecer uma presença sólida em diversas regiões do país, destacando-se por sua capacidade de adaptação e inovação no setor. Modelo de negócio O modelo de negócio da Mary Help é baseado na prestação de serviços especializados em limpeza, cuidados pessoais e culinária. As unidades franqueadas operam de maneira a oferecer serviços de diaristas, faxineiras, babás, cuidadores e cozinheiras, atendendo às necessidades específicas de cada cliente. A lógica operacional da franquia é centrada na flexibilidade e na capacidade de personalização dos serviços, permitindo que cada unidade adapte sua oferta às demandas locais. Essa abordagem permite que os franqueados gerenciem suas operações com eficiência, mantendo os padrões de qualidade da marca e garantindo a satisfação dos clientes. Perfil do público atendido A Mary Help atende a um público diversificado, composto por famílias, profissionais e idosos que buscam serviços de limpeza e cuidados pessoais de alta qualidade. O segmento existe no Brasil devido à crescente necessidade de terceirização de tarefas domésticas, impulsionada pelo estilo de vida moderno e pela busca por conveniência. O público alvo da franquia valoriza a confiabilidade e a segurança, características fundamentais para a contratação de serviços que envolvem o ambiente familiar e cuidados pessoais. Estrutura da rede Com um total de 163 unidades franqueadas, a Mary Help possui uma rede abrangente que cobre diversas regiões do Brasil. A presença significativa da marca em diferentes localidades reflete sua capacidade de adaptação e sua estratégia de expansão focada em atender à demanda crescente por serviços de qualidade. A estrutura da rede é desenhada para suportar um crescimento contínuo, mantendo a integridade e os padrões de serviço que definem a marca. Dados da Franquia",
+  "founded_year": 2011,
+  "franchise_start_year": 2011,
+  "own_units": null,
+  "franchised_units": 163,
+  "total_units": 163,
+  "min_investment": 35000,
+  "max_investment": 75000,
+  "investment_range_text": "R$ 35.000 / R$ 75.000",
+  "franchise_fee": null,
+  "franchise_fee_text": "Não informado",
+  "working_capital": null,
+  "working_capital_text": "Não informado",
+  "investment_tier": "Até R$ 50 mil",
+  "business_models": [
+    {
+      "tag": "loja",
+      "royalties_text": "Variável - Outros",
+      "royalties_pct": null,
+      "royalties_base": "Variável - Outros",
+      "royalties_is_fixed": false,
+      "ad_fee_text": "30,00% - Outros",
+      "ad_fee_pct": 30.0,
+      "ad_fee_base": "Outros",
+      "ad_fee_is_fixed": false,
+      "avg_revenue_text": "R$ 70.000",
+      "avg_revenue": 70000,
+      "avg_profit_text": "Não informado",
+      "avg_profit": null,
+      "payback_text": "12 a 14",
+      "payback_min_months": 12,
+      "payback_max_months": 14
+    }
+  ],
+  "_quality_flags": {
+    "has_logo": true,
+    "has_description_long": true,
+    "has_description_short": true,
+    "has_investment": true,
+    "has_units": true,
+    "has_payback": true,
+    "bm_count": 1,
+    "fields_extracted": 12,
+    "fields_total_known": 13,
+    "fields_filled": 8,
+    "fields_not_informed": [
+      "Taxa de franquia",
+      "Capital de giro",
+      "Lucro médio"
+    ],
+    "description_usable": true,
+    "description_appears_templated": true,
+    "layout_unrecognized": false,
+    "has_corruption": false,
+    "parser_flags": [
+      "rate_unparseable",
+      "ad_fee_pct_above_10_sanity"
+    ]
+  },
+  "_raw_fields": {
+    "Fundação": "2011",
+    "Início da franquia": "2011",
+    "Unidades franqueadas": "163",
+    "Investimento total": "R$ 35.000 / R$ 75.000",
+    "Taxa de franquia": "Não informado",
+    "Capital de giro": "Não informado",
+    "Royalties": "Variável - Outros (loja)",
+    "Taxa de publicidade": "30,00% - Outros (loja)",
+    "Faturamento médio": "R$ 70.000 (loja)",
+    "Lucro médio": "Não informado",
+    "Prazo de retorno (meses)": "12 a 14 (loja)",
+    "Faixa de Investimento": "Franquias de Até R$ 50 mil"
+  }
+}

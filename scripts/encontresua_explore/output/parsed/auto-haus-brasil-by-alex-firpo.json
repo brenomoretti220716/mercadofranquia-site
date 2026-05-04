@@ -1,0 +1,82 @@
+{
+  "slug": "auto-haus-brasil-by-alex-firpo",
+  "name": "Auto Haus Brasil By Alex Firpo",
+  "url_source": "https://encontresuafranquia.com.br/franquia/auto-haus-brasil-by-alex-firpo/",
+  "scraped_at": "2026-04-30T23:30:21+00:00",
+  "logo_url": "https://encontresuafranquia.com.br/wp-content/uploads/2026/01/auto-haus-brasil-by-alex-firpo.jpg",
+  "description_short": "Auto Haus Brasil By Alex Firpo: franquia de serviços automotivos com soluções inovadoras para manutenção e cuidados de veículos no Brasil.",
+  "description_long": "A Auto Haus Brasil By Alex Firpo é uma franquia que atua no setor de serviços automotivos, posicionando-se dentro de um segmento de mercado que tem mostrado crescimento significativo no Brasil nos últimos anos. Fundada em 2020, a marca rapidamente se expandiu através do modelo de franquias, o que permitiu a difusão de suas operações em várias regiões do país. O setor de serviços automotivos é conhecido por sua resiliência e capacidade de adaptação às necessidades dos consumidores, especialmente em um país onde a frota de veículos cresce continuamente. As franquias que operam neste segmento geralmente focam em oferecer serviços especializados e personalizados, atendendo às demandas de manutenção, reparação e personalização de veículos. A Auto Haus Brasil By Alex Firpo se destaca por sua abordagem inovadora e por oferecer um modelo de franquia atrativo para empreendedores que desejam investir em um negócio com potencial de crescimento e retorno rápido. A empresa adota uma estratégia de expansão que combina a abertura de unidades próprias e franqueadas, permitindo uma rápida penetração no mercado e um reconhecimento crescente da marca. O modelo de negócios da franquia é desenhado para ser operacionalmente eficiente, muitas vezes adotando um formato home based, que reduz custos fixos e permite que os franqueados operem com maior flexibilidade. O crescimento das franquias no Brasil tem sido impulsionado pela busca por modelos de negócios testados e que oferecem suporte ao franqueado, minimizando riscos e aumentando as chances de sucesso. A Auto Haus Brasil By Alex Firpo tem capitalizado essa tendência ao oferecer um pacote de franquia que inclui treinamento, suporte contínuo e uma marca já estabelecida no mercado. Esta abordagem facilita a entrada de novos empreendedores no setor automotivo, proporcionando a eles as ferramentas necessárias para competir em um mercado dinâmico e competitivo. Sobre a franquia A franquia Auto Haus Brasil By Alex Firpo foi fundada em 2020, ano em que também deu início ao seu sistema de franchising. A estratégia de expansão da empresa tem sido agressiva, com a abertura de 26 unidades franqueadas em um curto espaço de tempo. Este rápido crescimento reflete a solidez do modelo de negócios e a atratividade da marca no mercado brasileiro. Posicionando-se como uma opção diferenciada no setor de serviços automotivos, a franquia busca consolidar sua presença nacional, oferecendo um serviço de qualidade e adaptado às necessidades específicas de seus clientes. Modelo de negócio A franquia Auto Haus Brasil By Alex Firpo opera predominantemente no formato home based, o que permite aos franqueados gerenciar suas operações com menor custo operacional. Este modelo é particularmente atrativo para empreendedores que desejam flexibilidade e menores despesas fixas. A lógica operacional da franquia é voltada para a prestação de serviços automotivos especializados, que podem incluir desde manutenção básica até reparações mais complexas. O suporte oferecido pela franqueadora inclui treinamento inicial e assistência contínua, garantindo que os franqueados tenham as ferramentas necessárias para operar com sucesso e atender às expectativas dos clientes. Perfil do público atendido O público atendido pela Auto Haus Brasil By Alex Firpo é composto principalmente por proprietários de veículos que buscam serviços automotivos de qualidade e personalizados. Estes consumidores valorizam a confiabilidade e a expertise técnica, fatores essenciais para a manutenção e reparação de seus veículos. No Brasil, onde a frota de veículos é extensa e diversificada, existe uma demanda constante por serviços automotivos, o que sustenta a existência e o crescimento deste segmento. A franquia atende tanto clientes individuais quanto frotas corporativas, adaptando seus serviços às necessidades específicas de cada cliente. Estrutura da rede Atualmente, a Auto Haus Brasil By Alex Firpo conta com uma unidade própria e 26 unidades franqueadas espalhadas pelo Brasil. Este alcance geográfico permite à franquia atender uma ampla gama de clientes em diversas regiões, consolidando sua presença no mercado nacional. A estrutura da rede é desenhada para suportar o crescimento contínuo, com foco na eficiência operacional e na satisfação do cliente. A combinação de unidades próprias e franqueadas garante uma cobertura abrangente e um serviço consistente em todas as localizações. Dados da Franquia",
+  "founded_year": 2020,
+  "franchise_start_year": 2020,
+  "own_units": 1,
+  "franchised_units": 26,
+  "total_units": 27,
+  "min_investment": 42000,
+  "max_investment": 43000,
+  "investment_range_text": "R$ 42.000 / R$ 43.000",
+  "franchise_fee": null,
+  "franchise_fee_text": "Não informado",
+  "working_capital": null,
+  "working_capital_text": "Não informado",
+  "investment_tier": "Até R$ 50 mil",
+  "business_models": [
+    {
+      "tag": "home based",
+      "royalties_text": "20,00%-Faturamento",
+      "royalties_pct": 20.0,
+      "royalties_base": "Faturamento",
+      "royalties_is_fixed": false,
+      "ad_fee_text": "R$ 300 Fixo Munsal",
+      "ad_fee_pct": null,
+      "ad_fee_base": "R$ 300 Fixo Munsal",
+      "ad_fee_is_fixed": true,
+      "avg_revenue_text": "Não informado",
+      "avg_revenue": null,
+      "avg_profit_text": "Não informado",
+      "avg_profit": null,
+      "payback_text": "3 a 8",
+      "payback_min_months": 3,
+      "payback_max_months": 8
+    }
+  ],
+  "_quality_flags": {
+    "has_logo": true,
+    "has_description_long": true,
+    "has_description_short": true,
+    "has_investment": true,
+    "has_units": true,
+    "has_payback": true,
+    "bm_count": 1,
+    "fields_extracted": 13,
+    "fields_total_known": 13,
+    "fields_filled": 9,
+    "fields_not_informed": [
+      "Taxa de franquia",
+      "Capital de giro",
+      "Faturamento médio",
+      "Lucro médio"
+    ],
+    "description_usable": true,
+    "description_appears_templated": true,
+    "layout_unrecognized": false,
+    "has_corruption": false,
+    "parser_flags": [
+      "ad_fee_fixed_value"
+    ]
+  },
+  "_raw_fields": {
+    "Fundação": "2020",
+    "Início da franquia": "2020",
+    "Unidades próprias": "1",
+    "Unidades franqueadas": "26",
+    "Investimento total": "R$ 42.000 / R$ 43.000",
+    "Taxa de franquia": "Não informado",
+    "Capital de giro": "Não informado",
+    "Royalties": "20,00%-Faturamento (home based)",
+    "Taxa de publicidade": "R$ 300 Fixo Munsal (nome based)",
+    "Faturamento médio": "Não informado",
+    "Lucro médio": "Não informado",
+    "Prazo de retorno (meses)": "3 a 8 (home based)",
+    "Faixa de Investimento": "Franquias de Até R$ 50 mil"
+  }
+}

@@ -1,0 +1,82 @@
+{
+  "slug": "itc-vertebral",
+  "name": "Itc Vertebral",
+  "url_source": "https://encontresuafranquia.com.br/franquia/itc-vertebral/",
+  "scraped_at": "2026-04-30T23:30:21+00:00",
+  "logo_url": "https://encontresuafranquia.com.br/wp-content/uploads/2026/01/itc-vertebral.jpg",
+  "description_short": "Itc Vertebral é uma franquia focada em saúde, beleza e bem-estar, oferecendo tratamentos personalizados e não-cirúrgicos para a coluna vertebral.",
+  "description_long": "Itc Vertebral é uma franquia brasileira que atua nos segmentos de saúde, beleza e bem-estar, com foco específico em serviços médicos voltados para o tratamento de problemas na coluna vertebral. Fundada em 2005, a empresa rapidamente se destacou por oferecer tratamentos não-cirúrgicos e personalizados, que visam a melhoria da qualidade de vida de seus pacientes. A marca se posiciona como uma alternativa eficaz e menos invasiva em comparação a procedimentos cirúrgicos tradicionais, atraindo um público que busca soluções para dores e disfunções na coluna. O crescimento da Itc Vertebral foi estruturado com base na expansão por meio de franquias, iniciada em 2007. Este modelo permitiu à empresa ampliar sua presença em várias regiões do Brasil, levando suas soluções a um número cada vez maior de pessoas. Com um total de 72 unidades franqueadas e 11 próprias, a rede conseguiu consolidar sua marca no mercado, oferecendo um modelo de negócio atrativo para investidores interessados no setor de saúde. A empresa não cobra taxa de publicidade das lojas, o que pode ser um diferencial para os franqueados. A lógica de crescimento da Itc Vertebral está pautada na demanda crescente por tratamentos de saúde que priorizam o bem-estar e a recuperação funcional, sem a necessidade de intervenções cirúrgicas. Com o envelhecimento da população e o aumento de problemas relacionados ao sedentarismo, a procura por tratamentos especializados na coluna vertebral tende a crescer. Assim, a marca se posiciona estrategicamente para atender a essa demanda, oferecendo aos franqueados um negócio com potencial de alta rentabilidade e retorno de investimento em um prazo estimado entre 9 a 15 meses. Sobre a franquia A Itc Vertebral foi fundada em 2005 e iniciou seu modelo de franquias em 2007, demonstrando um rápido crescimento e adaptação ao mercado brasileiro. A estratégia de expansão da empresa é baseada na abertura de novas unidades franqueadas, o que permite a ampliação do alcance de seus serviços de forma eficiente e econômica. O posicionamento da marca no mercado brasileiro é sólido, focando em oferecer tratamentos alternativos e não invasivos para problemas na coluna, um segmento cada vez mais relevante devido ao envelhecimento da população e ao estilo de vida moderno. Modelo de negócio O modelo de negócio da Itc Vertebral é baseado na operação de unidades especializadas em tratamentos da coluna vertebral. As unidades oferecem serviços que incluem avaliação médica, fisioterapia especializada e terapias alternativas, com o objetivo de tratar e prevenir problemas na coluna sem a necessidade de cirurgia. A lógica operacional se concentra na personalização dos tratamentos, atendendo às necessidades específicas de cada paciente, o que potencializa os resultados e aumenta a satisfação do cliente. Este modelo proporciona aos franqueados a oportunidade de investir em um negócio de saúde com alta demanda e potencial de crescimento. Perfil do público atendido A Itc Vertebral atende principalmente adultos e idosos que sofrem de dores e disfunções na coluna vertebral, um público que busca alternativas eficazes e menos invasivas para tratamentos cirúrgicos. O perfil de consumo deste segmento é caracterizado por uma preocupação crescente com a saúde e bem-estar, além da busca por tratamentos que proporcionem alívio e melhoria da qualidade de vida. No Brasil, a demanda por serviços de saúde especializados é impulsionada pelo aumento da longevidade e pela conscientização sobre a importância do cuidado preventivo. Estrutura da rede A rede Itc Vertebral é composta por 11 unidades próprias e 72 franqueadas, demonstrando uma sólida presença no mercado brasileiro. A expansão por meio de franquias permite que a marca alcance diferentes regiões do país, levando seus serviços a um público amplo e diversificado. Esta estrutura de rede facilita a padronização dos tratamentos e a manutenção da qualidade do atendimento, garantindo que a experiência do cliente seja consistente em todas as unidades. Dados da Franquia",
+  "founded_year": 2005,
+  "franchise_start_year": 2007,
+  "own_units": 11,
+  "franchised_units": 72,
+  "total_units": 83,
+  "min_investment": 156000,
+  "max_investment": 196000,
+  "investment_range_text": "R$ 156.000 / R$ 196.000",
+  "franchise_fee": null,
+  "franchise_fee_text": "Não informado",
+  "working_capital": null,
+  "working_capital_text": "Não informado",
+  "investment_tier": "Até R$ 200 mil",
+  "business_models": [
+    {
+      "tag": "loja",
+      "royalties_text": "R$ 4.128 - Fixo Mensal",
+      "royalties_pct": null,
+      "royalties_base": "R$ 4.128 - Fixo Mensal",
+      "royalties_is_fixed": true,
+      "ad_fee_text": "Não Cobra",
+      "ad_fee_pct": 0.0,
+      "ad_fee_base": null,
+      "ad_fee_is_fixed": false,
+      "avg_revenue_text": "Não informado",
+      "avg_revenue": null,
+      "avg_profit_text": "Não informado",
+      "avg_profit": null,
+      "payback_text": "9 a 15",
+      "payback_min_months": 9,
+      "payback_max_months": 15
+    }
+  ],
+  "_quality_flags": {
+    "has_logo": true,
+    "has_description_long": true,
+    "has_description_short": true,
+    "has_investment": true,
+    "has_units": true,
+    "has_payback": true,
+    "bm_count": 1,
+    "fields_extracted": 13,
+    "fields_total_known": 13,
+    "fields_filled": 9,
+    "fields_not_informed": [
+      "Taxa de franquia",
+      "Capital de giro",
+      "Faturamento médio",
+      "Lucro médio"
+    ],
+    "description_usable": true,
+    "description_appears_templated": true,
+    "layout_unrecognized": false,
+    "has_corruption": false,
+    "parser_flags": [
+      "royalties_fixed_value"
+    ]
+  },
+  "_raw_fields": {
+    "Fundação": "2005",
+    "Início da franquia": "2007",
+    "Unidades próprias": "11",
+    "Unidades franqueadas": "72",
+    "Investimento total": "R$ 156.000 / R$ 196.000",
+    "Taxa de franquia": "Não informado",
+    "Capital de giro": "Não informado",
+    "Royalties": "R$ 4.128 - Fixo Mensal (loja)",
+    "Taxa de publicidade": "Não Cobra (loja)",
+    "Faturamento médio": "Não informado",
+    "Lucro médio": "Não informado",
+    "Prazo de retorno (meses)": "9 a 15 (loja)",
+    "Faixa de Investimento": "Franquias de Até R$ 200 mil"
+  }
+}

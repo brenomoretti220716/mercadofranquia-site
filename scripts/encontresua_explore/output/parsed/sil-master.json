@@ -1,0 +1,82 @@
+{
+  "slug": "sil-master",
+  "name": "Sil Master",
+  "url_source": "https://encontresuafranquia.com.br/franquia/sil-master/",
+  "scraped_at": "2026-04-30T23:30:22+00:00",
+  "logo_url": "https://encontresuafranquia.com.br/wp-content/uploads/2026/01/sil-master.jpg",
+  "description_short": "Sil Master é uma franquia de serviços no Brasil, destacando-se por sua inovação e adaptação às necessidades do mercado desde 1992.",
+  "description_long": "Sil Master é uma franquia que se posiciona no mercado de serviços no Brasil, oferecendo soluções diversas que se encaixam na categoria de “Outros Negócios”. Fundada em 1992, a marca se destacou inicialmente por sua capacidade de inovação e adaptação às necessidades do mercado, antes de iniciar seu modelo de franquia em 2019. Desde então, tem se expandido por meio de um modelo de negócios que permite operações em formato home based, o que facilita o acesso de novos franqueados que buscam empreender sem a necessidade de um ponto comercial físico. O mercado de serviços no Brasil é vasto e dinâmico, e Sil Master encontrou seu nicho ao oferecer uma gama de produtos e serviços que atendem a uma ampla variedade de demandas. A decisão de franquear o negócio veio como uma estratégia para aumentar a presença da marca e sua capilaridade em diversas regiões do país. Este movimento também é uma resposta ao crescente interesse por modelos de negócios mais flexíveis e menos dependentes de grandes investimentos iniciais, características que atraem empreendedores em busca de oportunidades de menor risco. O crescimento da franquia tem sido sustentado pelo interesse em serviços que podem ser administrados com baixo custo operacional e que oferecem um retorno financeiro em prazos relativamente curtos. O modelo de franquia home based da Sil Master é particularmente atraente para aqueles que desejam conciliar a gestão de um negócio com outras atividades, permitindo um equilíbrio entre vida pessoal e profissional. A lógica de crescimento da franquia está alinhada com as tendências do mercado brasileiro, que favorecem negócios que oferecem flexibilidade e inovação. Com uma estrutura que combina unidades próprias e franqueadas, Sil Master tem se destacado por sua capacidade de adaptação e inovação contínua, características essenciais em um mercado competitivo como o de serviços. A marca tem buscado expandir sua presença geográfica, aproveitando o potencial de diferentes regiões do Brasil e adaptando suas ofertas para atender às especificidades de cada mercado local. A combinação de expertise acumulada ao longo dos anos e um modelo de negócio acessível e promissor faz de Sil Master uma opção atrativa para novos franqueados. Sobre a franquia Sil Master foi fundada em 1992 e iniciou suas operações de franquia em 2019, após consolidar seu modelo de negócios no mercado de serviços. A estratégia de expansão da franquia está centrada na flexibilidade e na capacidade de adaptação às necessidades locais, o que é facilitado pelo formato home based. O posicionamento da marca no mercado brasileiro é o de oferecer soluções variadas e eficientes, aproveitando o conhecimento e a experiência adquiridos ao longo de décadas para garantir a satisfação do cliente e a viabilidade do negócio. Modelo de negócio A franquia opera principalmente em formato home based, o que permite aos franqueados gerenciar suas operações a partir de suas residências, reduzindo custos fixos e aumentando a flexibilidade de horários. Este modelo é ideal para quem busca iniciar um negócio com menor investimento inicial e uma estrutura mais enxuta. A operação da franquia é estruturada para ser simples e eficiente, focando em serviços que podem ser prestados sem a necessidade de um ponto comercial físico, o que é um diferencial importante no mercado atual. Perfil do público atendido O público-alvo da Sil Master é bastante diversificado, abrangendo desde consumidores finais que buscam serviços específicos até empresas que necessitam de soluções customizadas. O mercado de serviços no Brasil é impulsionado por uma demanda constante por inovação e eficiência, e a franquia atende a clientes que valorizam a praticidade e a qualidade. O segmento existe e cresce no Brasil devido à necessidade contínua por serviços que facilitem o dia a dia e otimizem processos. Estrutura da rede A rede Sil Master é composta por 6 unidades próprias e 15 unidades franqueadas, demonstrando um equilíbrio entre a operação direta da marca e a expansão por meio de franquias. Esta estrutura permite à empresa uma abrangência geográfica considerável, ampliando sua capacidade de atendimento e presença de mercado em diversas regiões do Brasil. A combinação de unidades próprias e franqueadas contribui para a solidez e o crescimento contínuo da rede. Dados da Franquia",
+  "founded_year": 1992,
+  "franchise_start_year": 2019,
+  "own_units": 6,
+  "franchised_units": 15,
+  "total_units": 21,
+  "min_investment": 140000,
+  "max_investment": 210000,
+  "investment_range_text": "R$ 140.000 / R$ 210.000",
+  "franchise_fee": null,
+  "franchise_fee_text": "Não informado",
+  "working_capital": null,
+  "working_capital_text": "Não informado",
+  "investment_tier": "Até R$ 200 mil",
+  "business_models": [
+    {
+      "tag": "home based",
+      "royalties_text": "7,00% - Faturamento",
+      "royalties_pct": 7.0,
+      "royalties_base": "Faturamento",
+      "royalties_is_fixed": false,
+      "ad_fee_text": "R$ 700 - Fixo Mensal",
+      "ad_fee_pct": null,
+      "ad_fee_base": "R$ 700 - Fixo Mensal",
+      "ad_fee_is_fixed": true,
+      "avg_revenue_text": "Não informado",
+      "avg_revenue": null,
+      "avg_profit_text": "Não informado",
+      "avg_profit": null,
+      "payback_text": "6 a 24",
+      "payback_min_months": 6,
+      "payback_max_months": 24
+    }
+  ],
+  "_quality_flags": {
+    "has_logo": true,
+    "has_description_long": true,
+    "has_description_short": true,
+    "has_investment": true,
+    "has_units": true,
+    "has_payback": true,
+    "bm_count": 1,
+    "fields_extracted": 13,
+    "fields_total_known": 13,
+    "fields_filled": 9,
+    "fields_not_informed": [
+      "Taxa de franquia",
+      "Capital de giro",
+      "Faturamento médio",
+      "Lucro médio"
+    ],
+    "description_usable": true,
+    "description_appears_templated": true,
+    "layout_unrecognized": false,
+    "has_corruption": false,
+    "parser_flags": [
+      "ad_fee_fixed_value"
+    ]
+  },
+  "_raw_fields": {
+    "Fundação": "1992",
+    "Início da franquia": "2019",
+    "Unidades próprias": "6",
+    "Unidades franqueadas": "15",
+    "Investimento total": "R$ 140.000 / R$ 210.000",
+    "Taxa de franquia": "Não informado",
+    "Capital de giro": "Não informado",
+    "Royalties": "7,00% - Faturamento (home based)",
+    "Taxa de publicidade": "R$ 700 - Fixo Mensal (home based)",
+    "Faturamento médio": "Não informado",
+    "Lucro médio": "Não informado",
+    "Prazo de retorno (meses)": "6 a 24 (home based)",
+    "Faixa de Investimento": "Franquias de Até R$ 200 mil"
+  }
+}

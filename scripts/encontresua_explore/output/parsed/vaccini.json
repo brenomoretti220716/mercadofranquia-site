@@ -1,0 +1,81 @@
+{
+  "slug": "vaccini",
+  "name": "Vaccini",
+  "url_source": "https://encontresuafranquia.com.br/franquia/vaccini/",
+  "scraped_at": "2026-04-30T23:30:22+00:00",
+  "logo_url": "https://encontresuafranquia.com.br/wp-content/uploads/2026/01/vaccini.jpg",
+  "description_short": "Vaccini é uma franquia brasileira no setor de saúde, beleza e bem-estar, especializada em serviços médicos e referência em vacinação desde 1993.",
+  "description_long": "A franquia Vaccini é uma empresa brasileira que atua no setor de saúde, beleza e bem-estar, com um foco específico em serviços médicos. Fundada em 1993, a marca se consolidou como uma referência no mercado de vacinação, oferecendo uma ampla gama de vacinas para diferentes faixas etárias. A empresa se destaca por sua abordagem inovadora e personalizada, buscando sempre garantir a saúde e o bem-estar de seus clientes. Com uma trajetória sólida, a Vaccini iniciou seu modelo de franquia em 2003, expandindo sua presença por meio de parcerias estratégicas com empreendedores locais. O segmento de saúde e bem-estar tem se mostrado promissor, especialmente em um contexto onde a prevenção de doenças ganha cada vez mais importância. A Vaccini se posiciona como uma solução completa, oferecendo não apenas vacinas, mas também informações essenciais sobre cuidados preventivos. A expansão por franquias permite que a marca mantenha um padrão de qualidade consistente, ao mesmo tempo em que atinge um público mais amplo. O modelo de negócios é desenhado para ser flexível, permitindo adaptações conforme as necessidades regionais. A lógica de crescimento da Vaccini está enraizada em sua capacidade de oferecer serviços essenciais com um alto padrão de qualidade. A empresa investe em treinamentos contínuos para seus franqueados, garantindo que todas as unidades operem com eficiência e conhecimento atualizados. A confiança dos consumidores é um pilar fundamental, e a Vaccini se empenha em manter essa confiança por meio de serviços confiáveis e de alta qualidade. A marca também se adapta às mudanças no mercado, incorporando novas tecnologias e práticas para melhorar a experiência do cliente. O modelo de franquia da Vaccini é uma escolha atrativa para empreendedores que buscam atuar no setor de saúde. A empresa oferece suporte abrangente aos seus franqueados, desde a escolha do ponto até o treinamento da equipe. Com royalties fixados em 4% sobre compras, a franquia garante que seus parceiros tenham uma estrutura de custos clara e previsível. O prazo de retorno estimado para os franqueados varia entre 15 a 36 meses, dependendo do desempenho e localização da unidade. Sobre a franquia Vaccini foi fundada em 1993 e deu início ao seu modelo de franquia em 2003. Desde então, a empresa tem seguido uma estratégia de expansão cuidadosa, focada na qualidade e no atendimento personalizado. O posicionamento no mercado brasileiro é de destaque, com a marca sendo reconhecida por sua confiabilidade e expertise em vacinação. A estratégia de crescimento inclui parcerias com empreendedores locais, permitindo que a empresa mantenha um forte vínculo com as comunidades onde atua. A presença nacional da Vaccini reforça sua missão de promover saúde e bem-estar por meio da vacinação. Modelo de negócio O modelo de negócio da Vaccini é centrado em oferecer serviços de vacinação de alta qualidade. As unidades são projetadas para funcionar como clínicas especializadas, com infraestrutura adequada para armazenar e administrar vacinas de maneira segura. A lógica operacional envolve um atendimento eficiente e personalizado, garantindo que cada cliente receba orientação adequada sobre suas necessidades de vacinação. A empresa investe em tecnologia para otimizar a gestão das unidades e a comunicação com os clientes, facilitando o agendamento e o acompanhamento de vacinas. O suporte contínuo aos franqueados é um diferencial, com treinamentos regulares e atualizações sobre o mercado. Perfil do público atendido A Vaccini atende um público variado, que valoriza a saúde preventiva e a conveniência de serviços especializados. O público-alvo inclui desde crianças a adultos e idosos, cada grupo com necessidades específicas de vacinação. Os hábitos de consumo refletem uma crescente preocupação com a saúde e o bem-estar, impulsionada por campanhas de conscientização e pela importância da prevenção de doenças. No Brasil, o segmento de vacinação tem forte demanda, dado o reconhecimento da eficácia das vacinas na prevenção de doenças e manutenção da saúde pública. Estrutura da rede A rede Vaccini é composta por 6 unidades próprias e 18 unidades franqueadas. Essa estrutura permite uma cobertura geográfica abrangente, atendendo diversas regiões do Brasil. A presença nacional da empresa é reforçada por uma rede de franqueados comprometidos com a missão de promover saúde e bem-estar. A combinação de unidades próprias e franqueadas garante que a qualidade e o padrão de atendimento sejam mantidos em toda a rede. Dados da Franquia",
+  "founded_year": 1993,
+  "franchise_start_year": 2003,
+  "own_units": 6,
+  "franchised_units": 18,
+  "total_units": 24,
+  "min_investment": 234500,
+  "max_investment": 300000,
+  "investment_range_text": "R$ 234.500 / R$ 300.000",
+  "franchise_fee": null,
+  "franchise_fee_text": "Não informado",
+  "working_capital": null,
+  "working_capital_text": "Não informado",
+  "investment_tier": "Até R$ 300 mil",
+  "business_models": [
+    {
+      "tag": "loja",
+      "royalties_text": "4,00% - Compras",
+      "royalties_pct": 4.0,
+      "royalties_base": "Compras",
+      "royalties_is_fixed": false,
+      "ad_fee_text": "R$ 400 - Outros",
+      "ad_fee_pct": null,
+      "ad_fee_base": "R$ 400 - Outros",
+      "ad_fee_is_fixed": true,
+      "avg_revenue_text": "R$ 60.000",
+      "avg_revenue": 60000,
+      "avg_profit_text": "Não informado",
+      "avg_profit": null,
+      "payback_text": "15 a 36",
+      "payback_min_months": 15,
+      "payback_max_months": 36
+    }
+  ],
+  "_quality_flags": {
+    "has_logo": true,
+    "has_description_long": true,
+    "has_description_short": true,
+    "has_investment": true,
+    "has_units": true,
+    "has_payback": true,
+    "bm_count": 1,
+    "fields_extracted": 13,
+    "fields_total_known": 13,
+    "fields_filled": 10,
+    "fields_not_informed": [
+      "Taxa de franquia",
+      "Capital de giro",
+      "Lucro médio"
+    ],
+    "description_usable": true,
+    "description_appears_templated": true,
+    "layout_unrecognized": false,
+    "has_corruption": false,
+    "parser_flags": [
+      "ad_fee_fixed_value"
+    ]
+  },
+  "_raw_fields": {
+    "Fundação": "1993",
+    "Início da franquia": "2003",
+    "Unidades próprias": "6",
+    "Unidades franqueadas": "18",
+    "Investimento total": "R$ 234.500 / R$ 300.000",
+    "Taxa de franquia": "Não informado",
+    "Capital de giro": "Não informado",
+    "Royalties": "4,00% - Compras",
+    "Taxa de publicidade": "R$ 400 - Outros",
+    "Faturamento médio": "R$ 60.000 (loja)",
+    "Lucro médio": "Não informado",
+    "Prazo de retorno (meses)": "15 a 36 (loja)",
+    "Faixa de Investimento": "Franquias de Até R$ 300 mil"
+  }
+}

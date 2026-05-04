@@ -1,0 +1,81 @@
+{
+  "slug": "farmacias-sao-rafael",
+  "name": "Farmácias São Rafael",
+  "url_source": "https://encontresuafranquia.com.br/franquia/farmacias-sao-rafael/",
+  "scraped_at": "2026-04-30T23:30:21+00:00",
+  "logo_url": "https://encontresuafranquia.com.br/wp-content/uploads/2026/01/farmacias-sao-rafael.jpg",
+  "description_short": "Farmácias São Rafael - Franquia: desde 1997, método e suporte para franqueados crescerem no varejo farmacêutico e manipulação",
+  "description_long": "Farmácias São Rafael é uma rede de farmácias que se destaca no segmento de saúde, beleza e bem-estar no Brasil. Fundada em 1997, a marca consolidou-se como uma referência no fornecimento de medicamentos, produtos de beleza e itens de cuidado pessoal. Ao longo dos anos, a empresa expandiu suas operações e, em 2016, iniciou seu modelo de franquia, permitindo que empreendedores em todo o país se associassem à marca. A expansão por meio de franquias tem sido uma estratégia eficaz, permitindo à Farmácias São Rafael aumentar sua presença em diversas regiões do Brasil. A escolha por um modelo de expansão via franchising reflete a lógica de crescimento da Farmácias São Rafael, que busca aliar a tradição e a confiança de uma marca estabelecida com a agilidade e a capilaridade proporcionadas por uma rede de franquias. A marca oferece aos franqueados um modelo de negócio estruturado e suporte contínuo, assegurando que a experiência do cliente nas lojas seja uniforme e de alta qualidade. Essa abordagem tem permitido à rede manter um posicionamento competitivo em um setor altamente dinâmico e em constante evolução. O mercado de farmácias no Brasil é robusto e diversificado, com uma demanda crescente por produtos que vão além dos medicamentos tradicionais, abrangendo itens de conveniência, cosméticos e suplementos alimentares. Farmácias São Rafael tem capitalizado sobre essa tendência, ampliando seu portfólio de produtos e serviços para atender às necessidades de um público cada vez mais exigente e informado. O foco em saúde e bem-estar está em linha com as tendências globais de consumo e reflete um compromisso em proporcionar soluções integradas para o cuidado pessoal. Sobre a franquia Farmácias São Rafael foi fundada em 1997 e deu início ao seu sistema de franquias em 2016. Desde então, a marca tem se concentrado em expandir sua presença no mercado brasileiro por meio de um modelo de negócio que combina tradição e inovação. A estratégia de expansão é baseada no fortalecimento da marca e na abertura de novas unidades em locais estratégicos, buscando sempre atender à demanda crescente por produtos de saúde e bem-estar. O posicionamento da marca no mercado ressalta sua dedicação em oferecer produtos de qualidade e um atendimento diferenciado. Modelo de negócio A Farmácias São Rafael opera através de unidades próprias e franqueadas, oferecendo aos consumidores uma ampla gama de produtos nas categorias de saúde, beleza e bem-estar. As franquias são geridas por empreendedores locais que recebem suporte contínuo da matriz, garantindo que a operação mantenha os padrões de qualidade e atendimento da marca. O modelo de negócio é estruturado para oferecer aos franqueados um retorno sobre o investimento em um prazo de 24 a 38 meses, dependendo da performance da loja. A lógica operacional inclui treinamento, suporte em marketing e gestão, além de uma cadeia de suprimentos eficiente. Perfil do público atendido O público atendido pela Farmácias São Rafael é diversificado, abrangendo desde consumidores que buscam medicamentos e produtos de saúde até aqueles interessados em itens de beleza e bem-estar. Este público é caracterizado por hábitos de consumo que valorizam a conveniência e a qualidade dos produtos, refletindo uma demanda crescente por soluções integradas de cuidado pessoal. O segmento de farmácias no Brasil é impulsionado por uma população que valoriza a saúde e o bem-estar, contribuindo para a relevância e o crescimento contínuo da marca. Estrutura da rede Atualmente, a rede Farmácias São Rafael conta com 15 unidades próprias e 41 franqueadas, totalizando 56 lojas em operação. A presença geográfica da marca está em expansão, cobrindo diversas regiões do Brasil e fortalecendo sua posição no mercado. Essa estrutura permite à rede atender a um público amplo e diversificado, garantindo que a marca continue a crescer e a se consolidar como uma referência no setor de farmácias. Dados da Franquia",
+  "founded_year": 1997,
+  "franchise_start_year": 2016,
+  "own_units": 15,
+  "franchised_units": 41,
+  "total_units": 56,
+  "min_investment": 233000,
+  "max_investment": 691186,
+  "investment_range_text": "R$ 233.000,01 / R$ 691.185,88",
+  "franchise_fee": null,
+  "franchise_fee_text": "Não informado",
+  "working_capital": null,
+  "working_capital_text": "Não informado",
+  "investment_tier": "Até R$ 300 mil",
+  "business_models": [
+    {
+      "tag": "loja",
+      "royalties_text": "1,50% - Vendas Líquidas",
+      "royalties_pct": 1.5,
+      "royalties_base": "Vendas Líquidas",
+      "royalties_is_fixed": false,
+      "ad_fee_text": "R$ 735,95 - Fixo Mensal",
+      "ad_fee_pct": null,
+      "ad_fee_base": "R$ 735,95 - Fixo Mensal",
+      "ad_fee_is_fixed": true,
+      "avg_revenue_text": "R$ 270.304,09",
+      "avg_revenue": 270304,
+      "avg_profit_text": "Não informado",
+      "avg_profit": null,
+      "payback_text": "24 a 38",
+      "payback_min_months": 24,
+      "payback_max_months": 38
+    }
+  ],
+  "_quality_flags": {
+    "has_logo": true,
+    "has_description_long": true,
+    "has_description_short": true,
+    "has_investment": true,
+    "has_units": true,
+    "has_payback": true,
+    "bm_count": 1,
+    "fields_extracted": 13,
+    "fields_total_known": 13,
+    "fields_filled": 10,
+    "fields_not_informed": [
+      "Taxa de franquia",
+      "Capital de giro",
+      "Lucro médio"
+    ],
+    "description_usable": true,
+    "description_appears_templated": true,
+    "layout_unrecognized": false,
+    "has_corruption": false,
+    "parser_flags": [
+      "ad_fee_fixed_value"
+    ]
+  },
+  "_raw_fields": {
+    "Fundação": "1997",
+    "Início da franquia": "2016",
+    "Unidades próprias": "15",
+    "Unidades franqueadas": "41",
+    "Investimento total": "R$ 233.000,01 / R$ 691.185,88",
+    "Taxa de franquia": "Não informado",
+    "Capital de giro": "Não informado",
+    "Royalties": "1,50% - Vendas Líquidas (loja)",
+    "Taxa de publicidade": "R$ 735,95 - Fixo Mensal (loja)",
+    "Faturamento médio": "R$ 270.304,09 (loja)",
+    "Lucro médio": "Não informado",
+    "Prazo de retorno (meses)": "24 a 38 (loja)",
+    "Faixa de Investimento": "Franquias de Até R$ 300 mil"
+  }
+}

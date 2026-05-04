@@ -1,0 +1,81 @@
+{
+  "slug": "cames-brasil",
+  "name": "Cames Brasil",
+  "url_source": "https://encontresuafranquia.com.br/franquia/cames-brasil/",
+  "scraped_at": "2026-04-30T23:30:21+00:00",
+  "logo_url": "https://encontresuafranquia.com.br/wp-content/uploads/2026/01/cames-brasil.jpg",
+  "description_short": "Cames Brasil oferece soluções inovadoras em serviços, destacando-se no mercado desde 2016 com uma abordagem diferenciada no Brasil.",
+  "description_long": "Cames Brasil é uma franquia que se posiciona no segmento de serviços, oferecendo soluções diversas para o mercado brasileiro. Fundada em 2016, a empresa rapidamente se destacou pela inovação e pela abordagem diferenciada em seu campo de atuação. O modelo de negócio da franquia é desenhado para ser flexível e acessível, permitindo a expansão por meio de unidades home based. Com uma lógica de crescimento focada em eficiência operacional e suporte ao franqueado, Cames Brasil busca consolidar sua presença no país. O segmento de serviços no Brasil é vasto e diversificado, abrangendo desde serviços especializados até soluções mais generalizadas para o dia a dia. Neste contexto, Cames Brasil atua oferecendo um portfólio de serviços que atende a diferentes necessidades do mercado. A marca vem se destacando por sua capacidade de adaptação às demandas locais, oferecendo um modelo de franquia que pode ser operado de forma remota, o que reduz custos e amplia as possibilidades de expansão. Essa abordagem tem se mostrado eficaz na atração de empreendedores interessados em ingressar no setor de serviços sem a necessidade de grandes investimentos iniciais. Desde o início de sua operação no sistema de franquias em 2021, Cames Brasil tem focado em um crescimento sustentável, priorizando a qualidade e a padronização dos serviços oferecidos. A estratégia de expansão da franquia é baseada na seleção criteriosa de franqueados e na oferta de suporte contínuo, garantindo que todas as unidades mantenham o padrão de qualidade da marca. O modelo de franquia home based é um diferencial, permitindo que os franqueados operem com mais autonomia e flexibilidade, o que é um atrativo para muitos empreendedores. Sobre a franquia Cames Brasil foi fundada em 2016 e iniciou sua operação no modelo de franquias em 2021. Desde então, a marca tem se concentrado em expandir sua presença no mercado brasileiro, com um enfoque estratégico em serviços acessíveis e de qualidade. Atualmente, a franquia conta com três unidades franqueadas, refletindo uma abordagem cuidadosa e planejada de crescimento. A empresa tem como objetivo se estabelecer como uma referência no setor de serviços, oferecendo um modelo de negócio que combina eficiência operacional com um suporte robusto aos franqueados. Modelo de negócio A franquia Cames Brasil opera com um modelo home based, o que significa que os franqueados podem gerenciar suas operações a partir de suas próprias residências. Essa estrutura permite uma redução significativa nos custos operacionais, como aluguel de espaço físico e despesas com infraestrutura. A lógica operacional da franquia é centrada na prestação de serviços que podem ser facilmente geridos de forma remota, mantendo a qualidade e a eficiência. Os franqueados recebem treinamento e suporte contínuo para garantir que possam oferecer os serviços conforme os padrões da marca, além de terem acesso a ferramentas e sistemas que facilitam a gestão do negócio. Perfil do público atendido O público-alvo da Cames Brasil é composto por consumidores que buscam soluções práticas e eficientes para suas necessidades diárias. Esse perfil inclui tanto indivíduos quanto pequenas e médias empresas que valorizam a conveniência e a qualidade dos serviços prestados. No Brasil, o segmento de serviços é impulsionado por uma demanda crescente por soluções que otimizam o tempo e melhoram a eficiência, fatores que têm sido fundamentais para o crescimento da franquia. A proposta de valor da Cames Brasil atende a esses consumidores, oferecendo serviços que se adaptam às suas rotinas e expectativas. Estrutura da rede Atualmente, a estrutura da rede Cames Brasil é composta por três unidades franqueadas, todas operando no modelo home based. Essa configuração permite uma cobertura geográfica diversificada, atendendo a diferentes regiões sem a necessidade de uma presença física tradicional. A estratégia de expansão da franquia está focada em ampliar essa rede, mantendo o compromisso com a qualidade e o suporte aos franqueados, o que tem sido um dos pilares do sucesso da marca no mercado brasileiro. Dados da Franquia",
+  "founded_year": 2016,
+  "franchise_start_year": 2021,
+  "own_units": null,
+  "franchised_units": 3,
+  "total_units": 3,
+  "min_investment": 60000,
+  "max_investment": 80000,
+  "investment_range_text": "R$ 60.000 / R$ 80.000",
+  "franchise_fee": null,
+  "franchise_fee_text": "Não informado",
+  "working_capital": null,
+  "working_capital_text": "Não informado",
+  "investment_tier": "Até R$ 105 mil",
+  "business_models": [
+    {
+      "tag": "home based",
+      "royalties_text": "10,00% - Fat. Bruto",
+      "royalties_pct": 10.0,
+      "royalties_base": "Fat. Bruto",
+      "royalties_is_fixed": false,
+      "ad_fee_text": "R$ 1.000 - Fixo Mensal",
+      "ad_fee_pct": null,
+      "ad_fee_base": "R$ 1.000 - Fixo Mensal",
+      "ad_fee_is_fixed": true,
+      "avg_revenue_text": "Não informado",
+      "avg_revenue": null,
+      "avg_profit_text": "Não informado",
+      "avg_profit": null,
+      "payback_text": "12 a 24",
+      "payback_min_months": 12,
+      "payback_max_months": 24
+    }
+  ],
+  "_quality_flags": {
+    "has_logo": true,
+    "has_description_long": true,
+    "has_description_short": true,
+    "has_investment": true,
+    "has_units": true,
+    "has_payback": true,
+    "bm_count": 1,
+    "fields_extracted": 12,
+    "fields_total_known": 13,
+    "fields_filled": 8,
+    "fields_not_informed": [
+      "Taxa de franquia",
+      "Capital de giro",
+      "Faturamento médio",
+      "Lucro médio"
+    ],
+    "description_usable": true,
+    "description_appears_templated": true,
+    "layout_unrecognized": false,
+    "has_corruption": false,
+    "parser_flags": [
+      "ad_fee_fixed_value"
+    ]
+  },
+  "_raw_fields": {
+    "Fundação": "2016",
+    "Início da franquia": "2021",
+    "Unidades franqueadas": "3",
+    "Investimento total": "R$ 60.000 / R$ 80.000",
+    "Taxa de franquia": "Não informado",
+    "Capital de giro": "Não informado",
+    "Royalties": "10,00% - Fat. Bruto (home based)",
+    "Taxa de publicidade": "R$ 1.000 - Fixo Mensal (home based)",
+    "Faturamento médio": "Não informado",
+    "Lucro médio": "Não informado",
+    "Prazo de retorno (meses)": "12 a 24 (home based)",
+    "Faixa de Investimento": "Franquias de Até R$ 105 mil"
+  }
+}

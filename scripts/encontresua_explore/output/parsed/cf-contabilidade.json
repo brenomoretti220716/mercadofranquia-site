@@ -1,0 +1,81 @@
+{
+  "slug": "cf-contabilidade",
+  "name": "CF Contabilidade",
+  "url_source": "https://encontresuafranquia.com.br/franquia/cf-contabilidade/",
+  "scraped_at": "2026-04-30T23:30:21+00:00",
+  "logo_url": "https://encontresuafranquia.com.br/wp-content/uploads/2026/01/cf-contabilidade.jpg",
+  "description_short": "CF Contabilidade oferece soluções contábeis eficientes para pequenas e médias empresas, destacando-se pela qualidade e expertise desde 2013.",
+  "description_long": "A CF Contabilidade é uma rede de franquias que opera no setor de serviços administrativos, com foco em oferecer soluções contábeis para pequenas e médias empresas. Fundada em 2013, a empresa rapidamente se destacou pela eficiência e qualidade de seus serviços, conquistando um espaço relevante no mercado brasileiro. Em 2015, a marca iniciou seu processo de expansão através do modelo de franchising, o que permitiu um crescimento acelerado e a ampliação de sua presença em diversas regiões do país. O segmento de contabilidade no Brasil é uma área essencial para o funcionamento das empresas, dada a complexidade do sistema tributário nacional e a necessidade de conformidade com as normas fiscais. A CF Contabilidade se posiciona como uma parceira estratégica para seus clientes, oferecendo não apenas serviços de contabilidade, mas também consultoria e orientação para a gestão financeira. A empresa busca agregar valor aos negócios atendidos, promovendo não só a regularidade fiscal, mas também o crescimento sustentável de seus clientes. O modelo de franquia adotado pela CF Contabilidade é baseado em uma estrutura de suporte robusta, que inclui treinamento inicial e contínuo, além de ferramentas tecnológicas avançadas para a gestão contábil. A lógica de crescimento da marca envolve a padronização dos serviços e o fortalecimento da marca em nível nacional, garantindo que cada unidade franqueada mantenha os padrões de qualidade estabelecidos pela matriz. Essa abordagem tem sido bem-sucedida, refletida no número crescente de unidades franqueadas em operação. Sobre a franquia A CF Contabilidade foi fundada em 2013 e deu início ao seu modelo de franquias em 2015. Desde então, a empresa tem seguido uma estratégia de expansão focada em consolidar sua presença no mercado brasileiro de serviços contábeis. Com um total de 194 unidades franqueadas, a marca se posiciona como uma das principais redes do setor no país. A estratégia de crescimento da CF Contabilidade baseia-se no fortalecimento de sua rede de franqueados, oferecendo suporte contínuo e inovação nos serviços prestados. Modelo de negócio A CF Contabilidade opera através de unidades franqueadas que oferecem uma gama completa de serviços contábeis, desde a gestão de folhas de pagamento até a consultoria fiscal. O modelo de negócios é estruturado para garantir que os franqueados tenham acesso a uma plataforma de gestão eficiente, suporte técnico e treinamento constante. As unidades funcionam como escritórios de contabilidade que atendem empresas de diversos setores, adaptando os serviços às necessidades específicas de cada cliente. A lógica operacional envolve a padronização de processos e a utilização de tecnologias avançadas para maximizar a eficiência e a precisão dos serviços prestados. Perfil do público atendido O público-alvo da CF Contabilidade é composto principalmente por pequenas e médias empresas que necessitam de serviços contábeis confiáveis para garantir a regularidade fiscal e o crescimento sustentável de seus negócios. No Brasil, a demanda por serviços contábeis é impulsionada pela complexidade do ambiente regulatório e pela necessidade de conformidade com as normas fiscais. Os clientes da CF Contabilidade valorizam a expertise e o suporte oferecido pela rede, que se posiciona como uma parceira estratégica para a gestão financeira de seus negócios. Estrutura da rede A CF Contabilidade conta com um total de 5 unidades próprias e 194 unidades franqueadas, espalhadas por diversas regiões do Brasil. Essa ampla rede permite à empresa atender um número significativo de clientes, garantindo a proximidade e o suporte necessário para cada franqueado. A estrutura da rede é projetada para facilitar o compartilhamento de conhecimentos e a implementação de melhores práticas entre as unidades, fortalecendo a marca e assegurando a qualidade dos serviços oferecidos. Dados da Franquia",
+  "founded_year": 2013,
+  "franchise_start_year": 2015,
+  "own_units": 5,
+  "franchised_units": 194,
+  "total_units": 199,
+  "min_investment": 17500,
+  "max_investment": 75000,
+  "investment_range_text": "R$ 17.500 / R$ 75.000",
+  "franchise_fee": null,
+  "franchise_fee_text": "Não informado",
+  "working_capital": null,
+  "working_capital_text": "Não informado",
+  "investment_tier": "Até R$ 20 mil",
+  "business_models": [
+    {
+      "tag": "loja",
+      "royalties_text": "12,00% - Fat. Bruto",
+      "royalties_pct": 12.0,
+      "royalties_base": "Fat. Bruto",
+      "royalties_is_fixed": false,
+      "ad_fee_text": "Variável",
+      "ad_fee_pct": null,
+      "ad_fee_base": "Variável",
+      "ad_fee_is_fixed": false,
+      "avg_revenue_text": "R$ 25.000",
+      "avg_revenue": 25000,
+      "avg_profit_text": "Não informado",
+      "avg_profit": null,
+      "payback_text": "18 a 60",
+      "payback_min_months": 18,
+      "payback_max_months": 60
+    }
+  ],
+  "_quality_flags": {
+    "has_logo": true,
+    "has_description_long": true,
+    "has_description_short": true,
+    "has_investment": true,
+    "has_units": true,
+    "has_payback": true,
+    "bm_count": 1,
+    "fields_extracted": 13,
+    "fields_total_known": 13,
+    "fields_filled": 9,
+    "fields_not_informed": [
+      "Taxa de franquia",
+      "Capital de giro",
+      "Lucro médio"
+    ],
+    "description_usable": true,
+    "description_appears_templated": true,
+    "layout_unrecognized": false,
+    "has_corruption": false,
+    "parser_flags": [
+      "rate_unparseable"
+    ]
+  },
+  "_raw_fields": {
+    "Fundação": "2013",
+    "Início da franquia": "2015",
+    "Unidades próprias": "5",
+    "Unidades franqueadas": "194",
+    "Investimento total": "R$ 17.500 / R$ 75.000",
+    "Taxa de franquia": "Não informado",
+    "Capital de giro": "Não informado",
+    "Royalties": "12,00% - Fat. Bruto (loja)",
+    "Taxa de publicidade": "Variável (loja)",
+    "Faturamento médio": "R$ 25.000 (loja)",
+    "Lucro médio": "Não informado",
+    "Prazo de retorno (meses)": "18 a 60 (loja)",
+    "Faixa de Investimento": "Franquias de Até R$ 20 mil"
+  }
+}

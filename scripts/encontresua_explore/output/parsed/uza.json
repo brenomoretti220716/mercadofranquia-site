@@ -1,0 +1,82 @@
+{
+  "slug": "uza",
+  "name": "Uza",
+  "url_source": "https://encontresuafranquia.com.br/franquia/uza/",
+  "scraped_at": "2026-04-30T23:30:22+00:00",
+  "logo_url": "https://encontresuafranquia.com.br/wp-content/uploads/2026/01/uza-shoes.jpg",
+  "description_short": "Uza - calçados femininos oferece estilo e conforto em produtos de qualidade. Conheça a franquia que se destaca no dinâmico mercado brasileiro.",
+  "description_long": "O mercado de calçados femininos no Brasil é um setor dinâmico e em constante evolução, refletindo as tendências globais e os gostos locais. Dentro deste contexto, a Uza se destaca como uma marca que alia estilo, conforto e qualidade em seus produtos. Desde sua fundação em 2001, a empresa tem se dedicado a oferecer calçados que atendem às expectativas das mulheres brasileiras, combinando design moderno com a funcionalidade necessária para o dia a dia. A entrada no sistema de franquias em 2016 marcou uma nova fase de expansão para a marca, permitindo que ela alcançasse um público ainda maior em todo o território nacional. O modelo de franquia adotado pela Uza foi cuidadosamente desenvolvido para garantir que as lojas mantenham a identidade e os padrões de qualidade da marca. A estratégia de crescimento via franquias tem se mostrado eficaz, permitindo que a Uza expanda sua presença sem comprometer a qualidade dos produtos ou o atendimento ao cliente. Com uma rede de lojas que inclui tanto unidades próprias quanto franqueadas, a Uza tem conseguido consolidar sua posição no mercado de moda e calçados, oferecendo uma experiência de compra única e personalizada para suas clientes. A lógica por trás do crescimento da Uza está enraizada em sua capacidade de se adaptar às mudanças do mercado e nas preferências dos consumidores. A marca busca constantemente inovar seus produtos e oferecer novas coleções que reflitam as tendências atuais, sem perder de vista o compromisso com o conforto e a durabilidade. Além disso, a Uza investe em tecnologia e treinamento para suas equipes, garantindo que todas as lojas, sejam elas próprias ou franqueadas, ofereçam um padrão de atendimento que fidelize as clientes e fortaleça a marca. Este compromisso com a inovação e a excelência tem sido um dos pilares do sucesso da Uza no competitivo mercado de calçados femininos. Sobre a franquia Fundada em 2001, a Uza deu início à sua operação no mercado de franquias em 2016, buscando ampliar sua presença no setor de calçados femininos. A estratégia de expansão da marca é baseada na criação de uma rede de lojas que mantenham a identidade e os altos padrões de qualidade da Uza, garantindo uma experiência de compra consistente em todas as unidades. Com um posicionamento focado no mercado brasileiro, a marca tem se destacado por sua capacidade de entender e atender as necessidades das consumidoras locais, consolidando-se como uma referência em moda e conforto. Modelo de negócio A franquia Uza opera por meio de lojas que são cuidadosamente planejadas para refletir a identidade da marca e oferecer uma experiência de compra única. As unidades franqueadas são projetadas para maximizar a exposição dos produtos, com layout e decoração que destacam as coleções de calçados. A lógica operacional da Uza envolve um suporte contínuo aos franqueados, incluindo treinamentos, atualizações sobre tendências de moda e estratégias de marketing. Isso garante que todas as lojas estejam alinhadas com a filosofia da marca e possam oferecer um atendimento de excelência aos clientes. Perfil do público atendido O público-alvo da Uza é composto principalmente por mulheres que buscam calçados que aliam estilo e conforto. Estas consumidoras estão atentas às tendências de moda e valorizam produtos que ofereçam qualidade e durabilidade. No Brasil, o segmento de calçados femininos é robusto, impulsionado por um mercado consumidor que valoriza a moda como uma forma de expressão pessoal e que busca constantemente novidades e inovação nos produtos que adquire. Estrutura da rede A estrutura da rede Uza é composta por 9 unidades próprias e 43 unidades franqueadas, o que demonstra um equilíbrio entre a operação direta e a expansão via franquias. Este modelo permite à Uza manter um controle rigoroso sobre a qualidade dos produtos e serviços oferecidos, ao mesmo tempo em que amplia sua presença em diversas regiões do Brasil. A estratégia de crescimento da marca se concentra em fortalecer sua posição no mercado nacional através de novas parcerias e a abertura de novas lojas franqueadas. Dados da Franquia",
+  "founded_year": 2001,
+  "franchise_start_year": 2016,
+  "own_units": 9,
+  "franchised_units": 43,
+  "total_units": 52,
+  "min_investment": 490000,
+  "max_investment": 640000,
+  "investment_range_text": "R$ 490.000 / R$ 640.000",
+  "franchise_fee": null,
+  "franchise_fee_text": "Não informado",
+  "working_capital": null,
+  "working_capital_text": "Não informado",
+  "investment_tier": "Até R$ 500 mil",
+  "business_models": [
+    {
+      "tag": "loja",
+      "royalties_text": "38,00%-Mercadorias",
+      "royalties_pct": 38.0,
+      "royalties_base": "Mercadorias",
+      "royalties_is_fixed": false,
+      "ad_fee_text": "Não Cobra",
+      "ad_fee_pct": 0.0,
+      "ad_fee_base": null,
+      "ad_fee_is_fixed": false,
+      "avg_revenue_text": "Não informado",
+      "avg_revenue": null,
+      "avg_profit_text": "Não informado",
+      "avg_profit": null,
+      "payback_text": "24 a 36",
+      "payback_min_months": 24,
+      "payback_max_months": 36
+    }
+  ],
+  "_quality_flags": {
+    "has_logo": true,
+    "has_description_long": true,
+    "has_description_short": true,
+    "has_investment": true,
+    "has_units": true,
+    "has_payback": true,
+    "bm_count": 1,
+    "fields_extracted": 13,
+    "fields_total_known": 13,
+    "fields_filled": 9,
+    "fields_not_informed": [
+      "Taxa de franquia",
+      "Capital de giro",
+      "Faturamento médio",
+      "Lucro médio"
+    ],
+    "description_usable": true,
+    "description_appears_templated": true,
+    "layout_unrecognized": false,
+    "has_corruption": false,
+    "parser_flags": [
+      "royalties_pct_above_30_sanity"
+    ]
+  },
+  "_raw_fields": {
+    "Fundação": "2001",
+    "Início da franquia": "2016",
+    "Unidades próprias": "9",
+    "Unidades franqueadas": "43",
+    "Investimento total": "R$ 490.000 / R$ 640.000",
+    "Taxa de franquia": "Não informado",
+    "Capital de giro": "Não informado",
+    "Royalties": "38,00%-Mercadorias (loja)",
+    "Taxa de publicidade": "Não Cobra (loja)",
+    "Faturamento médio": "Não informado",
+    "Lucro médio": "Não informado",
+    "Prazo de retorno (meses)": "24 a 36 (loja)",
+    "Faixa de Investimento": "Franquias de Até R$ 500 mil"
+  }
+}

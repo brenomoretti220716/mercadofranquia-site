@@ -1,0 +1,81 @@
+{
+  "slug": "schutz",
+  "name": "Schutz",
+  "url_source": "https://encontresuafranquia.com.br/franquia/schutz/",
+  "scraped_at": "2026-04-30T23:30:22+00:00",
+  "logo_url": "https://encontresuafranquia.com.br/wp-content/uploads/2026/01/schutz.jpg",
+  "description_short": "Schutz é uma franquia do segmento de moda, destaca-se por suas bolsas, sapatos, sandálias e acessórios. Saiba mais aqui!",
+  "description_long": "A Schutz é uma marca brasileira de moda que se destaca no segmento de calçados e acessórios, oferecendo uma ampla gama de produtos que inclui bolsas, sapatos, sandálias e outros itens de moda. Fundada em 1995, a marca rapidamente se estabeleceu como um nome forte no mercado nacional, reconhecida por seu design inovador e qualidade. Em um setor altamente competitivo, a Schutz se diferencia por sua capacidade de antecipar tendências e atender às demandas dos consumidores que buscam produtos sofisticados e modernos. A marca adota uma abordagem que combina moda e funcionalidade, capturando a atenção de um público exigente e atento às últimas novidades do setor. O modelo de negócios da Schutz evoluiu ao longo dos anos, culminando no lançamento de sua operação de franquias em 2010. Essa estratégia permitiu à marca expandir sua presença em todo o Brasil, atingindo diferentes mercados e ampliando seu alcance geográfico. As franquias oferecem aos empreendedores a oportunidade de se associarem a uma marca bem estabelecida, com um portfólio de produtos que já possui reconhecimento no mercado. A lógica de crescimento da Schutz por meio do franchising baseia-se na padronização de processos e na manutenção de um padrão de qualidade elevado, garantindo aos consumidores uma experiência consistente em todas as lojas. O mercado de moda no Brasil é dinâmico e apresenta oportunidades para marcas que conseguem se adaptar às mudanças nas preferências dos consumidores. A Schutz, com sua oferta diversificada de produtos, atende a uma ampla gama de clientes, desde aqueles que buscam peças clássicas até os que preferem itens de moda mais ousados. A marca tem conseguido se manter relevante ao longo dos anos, principalmente por sua capacidade de inovar e oferecer produtos que se alinham com as tendências globais. A operação de franquias é um pilar importante para o crescimento da Schutz, permitindo que a marca alcance novos mercados e consolide sua presença em regiões estratégicas. Sobre a franquia Fundada em 1995, a Schutz iniciou seu modelo de franquias em 2010, permitindo uma expansão significativa no mercado brasileiro. A marca adotou uma estratégia de crescimento que combina unidades próprias e franqueadas, totalizando 80 pontos de venda em todo o país. Com 16 unidades próprias e 64 franqueadas, a Schutz posiciona-se como uma das principais marcas de calçados e acessórios do Brasil. A estratégia de expansão se concentra em fortalecer a presença da marca em regiões metropolitanas e cidades de médio porte, onde há um público consumidor interessado em produtos de moda de alta qualidade. Modelo de negócio A operação de franquias da Schutz é estruturada para garantir a consistência da experiência do cliente e a qualidade dos produtos oferecidos. As unidades franqueadas seguem um modelo de negócios que envolve a compra de produtos diretamente da marca, com royalties baseados em compras efetuadas. Essa estrutura permite que os franqueados mantenham um estoque atualizado com as últimas coleções e tendências. As lojas da Schutz são projetadas para oferecer um ambiente de compras sofisticado e acolhedor, refletindo a identidade da marca e atraindo consumidores que valorizam moda e estilo. A lógica operacional inclui treinamentos regulares e suporte contínuo para garantir o sucesso das operações franqueadas. Perfil do público atendido A Schutz atende principalmente a um público feminino, composto por consumidores que buscam produtos de moda sofisticados e de alta qualidade. Este público é formado por mulheres jovens e adultas que acompanham as tendências da moda e valorizam o design e a exclusividade dos produtos. O segmento de calçados e acessórios no Brasil é robusto, impulsionado por consumidores que veem esses itens como essenciais para expressar estilo pessoal. A Schutz se posiciona como uma marca que entende essas necessidades, oferecendo produtos que combinam moda, conforto e inovação. Estrutura da rede Atualmente, a Schutz possui uma rede composta por 16 unidades próprias e 64 franqueadas, espalhadas por diversas regiões do Brasil. Essa estrutura permite à marca alcançar um público amplo e diverso, consolidando sua presença em mercados estratégicos. A expansão por meio de franquias tem sido uma estratégia eficaz para aumentar o alcance geográfico da marca, permitindo que ela se estabeleça tanto em grandes centros urbanos quanto em cidades de médio porte. Dados da Franquia",
+  "founded_year": 1995,
+  "franchise_start_year": 2010,
+  "own_units": 16,
+  "franchised_units": 64,
+  "total_units": 80,
+  "min_investment": 760000,
+  "max_investment": 1120000,
+  "investment_range_text": "R$ 760.000 / R$ 1.120.000",
+  "franchise_fee": null,
+  "franchise_fee_text": "Não informado",
+  "working_capital": null,
+  "working_capital_text": "Não informado",
+  "investment_tier": "Até R$ 500 mil",
+  "business_models": [
+    {
+      "tag": "loja",
+      "royalties_text": "38,74% Compras",
+      "royalties_pct": 38.74,
+      "royalties_base": "Compras",
+      "royalties_is_fixed": false,
+      "ad_fee_text": "3,00% Compras",
+      "ad_fee_pct": 3.0,
+      "ad_fee_base": "Compras",
+      "ad_fee_is_fixed": false,
+      "avg_revenue_text": "R$ 350.000",
+      "avg_revenue": 350000,
+      "avg_profit_text": "Não informado",
+      "avg_profit": null,
+      "payback_text": "36",
+      "payback_min_months": 36,
+      "payback_max_months": 36
+    }
+  ],
+  "_quality_flags": {
+    "has_logo": true,
+    "has_description_long": true,
+    "has_description_short": true,
+    "has_investment": true,
+    "has_units": true,
+    "has_payback": true,
+    "bm_count": 1,
+    "fields_extracted": 13,
+    "fields_total_known": 13,
+    "fields_filled": 10,
+    "fields_not_informed": [
+      "Taxa de franquia",
+      "Capital de giro",
+      "Lucro médio"
+    ],
+    "description_usable": true,
+    "description_appears_templated": true,
+    "layout_unrecognized": false,
+    "has_corruption": false,
+    "parser_flags": [
+      "royalties_pct_above_30_sanity"
+    ]
+  },
+  "_raw_fields": {
+    "Fundação": "1995",
+    "Início da franquia": "2010",
+    "Unidades próprias": "16",
+    "Unidades franqueadas": "64",
+    "Investimento total": "R$ 760.000 / R$ 1.120.000",
+    "Taxa de franquia": "Não informado",
+    "Capital de giro": "Não informado",
+    "Royalties": "38,74% Compras (loja)",
+    "Taxa de publicidade": "3,00% Compras (loja)",
+    "Faturamento médio": "R$ 350.000 (loja)",
+    "Lucro médio": "Não informado",
+    "Prazo de retorno (meses)": "36 (loja)",
+    "Faixa de Investimento": "Franquias de Acima de R$ 500 mil"
+  }
+}

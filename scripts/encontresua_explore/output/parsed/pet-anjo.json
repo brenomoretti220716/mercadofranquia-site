@@ -1,0 +1,82 @@
+{
+  "slug": "pet-anjo",
+  "name": "Pet Anjo",
+  "url_source": "https://encontresuafranquia.com.br/franquia/pet-anjo/",
+  "scraped_at": "2026-04-30T23:30:22+00:00",
+  "logo_url": "https://encontresuafranquia.com.br/wp-content/uploads/2026/01/pet-anjo.jpg",
+  "description_short": "Pet Anjo é uma franquia especializada em cuidados para pets, oferecendo serviços variados e inovadores para atender às crescentes demandas do mercado.",
+  "description_long": "A franquia Pet Anjo é uma empresa que se destaca no segmento de cuidados para animais de estimação, oferecendo uma variedade de serviços que atendem às demandas crescentes deste mercado. Fundada em 2022, a empresa rapidamente se expandiu através do modelo de franquia, permitindo que empreendedores em todo o Brasil participassem desse nicho em crescimento. O setor de cuidados para animais de estimação tem visto um aumento significativo na última década, impulsionado por uma mudança cultural em que os animais de estimação são cada vez mais considerados membros da família. Esse cenário favorece o crescimento de negócios que oferecem serviços especializados e de alta qualidade para animais de estimação. A Pet Anjo se insere nesse contexto como uma marca inovadora que busca suprir as necessidades de donos de animais que procuram serviços confiáveis e personalizados. A empresa oferece uma gama de serviços que incluem desde cuidados básicos até serviços mais especializados, como pet sitting, dog walking e hospedagem domiciliar. Com uma abordagem voltada para a qualidade e segurança, a Pet Anjo se destaca por seu compromisso com o bem-estar animal, o que lhe garante uma posição diferenciada no mercado. O modelo de franquia adotado pela Pet Anjo é um dos principais motores de sua expansão, permitindo à empresa aumentar rapidamente sua presença no mercado brasileiro. Este modelo oferece aos franqueados a oportunidade de operar sob uma marca estabelecida e com um suporte robusto, o que pode reduzir muitos dos riscos associados à abertura de um novo negócio. A empresa tem como objetivo criar uma rede coesa de franqueados que compartilhem de sua visão e compromisso com a excelência no atendimento. Além disso, a Pet Anjo adota estratégias de crescimento que visam não apenas a expansão territorial, mas também o fortalecimento da marca e a fidelização dos clientes. O foco em serviços personalizados e na formação contínua dos profissionais que atuam na rede são diferenciais que ajudam a manter a qualidade e a consistência dos serviços prestados. A Pet Anjo se posiciona como uma alternativa confiável e de alta qualidade para os donos de animais que buscam serviços diferenciados e adequados às necessidades de seus pets. Sobre a franquia A Pet Anjo foi fundada em 2022 e iniciou seu modelo de franquia no mesmo ano. Desde então, a empresa tem seguido uma estratégia de expansão agressiva, focada em ampliar sua presença no mercado brasileiro de cuidados para animais de estimação. Com um posicionamento que valoriza a qualidade e a segurança dos serviços oferecidos, a Pet Anjo busca se destacar em um mercado competitivo, conquistando a confiança dos clientes através de um atendimento personalizado e especializado. A empresa tem como objetivo consolidar-se como uma referência no segmento, oferecendo oportunidades de negócios atrativas para seus franqueados. Modelo de negócio A franquia Pet Anjo opera por meio de unidades franqueadas que oferecem uma variedade de serviços para animais de estimação, como pet sitting, dog walking e hospedagem domiciliar. O modelo de negócio é estruturado para permitir que os franqueados entreguem serviços de alta qualidade, seguindo padrões estabelecidos pela marca. A lógica operacional da Pet Anjo se baseia em treinamento rigoroso e suporte contínuo aos franqueados, garantindo que todos os serviços atendam aos critérios de segurança e excelência. Embora detalhes financeiros específicos como taxa de franquia e capital de giro não sejam divulgados, a empresa oferece um suporte abrangente para ajudar os franqueados a alcançar o sucesso. Perfil do público atendido A Pet Anjo atende principalmente donos de animais de estimação que buscam serviços de alta qualidade e personalizados para seus pets. Este público é composto por pessoas que consideram seus animais como membros da família e estão dispostas a investir em serviços que garantam o bem-estar e segurança de seus animais. O segmento de cuidados para animais de estimação no Brasil tem crescido devido ao aumento da posse de pets e à mudança na percepção sobre a importância de serviços especializados para esses animais. A Pet Anjo se posiciona como uma escolha preferida para consumidores que buscam confiança e profissionalismo. Estrutura da rede Atualmente, a Pet Anjo possui 9 unidades próprias e 266 franqueadas, demonstrando um crescimento significativo desde sua fundação. A rede é composta por uma ampla distribuição geográfica, permitindo que a marca alcance uma variedade de mercados em todo o Brasil. Essa estrutura permite à Pet Anjo maximizar sua presença e oferecer seus serviços a um público diversificado, mantendo a consistência e qualidade que são marcas registradas da empresa. A rede de franqueados é um elemento chave na estratégia de expansão da Pet Anjo, facilitando o alcance e impacto da marca. Dados da Franquia",
+  "founded_year": 2022,
+  "franchise_start_year": 2022,
+  "own_units": 9,
+  "franchised_units": 266,
+  "total_units": 275,
+  "min_investment": 1700,
+  "max_investment": 6000,
+  "investment_range_text": "R$ 1.700 / R$ 6.000",
+  "franchise_fee": null,
+  "franchise_fee_text": "Não informado",
+  "working_capital": null,
+  "working_capital_text": "Não informado",
+  "investment_tier": "Até R$ 5 mil",
+  "business_models": [
+    {
+      "tag": "loja",
+      "royalties_text": "43,00% - Faturamento",
+      "royalties_pct": 43.0,
+      "royalties_base": "Faturamento",
+      "royalties_is_fixed": false,
+      "ad_fee_text": "Não Cobra",
+      "ad_fee_pct": 0.0,
+      "ad_fee_base": null,
+      "ad_fee_is_fixed": false,
+      "avg_revenue_text": "Não informado",
+      "avg_revenue": null,
+      "avg_profit_text": "Não informado",
+      "avg_profit": null,
+      "payback_text": "2 a 12",
+      "payback_min_months": 2,
+      "payback_max_months": 12
+    }
+  ],
+  "_quality_flags": {
+    "has_logo": true,
+    "has_description_long": true,
+    "has_description_short": true,
+    "has_investment": true,
+    "has_units": true,
+    "has_payback": true,
+    "bm_count": 1,
+    "fields_extracted": 13,
+    "fields_total_known": 13,
+    "fields_filled": 9,
+    "fields_not_informed": [
+      "Taxa de franquia",
+      "Capital de giro",
+      "Faturamento médio",
+      "Lucro médio"
+    ],
+    "description_usable": true,
+    "description_appears_templated": true,
+    "layout_unrecognized": false,
+    "has_corruption": false,
+    "parser_flags": [
+      "royalties_pct_above_30_sanity"
+    ]
+  },
+  "_raw_fields": {
+    "Fundação": "2022",
+    "Início da franquia": "2022",
+    "Unidades próprias": "9",
+    "Unidades franqueadas": "266",
+    "Investimento total": "R$ 1.700 / R$ 6.000",
+    "Taxa de franquia": "Não informado",
+    "Capital de giro": "Não informado",
+    "Royalties": "43,00% - Faturamento (loja)",
+    "Taxa de publicidade": "Não Cobra (loja)",
+    "Faturamento médio": "Não informado",
+    "Lucro médio": "Não informado",
+    "Prazo de retorno (meses)": "2 a 12 (loja)",
+    "Faixa de Investimento": "Franquias de Até R$ 5 mil"
+  }
+}

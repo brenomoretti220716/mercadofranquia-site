@@ -1,0 +1,82 @@
+{
+  "slug": "bee-delivery",
+  "name": "Bee Delivery",
+  "url_source": "https://encontresuafranquia.com.br/franquia/bee-delivery/",
+  "scraped_at": "2026-04-30T23:30:21+00:00",
+  "logo_url": "https://encontresuafranquia.com.br/wp-content/uploads/2026/01/bee-delivery.jpg",
+  "description_short": "Bee Delivery oferece soluções inovadoras em logística, destacando-se pela entrega rápida e eficiente de mercadorias no mercado brasileiro.",
+  "description_long": "A Bee Delivery é uma empresa que atua no segmento de logística e serviços, com um modelo de negócios focado na entrega rápida e eficiente de mercadorias. Fundada em 2018, a empresa rapidamente se destacou no mercado brasileiro pela sua abordagem inovadora e adaptável, oferecendo soluções que vão ao encontro das necessidades de um público cada vez mais exigente e conectado. A marca tem como missão otimizar o tempo e os recursos de seus clientes, proporcionando um serviço de entrega que combina tecnologia e praticidade. No contexto atual, onde a demanda por serviços de entrega cresceu exponencialmente, a Bee Delivery se apresenta como uma alternativa viável tanto para consumidores finais quanto para empresas que necessitam de um serviço de logística confiável. A empresa adota um modelo de franquia desde o seu primeiro ano de operação, o que permitiu uma rápida expansão por meio de parcerias estratégicas. O modelo home based da franquia possibilita que novos franqueados iniciem suas operações com menor investimento inicial e custos operacionais reduzidos, sem a necessidade de um espaço físico tradicional. A lógica de crescimento da Bee Delivery está enraizada na flexibilidade e na capacidade de adaptação às mudanças do mercado. A empresa se beneficia de um sistema de franquias que permite a expansão territorial sem comprometer a qualidade dos serviços prestados. Com uma estrutura de royalties baseada no faturamento líquido, a Bee Delivery incentiva seus franqueados a maximizar a eficiência operacional e o atendimento ao cliente. A ausência de uma taxa de publicidade para as unidades home based é outro fator que torna o modelo de franquia atraente para empreendedores que buscam entrar no mercado de logística. Sobre a franquia A Bee Delivery foi fundada em 2018 e, no mesmo ano, iniciou seu modelo de franquia. Desde então, a empresa tem se posicionado de forma estratégica no mercado brasileiro de logística, destacando-se por sua capacidade de inovação e adaptação. A estratégia de expansão da Bee Delivery está centrada na criação de uma rede de franqueados bem treinados e comprometidos com a excelência no atendimento. Com um foco em tecnologia e eficiência, a franquia visa atender a crescente demanda por serviços de entrega rápida e confiável. Modelo de negócio A operação da Bee Delivery é caracterizada por um modelo de negócios home based, que permite aos franqueados operar sem a necessidade de um ponto comercial físico. Este modelo reduz significativamente os custos iniciais e operacionais, tornando-se uma opção atraente para empreendedores. As franquias da Bee Delivery funcionam com base em uma plataforma tecnológica que facilita a gestão de pedidos e a comunicação entre clientes e entregadores. A cobrança de royalties sobre o faturamento líquido incentiva os franqueados a otimizar suas operações para maximizar a lucratividade. Perfil do público atendido A Bee Delivery atende um público diversificado que inclui tanto consumidores finais quanto empresas que necessitam de serviços de logística. Com o aumento das compras online e a demanda por entregas rápidas, a empresa se posiciona como uma solução prática e eficiente. O serviço é especialmente atraente para consumidores urbanos que valorizam a conveniência e a rapidez, assim como para negócios que buscam otimizar suas operações logísticas. A presença da Bee Delivery no mercado brasileiro reflete a necessidade crescente por soluções de entrega ágeis e confiáveis. Estrutura da rede A rede da Bee Delivery é composta por 41 unidades próprias e 79 unidades franqueadas, totalizando 120 operações em todo o território brasileiro. Essa estrutura permite à empresa atender de forma eficaz uma ampla gama de clientes, garantindo a cobertura de diversas regiões. A expansão por meio de franquias tem sido uma estratégia eficaz para aumentar a presença da marca e consolidar sua posição no mercado de logística e serviços. Dados da Franquia",
+  "founded_year": 2018,
+  "franchise_start_year": 2018,
+  "own_units": 41,
+  "franchised_units": 79,
+  "total_units": 120,
+  "min_investment": 15000,
+  "max_investment": 80000,
+  "investment_range_text": "R$ 15.000 / R$ 80.000",
+  "franchise_fee": null,
+  "franchise_fee_text": "Não informado",
+  "working_capital": null,
+  "working_capital_text": "Não informado",
+  "investment_tier": "Até R$ 20 mil",
+  "business_models": [
+    {
+      "tag": "home based",
+      "royalties_text": "30,00%-Fat. Líquido",
+      "royalties_pct": 30.0,
+      "royalties_base": "Fat. Líquido",
+      "royalties_is_fixed": false,
+      "ad_fee_text": "Não Cobra",
+      "ad_fee_pct": 0.0,
+      "ad_fee_base": null,
+      "ad_fee_is_fixed": false,
+      "avg_revenue_text": "Não informado",
+      "avg_revenue": null,
+      "avg_profit_text": "Não informado",
+      "avg_profit": null,
+      "payback_text": "9 a 6",
+      "payback_min_months": 6,
+      "payback_max_months": 9
+    }
+  ],
+  "_quality_flags": {
+    "has_logo": true,
+    "has_description_long": true,
+    "has_description_short": true,
+    "has_investment": true,
+    "has_units": true,
+    "has_payback": true,
+    "bm_count": 1,
+    "fields_extracted": 13,
+    "fields_total_known": 13,
+    "fields_filled": 9,
+    "fields_not_informed": [
+      "Taxa de franquia",
+      "Capital de giro",
+      "Faturamento médio",
+      "Lucro médio"
+    ],
+    "description_usable": true,
+    "description_appears_templated": true,
+    "layout_unrecognized": false,
+    "has_corruption": false,
+    "parser_flags": [
+      "payback_range_swapped"
+    ]
+  },
+  "_raw_fields": {
+    "Fundação": "2018",
+    "Início da franquia": "2018",
+    "Unidades próprias": "41",
+    "Unidades franqueadas": "79",
+    "Investimento total": "R$ 15.000 / R$ 80.000",
+    "Taxa de franquia": "Não informado",
+    "Capital de giro": "Não informado",
+    "Royalties": "30,00%-Fat. Líquido (home based)",
+    "Taxa de publicidade": "Não Cobra (home based)",
+    "Faturamento médio": "Não informado",
+    "Lucro médio": "Não informado",
+    "Prazo de retorno (meses)": "9 a 6 (home based)",
+    "Faixa de Investimento": "Franquias de Até R$ 20 mil"
+  }
+}

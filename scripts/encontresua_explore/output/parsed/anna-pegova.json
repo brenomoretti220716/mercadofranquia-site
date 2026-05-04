@@ -1,0 +1,82 @@
+{
+  "slug": "anna-pegova",
+  "name": "Anna Pegova",
+  "url_source": "https://encontresuafranquia.com.br/franquia/anna-pegova/",
+  "scraped_at": "2026-04-30T23:30:21+00:00",
+  "logo_url": "https://encontresuafranquia.com.br/wp-content/uploads/2026/01/anna-pegova.jpg",
+  "description_short": "Anna Pegova é uma franquia no setor de cosméticos e perfumaria, destaca-se pela inovação e qualidade em cuidados para pele e bem-estar.",
+  "description_long": "Anna Pegova é uma marca de destaque no segmento de cosméticos e perfumaria, saúde, beleza e bem-estar. Fundada em 1975, a empresa rapidamente se consolidou como uma referência em produtos de alta qualidade, voltados para o cuidado da pele e bem-estar dos consumidores. Com uma abordagem inovadora, a marca se diferencia pela combinação de princípios ativos naturais e tecnologia avançada, garantindo resultados eficazes e seguros. Este compromisso com a qualidade e a inovação fez com que a Anna Pegova conquistasse um espaço significativo no mercado brasileiro e internacional. O segmento de cosméticos e bem-estar no Brasil é um dos mais dinâmicos e promissores, impulsionado por consumidores cada vez mais exigentes e atentos aos cuidados pessoais. Nesse contexto, Anna Pegova se destaca não apenas pela excelência de seus produtos, mas também por sua estratégia de expansão através do modelo de franquias, iniciado em 1989. Este modelo permite que empreendedores locais se associem a uma marca de renome, beneficiando-se de um know-how consolidado e de um portfólio de produtos reconhecidos pela eficácia e inovação. A lógica de crescimento da Anna Pegova está fundamentada na expansão sustentável e na manutenção de altos padrões de qualidade em todas as suas unidades. A marca oferece aos franqueados um suporte abrangente, que inclui treinamento, estratégias de marketing e uma linha completa de produtos cuidadosamente desenvolvidos. Com isso, busca garantir que cada unidade mantenha a excelência que caracteriza a marca, ao mesmo tempo em que se adapta às especificidades do mercado local. Além disso, a Anna Pegova não cobra royalties sobre as vendas nas lojas, o que pode ser um atrativo significativo para potenciais franqueados. Este modelo de negócio visa maximizar o potencial de lucro dos empreendedores, enquanto promove a disseminação da marca em novas regiões. O prazo de retorno do investimento é estimado entre 16 a 32 meses, o que demonstra um equilíbrio entre risco e rentabilidade para os investidores. Sobre a franquia Fundada em 1975, Anna Pegova iniciou suas atividades de franchising em 1989, com o objetivo de ampliar sua presença no mercado brasileiro e oferecer suas soluções de beleza a um público mais amplo. A estratégia de expansão da marca está pautada na abertura de unidades franqueadas, que atualmente somam 20, além das 12 unidades próprias. Este crescimento se alinha ao posicionamento da marca como uma das líderes no segmento de cosméticos e bem-estar no Brasil, oferecendo produtos que aliam inovação tecnológica e ingredientes naturais. Modelo de negócio O modelo de negócio da franquia Anna Pegova é centrado na operação de lojas que oferecem uma gama completa de produtos de beleza e cuidados pessoais. As unidades franqueadas são responsáveis por comercializar os produtos da marca, seguindo diretrizes rigorosas de qualidade e atendimento ao cliente. A franquia proporciona aos seus franqueados um suporte contínuo, que inclui treinamento em vendas, marketing e operações, além de uma política de não cobrança de royalties sobre as vendas nas lojas. Esta abordagem visa maximizar a rentabilidade dos franqueados e garantir uma experiência de compra consistente e satisfatória para os consumidores. Perfil do público atendido O público-alvo da Anna Pegova é composto por consumidores que valorizam produtos de alta qualidade e eficácia comprovada, interessados em cuidados pessoais e bem-estar. Estes consumidores buscam soluções que combinem tecnologia avançada e ingredientes naturais, refletindo um estilo de vida saudável e consciente. O segmento de cosméticos e bem-estar no Brasil é impulsionado por uma população crescente e cada vez mais preocupada com a saúde e a aparência, o que sustenta a demanda por produtos inovadores e eficazes como os oferecidos pela Anna Pegova. Estrutura da rede A rede de franquias Anna Pegova é composta por 12 unidades próprias e 20 unidades franqueadas, distribuídas estrategicamente para atender uma ampla base de consumidores. A presença geográfica das unidades permite à marca alcançar diferentes regiões do Brasil, ampliando seu impacto e visibilidade no mercado. Esta estrutura robusta e bem distribuída é um dos pilares do sucesso contínuo da Anna Pegova no setor de cosméticos e bem-estar. Dados da Franquia",
+  "founded_year": 1975,
+  "franchise_start_year": 1989,
+  "own_units": 12,
+  "franchised_units": 20,
+  "total_units": 32,
+  "min_investment": 470000,
+  "max_investment": 710000,
+  "investment_range_text": "R$ 470.000 / R$ 710.000",
+  "franchise_fee": null,
+  "franchise_fee_text": "Não informado",
+  "working_capital": null,
+  "working_capital_text": "Não informado",
+  "investment_tier": "Até R$ 500 mil",
+  "business_models": [
+    {
+      "tag": "loja",
+      "royalties_text": "Não Cobra",
+      "royalties_pct": 0.0,
+      "royalties_base": null,
+      "royalties_is_fixed": false,
+      "ad_fee_text": "R$ 1.600 - Vendas",
+      "ad_fee_pct": null,
+      "ad_fee_base": "R$ 1.600 - Vendas",
+      "ad_fee_is_fixed": true,
+      "avg_revenue_text": "Não informado",
+      "avg_revenue": null,
+      "avg_profit_text": "Não informado",
+      "avg_profit": null,
+      "payback_text": "16 a 32",
+      "payback_min_months": 16,
+      "payback_max_months": 32
+    }
+  ],
+  "_quality_flags": {
+    "has_logo": true,
+    "has_description_long": true,
+    "has_description_short": true,
+    "has_investment": true,
+    "has_units": true,
+    "has_payback": true,
+    "bm_count": 1,
+    "fields_extracted": 13,
+    "fields_total_known": 13,
+    "fields_filled": 9,
+    "fields_not_informed": [
+      "Taxa de franquia",
+      "Capital de giro",
+      "Faturamento médio",
+      "Lucro médio"
+    ],
+    "description_usable": true,
+    "description_appears_templated": true,
+    "layout_unrecognized": false,
+    "has_corruption": false,
+    "parser_flags": [
+      "ad_fee_fixed_value"
+    ]
+  },
+  "_raw_fields": {
+    "Fundação": "1975",
+    "Início da franquia": "1989",
+    "Unidades próprias": "12",
+    "Unidades franqueadas": "20",
+    "Investimento total": "R$ 470.000 / R$ 710.000",
+    "Taxa de franquia": "Não informado",
+    "Capital de giro": "Não informado",
+    "Royalties": "Não Cobra (loja)",
+    "Taxa de publicidade": "R$ 1.600 - Vendas (loja)",
+    "Faturamento médio": "Não informado",
+    "Lucro médio": "Não informado",
+    "Prazo de retorno (meses)": "16 a 32 (loja)",
+    "Faixa de Investimento": "Franquias de Até R$ 500 mil"
+  }
+}

@@ -1,0 +1,81 @@
+{
+  "slug": "bonito-way",
+  "name": "Bonito Way",
+  "url_source": "https://encontresuafranquia.com.br/franquia/bonito-way/",
+  "scraped_at": "2026-04-30T23:30:21+00:00",
+  "logo_url": "https://encontresuafranquia.com.br/wp-content/uploads/2026/04/bonitoway-2026.jpg",
+  "description_short": "Bonito Way: agência de turismo que conecta turistas a experiências únicas no Brasil, destacando-se pela diversidade natural e cultural.",
+  "description_long": "Bonito Way é uma empresa que se destaca por oferecer pacotes turísticos personalizados, principalmente voltados para a região de Bonito, conhecida por suas belezas naturais e ecoturismo. A empresa foi fundada em 2007, mas a sua expansão por meio de franquias começou em 2023, o que demonstra sua estratégia de crescimento e adaptação às demandas do mercado. O mercado de turismo e hotelaria no Brasil é um dos setores mais dinâmicos, impulsionado pela diversidade natural e cultural do país. As agências de turismo desempenham um papel crucial na facilitação de experiências de viagem, conectando turistas a destinos e serviços que atendem às suas necessidades e expectativas. O modelo de franquia adotado por Bonito Way é focado em operações home-based, permitindo que os franqueados gerenciem suas unidades com flexibilidade e menor custo operacional. Esse tipo de operação é ideal para empreendedores que buscam entrar no setor de turismo sem a necessidade de um ponto comercial físico. A lógica de crescimento da marca é baseada na expansão controlada e na manutenção de um padrão de qualidade nos serviços oferecidos, garantindo que todos os turistas tenham experiências memoráveis e seguras. A taxa de royalties de 3% sobre as vendas líquidas é uma característica do modelo de franquia, refletindo um compromisso com o suporte contínuo ao franqueado. A expansão da Bonito Way por meio de franquias também se alinha com a tendência crescente de personalização e experiências únicas no turismo. Com um número crescente de viajantes buscando experiências autênticas e personalizadas, a empresa se posiciona para atender a essa demanda com pacotes que destacam a rica biodiversidade e as atrações naturais de Bonito. Além disso, a empresa investe em treinamento e suporte para seus franqueados, assegurando que os serviços prestados sejam consistentes e de alta qualidade. Sobre a franquia Bonito Way foi fundada em 2007, com o objetivo de proporcionar experiências turísticas únicas na região de Bonito. A empresa iniciou sua operação de franquias em 2023, sinalizando uma nova fase de crescimento e expansão geográfica. A estratégia de expansão da franquia é baseada em um modelo home-based, permitindo que os franqueados operem de maneira flexível e com custos reduzidos. No mercado brasileiro, Bonito Way se posiciona como uma agência especializada em ecoturismo, oferecendo pacotes que exploram a rica biodiversidade e as belezas naturais de Bonito. Modelo de negócio O modelo de negócio da Bonito Way é baseado em operações home-based, o que reduz significativamente os custos iniciais e operacionais para os franqueados. Essa abordagem permite que os franqueados atendam clientes e gerenciem suas operações de forma remota, utilizando tecnologias digitais para comunicação e gestão de reservas. A lógica operacional inclui a oferta de pacotes turísticos customizados, que são desenvolvidos para atender às preferências e necessidades individuais dos clientes. A Bonito Way também fornece suporte contínuo aos franqueados, incluindo treinamento e assistência em marketing, garantindo que todos os aspectos do negócio sejam geridos de forma eficiente. Perfil do público atendido O público-alvo da Bonito Way é composto por turistas que buscam experiências autênticas e personalizadas, com um interesse especial em ecoturismo e atividades ao ar livre. Estes consumidores tendem a valorizar a sustentabilidade e a conservação ambiental, o que se alinha com as ofertas da Bonito Way. O segmento de turismo no Brasil é impulsionado pela diversidade natural do país, e a crescente demanda por viagens que combinam aventura e natureza reflete essa tendência. A Bonito Way atende a essa demanda, oferecendo pacotes que destacam as belezas naturais e as atividades ecológicas de Bonito. Estrutura da rede Atualmente, a Bonito Way possui uma unidade própria e continua a expandir sua rede por meio de franquias home-based. Embora o número exato de unidades franqueadas não tenha sido especificado, a empresa está focada em aumentar sua presença geográfica no Brasil. Essa expansão controlada permite que a Bonito Way mantenha altos padrões de qualidade e atendimento ao cliente, essenciais para o sucesso no competitivo mercado de turismo. Dados da Franquia",
+  "founded_year": 2007,
+  "franchise_start_year": 2023,
+  "own_units": 1,
+  "franchised_units": null,
+  "total_units": null,
+  "min_investment": 19990,
+  "max_investment": 19990,
+  "investment_range_text": "R$ 19.990",
+  "franchise_fee": null,
+  "franchise_fee_text": "Não informado",
+  "working_capital": null,
+  "working_capital_text": "Não informado",
+  "investment_tier": "Até R$ 50 mil",
+  "business_models": [
+    {
+      "tag": "home based",
+      "royalties_text": "3,00%-Vendas Líquidas",
+      "royalties_pct": 3.0,
+      "royalties_base": "Vendas Líquidas",
+      "royalties_is_fixed": false,
+      "ad_fee_text": "Variável-Outros",
+      "ad_fee_pct": null,
+      "ad_fee_base": "Variável-Outros",
+      "ad_fee_is_fixed": false,
+      "avg_revenue_text": "Não informado",
+      "avg_revenue": null,
+      "avg_profit_text": "Não informado",
+      "avg_profit": null,
+      "payback_text": "6 a 36",
+      "payback_min_months": 6,
+      "payback_max_months": 36
+    }
+  ],
+  "_quality_flags": {
+    "has_logo": true,
+    "has_description_long": true,
+    "has_description_short": true,
+    "has_investment": true,
+    "has_units": false,
+    "has_payback": true,
+    "bm_count": 1,
+    "fields_extracted": 12,
+    "fields_total_known": 13,
+    "fields_filled": 7,
+    "fields_not_informed": [
+      "Taxa de franquia",
+      "Capital de giro",
+      "Faturamento médio",
+      "Lucro médio"
+    ],
+    "description_usable": true,
+    "description_appears_templated": true,
+    "layout_unrecognized": false,
+    "has_corruption": false,
+    "parser_flags": [
+      "rate_unparseable"
+    ]
+  },
+  "_raw_fields": {
+    "Fundação": "2007",
+    "Início da franquia": "2023",
+    "Unidades próprias": "1",
+    "Investimento total": "R$ 19.990",
+    "Taxa de franquia": "Não informado",
+    "Capital de giro": "Não informado",
+    "Royalties": "3,00%-Vendas Líquidas (home based)",
+    "Taxa de publicidade": "Variável-Outros (home based)",
+    "Faturamento médio": "Não informado",
+    "Lucro médio": "Não informado",
+    "Prazo de retorno (meses)": "6 a 36 (home based)",
+    "Faixa de Investimento": "Franquias de Até R$ 50 mil"
+  }
+}

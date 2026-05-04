@@ -1,0 +1,80 @@
+{
+  "slug": "ccaa",
+  "name": "CCAA",
+  "url_source": "https://encontresuafranquia.com.br/franquia/ccaa/",
+  "scraped_at": "2026-04-30T23:30:21+00:00",
+  "logo_url": "https://encontresuafranquia.com.br/wp-content/uploads/2026/04/ccaa.jpg",
+  "description_short": "CCAA é uma rede de escolas de idiomas no Brasil, oferecendo cursos de inglês e espanhol com metodologia própria e inovadora desde 1961.",
+  "description_long": "O CCAA é uma rede de escolas de idiomas com forte presença no Brasil, oferecendo cursos de inglês e espanhol. Fundado em 1961, o CCAA começou a operar como franquia em 1969, expandindo-se rapidamente para se tornar uma das principais redes de ensino de idiomas no país. A marca se destaca por seu método exclusivo de ensino, que combina tecnologia e técnicas pedagógicas inovadoras para facilitar o aprendizado de línguas estrangeiras. O CCAA tem como objetivo principal atender à crescente demanda por proficiência em idiomas, um requisito cada vez mais essencial em um mundo globalizado. O segmento de ensino de idiomas é uma área em constante crescimento no Brasil, impulsionada pela necessidade de comunicação internacional em várias áreas profissionais e pessoais. Nesse contexto, o CCAA se posiciona como uma escolha confiável e eficaz para estudantes de todas as idades que buscam se aprimorar em inglês e espanhol. A empresa adota uma abordagem que prioriza a experiência do aluno, oferecendo ambientes de aprendizado modernos e interativos. A lógica de crescimento da marca está centrada na ampliação de sua rede de franquias, permitindo que mais pessoas tenham acesso ao seu método de ensino. O modelo de franquia do CCAA é desenhado para ser atraente tanto para investidores experientes quanto para aqueles que estão entrando pela primeira vez no setor de educação. Com 640 unidades franqueadas, a marca tem uma presença significativa em diversas regiões, tornando-se um nome familiar para muitos brasileiros. A ausência de cobrança de royalties sobre as lojas é um diferencial que pode atrair franqueados, juntamente com a taxa de publicidade baseada em compras, que contribui para a promoção e fortalecimento da marca. O CCAA oferece suporte contínuo aos seus franqueados, garantindo que as operações sejam eficientes e alinhadas aos padrões da rede. Sobre a franquia O CCAA foi fundado em 1961 e iniciou sua operação como franquia em 1969. Desde então, a rede expandiu-se substancialmente, consolidando-se como uma das principais escolas de idiomas do Brasil. Sua estratégia de expansão baseia-se na abertura de novas unidades franqueadas, permitindo um crescimento sustentável e uma maior capilaridade no mercado. Posicionada como uma marca de referência no ensino de idiomas, o CCAA busca manter-se competitiva por meio de inovação contínua e adaptação às necessidades dos alunos. Modelo de negócio A operação do CCAA é baseada em um modelo de franquia que não cobra royalties sobre as lojas, o que é um atrativo diferencial. A taxa de publicidade, fixada em 12% sobre compras, é utilizada para promover a marca e suas unidades. As unidades franqueadas do CCAA são projetadas para oferecer um ambiente de aprendizado agradável e eficiente, utilizando tecnologias modernas e métodos pedagógicos avançados. A franquia oferece suporte aos franqueados em diversas áreas, incluindo treinamento, marketing e gestão, garantindo que as operações estejam alinhadas com os padrões estabelecidos pela marca. Perfil do público atendido O público-alvo do CCAA é bastante diversificado, abrangendo desde crianças até adultos que buscam aprender inglês e espanhol. Com a crescente importância da fluência em idiomas estrangeiros no mercado de trabalho e na vida pessoal, o CCAA atende a uma demanda significativa no Brasil. Os hábitos de consumo do público incluem a busca por cursos que ofereçam flexibilidade, qualidade e resultados comprovados. O segmento de ensino de idiomas continua a crescer no Brasil, impulsionado por fatores como globalização e a necessidade de comunicação em um mundo cada vez mais interconectado. Estrutura da rede Com um total de 640 unidades franqueadas, o CCAA possui uma ampla rede de escolas distribuídas por todo o Brasil. A extensa presença geográfica da marca permite que ela atenda uma variedade de comunidades, oferecendo acesso a cursos de idiomas de alta qualidade. Embora o número de unidades próprias não tenha sido especificado, o foco da expansão da rede está claramente nas franquias, que são o principal motor de crescimento da marca. Dados da Franquia",
+  "founded_year": 1961,
+  "franchise_start_year": 1969,
+  "own_units": null,
+  "franchised_units": 640,
+  "total_units": 640,
+  "min_investment": 90000,
+  "max_investment": 283000,
+  "investment_range_text": "R$ 90.000 / R$ 283.000",
+  "franchise_fee": null,
+  "franchise_fee_text": "Não informado",
+  "working_capital": null,
+  "working_capital_text": "Não informado",
+  "investment_tier": "Até R$ 105 mil",
+  "business_models": [
+    {
+      "tag": "loja",
+      "royalties_text": "Não Cobra",
+      "royalties_pct": 0.0,
+      "royalties_base": null,
+      "royalties_is_fixed": false,
+      "ad_fee_text": "12,00% - Compras",
+      "ad_fee_pct": 12.0,
+      "ad_fee_base": "Compras",
+      "ad_fee_is_fixed": false,
+      "avg_revenue_text": "R$ 90.000",
+      "avg_revenue": 90000,
+      "avg_profit_text": "Não informado",
+      "avg_profit": null,
+      "payback_text": "24 a 36",
+      "payback_min_months": 24,
+      "payback_max_months": 36
+    }
+  ],
+  "_quality_flags": {
+    "has_logo": true,
+    "has_description_long": true,
+    "has_description_short": true,
+    "has_investment": true,
+    "has_units": true,
+    "has_payback": true,
+    "bm_count": 1,
+    "fields_extracted": 12,
+    "fields_total_known": 13,
+    "fields_filled": 9,
+    "fields_not_informed": [
+      "Taxa de franquia",
+      "Capital de giro",
+      "Lucro médio"
+    ],
+    "description_usable": true,
+    "description_appears_templated": false,
+    "layout_unrecognized": false,
+    "has_corruption": false,
+    "parser_flags": [
+      "ad_fee_pct_above_10_sanity"
+    ]
+  },
+  "_raw_fields": {
+    "Fundação": "1961",
+    "Início da franquia": "1969",
+    "Unidades franqueadas": "640",
+    "Investimento total": "R$ 90.000 / R$ 283.000",
+    "Taxa de franquia": "Não informado",
+    "Capital de giro": "Não informado",
+    "Royalties": "Não Cobra (loja)",
+    "Taxa de publicidade": "12,00% - Compras (loja)",
+    "Faturamento médio": "R$ 90.000 (loja)",
+    "Lucro médio": "Não informado",
+    "Prazo de retorno (meses)": "24 a 36 (loja)",
+    "Faixa de Investimento": "Franquias de Até R$ 105 mil"
+  }
+}

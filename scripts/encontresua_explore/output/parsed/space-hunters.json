@@ -1,0 +1,83 @@
+{
+  "slug": "space-hunters",
+  "name": "Space Hunters",
+  "url_source": "https://encontresuafranquia.com.br/franquia/space-hunters/",
+  "scraped_at": "2026-04-30T23:30:22+00:00",
+  "logo_url": "https://encontresuafranquia.com.br/wp-content/uploads/2026/01/space-hunters.jpg",
+  "description_short": "Space Hunters oferece consultoria inovadora em otimização de espaços corporativos e residenciais, destacando-se pela abordagem especializada.",
+  "description_long": "A Space Hunters é uma franquia que opera no segmento de consultorias e serviços, com um foco inovador em auxiliar empresas e indivíduos a otimizar espaços, seja em ambientes corporativos ou residenciais. Fundada em 2014, a marca rapidamente se destacou pela abordagem única e altamente especializada, que combina análise detalhada de espaço com soluções práticas e criativas. Este tipo de serviço tem ganhado relevância à medida que a densidade populacional aumenta e a otimização do espaço se torna uma necessidade econômica e funcional. Em 2023, a Space Hunters iniciou sua expansão através do modelo de franquias, permitindo que empreendedores adotassem sua metodologia de sucesso em diversas regiões. Esse movimento estratégico visa ampliar sua presença no mercado brasileiro, utilizando a expertise adquirida ao longo dos anos para formar novos franqueados capacitados. A lógica de crescimento da Space Hunters se baseia na replicação de seu modelo de negócios bem-sucedido em diferentes localidades, adaptando-se às particularidades de cada mercado regional. O modelo de franquia da Space Hunters é caracterizado por ser home based, o que significa que os franqueados podem operar a partir de suas próprias residências, reduzindo custos fixos e ampliando a acessibilidade do negócio. Este formato tem atraído empreendedores que buscam flexibilidade e menor investimento inicial, enquanto se beneficiam do suporte e da estrutura oferecidos pela franqueadora. A Space Hunters oferece um sistema de royalties e taxas de publicidade baseados no faturamento bruto, incentivando o crescimento sustentável dos franqueados. Sobre a franquia A Space Hunters foi fundada em 2014 e começou a operar como franquia em 2023. A decisão de expandir por meio de franquias foi motivada pela crescente demanda por consultorias especializadas em otimização de espaços, um mercado que se mostra promissor no Brasil. A estratégia de expansão da Space Hunters visa alcançar diferentes regiões do país, aproveitando a diversidade geográfica e econômica para adaptar suas soluções às necessidades locais. Este posicionamento busca consolidar a marca como líder no segmento de consultorias espaciais, oferecendo serviços personalizados e de alta qualidade. Modelo de negócio O modelo de negócio da Space Hunters é estruturado para ser operado de forma home based, permitindo que os franqueados conduzam as operações a partir de suas próprias casas. Isso proporciona uma economia significativa em custos de infraestrutura, além de oferecer flexibilidade operacional. O foco do negócio está na prestação de serviços de consultoria para otimização de espaços, que inclui análise detalhada, planejamento e implementação de soluções práticas. A Space Hunters fornece treinamento e suporte contínuo aos franqueados, garantindo que todos tenham acesso às melhores práticas e ferramentas necessárias para o sucesso. Perfil do público atendido O público-alvo da Space Hunters inclui tanto empresas quanto indivíduos que buscam melhorar a utilização de seus espaços. Este segmento é composto por pessoas que valorizam eficiência, funcionalidade e estética em seus ambientes, seja para aumentar a produtividade em escritórios ou para melhorar o conforto em residências. No Brasil, a demanda por serviços de otimização de espaço tem crescido devido à urbanização crescente e à busca por soluções que maximizem o uso de áreas reduzidas, tornando-se uma área de interesse para muitos consumidores. Estrutura da rede A estrutura da rede de franquias da Space Hunters ainda não foi completamente divulgada, com informações sobre o número exato de unidades próprias e franqueadas não sendo fornecidas. No entanto, a expansão recente por meio do franchising indica uma estratégia de crescimento que busca aumentar o alcance geográfico da marca, atendendo a diferentes regiões do Brasil. Com um modelo home based, a Space Hunters visa facilitar a entrada de novos franqueados, permitindo uma rápida adaptação e operação em diversas localidades. Dados da Franquia",
+  "founded_year": 2014,
+  "franchise_start_year": 2023,
+  "own_units": null,
+  "franchised_units": null,
+  "total_units": null,
+  "min_investment": 10000,
+  "max_investment": 10000,
+  "investment_range_text": "R$ 10.000",
+  "franchise_fee": null,
+  "franchise_fee_text": "Não informado",
+  "working_capital": null,
+  "working_capital_text": "Não informado",
+  "investment_tier": "Até R$ 10 mil",
+  "business_models": [
+    {
+      "tag": "home based",
+      "royalties_text": "68,00% - Fat. Bruto",
+      "royalties_pct": 68.0,
+      "royalties_base": "Fat. Bruto",
+      "royalties_is_fixed": false,
+      "ad_fee_text": "2,00% - Fat. Bruto",
+      "ad_fee_pct": 2.0,
+      "ad_fee_base": "Fat. Bruto",
+      "ad_fee_is_fixed": false,
+      "avg_revenue_text": "R$ 22.550",
+      "avg_revenue": 22550,
+      "avg_profit_text": "Não informado",
+      "avg_profit": null,
+      "payback_text": "6 a 12",
+      "payback_min_months": 6,
+      "payback_max_months": 12
+    }
+  ],
+  "_quality_flags": {
+    "has_logo": true,
+    "has_description_long": true,
+    "has_description_short": true,
+    "has_investment": true,
+    "has_units": false,
+    "has_payback": true,
+    "bm_count": 1,
+    "fields_extracted": 13,
+    "fields_total_known": 13,
+    "fields_filled": 8,
+    "fields_not_informed": [
+      "Unidades próprias",
+      "Unidades franqueadas",
+      "Taxa de franquia",
+      "Capital de giro",
+      "Lucro médio"
+    ],
+    "description_usable": true,
+    "description_appears_templated": true,
+    "layout_unrecognized": false,
+    "has_corruption": false,
+    "parser_flags": [
+      "royalties_pct_above_30_sanity"
+    ]
+  },
+  "_raw_fields": {
+    "Fundação": "2014",
+    "Início da franquia": "2023",
+    "Unidades próprias": "Não informado",
+    "Unidades franqueadas": "Não informado",
+    "Investimento total": "R$ 10.000",
+    "Taxa de franquia": "Não informado",
+    "Capital de giro": "Não informado",
+    "Royalties": "68,00% - Fat. Bruto (home based)",
+    "Taxa de publicidade": "2,00% - Fat. Bruto (home based)",
+    "Faturamento médio": "R$ 22.550 (home based)",
+    "Lucro médio": "Não informado",
+    "Prazo de retorno (meses)": "6 a 12 (home based)",
+    "Faixa de Investimento": "Franquias de Até R$ 10 mil"
+  }
+}

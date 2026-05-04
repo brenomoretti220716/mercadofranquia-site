@@ -1,0 +1,81 @@
+{
+  "slug": "adcos",
+  "name": "Adcos",
+  "url_source": "https://encontresuafranquia.com.br/franquia/adcos/",
+  "scraped_at": "2026-04-30T23:30:21+00:00",
+  "logo_url": "https://encontresuafranquia.com.br/wp-content/uploads/2026/01/adcos.jpg",
+  "description_short": "Adcos é uma franquia de cosméticos focada em saúde e beleza, oferecendo inovação e qualidade em cuidados com a pele e proteção solar.",
+  "description_long": "A Adcos é uma marca consolidada no setor de cosméticos e perfumaria, com foco em saúde, beleza e bem-estar. Fundada em 1993, a empresa se destacou pela inovação e qualidade de seus produtos, que incluem linhas para cuidados com a pele, proteção solar e tratamentos corporais. Ao longo dos anos, a Adcos se posicionou como uma referência no mercado brasileiro, oferecendo soluções que atendem tanto às necessidades de consumidores finais quanto de profissionais da área de estética. A marca é conhecida por aliar tecnologia avançada a ingredientes ativos de alta eficácia, o que contribui para sua reputação positiva entre especialistas e clientes. Em 2003, a Adcos entrou no mercado de franchising, expandindo sua presença por meio de unidades franqueadas. O modelo de franquia foi uma estratégia essencial para o crescimento da marca, permitindo que ela alcançasse um público maior e diversificado em diferentes regiões do Brasil. A lógica de crescimento da Adcos baseia-se na oferta de produtos de alta qualidade e no suporte contínuo aos franqueados, garantindo que eles estejam bem equipados para representar a marca e atender às expectativas dos clientes. A expansão por meio de franquias também permitiu à Adcos adaptar-se às demandas locais, oferecendo produtos específicos que correspondem às condições climáticas e culturais de cada região. O modelo de franquia da Adcos é caracterizado por uma estrutura bem definida, que inclui treinamento extensivo para franqueados e suas equipes, além de suporte em marketing e operações. A empresa não cobra taxa de publicidade para as lojas, o que pode ser um atrativo adicional para potenciais franqueados. Com um prazo de retorno estimado em 36 meses, a franquia oferece uma oportunidade de investimento para empreendedores interessados no setor de cosméticos, com a vantagem de contar com a credibilidade de uma marca estabelecida. A Adcos continua a expandir sua rede, com um número significativo de unidades próprias e franqueadas, fortalecendo sua posição no mercado de beleza e bem-estar. Sobre a franquia A Adcos foi fundada em 1993 e iniciou suas operações de franquia em 2003, marcando sua entrada no competitivo mercado de franchising brasileiro. Desde então, a empresa tem se concentrado em expandir sua presença por meio de unidades franqueadas, além de manter um número considerável de unidades próprias. A estratégia de expansão da Adcos se baseia na oferta de produtos de alta qualidade e em um modelo de negócio que proporciona suporte contínuo aos franqueados. A marca se posiciona como uma referência no setor de cosméticos e perfumaria, destacando-se pela inovação e eficácia de seus produtos. Modelo de negócio O modelo de negócio da Adcos é estruturado para facilitar a operação das franquias, oferecendo um suporte robusto aos franqueados. As unidades são concebidas para atuar como pontos de venda de produtos de beleza e bem-estar, com um portfólio que inclui cosméticos para cuidados faciais e corporais, além de protetores solares. A Adcos não cobra taxa de publicidade das lojas, o que pode representar uma economia significativa para os franqueados. O modelo operacional da franquia inclui treinamento intensivo e suporte contínuo, garantindo que os franqueados possam oferecer um atendimento de qualidade e produtos que atendam às expectativas dos consumidores. A média de retorno do investimento é de 36 meses, tornando-se uma opção atraente para empreendedores no setor de beleza. Perfil do público atendido A Adcos atende a um público diversificado, composto por consumidores que buscam produtos de alta qualidade para cuidados pessoais e profissionais da área de estética que necessitam de soluções eficazes para seus clientes. O segmento de cosméticos e beleza é bastante desenvolvido no Brasil, impulsionado pela crescente demanda por produtos que promovem saúde e bem-estar. Os consumidores brasileiros valorizam a eficácia e segurança dos produtos, o que torna a Adcos uma escolha popular entre aqueles que buscam resultados comprovados. A marca se destaca por sua capacidade de atender às necessidades específicas de diferentes tipos de pele e condições climáticas, garantindo a satisfação de seus clientes. Estrutura da rede A rede da Adcos é composta por 62 unidades próprias e 106 franqueadas, demonstrando a robustez de sua estrutura de expansão. Essa combinação de unidades próprias e franqueadas permite à marca manter um controle de qualidade consistente enquanto amplia sua presença no mercado. A Adcos está presente em várias regiões do Brasil, o que lhe permite alcançar um público amplo e diversificado, adaptando-se às necessidades locais e fortalecendo sua posição como líder no setor de cosméticos e perfumaria. Dados da Franquia",
+  "founded_year": 1993,
+  "franchise_start_year": 2003,
+  "own_units": 62,
+  "franchised_units": 106,
+  "total_units": 168,
+  "min_investment": 580000,
+  "max_investment": 580000,
+  "investment_range_text": "R$ 580.000",
+  "franchise_fee": null,
+  "franchise_fee_text": "Não informado",
+  "working_capital": null,
+  "working_capital_text": "Não informado",
+  "investment_tier": "Até R$ 500 mil",
+  "business_models": [
+    {
+      "tag": "loja",
+      "royalties_text": "55,25% - Compras",
+      "royalties_pct": 55.25,
+      "royalties_base": "Compras",
+      "royalties_is_fixed": false,
+      "ad_fee_text": "Não Cobra",
+      "ad_fee_pct": 0.0,
+      "ad_fee_base": null,
+      "ad_fee_is_fixed": false,
+      "avg_revenue_text": "R$ 150.000",
+      "avg_revenue": 150000,
+      "avg_profit_text": "Não informado",
+      "avg_profit": null,
+      "payback_text": "36",
+      "payback_min_months": 36,
+      "payback_max_months": 36
+    }
+  ],
+  "_quality_flags": {
+    "has_logo": true,
+    "has_description_long": true,
+    "has_description_short": true,
+    "has_investment": true,
+    "has_units": true,
+    "has_payback": true,
+    "bm_count": 1,
+    "fields_extracted": 13,
+    "fields_total_known": 13,
+    "fields_filled": 10,
+    "fields_not_informed": [
+      "Taxa de franquia",
+      "Capital de giro",
+      "Lucro médio"
+    ],
+    "description_usable": true,
+    "description_appears_templated": true,
+    "layout_unrecognized": false,
+    "has_corruption": false,
+    "parser_flags": [
+      "royalties_pct_above_30_sanity"
+    ]
+  },
+  "_raw_fields": {
+    "Fundação": "1993",
+    "Início da franquia": "2003",
+    "Unidades próprias": "62",
+    "Unidades franqueadas": "106",
+    "Investimento total": "R$ 580.000",
+    "Taxa de franquia": "Não informado",
+    "Capital de giro": "Não informado",
+    "Royalties": "55,25% - Compras (loja)",
+    "Taxa de publicidade": "Não Cobra (loja)",
+    "Faturamento médio": "R$ 150.000 (loja)",
+    "Lucro médio": "Não informado",
+    "Prazo de retorno (meses)": "36 (loja)",
+    "Faixa de Investimento": "Franquias de Acima de R$ 500 mil"
+  }
+}

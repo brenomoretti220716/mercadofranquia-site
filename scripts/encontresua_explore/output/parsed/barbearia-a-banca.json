@@ -1,0 +1,80 @@
+{
+  "slug": "barbearia-a-banca",
+  "name": "Barbearia a Banca",
+  "url_source": "https://encontresuafranquia.com.br/franquia/barbearia-a-banca/",
+  "scraped_at": "2026-04-30T23:30:21+00:00",
+  "logo_url": "https://encontresuafranquia.com.br/wp-content/uploads/2026/01/barbearia-a-banca.jpg",
+  "description_short": "Barbearia a Banca oferece serviços de barbearia que unem tradição e modernidade, destacando-se em cuidados pessoais, saúde e bem-estar.",
+  "description_long": "A Barbearia a Banca é uma empresa que atua no segmento de cuidados pessoais, saúde, beleza e bem-estar. Desde a sua fundação em 2014, a marca tem se destacado por oferecer serviços de barbearia que combinam tradição e modernidade, atendendo a um público que valoriza tanto a estética quanto a experiência de autocuidado. Com o crescimento do interesse por serviços de beleza e bem-estar no Brasil, a barbearia se posicionou como uma opção diferenciada no mercado, atraindo uma clientela diversificada que busca serviços de qualidade e atendimento personalizado. O modelo de franquias da Barbearia a Banca foi iniciado em 2018, permitindo que a marca expandisse sua presença em várias regiões do país. A estratégia de franquia foi desenvolvida para manter a identidade e os padrões de qualidade da marca, enquanto oferece aos franqueados a oportunidade de explorar um mercado em crescimento. O sistema de franquias permite que empreendedores se beneficiem de uma estrutura estabelecida, com suporte em marketing, operações e gestão, enquanto contribuem para o fortalecimento e reconhecimento da marca em novos territórios. O segmento de barbearias tem se expandido no Brasil, impulsionado por uma mudança nos hábitos de consumo e uma maior valorização dos cuidados pessoais entre os homens. A Barbearia a Banca capitaliza essa tendência ao proporcionar não apenas cortes de cabelo e barba, mas também uma experiência completa de bem-estar. A marca se diferencia ao oferecer um ambiente acolhedor e serviços que vão além do básico, como tratamentos capilares e cuidados com a pele, que atendem às crescentes demandas dos consumidores modernos. O crescimento da Barbearia a Banca no mercado de franquias reflete uma estratégia bem-sucedida de adaptação às necessidades locais, mantendo um equilíbrio entre inovação e a preservação de técnicas tradicionais de barbearia. Com uma taxa de royalties de 5% sobre o faturamento das lojas, a empresa garante que os franqueados mantenham um padrão de serviço que reflete a qualidade pela qual a marca é conhecida. A taxa de publicidade, ajustada de acordo com a loja, permite uma flexibilidade que ajuda a atender as demandas específicas de cada mercado. Sobre a franquia A Barbearia a Banca foi fundada em 2014 e iniciou seu modelo de franchising em 2018. Desde então, a empresa tem se concentrado em expandir sua presença no mercado brasileiro, com uma estratégia que visa consolidar sua marca em várias regiões do país. Com um total de 11 unidades franqueadas, a barbearia busca se posicionar como uma referência em serviços de beleza e bem-estar para o público masculino. A expansão tem sido orientada por um compromisso com a qualidade e a inovação, garantindo que cada unidade mantenha os altos padrões de atendimento pelos quais a marca é reconhecida. Modelo de negócio O modelo de negócio da Barbearia a Banca é baseado em franquias, permitindo que empreendedores abram suas próprias unidades sob a marca e com o suporte da equipe central. As unidades franqueadas são projetadas para oferecer uma variedade de serviços de barbearia, incluindo cortes de cabelo, aparos de barba e outros tratamentos de beleza e bem-estar. A lógica operacional da franquia envolve um equilíbrio entre a padronização dos serviços e a adaptação às peculiaridades de cada mercado local. Os franqueados recebem suporte em áreas críticas como marketing, operações e treinamento, permitindo que se concentrem na entrega de uma experiência de alta qualidade ao cliente. Perfil do público atendido A Barbearia a Banca atende principalmente ao público masculino, que valoriza cuidados pessoais e busca serviços de beleza e bem-estar de alta qualidade. Este público é composto por homens que apreciam um ambiente acolhedor e serviços personalizados, indo além dos cortes de cabelo tradicionais. A demanda por serviços de barbearia tem crescido no Brasil, impulsionada por uma mudança cultural que valoriza o autocuidado e a aparência pessoal, tornando este segmento cada vez mais relevante. Estrutura da rede Atualmente, a Barbearia a Banca possui 11 unidades franqueadas, distribuídas em diversas regiões do Brasil. A estrutura da rede é projetada para garantir que cada unidade mantenha o padrão de qualidade associado à marca, ao mesmo tempo em que se adapta às necessidades locais. Essa abordagem permite que a barbearia expanda seu alcance geográfico, mantendo a identidade e os valores centrais que definem sua proposta de valor no mercado. Dados da Franquia",
+  "founded_year": 2014,
+  "franchise_start_year": 2018,
+  "own_units": null,
+  "franchised_units": 11,
+  "total_units": 11,
+  "min_investment": 380000,
+  "max_investment": 380000,
+  "investment_range_text": "R$ 380.000",
+  "franchise_fee": null,
+  "franchise_fee_text": "Não informado",
+  "working_capital": null,
+  "working_capital_text": "Não informado",
+  "investment_tier": "Até R$ 500 mil",
+  "business_models": [
+    {
+      "tag": "loja",
+      "royalties_text": "5,00% Faturamento",
+      "royalties_pct": 5.0,
+      "royalties_base": "Faturamento",
+      "royalties_is_fixed": false,
+      "ad_fee_text": "Variável Outros",
+      "ad_fee_pct": null,
+      "ad_fee_base": "Variável Outros",
+      "ad_fee_is_fixed": false,
+      "avg_revenue_text": "R$ 90.000",
+      "avg_revenue": 90000,
+      "avg_profit_text": "Não informado",
+      "avg_profit": null,
+      "payback_text": "12 a 24",
+      "payback_min_months": 12,
+      "payback_max_months": 24
+    }
+  ],
+  "_quality_flags": {
+    "has_logo": true,
+    "has_description_long": true,
+    "has_description_short": true,
+    "has_investment": true,
+    "has_units": true,
+    "has_payback": true,
+    "bm_count": 1,
+    "fields_extracted": 12,
+    "fields_total_known": 13,
+    "fields_filled": 8,
+    "fields_not_informed": [
+      "Taxa de franquia",
+      "Capital de giro",
+      "Lucro médio"
+    ],
+    "description_usable": true,
+    "description_appears_templated": true,
+    "layout_unrecognized": false,
+    "has_corruption": false,
+    "parser_flags": [
+      "rate_unparseable"
+    ]
+  },
+  "_raw_fields": {
+    "Fundação": "2014",
+    "Início da franquia": "2018",
+    "Unidades franqueadas": "11",
+    "Investimento total": "R$ 380.000",
+    "Taxa de franquia": "Não informado",
+    "Capital de giro": "Não informado",
+    "Royalties": "5,00% Faturamento (loja)",
+    "Taxa de publicidade": "Variável Outros (loja)",
+    "Faturamento médio": "R$ 90.000 (loja)",
+    "Lucro médio": "Não informado",
+    "Prazo de retorno (meses)": "12 a 24 (loja)",
+    "Faixa de Investimento": "Franquias de Até R$ 500 mil"
+  }
+}

@@ -1,0 +1,80 @@
+{
+  "slug": "kumon",
+  "name": "Kumon",
+  "url_source": "https://encontresuafranquia.com.br/franquia/kumon/",
+  "scraped_at": "2026-04-30T23:30:21+00:00",
+  "logo_url": "https://encontresuafranquia.com.br/wp-content/uploads/2026/01/kumon.jpg",
+  "description_short": "Kumon é uma franquia de educação com método único, focado no aprendizado autodidata, oferecendo programas de matemática e língua desde 1958.",
+  "description_long": "O Kumon é uma franquia de educação que se destaca por seu método de ensino único, voltado para o desenvolvimento autodidata dos alunos. Fundada em 1958, a empresa rapidamente se tornou um nome respeitável no setor educacional, oferecendo programas de ensino de matemática e língua, adaptados às necessidades individuais de cada estudante. Com uma abordagem que enfatiza a prática contínua e a autonomia, o Kumon busca não apenas ensinar conteúdos acadêmicos, mas também estimular habilidades de estudo e disciplina nos alunos. Este método inovador tem sido um diferencial no mercado, atraindo pais que desejam uma educação complementar eficaz para seus filhos. O crescimento da franquia se apoia em uma estratégia de expansão global, que começou em 1977, quando a empresa adotou o modelo de franchising. Desde então, o Kumon se expandiu para diversos países, estabelecendo-se como um líder no segmento de educação suplementar. A franquia tem a vantagem de oferecer um modelo de negócios comprovado, o que atrai investidores interessados em um setor estável e em crescimento. Além disso, a reputação sólida e a eficácia do método de ensino contribuem para a atração de novos franqueados, que buscam operar em um mercado com alta demanda por serviços educacionais de qualidade. No Brasil, o Kumon encontrou um terreno fértil para sua metodologia, devido à crescente preocupação dos pais com a qualidade da educação formal e a busca por alternativas que complementem o aprendizado escolar. A adaptação do método ao contexto brasileiro tem sido um dos fatores para o sucesso da marca no país. O modelo de franquia do Kumon é baseado em unidades de ensino que operam de forma autônoma, mas com suporte contínuo da franqueadora, garantindo a manutenção dos padrões de qualidade e a fidelidade ao método original. Com isso, a marca consegue manter sua relevância e competitividade no setor educacional brasileiro. Sobre a franquia Fundado em 1958, o Kumon iniciou seu modelo de franquia em 1977, expandindo-se rapidamente pelo mundo. No Brasil, a franquia se posiciona como uma das principais referências em educação suplementar, com uma estratégia de expansão que prioriza a qualidade do ensino e a satisfação dos alunos. A marca tem se destacado por sua metodologia inovadora e eficaz, que se adapta às necessidades individuais de cada estudante, promovendo o desenvolvimento de habilidades autodidatas. A expansão contínua e o reconhecimento da eficácia de seu método são pilares fundamentais para o crescimento da franquia no mercado brasileiro. Modelo de negócio A franquia Kumon opera por meio de unidades franqueadas que oferecem programas de ensino de matemática e língua, baseados em um método autodidata. Cada aluno segue um plano de estudos individualizado, que é ajustado conforme seu ritmo de aprendizagem e progresso. O franqueado atua como um facilitador, orientando os alunos e garantindo a aplicação correta do método. O modelo de negócio do Kumon oferece suporte contínuo aos franqueados, com treinamentos e materiais didáticos padronizados. Essa estrutura permite que os franqueados mantenham a qualidade do ensino e a consistência do método, ao mesmo tempo em que gerenciam seu próprio negócio. Perfil do público atendido O público-alvo do Kumon é composto principalmente por crianças e adolescentes que buscam melhorar seu desempenho acadêmico e desenvolver habilidades de estudo independentes. Os pais que optam pelo Kumon geralmente estão preocupados com a educação de seus filhos e procuram métodos eficazes para complementar o ensino escolar. O segmento de educação suplementar é relevante no Brasil devido às demandas por melhorias na qualidade do ensino e à crescente competitividade acadêmica. O Kumon atende a essas necessidades oferecendo um método comprovado que promove o aprendizado contínuo e a autossuficiência dos alunos. Estrutura da rede A rede Kumon possui 1554 unidades franqueadas, distribuídas em várias regiões do Brasil. Essa ampla presença geográfica permite à marca atender um grande número de alunos em diferentes locais, garantindo acesso ao seu método de ensino eficaz. A estrutura descentralizada das unidades franqueadas permite uma adaptação às características locais, enquanto mantém a consistência e a qualidade do método Kumon em todos os seus centros de ensino. Dados da Franquia",
+  "founded_year": 1958,
+  "franchise_start_year": 1977,
+  "own_units": null,
+  "franchised_units": 1554,
+  "total_units": 1554,
+  "min_investment": 50000,
+  "max_investment": 90000,
+  "investment_range_text": "R$ 50.000 / R$ 90.000",
+  "franchise_fee": null,
+  "franchise_fee_text": "Não informado",
+  "working_capital": null,
+  "working_capital_text": "Não informado",
+  "investment_tier": "Até R$ 50 mil",
+  "business_models": [
+    {
+      "tag": "loja",
+      "royalties_text": "40,00%-Outros",
+      "royalties_pct": 40.0,
+      "royalties_base": "Outros",
+      "royalties_is_fixed": false,
+      "ad_fee_text": "Não Cobra",
+      "ad_fee_pct": 0.0,
+      "ad_fee_base": null,
+      "ad_fee_is_fixed": false,
+      "avg_revenue_text": "R$ 43.200",
+      "avg_revenue": 43200,
+      "avg_profit_text": "Não informado",
+      "avg_profit": null,
+      "payback_text": "18 a 24",
+      "payback_min_months": 18,
+      "payback_max_months": 24
+    }
+  ],
+  "_quality_flags": {
+    "has_logo": true,
+    "has_description_long": true,
+    "has_description_short": true,
+    "has_investment": true,
+    "has_units": true,
+    "has_payback": true,
+    "bm_count": 1,
+    "fields_extracted": 12,
+    "fields_total_known": 13,
+    "fields_filled": 9,
+    "fields_not_informed": [
+      "Taxa de franquia",
+      "Capital de giro",
+      "Lucro médio"
+    ],
+    "description_usable": true,
+    "description_appears_templated": true,
+    "layout_unrecognized": false,
+    "has_corruption": false,
+    "parser_flags": [
+      "royalties_pct_above_30_sanity"
+    ]
+  },
+  "_raw_fields": {
+    "Fundação": "1958",
+    "Início da franquia": "1977",
+    "Unidades franqueadas": "1554",
+    "Investimento total": "R$ 50.000 / R$ 90.000",
+    "Taxa de franquia": "Não informado",
+    "Capital de giro": "Não informado",
+    "Royalties": "40,00%-Outros (Joja)",
+    "Taxa de publicidade": "Não Cobra (ioja)",
+    "Faturamento médio": "R$ 43.200 (loja)",
+    "Lucro médio": "Não informado",
+    "Prazo de retorno (meses)": "18 a 24 (loja)",
+    "Faixa de Investimento": "Franquias de Até R$ 50 mil"
+  }
+}

@@ -1,0 +1,80 @@
+{
+  "slug": "namboo",
+  "name": "Namboo",
+  "url_source": "https://encontresuafranquia.com.br/franquia/namboo/",
+  "scraped_at": "2026-04-30T23:30:21+00:00",
+  "logo_url": "https://encontresuafranquia.com.br/wp-content/uploads/2026/01/namboo.jpg",
+  "description_short": "Namboo oferece consultoria e serviços inovadores, destacando-se no mercado por preencher lacunas em setores empresariais em constante evolução.",
+  "description_long": "A Namboo é uma franquia que se posiciona no segmento de consultorias e serviços, oferecendo soluções inovadoras para um mercado em constante evolução. Fundada em 2024, a marca entrou no mercado com o propósito de preencher lacunas identificadas em diversos setores empresariais, trazendo um modelo de negócio que alia expertise técnica com a praticidade de operações home based. Essa abordagem permite que os franqueados ofereçam serviços de consultoria personalizados, atendendo a uma demanda crescente por soluções adaptadas às necessidades específicas de cada cliente. O modelo de franquia da Namboo é projetado para ser acessível, permitindo que empreendedores iniciem suas operações com uma estrutura enxuta e flexível. Essa flexibilidade é um dos principais atrativos para os franqueados, que podem gerenciar suas operações diretamente de casa, reduzindo custos fixos e aumentando a margem de lucro. A marca se destaca pela inovação nos serviços oferecidos, buscando sempre se adaptar às novas tendências do mercado e às necessidades dos seus clientes, o que garante um crescimento sustentado e a consolidação da sua presença no setor. Embora ainda seja uma rede emergente, a Namboo já demonstra um forte potencial de expansão, graças à sua proposta de valor diferenciada e à crescente demanda por serviços de consultoria especializada. A estratégia da franquia é focada em expandir sua rede de franqueados, proporcionando suporte contínuo e ferramentas eficazes para que cada unidade possa maximizar seu desempenho. A lógica de crescimento da Namboo está baseada na criação de uma rede colaborativa, onde o compartilhamento de experiências e o aprendizado contínuo são incentivados, promovendo um ambiente de negócios dinâmico e inovador. Sobre a franquia A Namboo foi fundada em 2024, o mesmo ano em que iniciou suas operações como franquia, demonstrando uma visão estratégica de expansão desde o início. A marca tem como objetivo consolidar-se no mercado brasileiro, oferecendo soluções de consultoria que atendem a diferentes nichos de mercado. A estratégia de expansão da Namboo é baseada na seleção criteriosa de franqueados que compartilhem dos valores e da visão da empresa, com foco em criar uma rede sólida e colaborativa. A empresa busca se posicionar como uma referência no setor de consultorias, aproveitando a crescente demanda por serviços especializados e personalizados no Brasil. Modelo de negócio A operação da franquia Namboo é caracterizada por sua simplicidade e eficiência, sendo estruturada para funcionar no modelo home based. Isso significa que os franqueados podem operar suas unidades diretamente de suas residências, o que reduz significativamente os custos operacionais. A lógica do negócio é baseada na prestação de serviços de consultoria, que podem variar conforme as necessidades do mercado e as especializações dos franqueados. A ausência de uma taxa fixa de publicidade e o modelo de royalties variável baseado em compras são aspectos que tornam o empreendimento ainda mais atraente para novos investidores. A Namboo oferece suporte contínuo aos franqueados, garantindo que eles tenham acesso às melhores práticas do setor e possam adaptar suas ofertas conforme a evolução do mercado. Perfil do público atendido O público-alvo da Namboo é composto por empresas de diversos tamanhos e setores que buscam otimizar suas operações através de serviços de consultoria especializados. Esses clientes geralmente procuram soluções que possam ser personalizadas para atender às suas necessidades específicas, o que reflete uma tendência crescente no Brasil por serviços mais adaptados e eficientes. A demanda por consultorias é impulsionada pela necessidade de inovação e eficiência operacional, fatores críticos em um mercado competitivo e em constante mudança. A Namboo se posiciona para atender essa demanda, oferecendo expertise e soluções que agregam valor aos negócios de seus clientes. Estrutura da rede Atualmente, a Namboo possui uma unidade franqueada, refletindo seu status como uma franquia emergente no mercado. Apesar do número ainda reduzido de unidades, a marca planeja expandir sua presença geográfica através de um crescimento estratégico e bem planejado. O modelo home based permite que a franquia alcance diferentes regiões do Brasil de forma eficiente, sem a necessidade de grandes investimentos em infraestrutura. A expectativa é que, com o tempo, a rede se expanda significativamente, atraindo novos franqueados interessados em explorar o promissor mercado de consultorias no Brasil. Dados da Franquia",
+  "founded_year": 2024,
+  "franchise_start_year": 2024,
+  "own_units": null,
+  "franchised_units": 1,
+  "total_units": 1,
+  "min_investment": 48000,
+  "max_investment": 70000,
+  "investment_range_text": "R$ 48.000 / R$ 70.000",
+  "franchise_fee": null,
+  "franchise_fee_text": "Não informado",
+  "working_capital": null,
+  "working_capital_text": "Não informado",
+  "investment_tier": "Até R$ 50 mil",
+  "business_models": [
+    {
+      "tag": "home based",
+      "royalties_text": "Variável - Compras",
+      "royalties_pct": null,
+      "royalties_base": "Variável - Compras",
+      "royalties_is_fixed": false,
+      "ad_fee_text": "Não Cobra",
+      "ad_fee_pct": 0.0,
+      "ad_fee_base": null,
+      "ad_fee_is_fixed": false,
+      "avg_revenue_text": "R$ 90.000",
+      "avg_revenue": 90000,
+      "avg_profit_text": "Não informado",
+      "avg_profit": null,
+      "payback_text": "12 a 24",
+      "payback_min_months": 12,
+      "payback_max_months": 24
+    }
+  ],
+  "_quality_flags": {
+    "has_logo": true,
+    "has_description_long": true,
+    "has_description_short": true,
+    "has_investment": true,
+    "has_units": true,
+    "has_payback": true,
+    "bm_count": 1,
+    "fields_extracted": 12,
+    "fields_total_known": 13,
+    "fields_filled": 8,
+    "fields_not_informed": [
+      "Taxa de franquia",
+      "Capital de giro",
+      "Lucro médio"
+    ],
+    "description_usable": true,
+    "description_appears_templated": true,
+    "layout_unrecognized": false,
+    "has_corruption": false,
+    "parser_flags": [
+      "rate_unparseable"
+    ]
+  },
+  "_raw_fields": {
+    "Fundação": "2024",
+    "Início da franquia": "2024",
+    "Unidades franqueadas": "1",
+    "Investimento total": "R$ 48.000 / R$ 70.000",
+    "Taxa de franquia": "Não informado",
+    "Capital de giro": "Não informado",
+    "Royalties": "Variável - Compras (home based)",
+    "Taxa de publicidade": "Não Cobra (home based)",
+    "Faturamento médio": "R$ 90.000 (home based)",
+    "Lucro médio": "Não informado",
+    "Prazo de retorno (meses)": "12 a 24 (home based)",
+    "Faixa de Investimento": "Franquias de Até R$ 50 mil"
+  }
+}

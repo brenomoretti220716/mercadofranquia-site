@@ -1,0 +1,81 @@
+{
+  "slug": "get-it",
+  "name": "Get It",
+  "url_source": "https://encontresuafranquia.com.br/franquia/get-it/",
+  "scraped_at": "2026-04-30T23:30:21+00:00",
+  "logo_url": "https://encontresuafranquia.com.br/wp-content/uploads/2026/04/get-it.jpg",
+  "description_short": "Get It é uma franquia de educação que oferece qualificação profissional desde 2007, expandindo pelo Brasil com foco em aprendizado contínuo.",
+  "description_long": "Get It é uma franquia inserida no segmento de educação, estabelecida em 2007 e que iniciou sua expansão por meio do modelo de franquias em 2016. Este segmento no Brasil tem sido alvo de crescente interesse, devido à demanda por qualificação profissional e ao desejo contínuo de aprendizado, especialmente em tempos de rápida transformação tecnológica e social. A marca se destaca ao oferecer um modelo de ensino que se adapta às necessidades dos alunos, proporcionando uma experiência educacional que alia qualidade e inovação. O crescimento da Get It como franquia está fundamentado em uma lógica de expansão que busca atingir diversas localidades, levando em conta as particularidades regionais e as necessidades específicas de cada mercado. A marca se posiciona de forma a oferecer oportunidades educacionais acessíveis, visando não apenas o desenvolvimento pessoal dos alunos, mas também contribuindo para o incremento de suas capacidades profissionais. O modelo de franquia adotado pela Get It permite que empreendedores locais levem essa proposta de valor para suas comunidades, garantindo um padrão de qualidade consistente em todas as unidades. O modelo de negócios da Get It é projetado para ser atraente tanto para franqueados quanto para alunos, com um foco claro na entrega de valor educacional. A franquia se concentra em oferecer cursos que atendam às demandas do mercado de trabalho, incorporando metodologias de ensino modernas e interativas. Além disso, a flexibilidade do modelo permite a adaptação dos cursos a diferentes perfis de alunos, desde jovens em início de carreira até profissionais experientes que buscam atualização. Sobre a franquia A Get It foi fundada em 2007 e deu início à sua operação de franchising em 2016, com o objetivo de expandir sua metodologia educacional para um público mais amplo. Desde então, a franquia tem se consolidado no mercado brasileiro, explorando nichos regionais e adaptando suas ofertas para melhor atender às necessidades locais. A estratégia de expansão da Get It se baseia em um crescimento sustentável, priorizando a qualidade sobre a quantidade, o que se reflete em um número controlado de unidades franqueadas. Modelo de negócio A operação da Get It é estruturada em torno de unidades que oferecem cursos presenciais e online, permitindo uma abordagem híbrida que atende a diferentes perfis de alunos. Os franqueados recebem suporte contínuo em áreas como marketing, gestão e formação de professores, assegurando que as unidades mantenham o padrão de qualidade esperado. A lógica operacional da franquia é orientada para a eficiência, buscando maximizar o retorno sobre o investimento por meio de uma gestão otimizada dos recursos e do foco na satisfação do aluno. Perfil do público atendido O público-alvo da Get It é diversificado, abrangendo desde jovens em busca de qualificação profissional até adultos que desejam aprimorar suas competências. Este público é caracterizado por um interesse crescente em educação contínua, impulsionado pela necessidade de se manter atualizado em um mercado de trabalho competitivo. No Brasil, a demanda por cursos que ofereçam certificação e possibilidades de crescimento profissional é alta, justificando a existência e a expansão de franquias no setor educacional. Estrutura da rede Atualmente, a Get It opera com uma unidade própria e 13 unidades franqueadas, demonstrando um crescimento consistente desde o início de sua operação de franquias. A rede está estrategicamente distribuída para cobrir diversas regiões do Brasil, ampliando seu alcance e impacto no setor educacional. Esta estrutura permite que a franquia mantenha um padrão de qualidade uniforme, ao mesmo tempo em que se adapta às especificidades de cada mercado local. Dados da Franquia",
+  "founded_year": 2007,
+  "franchise_start_year": 2016,
+  "own_units": 1,
+  "franchised_units": 13,
+  "total_units": 14,
+  "min_investment": 80000,
+  "max_investment": 80000,
+  "investment_range_text": "R$ 80.000",
+  "franchise_fee": null,
+  "franchise_fee_text": "Não informado",
+  "working_capital": null,
+  "working_capital_text": "Não informado",
+  "investment_tier": "Até R$ 105 mil",
+  "business_models": [
+    {
+      "tag": "loja",
+      "royalties_text": "6,00% - Fat. Bruto",
+      "royalties_pct": 6.0,
+      "royalties_base": "Fat. Bruto",
+      "royalties_is_fixed": false,
+      "ad_fee_text": "R$ 250 - Outros",
+      "ad_fee_pct": null,
+      "ad_fee_base": "R$ 250 - Outros",
+      "ad_fee_is_fixed": true,
+      "avg_revenue_text": "R$ 120.000",
+      "avg_revenue": 120000,
+      "avg_profit_text": "Não informado",
+      "avg_profit": null,
+      "payback_text": "12 a 18",
+      "payback_min_months": 12,
+      "payback_max_months": 18
+    }
+  ],
+  "_quality_flags": {
+    "has_logo": true,
+    "has_description_long": true,
+    "has_description_short": true,
+    "has_investment": true,
+    "has_units": true,
+    "has_payback": true,
+    "bm_count": 1,
+    "fields_extracted": 13,
+    "fields_total_known": 13,
+    "fields_filled": 10,
+    "fields_not_informed": [
+      "Taxa de franquia",
+      "Capital de giro",
+      "Lucro médio"
+    ],
+    "description_usable": true,
+    "description_appears_templated": true,
+    "layout_unrecognized": false,
+    "has_corruption": false,
+    "parser_flags": [
+      "ad_fee_fixed_value"
+    ]
+  },
+  "_raw_fields": {
+    "Fundação": "2007",
+    "Início da franquia": "2016",
+    "Unidades próprias": "1",
+    "Unidades franqueadas": "13",
+    "Investimento total": "R$ 80.000",
+    "Taxa de franquia": "Não informado",
+    "Capital de giro": "Não informado",
+    "Royalties": "6,00% - Fat. Bruto (loja)",
+    "Taxa de publicidade": "R$ 250 - Outros (loja)",
+    "Faturamento médio": "R$ 120.000 (loja)",
+    "Lucro médio": "Não informado",
+    "Prazo de retorno (meses)": "12 a 18 (loja)",
+    "Faixa de Investimento": "Franquias de Até R$ 105 mil"
+  }
+}

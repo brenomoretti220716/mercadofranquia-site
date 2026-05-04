@@ -1,0 +1,4 @@
+# EncontreSuaFranquia scraper artefatos pesados / regenerable
+# Reproduzivel via `python3 scripts/encontresua_explore/scripts/scrape.py`
+html_cache/
+__pycache__/

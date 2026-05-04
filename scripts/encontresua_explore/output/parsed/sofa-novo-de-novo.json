@@ -1,0 +1,82 @@
+{
+  "slug": "sofa-novo-de-novo",
+  "name": "Sofá Novo de Novo",
+  "url_source": "https://encontresuafranquia.com.br/franquia/sofa-novo-de-novo/",
+  "scraped_at": "2026-04-30T23:30:22+00:00",
+  "logo_url": "https://encontresuafranquia.com.br/wp-content/uploads/2026/01/sofa-novo-denovo.jpg",
+  "description_short": "Sofá Novo de Novo, franquia de higienização e blindagem de estofados de forma natural, atuando no setor de limpeza desde 2009. Leia!",
+  "description_long": "A franquia Sofá Novo de Novo atua no segmento de limpeza e conservação, com foco específico na higienização e blindagem de estofados. Desde sua fundação em 2009, a empresa vem se destacando por oferecer serviços especializados que atendem a uma demanda crescente por soluções de limpeza eficientes e que prolongam a vida útil dos móveis estofados. O mercado de limpeza de estofados é um nicho que vem ganhando relevância, especialmente em um contexto onde a preservação e manutenção de bens se alinham com práticas sustentáveis e econômicas. O modelo de franquia adotado pela Sofá Novo de Novo, iniciado em 2020, é projetado para ser acessível e adaptável, operando principalmente no formato home based. Este formato permite que os franqueados iniciem suas operações com custos reduzidos, já que não há necessidade de um ponto comercial fixo, além de proporcionar flexibilidade de horário e local de atendimento. A lógica de crescimento da marca está fundamentada na capilaridade e na facilidade de expansão geográfica, aproveitando a demanda crescente por serviços de limpeza especializados em diversas regiões do Brasil. O papel da Sofá Novo de Novo no mercado de limpeza e conservação é significativo, pois ela oferece uma solução para um problema comum enfrentado por muitas residências e empresas: a manutenção adequada dos estofados. A higienização e blindagem não apenas melhoram a aparência dos móveis, mas também contribuem para a saúde dos usuários, eliminando ácaros e outras impurezas que podem causar alergias e doenças respiratórias. Dessa forma, a franquia se posiciona como uma opção relevante e necessária para consumidores que buscam qualidade e eficiência em serviços de limpeza. Sobre a franquia Sofá Novo de Novo foi fundada em 2009, e a entrada no sistema de franquias ocorreu em 2020. A empresa rapidamente se expandiu, alcançando 144 unidades franqueadas em um curto período. A estratégia de expansão da franquia baseia-se na simplicidade e eficácia do modelo home based, que permite uma rápida adaptação às necessidades do mercado. No mercado brasileiro, a Sofá Novo de Novo se posiciona como uma opção confiável e especializada na conservação de estofados, destacando-se por sua abordagem prática e pela qualidade dos serviços prestados. Modelo de negócio A operação da franquia Sofá Novo de Novo é estruturada para ser simples e eficiente, com foco no modelo home based. Esse tipo de unidade permite que os franqueados operem a partir de suas próprias residências, sem a necessidade de um ponto comercial físico. A lógica operacional gira em torno de serviços prestados diretamente nas residências ou empresas dos clientes, oferecendo conveniência e economia. A flexibilidade proporcionada por esse modelo é um atrativo para muitos empreendedores, que podem gerenciar seus horários e reduzir custos fixos, ao mesmo tempo em que atendem a uma clientela diversificada. Perfil do público atendido O público-alvo da Sofá Novo de Novo inclui tanto clientes residenciais quanto empresariais, que buscam soluções práticas e eficazes para a manutenção de seus estofados. No Brasil, o segmento de limpeza de estofados é impulsionado por uma crescente conscientização sobre a importância da higiene e conservação de móveis. Os consumidores valorizam serviços que oferecem qualidade e eficiência, especialmente em um contexto onde a saúde e o bem-estar são prioridades. A franquia atende a essa demanda, oferecendo serviços que não apenas melhoram a estética dos estofados, mas também promovem um ambiente mais saudável. Estrutura da rede A rede de franquias Sofá Novo de Novo é composta por 144 unidades franqueadas, distribuídas por diversas regiões do Brasil. Este alcance geográfico permite à marca atender a uma ampla gama de clientes, adaptando-se às particularidades de cada mercado local. A estrutura da rede é projetada para facilitar a expansão contínua, aproveitando o modelo home based que permite uma rápida implantação de novas unidades franqueadas sem a necessidade de investimentos significativos em infraestrutura. Dados da Franquia",
+  "founded_year": 2009,
+  "franchise_start_year": 2020,
+  "own_units": null,
+  "franchised_units": 144,
+  "total_units": 144,
+  "min_investment": 34900,
+  "max_investment": 34900,
+  "investment_range_text": "R$ 34.900",
+  "franchise_fee": null,
+  "franchise_fee_text": "Não informado",
+  "working_capital": null,
+  "working_capital_text": "Não informado",
+  "investment_tier": "Até R$ 50 mil",
+  "business_models": [
+    {
+      "tag": "home based",
+      "royalties_text": "R$ 800 - Fixo Mensal",
+      "royalties_pct": null,
+      "royalties_base": "R$ 800 - Fixo Mensal",
+      "royalties_is_fixed": true,
+      "ad_fee_text": "Variável - Serviços",
+      "ad_fee_pct": null,
+      "ad_fee_base": "Variável - Serviços",
+      "ad_fee_is_fixed": false,
+      "avg_revenue_text": "Não informado",
+      "avg_revenue": null,
+      "avg_profit_text": "Não informado",
+      "avg_profit": null,
+      "payback_text": "6 a 12",
+      "payback_min_months": 6,
+      "payback_max_months": 12
+    }
+  ],
+  "_quality_flags": {
+    "has_logo": true,
+    "has_description_long": true,
+    "has_description_short": true,
+    "has_investment": true,
+    "has_units": true,
+    "has_payback": true,
+    "bm_count": 1,
+    "fields_extracted": 12,
+    "fields_total_known": 13,
+    "fields_filled": 7,
+    "fields_not_informed": [
+      "Taxa de franquia",
+      "Capital de giro",
+      "Faturamento médio",
+      "Lucro médio"
+    ],
+    "description_usable": true,
+    "description_appears_templated": true,
+    "layout_unrecognized": false,
+    "has_corruption": false,
+    "parser_flags": [
+      "royalties_fixed_value",
+      "rate_unparseable"
+    ]
+  },
+  "_raw_fields": {
+    "Fundação": "2009",
+    "Início da franquia": "2020",
+    "Unidades franqueadas": "144",
+    "Investimento total": "R$ 34.900",
+    "Taxa de franquia": "Não informado",
+    "Capital de giro": "Não informado",
+    "Royalties": "R$ 800 - Fixo Mensal (home based)",
+    "Taxa de publicidade": "Variável - Serviços (home based)",
+    "Faturamento médio": "Não informado",
+    "Lucro médio": "Não informado",
+    "Prazo de retorno (meses)": "6 a 12 (home based)",
+    "Faixa de Investimento": "Franquias de Até R$ 50 mil"
+  }
+}

@@ -1,0 +1,81 @@
+{
+  "slug": "maple-bear",
+  "name": "Maple Bear",
+  "url_source": "https://encontresuafranquia.com.br/franquia/maple-bear/",
+  "scraped_at": "2026-04-30T23:30:21+00:00",
+  "logo_url": "https://encontresuafranquia.com.br/wp-content/uploads/2026/01/maple-bear.jpg",
+  "description_short": "Maple Bear é uma franquia educacional que une ensino bilíngue com práticas canadenses, destacando-se pela excelência no aprendizado desde 2005.",
+  "description_long": "A Maple Bear é uma franquia voltada para o segmento educacional, com um enfoque particular no método de ensino bilíngue. Originada em 2005, a marca rapidamente se destacou por oferecer um programa educacional que combina práticas de ensino canadenses com o currículo brasileiro. O Canadá é amplamente reconhecido por seu sistema educacional de alta qualidade, e a Maple Bear traz essa expertise para o Brasil, buscando preparar seus alunos para um mundo globalizado, onde a proficiência em mais de um idioma é um diferencial competitivo. O modelo de franquia adotado pela Maple Bear permite que empreendedores locais abram escolas que seguem o rigoroso padrão de ensino da marca. Esse sistema de franquias, iniciado em 2006, foi uma estratégia natural para expandir a presença da marca sem comprometer a qualidade do ensino, uma vez que cada unidade é rigorosamente supervisionada para garantir a fidelidade ao método de ensino. A Maple Bear tem como missão proporcionar uma educação de qualidade que desenvolva não apenas o conhecimento acadêmico, mas também habilidades críticas e criativas em seus alunos. O crescimento da Maple Bear no Brasil reflete a crescente demanda por educação bilíngue no país. Com pais cada vez mais preocupados com o futuro de seus filhos em um mercado de trabalho global, a busca por instituições que ofereçam um ensino de qualidade e que preparem os alunos para desafios internacionais é crescente. A franquia, portanto, se posiciona como uma solução viável para esse público, oferecendo uma infraestrutura moderna e uma equipe de educadores capacitados para implementar o currículo bilíngue de maneira eficaz. A lógica de expansão da Maple Bear se baseia em um modelo de negócios que equilibra a inovação pedagógica com a viabilidade econômica para seus franqueados. Ao adotar um sistema de franquias, a marca consegue assegurar que suas práticas educacionais sejam replicadas com fidelidade, enquanto permite que os franqueados se beneficiem do reconhecimento da marca e do suporte contínuo oferecido pela matriz. Além disso, a taxa de publicidade de 2,00% sobre o faturamento bruto das lojas é investida em campanhas de marketing que visam aumentar a visibilidade da marca e atrair novos alunos. Sobre a franquia A Maple Bear foi fundada em 2005 e iniciou seu modelo de franquias em 2006. Desde então, a marca tem focado sua estratégia de expansão no mercado brasileiro, onde a demanda por educação bilíngue tem crescido significativamente. A franquia se posiciona como uma líder no segmento educacional, oferecendo um currículo que integra o método de ensino canadense com as diretrizes educacionais brasileiras. Com uma abordagem voltada para o desenvolvimento integral dos alunos, a Maple Bear busca expandir sua presença no Brasil através de parcerias com empreendedores locais que compartilham a visão de oferecer uma educação de qualidade. Modelo de negócio A operação da franquia Maple Bear é baseada na implementação de um currículo bilíngue que segue rigorosamente os padrões canadenses de ensino. As unidades franqueadas são escolas que oferecem desde a educação infantil até o ensino fundamental, dependendo da estrutura e capacidade de cada unidade. A lógica operacional da Maple Bear envolve não apenas a adaptação do currículo canadense ao contexto brasileiro, mas também um suporte contínuo aos franqueados, que inclui treinamentos, visitas de supervisão e acesso a materiais pedagógicos exclusivos. Essa estrutura visa assegurar que todas as unidades mantenham a mesma qualidade e padrão de ensino, independentemente da localização. Perfil do público atendido O público alvo da Maple Bear consiste principalmente em famílias que valorizam uma educação de qualidade e reconhecem a importância do bilinguismo no desenvolvimento pessoal e profissional de seus filhos. Esses consumidores geralmente buscam por instituições que possam oferecer uma formação acadêmica sólida, aliada ao ensino de idiomas, em especial o inglês. No Brasil, o segmento de educação bilíngue tem crescido devido ao aumento da competitividade no mercado de trabalho e à percepção de que a fluência em uma segunda língua é um diferencial importante para o futuro dos jovens. Estrutura da rede Atualmente, a Maple Bear possui quatro unidades próprias e 24 unidades franqueadas. A presença da marca está concentrada em diversas regiões do Brasil, o que reflete a estratégia de expansão nacional adotada pela franquia. Essa estrutura permite que a Maple Bear mantenha um controle rigoroso sobre a qualidade do ensino oferecido em todas as suas unidades, garantindo que o padrão educacional seja uniforme e alinhado à proposta pedagógica da marca. Dados da Franquia",
+  "founded_year": 2005,
+  "franchise_start_year": 2006,
+  "own_units": 4,
+  "franchised_units": 24,
+  "total_units": 28,
+  "min_investment": 2107400,
+  "max_investment": 4286000,
+  "investment_range_text": "R$ 2.1074.00 / R$ 4.286.000",
+  "franchise_fee": null,
+  "franchise_fee_text": "Não informado",
+  "working_capital": null,
+  "working_capital_text": "Não informado",
+  "investment_tier": "Até R$ 500 mil",
+  "business_models": [
+    {
+      "tag": "loja",
+      "royalties_text": "R$ 1.115,00-Fixo Mensal",
+      "royalties_pct": null,
+      "royalties_base": "R$ 1.115,00-Fixo Mensal",
+      "royalties_is_fixed": true,
+      "ad_fee_text": "2,00% Fat. Bruto",
+      "ad_fee_pct": 2.0,
+      "ad_fee_base": "Fat. Bruto",
+      "ad_fee_is_fixed": false,
+      "avg_revenue_text": "R$ 400.000",
+      "avg_revenue": 400000,
+      "avg_profit_text": "Não informado",
+      "avg_profit": null,
+      "payback_text": "36 a 48",
+      "payback_min_months": 36,
+      "payback_max_months": 48
+    }
+  ],
+  "_quality_flags": {
+    "has_logo": true,
+    "has_description_long": true,
+    "has_description_short": true,
+    "has_investment": true,
+    "has_units": true,
+    "has_payback": true,
+    "bm_count": 1,
+    "fields_extracted": 13,
+    "fields_total_known": 13,
+    "fields_filled": 10,
+    "fields_not_informed": [
+      "Taxa de franquia",
+      "Capital de giro",
+      "Lucro médio"
+    ],
+    "description_usable": true,
+    "description_appears_templated": true,
+    "layout_unrecognized": false,
+    "has_corruption": false,
+    "parser_flags": [
+      "royalties_fixed_value"
+    ]
+  },
+  "_raw_fields": {
+    "Fundação": "2005",
+    "Início da franquia": "2006",
+    "Unidades próprias": "4",
+    "Unidades franqueadas": "24",
+    "Investimento total": "R$ 2.1074.00 / R$ 4.286.000",
+    "Taxa de franquia": "Não informado",
+    "Capital de giro": "Não informado",
+    "Royalties": "R$ 1.115,00-Fixo Mensal (loja)",
+    "Taxa de publicidade": "2,00% Fat. Bruto (loja)",
+    "Faturamento médio": "R$ 400.000 (loja)",
+    "Lucro médio": "Não informado",
+    "Prazo de retorno (meses)": "36 a 48 (loja)",
+    "Faixa de Investimento": "Franquias de Acima de R$ 500 mil"
+  }
+}

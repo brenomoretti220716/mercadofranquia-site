@@ -1,0 +1,81 @@
+{
+  "slug": "guarde-mais",
+  "name": "Guarde Mais",
+  "url_source": "https://encontresuafranquia.com.br/franquia/guarde-mais/",
+  "scraped_at": "2026-04-30T23:30:21+00:00",
+  "logo_url": "https://encontresuafranquia.com.br/wp-content/uploads/2026/01/guarde-mais.jpg",
+  "description_short": "Guarde Mais oferece soluções de logística e self-storage, destacando-se no mercado desde 2011 por atender às necessidades de armazenamento urbano.",
+  "description_long": "Guarde Mais é uma empresa que atua no segmento de logística e serviços, oferecendo soluções de armazenamento e self-storage. Fundada em 2011, a empresa rapidamente se destacou no mercado por oferecer um serviço adaptado às necessidades de um público urbano crescente, que busca por espaços adicionais para armazenar objetos pessoais e empresariais. O conceito de self-storage, amplamente utilizado em países desenvolvidos, tem ganhado popularidade no Brasil, onde a urbanização e a necessidade de otimização de espaço são realidades cada vez mais presentes. A empresa iniciou seu modelo de franquia em 2014, aproveitando a crescente demanda por serviços de armazenamento e a tendência de terceirização de espaços de estocagem. Este modelo de negócios permite que empreendedores locais se beneficiem de um conceito já testado e aprovado, com suporte e estrutura de uma marca consolidada. A lógica de crescimento da Guarde Mais se baseia em uma expansão controlada e estratégica, focando em regiões metropolitanas e áreas com alta densidade populacional, onde a demanda por espaço extra é mais acentuada. O modelo de franquia da Guarde Mais é estruturado para oferecer uma operação eficiente e padronizada, garantindo assim a qualidade e a uniformidade dos serviços prestados em todas as unidades. Os franqueados recebem suporte em diversas áreas, desde a escolha do ponto comercial até o treinamento de equipes, assegurando que os padrões da marca sejam mantidos. Além disso, a franquia oferece um sistema de gestão integrado, que facilita o controle de reservas e o gerenciamento do espaço disponível, otimizando a operação e maximizando a rentabilidade. Sobre a franquia Guarde Mais foi fundada em 2011 e iniciou suas operações de franchising em 2014. Desde então, a franquia tem se expandido de forma consistente, contando atualmente com 4 unidades próprias e 56 unidades franqueadas. A estratégia de expansão da empresa foca em áreas urbanas densamente povoadas, onde a necessidade de espaço adicional é mais pronunciada. Posicionada como uma das principais marcas de self-storage no Brasil, a Guarde Mais oferece soluções de armazenamento que atendem tanto clientes residenciais quanto empresariais, consolidando sua presença no mercado nacional. Modelo de negócio A operação da franquia Guarde Mais é centrada no conceito de self-storage, onde os clientes podem alugar espaços de diversos tamanhos para armazenar seus pertences de forma segura e acessível. As unidades são projetadas para oferecer fácil acesso, com segurança 24 horas e flexibilidade de contrato, permitindo que os clientes escolham o período de armazenamento que melhor se adequa às suas necessidades. A lógica operacional é simples: oferecer um serviço de qualidade que atenda à crescente demanda por espaço extra, sem a complexidade de um contrato de locação tradicional. Perfil do público atendido A Guarde Mais atende principalmente indivíduos e empresas que necessitam de espaço adicional para armazenar bens pessoais ou estoques empresariais. O público-alvo inclui desde jovens profissionais que vivem em apartamentos menores até pequenas e médias empresas que buscam otimizar seus espaços operacionais. O aumento da urbanização e o crescimento de negócios que operam em espaços reduzidos fomentam a demanda por soluções de self-storage, tornando este segmento cada vez mais relevante no Brasil. Estrutura da rede Atualmente, a Guarde Mais possui uma rede composta por 4 unidades próprias e 56 unidades franqueadas, distribuídas estrategicamente em várias regiões do Brasil. A expansão da rede é guiada por uma análise criteriosa de mercado, assegurando que novas unidades sejam abertas em locais com alta demanda por serviços de armazenamento. Essa estrutura permite à Guarde Mais oferecer uma cobertura geográfica ampla, atendendo a clientes em diversas localidades com a mesma qualidade de serviço. Dados da Franquia",
+  "founded_year": 2011,
+  "franchise_start_year": 2014,
+  "own_units": 4,
+  "franchised_units": 56,
+  "total_units": 60,
+  "min_investment": 135000,
+  "max_investment": 905000,
+  "investment_range_text": "R$ 135.000 / R$ 905.000",
+  "franchise_fee": null,
+  "franchise_fee_text": "Não informado",
+  "working_capital": null,
+  "working_capital_text": "Não informado",
+  "investment_tier": "Até R$ 135 mil",
+  "business_models": [
+    {
+      "tag": "loja",
+      "royalties_text": "10,00% - Fat. Bruto",
+      "royalties_pct": 10.0,
+      "royalties_base": "Fat. Bruto",
+      "royalties_is_fixed": false,
+      "ad_fee_text": "R$ 1.250 - Fixo Mensal",
+      "ad_fee_pct": null,
+      "ad_fee_base": "R$ 1.250 - Fixo Mensal",
+      "ad_fee_is_fixed": true,
+      "avg_revenue_text": "R$ 40.000",
+      "avg_revenue": 40000,
+      "avg_profit_text": "Não informado",
+      "avg_profit": null,
+      "payback_text": "12 a 36",
+      "payback_min_months": 12,
+      "payback_max_months": 36
+    }
+  ],
+  "_quality_flags": {
+    "has_logo": true,
+    "has_description_long": true,
+    "has_description_short": true,
+    "has_investment": true,
+    "has_units": true,
+    "has_payback": true,
+    "bm_count": 1,
+    "fields_extracted": 13,
+    "fields_total_known": 13,
+    "fields_filled": 10,
+    "fields_not_informed": [
+      "Taxa de franquia",
+      "Capital de giro",
+      "Lucro médio"
+    ],
+    "description_usable": true,
+    "description_appears_templated": true,
+    "layout_unrecognized": false,
+    "has_corruption": false,
+    "parser_flags": [
+      "ad_fee_fixed_value"
+    ]
+  },
+  "_raw_fields": {
+    "Fundação": "2011",
+    "Início da franquia": "2014",
+    "Unidades próprias": "4",
+    "Unidades franqueadas": "56",
+    "Investimento total": "R$ 135.000 / R$ 905.000",
+    "Taxa de franquia": "Não informado",
+    "Capital de giro": "Não informado",
+    "Royalties": "10,00% - Fat. Bruto (loja)",
+    "Taxa de publicidade": "R$ 1.250 - Fixo Mensal (loja)",
+    "Faturamento médio": "R$ 40.000 (loja)",
+    "Lucro médio": "Não informado",
+    "Prazo de retorno (meses)": "12 a 36 (loja)",
+    "Faixa de Investimento": "Franquias de Até R$ 135 mil"
+  }
+}

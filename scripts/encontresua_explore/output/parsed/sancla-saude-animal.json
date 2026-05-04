@@ -1,0 +1,80 @@
+{
+  "slug": "sancla-saude-animal",
+  "name": "Sanclá Saúde Animal",
+  "url_source": "https://encontresuafranquia.com.br/franquia/sancla-saude-animal/",
+  "scraped_at": "2026-04-30T23:30:22+00:00",
+  "logo_url": "https://encontresuafranquia.com.br/wp-content/uploads/2026/01/sancla-saude-animal.jpg",
+  "description_short": "Sanclá Saúde Animal oferece serviços médicos veterinários completos, focando na saúde e bem-estar de animais de estimação desde 2013.",
+  "description_long": "Sanclá Saúde Animal é uma franquia que opera no segmento de saúde, beleza e bem-estar, especificamente voltada para serviços médicos veterinários. Fundada em 2013, a empresa se posiciona como uma solução completa para cuidados com animais de estimação, oferecendo uma gama de serviços que incluem consultas veterinárias, tratamentos estéticos e intervenções cirúrgicas. O mercado de saúde animal tem crescido significativamente no Brasil, acompanhando o aumento do número de animais de estimação e a crescente preocupação dos tutores com o bem-estar de seus pets. Nesse contexto, a Sanclá Saúde Animal busca se destacar pela qualidade dos serviços prestados e pela confiança que estabelece com seus clientes. O modelo de negócio da Sanclá Saúde Animal foi estruturado para atender à demanda crescente por serviços veterinários de qualidade, combinando inovação e atendimento personalizado. A empresa iniciou sua expansão por meio de franquias em 2022, oferecendo a empreendedores a oportunidade de ingressar em um mercado em expansão com o suporte de uma marca consolidada. A lógica de crescimento da franquia está baseada na capilaridade, buscando estabelecer presença em diversas regiões do Brasil, garantindo que seus serviços estejam acessíveis a um número cada vez maior de clientes. A estrutura de franquia permite que novos franqueados se beneficiem de um modelo de negócios testado, com suporte contínuo em áreas como marketing, treinamento e operações. No cenário brasileiro, o setor de saúde e bem-estar animal tem apresentado um crescimento constante, alimentado pela humanização dos pets e pela disposição dos tutores em investir em cuidados de saúde e estética para seus animais. A Sanclá Saúde Animal tem se posicionado como um player importante nesse contexto, oferecendo serviços que atendem tanto às necessidades básicas quanto a tratamentos mais complexos. A franquia busca se diferenciar pela qualidade no atendimento e pela inovação em seus serviços, aspectos que são essenciais para conquistar e fidelizar clientes em um mercado competitivo. Ao adotar um modelo de franquia, a empresa visa expandir sua presença geográfica e consolidar sua marca como referência em saúde animal. Sobre a franquia A Sanclá Saúde Animal foi fundada em 2013, entrando no mercado de franquias em 2022. A decisão de expandir por meio de franquias reflete uma estratégia de crescimento que visa aumentar a presença da marca em todo o território nacional. Com duas unidades franqueadas já em operação, a empresa busca consolidar seu posicionamento como referência em serviços veterinários de qualidade. A expansão por meio de franquias permite à Sanclá alcançar novos mercados e adaptar seus serviços às especificidades regionais, mantendo o padrão de qualidade que a caracteriza. Modelo de negócio O modelo de negócio da Sanclá Saúde Animal é baseado na oferta de serviços médicos veterinários e estéticos para animais de estimação. As unidades franqueadas operam sob um sistema que garante a uniformidade dos serviços prestados, ao mesmo tempo em que permite adaptações conforme as necessidades locais. A lógica operacional da franquia inclui suporte contínuo aos franqueados, com treinamentos regulares e assistência em marketing e gestão. A cobrança de royalties é baseada no faturamento bruto das lojas, o que alinha os interesses dos franqueados com o crescimento da marca. Além disso, há uma taxa de publicidade, também calculada sobre o faturamento bruto, que é utilizada para promover a marca em escala nacional. Perfil do público atendido O público-alvo da Sanclá Saúde Animal é composto por tutores de animais de estimação que buscam serviços de saúde e beleza para seus pets. Este segmento tem crescido no Brasil, impulsionado pela humanização dos animais e pela disposição dos tutores em investir no bem-estar de seus companheiros. Os clientes típicos são proprietários que veem seus pets como membros da família e estão dispostos a investir em cuidados que garantam sua saúde e qualidade de vida. A existência desse mercado no Brasil reflete uma mudança de comportamento, onde o cuidado com os animais de estimação se torna uma prioridade. Estrutura da rede Atualmente, a Sanclá Saúde Animal possui duas unidades franqueadas em operação. A estratégia de expansão da rede é focada no aumento do número de unidades em diversas regiões do Brasil, permitindo que a marca amplie seu alcance e atenda a uma base de clientes cada vez maior. A estrutura da rede é projetada para suportar o crescimento contínuo, assegurando que cada unidade mantenha os padrões de qualidade e atendimento que são a marca registrada da Sanclá Saúde Animal. Dados da Franquia",
+  "founded_year": 2013,
+  "franchise_start_year": 2022,
+  "own_units": null,
+  "franchised_units": 2,
+  "total_units": 2,
+  "min_investment": 478400,
+  "max_investment": 478400,
+  "investment_range_text": "R$ 478.400",
+  "franchise_fee": null,
+  "franchise_fee_text": "Não informado",
+  "working_capital": null,
+  "working_capital_text": "Não informado",
+  "investment_tier": "Até R$ 500 mil",
+  "business_models": [
+    {
+      "tag": "loja",
+      "royalties_text": "Variável - Fat. Bruto",
+      "royalties_pct": null,
+      "royalties_base": "Variável - Fat. Bruto",
+      "royalties_is_fixed": false,
+      "ad_fee_text": "1,00% - Fat. Bruto",
+      "ad_fee_pct": 1.0,
+      "ad_fee_base": "Fat. Bruto",
+      "ad_fee_is_fixed": false,
+      "avg_revenue_text": "R$ 150.000",
+      "avg_revenue": 150000,
+      "avg_profit_text": "Não informado",
+      "avg_profit": null,
+      "payback_text": "16",
+      "payback_min_months": 16,
+      "payback_max_months": 16
+    }
+  ],
+  "_quality_flags": {
+    "has_logo": true,
+    "has_description_long": true,
+    "has_description_short": true,
+    "has_investment": true,
+    "has_units": true,
+    "has_payback": true,
+    "bm_count": 1,
+    "fields_extracted": 12,
+    "fields_total_known": 13,
+    "fields_filled": 8,
+    "fields_not_informed": [
+      "Taxa de franquia",
+      "Capital de giro",
+      "Lucro médio"
+    ],
+    "description_usable": true,
+    "description_appears_templated": true,
+    "layout_unrecognized": false,
+    "has_corruption": false,
+    "parser_flags": [
+      "rate_unparseable"
+    ]
+  },
+  "_raw_fields": {
+    "Fundação": "2013",
+    "Início da franquia": "2022",
+    "Unidades franqueadas": "2",
+    "Investimento total": "R$ 478.400",
+    "Taxa de franquia": "Não informado",
+    "Capital de giro": "Não informado",
+    "Royalties": "Variável - Fat. Bruto (loja)",
+    "Taxa de publicidade": "1,00% - Fat. Bruto (loja)",
+    "Faturamento médio": "R$ 150.000 (loja)",
+    "Lucro médio": "Não informado",
+    "Prazo de retorno (meses)": "16 (loja)",
+    "Faixa de Investimento": "Franquias de Até R$ 500 mil"
+  }
+}

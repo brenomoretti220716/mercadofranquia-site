@@ -1,0 +1,82 @@
+{
+  "slug": "jaleca",
+  "name": "Jaleca",
+  "url_source": "https://encontresuafranquia.com.br/franquia/jaleca/",
+  "scraped_at": "2026-04-30T23:30:21+00:00",
+  "logo_url": "https://encontresuafranquia.com.br/wp-content/uploads/2026/01/jaleca.jpg",
+  "description_short": "Jaleca,franquia especializada na produção e comercialização de jalecos, conjuntos e dólmãs. Saiba tudo sobre o negócio e investimento aqui!",
+  "description_long": "Jaleca é uma marca brasileira que atua no segmento de moda e vestuário, especializada na produção e comercialização de jalecos, conjuntos e dólmãs. Fundada em 2018, a empresa rapidamente identificou uma oportunidade de mercado na área de uniformes profissionais, oferecendo produtos que combinam funcionalidade e estilo para profissionais de diversas áreas, como saúde, gastronomia e estética. Com o aumento da demanda por vestuário profissional de qualidade, a marca se destacou por seu foco na inovação e no conforto, atendendo a um nicho específico de consumidores que buscam não apenas proteção, mas também elegância em seus trajes de trabalho. A partir de 2021, Jaleca iniciou seu processo de expansão através do modelo de franquias, permitindo a replicação de seu modelo de negócios por meio de parceiros que compartilham da mesma visão de mercado. A escolha por este formato de crescimento foi estratégica, visando ampliar rapidamente sua presença em diferentes regiões do Brasil e consolidar a marca como uma referência no setor de vestuário profissional. A franquia oferece suporte operacional e de marketing a seus franqueados, garantindo que os padrões de qualidade e atendimento sejam mantidos em todas as unidades. O modelo de franquia adotado por Jaleca é caracterizado pela simplicidade e eficiência, com um sistema de operação que permite aos franqueados focar na experiência do cliente e na qualidade dos produtos oferecidos. A empresa busca constantemente inovar em seus materiais e designs, atendendo às necessidades específicas de seus clientes e adaptando-se às tendências do mercado. Além disso, a marca enfatiza a importância de um bom relacionamento com seus fornecedores, o que garante a disponibilidade de produtos de alta qualidade e a preços competitivos. Sobre a franquia Jaleca foi fundada em 2018 e iniciou seu sistema de franchising em 2021, com o objetivo de expandir sua atuação no mercado brasileiro de moda e vestuário profissional. A empresa começou com uma unidade própria e, desde então, cresceu para incluir nove unidades franqueadas em diversas regiões do Brasil. A estratégia de expansão da marca está focada em consolidar sua presença no mercado nacional, oferecendo suporte completo aos franqueados e garantindo que a qualidade dos produtos e serviços seja mantida em toda a rede. Modelo de negócio A franquia Jaleca opera com base em um modelo de negócios que privilegia a eficiência e a padronização. As unidades franqueadas são projetadas para serem lojas físicas. A lógica operacional envolve a manutenção de um estoque adequado, a personalização de peças conforme a demanda dos clientes e o fornecimento de um atendimento ao cliente de alta qualidade. A franquia também se beneficia de royalties baseados nas compras das lojas, incentivando o crescimento das vendas e o engajamento dos franqueados na promoção da marca. Perfil do público atendido O público-alvo da Jaleca é composto por profissionais que necessitam de vestuário especializado para suas atividades diárias, como médicos, enfermeiros, chefs de cozinha e esteticistas. Esses consumidores valorizam a qualidade, o conforto e o design dos produtos, além de buscarem opções que transmitam profissionalismo e estilo. No Brasil, a demanda por vestuário profissional está em crescimento, impulsionada pela expansão dos setores de saúde e gastronomia, o que torna o segmento atrativo para investimentos e inovação contínua. Estrutura da rede Atualmente, a rede Jaleca é composta por uma unidade própria e nove franqueadas, espalhadas por diferentes localidades do Brasil. A estratégia de crescimento da marca visa aumentar ainda mais sua presença no território nacional, aproveitando o potencial de mercado de regiões ainda não exploradas. A empresa busca garantir que todas as unidades mantenham o mesmo padrão de qualidade e atendimento, fortalecendo a marca e aumentando a satisfação dos clientes. Dados da Franquia",
+  "founded_year": 2018,
+  "franchise_start_year": 2021,
+  "own_units": 1,
+  "franchised_units": 9,
+  "total_units": 10,
+  "min_investment": 170000,
+  "max_investment": 220000,
+  "investment_range_text": "R$ 170.000 / R$ 220.000",
+  "franchise_fee": null,
+  "franchise_fee_text": "Não informado",
+  "working_capital": null,
+  "working_capital_text": "Não informado",
+  "investment_tier": "Até R$ 200 mil",
+  "business_models": [
+    {
+      "tag": "loja",
+      "royalties_text": "3,00%-Compras",
+      "royalties_pct": 3.0,
+      "royalties_base": "Compras",
+      "royalties_is_fixed": false,
+      "ad_fee_text": "R$ 2-Fat. Bruto",
+      "ad_fee_pct": null,
+      "ad_fee_base": "R$ 2-Fat. Bruto",
+      "ad_fee_is_fixed": true,
+      "avg_revenue_text": "Não informado",
+      "avg_revenue": null,
+      "avg_profit_text": "Não informado",
+      "avg_profit": null,
+      "payback_text": "24 a 36",
+      "payback_min_months": 24,
+      "payback_max_months": 36
+    }
+  ],
+  "_quality_flags": {
+    "has_logo": true,
+    "has_description_long": true,
+    "has_description_short": true,
+    "has_investment": true,
+    "has_units": true,
+    "has_payback": true,
+    "bm_count": 1,
+    "fields_extracted": 13,
+    "fields_total_known": 13,
+    "fields_filled": 9,
+    "fields_not_informed": [
+      "Taxa de franquia",
+      "Capital de giro",
+      "Faturamento médio",
+      "Lucro médio"
+    ],
+    "description_usable": true,
+    "description_appears_templated": true,
+    "layout_unrecognized": false,
+    "has_corruption": false,
+    "parser_flags": [
+      "ad_fee_fixed_value"
+    ]
+  },
+  "_raw_fields": {
+    "Fundação": "2018",
+    "Início da franquia": "2021",
+    "Unidades próprias": "1",
+    "Unidades franqueadas": "9",
+    "Investimento total": "R$ 170.000 / R$ 220.000",
+    "Taxa de franquia": "Não informado",
+    "Capital de giro": "Não informado",
+    "Royalties": "3,00%-Compras (loja)",
+    "Taxa de publicidade": "R$ 2-Fat. Bruto (loja)",
+    "Faturamento médio": "Não informado",
+    "Lucro médio": "Não informado",
+    "Prazo de retorno (meses)": "24 a 36 (loja)",
+    "Faixa de Investimento": "Franquias de Até R$ 200 mil"
+  }
+}

@@ -1,0 +1,81 @@
+{
+  "slug": "sudomed",
+  "name": "Sudomed",
+  "url_source": "https://encontresuafranquia.com.br/franquia/sudomed/",
+  "scraped_at": "2026-04-30T23:30:22+00:00",
+  "logo_url": "https://encontresuafranquia.com.br/wp-content/uploads/2026/01/sudomed.jpg",
+  "description_short": "Sudomed: franquia de saúde especializada em soluções médicas inovadoras, oferecendo serviços diferenciados para clínicas e consultórios.",
+  "description_long": "A Sudomed é uma franquia que opera no setor de saúde, beleza e bem-estar, com um foco particular em serviços médicos. Fundada em 2003, a empresa rapidamente se posicionou como uma alternativa viável e acessível para aqueles que buscam investir em um segmento que está em constante crescimento. Com o envelhecimento da população e o aumento da demanda por cuidados preventivos e estéticos, a Sudomed encontrou um nicho promissor no mercado brasileiro. A lógica de crescimento da marca se baseia na oferta de serviços que combinam eficiência, qualidade e inovação, o que permite à franquia atender a um amplo espectro de necessidades dos consumidores. A franquia se diferencia por seu modelo de operação home based, o que reduz custos fixos e permite uma maior flexibilidade para os franqueados. Essa abordagem facilita a entrada de novos investidores que buscam um modelo de negócio menos oneroso e mais adaptável às suas condições financeiras. A Sudomed também se destaca por sua taxa de publicidade, que é de 1% sobre o faturamento bruto, um valor considerado competitivo dentro do setor. O prazo de retorno sobre o investimento varia entre 12 a 30 meses, o que é atrativo para empreendedores que desejam um retorno mais rápido. O modelo de franquia da Sudomed tem como base a padronização de processos e a adoção de práticas sustentáveis, garantindo uma operação eficiente e de qualidade. A marca investe constantemente em treinamentos e atualizações para seus franqueados, assegurando que todos estejam alinhados com as melhores práticas do mercado. Essa estratégia não só fortalece a presença da marca no mercado, como também contribui para a satisfação dos clientes, que encontram na Sudomed um serviço confiável e de alta qualidade. Sobre a franquia A Sudomed foi fundada em 2003, ano em que também iniciou suas operações como franquia. Desde então, a marca tem se expandido gradualmente no mercado brasileiro, focando em cidades com potencial de crescimento no setor de saúde e bem-estar. A estratégia de expansão da Sudomed é baseada na identificação de regiões com alta demanda por serviços médicos de qualidade, o que tem permitido um crescimento sustentável. Com 16 unidades franqueadas, a marca busca consolidar sua presença no mercado, oferecendo um modelo de negócio atrativo para novos franqueados. Modelo de negócio O modelo de negócio da Sudomed é estruturado para operar principalmente no formato home based, o que reduz significativamente os custos operacionais para os franqueados. Esse modelo permite que os serviços sejam oferecidos em locais mais convenientes para os clientes, aumentando a acessibilidade e a satisfação do público. A lógica operacional inclui a padronização de procedimentos e a utilização de tecnologias modernas para otimizar o atendimento e garantir a qualidade dos serviços. Além disso, a Sudomed oferece suporte contínuo aos franqueados, incluindo treinamentos e atualizações, para assegurar a excelência em todas as suas unidades. Perfil do público atendido A Sudomed atende a um público diversificado que busca serviços médicos de qualidade, com foco em saúde preventiva e estética. O público-alvo inclui pessoas de diferentes faixas etárias, especialmente adultos que desejam manter ou melhorar sua saúde e aparência. No Brasil, o aumento da conscientização sobre a importância da saúde e bem-estar tem impulsionado a demanda por serviços especializados, tornando o segmento altamente relevante. A Sudomed se posiciona para atender essas necessidades, proporcionando serviços que combinam eficiência e inovação. Estrutura da rede Atualmente, a Sudomed opera com 16 unidades franqueadas, distribuídas em diversas regiões do Brasil. A rede não possui unidades próprias, concentrando seus esforços na expansão através de franqueados. Essa estrutura permite à marca alcançar um público amplo e diversificado, adaptando-se às características e demandas específicas de cada localidade. A presença geográfica das unidades contribui para o fortalecimento da marca e a fidelização dos clientes. Dados da Franquia",
+  "founded_year": 2003,
+  "franchise_start_year": 2003,
+  "own_units": null,
+  "franchised_units": 16,
+  "total_units": 16,
+  "min_investment": 270000,
+  "max_investment": 600000,
+  "investment_range_text": "R$ 270.000 / R$ 600.000",
+  "franchise_fee": null,
+  "franchise_fee_text": "Não informado",
+  "working_capital": null,
+  "working_capital_text": "Não informado",
+  "investment_tier": "Até R$ 300 mil",
+  "business_models": [
+    {
+      "tag": "home based",
+      "royalties_text": "R$ 2.500 - Fixo Mensal",
+      "royalties_pct": null,
+      "royalties_base": "R$ 2.500 - Fixo Mensal",
+      "royalties_is_fixed": true,
+      "ad_fee_text": "1,00% - Fat. Bruto",
+      "ad_fee_pct": 1.0,
+      "ad_fee_base": "Fat. Bruto",
+      "ad_fee_is_fixed": false,
+      "avg_revenue_text": "Não informado",
+      "avg_revenue": null,
+      "avg_profit_text": "Não informado",
+      "avg_profit": null,
+      "payback_text": "12 a 30",
+      "payback_min_months": 12,
+      "payback_max_months": 30
+    }
+  ],
+  "_quality_flags": {
+    "has_logo": true,
+    "has_description_long": true,
+    "has_description_short": true,
+    "has_investment": true,
+    "has_units": true,
+    "has_payback": true,
+    "bm_count": 1,
+    "fields_extracted": 12,
+    "fields_total_known": 13,
+    "fields_filled": 8,
+    "fields_not_informed": [
+      "Taxa de franquia",
+      "Capital de giro",
+      "Faturamento médio",
+      "Lucro médio"
+    ],
+    "description_usable": true,
+    "description_appears_templated": true,
+    "layout_unrecognized": false,
+    "has_corruption": false,
+    "parser_flags": [
+      "royalties_fixed_value"
+    ]
+  },
+  "_raw_fields": {
+    "Fundação": "2003",
+    "Início da franquia": "2003",
+    "Unidades franqueadas": "16",
+    "Investimento total": "R$ 270.000 / R$ 600.000",
+    "Taxa de franquia": "Não informado",
+    "Capital de giro": "Não informado",
+    "Royalties": "R$ 2.500 - Fixo Mensal (home based)",
+    "Taxa de publicidade": "1,00% - Fat. Bruto (home based)",
+    "Faturamento médio": "Não informado",
+    "Lucro médio": "Não informado",
+    "Prazo de retorno (meses)": "12 a 30 (home based)",
+    "Faixa de Investimento": "Franquias de Até R$ 300 mil"
+  }
+}

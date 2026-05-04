@@ -1,0 +1,81 @@
+{
+  "slug": "alergoshop",
+  "name": "Alergoshop",
+  "url_source": "https://encontresuafranquia.com.br/franquia/alergoshop/",
+  "scraped_at": "2026-04-30T23:30:21+00:00",
+  "logo_url": "https://encontresuafranquia.com.br/wp-content/uploads/2026/01/alergoshop.jpg",
+  "description_short": "Alergoshop é uma franquia de produtos para pessoas com sensibilidades e alergias. Saiba mais sobre a marca aqui!",
+  "description_long": "A Alergoshop é uma franquia brasileira que atua nos segmentos de cosméticos e perfumaria, saúde, beleza e bem-estar. Fundada em 1993, a marca se destaca por oferecer produtos especialmente desenvolvidos para pessoas com sensibilidades e alergias, preenchendo uma lacuna significativa no mercado de produtos hipoalergênicos. Desde o seu início, a Alergoshop tem se dedicado a criar soluções que proporcionem conforto e segurança aos consumidores, utilizando ingredientes cuidadosamente selecionados para minimizar reações adversas. O modelo de franquia da Alergoshop começou a ser desenvolvido em 2012, com o objetivo de expandir sua presença no mercado brasileiro e alcançar um público mais amplo. A aposta na franquia como modelo de crescimento permite que a marca mantenha um controle rigoroso sobre a qualidade e a padronização dos produtos oferecidos, ao mesmo tempo em que possibilita uma expansão geográfica mais rápida. A lógica de crescimento da Alergoshop está centrada na abertura de unidades em regiões estratégicas, onde a demanda por produtos hipoalergênicos é crescente. Além de cosméticos e produtos de perfumaria, a Alergoshop oferece uma gama de itens voltados para o bem-estar, incluindo opções de cuidados pessoais e soluções para o ambiente doméstico. A marca se posiciona como uma referência para consumidores que buscam alternativas seguras e eficazes para o cuidado diário. A expansão por meio do franchising permite que a Alergoshop alcance novos mercados e atenda a um público cada vez mais consciente e exigente em relação à saúde e ao bem-estar. Sobre a franquia A Alergoshop foi fundada em 1993 e deu início ao seu modelo de franquias em 2012. A estratégia de expansão da marca está alinhada com a crescente demanda por produtos hipoalergênicos no Brasil, um mercado que vem se ampliando devido ao aumento da conscientização sobre saúde e alergias. A Alergoshop busca consolidar sua posição no mercado brasileiro, oferecendo produtos que combinam segurança e eficácia, e expandindo sua rede de franquias para alcançar um público mais amplo. A empresa mantém um foco em garantir que seus franqueados compartilhem da missão de oferecer produtos de alta qualidade e atender às necessidades específicas dos consumidores. Modelo de negócio O modelo de negócio da Alergoshop é baseado na operação de lojas que oferecem uma linha completa de produtos hipoalergênicos. As unidades franqueadas seguem um padrão operacional que prioriza a qualidade no atendimento ao cliente e a excelência dos produtos. A franquia opera com royalties e taxas de publicidade baseados em compras, o que incentiva os franqueados a manterem um alto nível de vendas e a promoverem a marca de forma eficaz. O prazo de retorno para as lojas está estimado entre 24 a 36 meses, dependendo do desempenho e da localização da unidade. Perfil do público atendido A Alergoshop atende a um público que busca por soluções seguras e eficazes no cuidado com a saúde e beleza. Os consumidores da marca são geralmente pessoas com sensibilidades a ingredientes comuns em cosméticos tradicionais ou que preferem produtos mais naturais e menos agressivos. Este segmento tem crescido no Brasil, à medida que mais consumidores se tornam conscientes dos ingredientes nos produtos que utilizam e buscam alternativas que não comprometam sua saúde e bem-estar. A Alergoshop se posiciona como uma escolha confiável para essas necessidades. Estrutura da rede Atualmente, a Alergoshop conta com 3 unidades próprias e 7 unidades franqueadas. A rede está em expansão, com foco em atingir novas regiões onde a demanda por produtos hipoalergênicos está em crescimento. A presença geográfica da Alergoshop é estratégica, buscando atender a um mercado que valoriza cada vez mais produtos que aliam segurança e qualidade. A estrutura da rede é projetada para apoiar os franqueados, garantindo que eles possam oferecer o melhor em produtos e atendimento. Dados da Franquia",
+  "founded_year": 1993,
+  "franchise_start_year": 2012,
+  "own_units": 3,
+  "franchised_units": 7,
+  "total_units": 10,
+  "min_investment": 190000,
+  "max_investment": 240000,
+  "investment_range_text": "R$ 190.000 / R$ 240.000",
+  "franchise_fee": null,
+  "franchise_fee_text": "Não informado",
+  "working_capital": null,
+  "working_capital_text": "Não informado",
+  "investment_tier": "Até R$ 200 mil",
+  "business_models": [
+    {
+      "tag": "loja",
+      "royalties_text": "40,00% - Compras",
+      "royalties_pct": 40.0,
+      "royalties_base": "Compras",
+      "royalties_is_fixed": false,
+      "ad_fee_text": "4,30% - Compras",
+      "ad_fee_pct": 4.3,
+      "ad_fee_base": "Compras",
+      "ad_fee_is_fixed": false,
+      "avg_revenue_text": "R$ 60.000",
+      "avg_revenue": 60000,
+      "avg_profit_text": "Não informado",
+      "avg_profit": null,
+      "payback_text": "24 a 36",
+      "payback_min_months": 24,
+      "payback_max_months": 36
+    }
+  ],
+  "_quality_flags": {
+    "has_logo": true,
+    "has_description_long": true,
+    "has_description_short": true,
+    "has_investment": true,
+    "has_units": true,
+    "has_payback": true,
+    "bm_count": 1,
+    "fields_extracted": 13,
+    "fields_total_known": 13,
+    "fields_filled": 10,
+    "fields_not_informed": [
+      "Taxa de franquia",
+      "Capital de giro",
+      "Lucro médio"
+    ],
+    "description_usable": true,
+    "description_appears_templated": true,
+    "layout_unrecognized": false,
+    "has_corruption": false,
+    "parser_flags": [
+      "royalties_pct_above_30_sanity"
+    ]
+  },
+  "_raw_fields": {
+    "Fundação": "1993",
+    "Início da franquia": "2012",
+    "Unidades próprias": "3",
+    "Unidades franqueadas": "7",
+    "Investimento total": "R$ 190.000 / R$ 240.000",
+    "Taxa de franquia": "Não informado",
+    "Capital de giro": "Não informado",
+    "Royalties": "40,00% - Compras (loja)",
+    "Taxa de publicidade": "4,30% - Compras (loja)",
+    "Faturamento médio": "R$ 60.000 (loja)",
+    "Lucro médio": "Não informado",
+    "Prazo de retorno (meses)": "24 a 36 (loja)",
+    "Faixa de Investimento": "Franquias de Até R$ 200 mil"
+  }
+}

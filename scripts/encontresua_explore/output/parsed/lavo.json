@@ -1,0 +1,80 @@
+{
+  "slug": "lavo",
+  "name": "Lavô",
+  "url_source": "https://encontresuafranquia.com.br/franquia/lavo/",
+  "scraped_at": "2026-04-30T23:30:21+00:00",
+  "logo_url": "https://encontresuafranquia.com.br/wp-content/uploads/2026/01/lavo.jpg",
+  "description_short": "Lavô é uma rede de lavanderias que oferece praticidade e eficiência, destacando-se no segmento em crescimento de soluções acessíveis no Brasil.",
+  "description_long": "O segmento de lavanderias self-service tem crescido significativamente no Brasil, acompanhando uma tendência global de conveniência e praticidade em serviços de limpeza. A Lavô, estabelecida em 2019, destaca-se neste setor por oferecer soluções acessíveis e eficientes para o público que busca otimizar o tempo dedicado a tarefas domésticas. A marca se posiciona como uma alternativa moderna às lavanderias tradicionais, proporcionando ao cliente a autonomia de realizar todo o processo de lavagem e secagem de roupas em um ambiente preparado para isso. O modelo de franquia adotado pela Lavô é um dos motores de seu crescimento. Desde seu início, a empresa se expandiu rapidamente, refletindo a demanda crescente por serviços que aliam tecnologia e praticidade. A lógica de crescimento da Lavô baseia-se na simplicidade operacional e na atratividade de seu modelo de negócios, que requer um investimento inicial relativamente baixo e oferece um retorno potencialmente rápido. As franquias são estruturadas para serem facilmente replicáveis, o que facilita a expansão em várias regiões do Brasil. O mercado de lavanderias self-service ainda é relativamente novo no Brasil, mas a aceitação do público tem sido positiva, especialmente em áreas urbanas onde o ritmo de vida acelerado demanda soluções práticas para o dia a dia. A Lavô capitaliza essa tendência ao oferecer um serviço que combina eficiência e economia, proporcionando uma experiência de usuário que se alinha com as expectativas de conveniência do consumidor moderno. A franquia atua não apenas como um serviço de lavagem de roupas, mas como uma facilitadora do cotidiano de seus clientes. O sucesso da Lavô pode ser atribuído a uma estratégia bem delineada de franquias, que permite uma expansão rápida e eficaz. Com 566 unidades franqueadas, a rede tem conseguido penetrar em mercados diversos, atendendo a uma ampla gama de consumidores. O modelo self-service é um dos pilares dessa estratégia, pois reduz custos operacionais e melhora a escalabilidade do negócio. Além disso, a Lavô investe em tecnologia e infraestrutura para garantir que suas unidades ofereçam um serviço de alta qualidade, atraindo e fidelizando clientes. Sobre a franquia A Lavô foi fundada em 2019, no mesmo ano em que iniciou suas operações como franquia. Desde então, a marca tem focado em uma estratégia de expansão agressiva para consolidar sua presença no mercado brasileiro de lavanderias self-service. O posicionamento da Lavô no mercado é de oferecer uma solução prática e econômica para o cuidado com roupas, diferenciando-se pela autonomia e conveniência proporcionadas ao cliente. A rapidez com que expandiu sua rede de franquias demonstra o sucesso de sua abordagem no cenário nacional. Modelo de negócio A Lavô opera com um modelo de negócio baseado em unidades de lavanderias self-service, onde o cliente é responsável por todo o processo de lavagem e secagem de suas roupas. Este modelo permite uma operação simplificada, com menos necessidade de mão de obra direta, o que reduz custos e facilita a gestão. As unidades são equipadas com máquinas modernas e eficientes, e os clientes podem acessar serviços adicionais, como a compra de produtos de limpeza. A lógica operacional é centrada na autonomia do consumidor, que se beneficia de um ambiente preparado para oferecer uma experiência de lavagem rápida e eficaz. Perfil do público atendido O público-alvo da Lavô é composto principalmente por pessoas que buscam praticidade e economia de tempo nas tarefas domésticas. Isso inclui profissionais que têm rotinas diárias intensas e famílias que procuram soluções práticas para o cuidado com roupas. O segmento de lavanderias self-service existe no Brasil para atender a essa demanda crescente por conveniência, especialmente em áreas urbanas onde o espaço para lavanderias domésticas é limitado. A Lavô se destaca por entender essas necessidades e oferecer um serviço que se adapta aos hábitos de consumo modernos. Estrutura da rede Atualmente, a Lavô conta com 566 unidades franqueadas espalhadas por diversas regiões do Brasil. Este número reflete o alcance geográfico da marca e sua capacidade de atender a um público diversificado. A estrutura da rede é projetada para suportar um crescimento contínuo, com foco em manter a qualidade do serviço e a satisfação do cliente em todas as suas unidades. A presença da franquia em várias localidades demonstra sua eficácia em replicar o modelo de sucesso em diferentes contextos urbanos. Dados da Franquia",
+  "founded_year": 2019,
+  "franchise_start_year": 2019,
+  "own_units": null,
+  "franchised_units": 566,
+  "total_units": 566,
+  "min_investment": 211000,
+  "max_investment": 336000,
+  "investment_range_text": "R$ 211.000 / R$ 336.000",
+  "franchise_fee": null,
+  "franchise_fee_text": "Não informado",
+  "working_capital": null,
+  "working_capital_text": "Não informado",
+  "investment_tier": "Até R$ 300 mil",
+  "business_models": [
+    {
+      "tag": "loja",
+      "royalties_text": "5,00% - Vendas Brutas",
+      "royalties_pct": 5.0,
+      "royalties_base": "Vendas Brutas",
+      "royalties_is_fixed": false,
+      "ad_fee_text": "R$ 300 - Fixo Mensal",
+      "ad_fee_pct": null,
+      "ad_fee_base": "R$ 300 - Fixo Mensal",
+      "ad_fee_is_fixed": true,
+      "avg_revenue_text": "R$ 25.000",
+      "avg_revenue": 25000,
+      "avg_profit_text": "Não informado",
+      "avg_profit": null,
+      "payback_text": "12 a 24",
+      "payback_min_months": 12,
+      "payback_max_months": 24
+    }
+  ],
+  "_quality_flags": {
+    "has_logo": true,
+    "has_description_long": true,
+    "has_description_short": true,
+    "has_investment": true,
+    "has_units": true,
+    "has_payback": true,
+    "bm_count": 1,
+    "fields_extracted": 12,
+    "fields_total_known": 13,
+    "fields_filled": 9,
+    "fields_not_informed": [
+      "Taxa de franquia",
+      "Capital de giro",
+      "Lucro médio"
+    ],
+    "description_usable": true,
+    "description_appears_templated": true,
+    "layout_unrecognized": false,
+    "has_corruption": false,
+    "parser_flags": [
+      "ad_fee_fixed_value"
+    ]
+  },
+  "_raw_fields": {
+    "Fundação": "2019",
+    "Início da franquia": "2019",
+    "Unidades franqueadas": "566",
+    "Investimento total": "R$ 211.000 / R$ 336.000",
+    "Taxa de franquia": "Não informado",
+    "Capital de giro": "Não informado",
+    "Royalties": "5,00% - Vendas Brutas (loja)",
+    "Taxa de publicidade": "R$ 300 - Fixo Mensal (loja)",
+    "Faturamento médio": "R$ 25.000 (loja)",
+    "Lucro médio": "Não informado",
+    "Prazo de retorno (meses)": "12 a 24 (loja)",
+    "Faixa de Investimento": "Franquias de Até R$ 300 mil"
+  }
+}

@@ -1,0 +1,82 @@
+{
+  "slug": "cheflera",
+  "name": "Cheflera",
+  "url_source": "https://encontresuafranquia.com.br/franquia/cheflera/",
+  "scraped_at": "2026-04-30T23:30:21+00:00",
+  "logo_url": "https://encontresuafranquia.com.br/wp-content/uploads/2026/01/cheflera-franquia.jpg",
+  "description_short": "Cheflera é uma franquia de loja de cosméticos, destacando-se no mercado desde 2018 por sua lucratividade. Saiba mais aqui!",
+  "description_long": "Cheflera é uma franquia que opera no segmento de cosméticos e perfumaria, inserindo-se também nas categorias de saúde, beleza e bem-estar. Estabelecida em 2018, a marca rapidamente se consolidou como uma opção atraente para empreendedores que desejam investir no mercado de beleza, um setor que tem mostrado resiliência e crescimento contínuo no Brasil. A Cheflera destaca-se pela variedade de produtos oferecidos, que vão desde cosméticos até itens de perfumaria, atendendo a uma ampla gama de necessidades dos consumidores preocupados com cuidados pessoais e bem-estar. O mercado de beleza no Brasil é um dos mais promissores do mundo, impulsionado por uma população que valoriza a estética e o autocuidado. Nesse contexto, a Cheflera adota uma estratégia de crescimento através do modelo de franquias, permitindo uma rápida expansão por meio de parcerias com franqueados. Desde o início do franchising em 2019, a marca tem buscado ampliar sua presença geográfica, aproveitando a crescente demanda por produtos de beleza de qualidade. A Cheflera oferece aos franqueados um modelo de negócio estruturado e suporte contínuo, o que contribui para o sucesso e a sustentabilidade das operações. O modelo de franquia adotado pela Cheflera é projetado para ser acessível e atrativo, especialmente para aqueles que buscam entrar no mercado de beleza com um risco calculado. Embora detalhes financeiros específicos, como taxa de franquia e capital de giro, não sejam informados, a ausência de cobrança de taxa de publicidade é um diferencial que pode atrair futuros franqueados. A estrutura de suporte fornecida pela Cheflera inclui treinamento e orientação para garantir que cada unidade opere de forma eficaz, mantendo os padrões de qualidade que a marca se propõe a entregar. Sobre a franquia Fundada em 2018, a Cheflera rapidamente iniciou seu modelo de franquia em 2019, demonstrando uma intenção clara de expandir sua marca por meio de parcerias estratégicas. A empresa começou com uma unidade própria e, em um curto espaço de tempo, conseguiu estabelecer 98 unidades franqueadas, o que evidencia a atratividade e a viabilidade do seu modelo de negócio. A estratégia de expansão da Cheflera está focada em consolidar sua presença no mercado brasileiro, aproveitando o potencial de crescimento do setor de cosméticos e perfumaria no país. Modelo de negócio A franquia Cheflera opera com um modelo de loja que oferece uma ampla gama de produtos de cosméticos e perfumaria. O foco está em proporcionar aos clientes uma experiência de compra diferenciada, com produtos que atendem a diversas necessidades de beleza e bem-estar. Embora detalhes financeiros como faturamento e lucro médio não sejam divulgados, o modelo de negócio é estruturado para oferecer aos franqueados um suporte robusto, incluindo treinamentos e orientação operacional. O prazo de retorno estimado entre 6 a 18 meses para uma loja demonstra a potencial lucratividade e eficiência do modelo operacional da Cheflera. Perfil do público atendido O público-alvo da Cheflera é composto principalmente por consumidores que valorizam o autocuidado e a estética, preocupando-se com a qualidade dos produtos que utilizam. Este público é caracterizado por hábitos de consumo que incluem a busca por novidades e tendências no segmento de cosméticos e perfumaria. A existência e o sucesso do segmento no Brasil se devem, em grande parte, à cultura local que valoriza a beleza e o bem-estar, criando um mercado sólido e em constante crescimento. Estrutura da rede Atualmente, a rede Cheflera é composta por uma unidade própria e 98 unidades franqueadas, demonstrando um crescimento significativo desde o início de sua expansão por franquias. A marca tem focado em ampliar seu alcance geográfico no Brasil, aproveitando o potencial de mercado em diversas regiões. Essa estrutura de rede permite à Cheflera atender a uma ampla base de clientes, garantindo a presença da marca em diferentes localidades do país. Dados da Franquia",
+  "founded_year": 2018,
+  "franchise_start_year": 2019,
+  "own_units": 1,
+  "franchised_units": 98,
+  "total_units": 99,
+  "min_investment": 35000,
+  "max_investment": 65000,
+  "investment_range_text": "R$ 35.000 / R$ 65.000",
+  "franchise_fee": null,
+  "franchise_fee_text": "Não informado",
+  "working_capital": null,
+  "working_capital_text": "Não informado",
+  "investment_tier": "Até R$ 50 mil",
+  "business_models": [
+    {
+      "tag": "loja",
+      "royalties_text": "R$ 800-Fixo Mensal",
+      "royalties_pct": null,
+      "royalties_base": "R$ 800-Fixo Mensal",
+      "royalties_is_fixed": true,
+      "ad_fee_text": "Não cobra",
+      "ad_fee_pct": 0.0,
+      "ad_fee_base": null,
+      "ad_fee_is_fixed": false,
+      "avg_revenue_text": "Não informado",
+      "avg_revenue": null,
+      "avg_profit_text": "Não informado",
+      "avg_profit": null,
+      "payback_text": "6 a 18",
+      "payback_min_months": 6,
+      "payback_max_months": 18
+    }
+  ],
+  "_quality_flags": {
+    "has_logo": true,
+    "has_description_long": true,
+    "has_description_short": true,
+    "has_investment": true,
+    "has_units": true,
+    "has_payback": true,
+    "bm_count": 1,
+    "fields_extracted": 13,
+    "fields_total_known": 13,
+    "fields_filled": 9,
+    "fields_not_informed": [
+      "Taxa de franquia",
+      "Capital de giro",
+      "Faturamento médio",
+      "Lucro médio"
+    ],
+    "description_usable": true,
+    "description_appears_templated": true,
+    "layout_unrecognized": false,
+    "has_corruption": false,
+    "parser_flags": [
+      "royalties_fixed_value"
+    ]
+  },
+  "_raw_fields": {
+    "Fundação": "2018",
+    "Início da franquia": "2019",
+    "Unidades próprias": "1",
+    "Unidades franqueadas": "98",
+    "Investimento total": "R$ 35.000 / R$ 65.000",
+    "Taxa de franquia": "Não informado",
+    "Capital de giro": "Não informado",
+    "Royalties": "R$ 800-Fixo Mensal (loja)",
+    "Taxa de publicidade": "Não cobra",
+    "Faturamento médio": "Não informado",
+    "Lucro médio": "Não informado",
+    "Prazo de retorno (meses)": "6 a 18 (loja)",
+    "Faixa de Investimento": "Franquias de Até R$ 50 mil"
+  }
+}

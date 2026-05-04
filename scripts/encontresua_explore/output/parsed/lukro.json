@@ -1,0 +1,80 @@
+{
+  "slug": "lukro",
+  "name": "Lukro",
+  "url_source": "https://encontresuafranquia.com.br/franquia/lukro/",
+  "scraped_at": "2026-04-30T23:30:21+00:00",
+  "logo_url": "https://encontresuafranquia.com.br/wp-content/uploads/2026/01/lukro.jpg",
+  "description_short": "Lukro oferece soluções personalizadas em serviços administrativos para empresas que buscam otimizar suas operações internas de forma eficiente.",
+  "description_long": "Lukro é uma franquia inserida no segmento de serviços administrativos, com um foco particular em oferecer soluções ágeis e eficientes para pequenas e médias empresas. Fundada em 2017, a empresa rapidamente identificou uma lacuna no mercado brasileiro para serviços que pudessem otimizar processos internos e externos de negócios que não possuem grandes departamentos administrativos. Com o crescimento do setor de serviços no Brasil, a Lukro se posicionou como uma alternativa viável e econômica para empresas que buscam maximizar sua eficiência operacional sem a necessidade de um investimento significativo em infraestrutura própria. A franquia iniciou suas operações no modelo de franchising em 2021, permitindo que empreendedores locais replicassem seu modelo de sucesso em diferentes regiões do país. Este modelo de negócios não apenas facilita a expansão da marca, mas também garante que o padrão de qualidade e eficiência seja mantido em todas as unidades. A opção por um formato home based, com uma taxa de publicidade acessível, é um dos atrativos para franqueados que buscam minimizar custos fixos e operar com flexibilidade. A estratégia de crescimento da Lukro se baseia na capilaridade e na proximidade com o cliente, oferecendo serviços personalizados que atendem às necessidades específicas de cada empresa. O mercado de serviços administrativos no Brasil tem mostrado um crescimento constante, impulsionado pela demanda de empresas que buscam terceirizar funções não essenciais para focar em suas atividades principais. A Lukro se destaca por oferecer um portfólio de serviços que inclui desde a gestão de documentos e processos até consultoria em eficiência operacional. Isso a torna uma escolha atraente para empresas que desejam manter sua competitividade sem aumentar sua estrutura interna. A franquia, portanto, se beneficia de um cenário econômico onde a terceirização se torna cada vez mais comum e necessária. Sobre a franquia A Lukro foi fundada em 2017 e começou a operar no sistema de franquias em 2021. Desde então, a empresa tem adotado uma estratégia de expansão focada em crescer dentro do mercado brasileiro, aproveitando a demanda crescente por serviços administrativos terceirizados. Com 12 unidades franqueadas já em operação, a Lukro busca consolidar sua presença em diversas regiões do país. O posicionamento da marca é voltado para a eficiência e a personalização dos serviços, garantindo que cada unidade atenda às demandas específicas de seus clientes locais. Modelo de negócio A franquia Lukro opera principalmente no modelo home based, o que permite aos franqueados trabalhar de forma flexível e com custos operacionais reduzidos. Este formato é ideal para empreendedores que desejam iniciar um negócio próprio com menor investimento inicial. A estrutura operacional da franquia é desenhada para ser simples e eficiente, com foco em oferecer serviços administrativos que variam de acordo com as necessidades dos clientes. A taxa de publicidade de 1% sobre o faturamento bruto assegura suporte contínuo para a promoção da marca, enquanto o prazo de retorno estimado entre 1 a 6 meses é um atrativo para novos franqueados. Perfil do público atendido A Lukro atende principalmente pequenas e médias empresas que necessitam de suporte administrativo sem querer investir em uma estrutura interna robusta. O público-alvo é composto por empresários que valorizam a eficiência e a personalização dos serviços, buscando soluções práticas para melhorar seus processos internos. No Brasil, a terceirização de serviços administrativos tem se tornado uma prática comum, especialmente entre empresas que desejam focar em seu core business enquanto delegam tarefas secundárias a especialistas. Estrutura da rede Atualmente, a Lukro possui 12 unidades franqueadas, espalhadas por diferentes regiões do Brasil. A rede ainda não conta com unidades próprias, focando exclusivamente no modelo de franquias para sua expansão. Este formato permite à empresa alcançar um público mais amplo e diversificado, adaptando seus serviços às necessidades locais de cada unidade franqueada. Dados da Franquia",
+  "founded_year": 2017,
+  "franchise_start_year": 2021,
+  "own_units": null,
+  "franchised_units": 12,
+  "total_units": 12,
+  "min_investment": 900,
+  "max_investment": 900,
+  "investment_range_text": "R$ 900,00",
+  "franchise_fee": null,
+  "franchise_fee_text": "Não informado",
+  "working_capital": null,
+  "working_capital_text": "Não informado",
+  "investment_tier": "Até R$ 5 mil",
+  "business_models": [
+    {
+      "tag": "home based",
+      "royalties_text": "R$ 500 - Fixo Mensal",
+      "royalties_pct": null,
+      "royalties_base": "R$ 500 - Fixo Mensal",
+      "royalties_is_fixed": true,
+      "ad_fee_text": "1,00% - Fat. Bruto",
+      "ad_fee_pct": 1.0,
+      "ad_fee_base": "Fat. Bruto",
+      "ad_fee_is_fixed": false,
+      "avg_revenue_text": "R$ 13.000",
+      "avg_revenue": 13000,
+      "avg_profit_text": "Não informado",
+      "avg_profit": null,
+      "payback_text": "1 a 6",
+      "payback_min_months": 1,
+      "payback_max_months": 6
+    }
+  ],
+  "_quality_flags": {
+    "has_logo": true,
+    "has_description_long": true,
+    "has_description_short": true,
+    "has_investment": true,
+    "has_units": true,
+    "has_payback": true,
+    "bm_count": 1,
+    "fields_extracted": 12,
+    "fields_total_known": 13,
+    "fields_filled": 9,
+    "fields_not_informed": [
+      "Taxa de franquia",
+      "Capital de giro",
+      "Lucro médio"
+    ],
+    "description_usable": true,
+    "description_appears_templated": true,
+    "layout_unrecognized": false,
+    "has_corruption": false,
+    "parser_flags": [
+      "royalties_fixed_value"
+    ]
+  },
+  "_raw_fields": {
+    "Fundação": "2017",
+    "Início da franquia": "2021",
+    "Unidades franqueadas": "12",
+    "Investimento total": "R$ 900,00",
+    "Taxa de franquia": "Não informado",
+    "Capital de giro": "Não informado",
+    "Royalties": "R$ 500 - Fixo Mensal (home based)",
+    "Taxa de publicidade": "1,00% - Fat. Bruto (home based)",
+    "Faturamento médio": "R$ 13.000 (home based)",
+    "Lucro médio": "Não informado",
+    "Prazo de retorno (meses)": "1 a 6 (home based)",
+    "Faixa de Investimento": "Franquias de Até R$ 5 mil"
+  }
+}

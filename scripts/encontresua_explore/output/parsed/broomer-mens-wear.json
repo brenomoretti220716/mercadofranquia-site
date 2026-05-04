@@ -1,0 +1,81 @@
+{
+  "slug": "broomer-mens-wear",
+  "name": "Broomer Men’s Wear",
+  "url_source": "https://encontresuafranquia.com.br/franquia/broomer-mens-wear/",
+  "scraped_at": "2026-04-30T23:30:21+00:00",
+  "logo_url": "https://encontresuafranquia.com.br/wp-content/uploads/2026/01/broomer.jpg",
+  "description_short": "Broomer Men's Wear é uma franquia de moda masculina e infanto-juvenil com foco em qualidade, estilo e conforto, desde 1998. Saiba mais!",
+  "description_long": "Broomer Men’s Wear é uma franquia que atua no segmento de moda masculina e infanto-juvenil, destacando-se no mercado brasileiro por oferecer produtos que aliam qualidade, estilo e conforto. Fundada em 1998, a marca rapidamente se consolidou no setor de vestuário, conquistando uma base fiel de clientes que buscam por peças modernas e versáteis. A expansão por meio de franquias começou em 2000, permitindo que a marca ampliasse sua presença de maneira estratégica e controlada. Essa estratégia de crescimento possibilitou à Broomer Men’s Wear fortalecer seu posicionamento no mercado e aumentar a capilaridade da sua rede. O setor de moda no Brasil é um dos mais dinâmicos e competitivos, com uma demanda constante por inovações e tendências que se alinhem às necessidades de um público diversificado. A Broomer Men’s Wear se beneficia desse cenário ao oferecer uma linha de produtos que atende tanto ao público masculino adulto quanto ao infanto-juvenil, preenchendo uma lacuna importante no mercado. A lógica de crescimento da franquia se baseia em oferecer aos franqueados um modelo de negócio sólido, com suporte e treinamento adequados para garantir o sucesso das operações locais. O modelo de franquia adotado pela Broomer Men’s Wear é desenhado para ser adaptável a diferentes regiões, respeitando as especificidades de cada mercado local. Com o objetivo de manter a competitividade e a relevância no setor, a Broomer Men’s Wear investe continuamente em inovação de produtos e em estratégias de marketing que reforçam a identidade da marca. A franquia se preocupa em entender as tendências globais e adaptar suas coleções de acordo com as preferências e demandas do consumidor brasileiro. A flexibilidade no modelo de franquia permite que os franqueados personalizem suas operações para melhor atender o público local, garantindo que a experiência do cliente seja sempre positiva. Essa abordagem tem sido fundamental para o crescimento sustentado da rede, que hoje conta com um número significativo de unidades franqueadas e próprias no país. Sobre a franquia A Broomer Men’s Wear foi fundada em 1998 e iniciou seu modelo de franquia em 2000, buscando expandir sua presença no mercado brasileiro de moda masculina e infanto-juvenil. A estratégia de expansão da marca é focada em estabelecer parcerias com franqueados que compartilhem da visão e dos valores da empresa. Desde o início do franchising, a Broomer tem se posicionado como uma marca que oferece qualidade e inovação, acompanhando as tendências do mercado de moda. A expansão é cuidadosamente planejada para garantir que cada nova unidade mantenha o padrão de qualidade e atendimento que caracteriza a marca. Modelo de negócio A operação da franquia Broomer Men’s Wear é baseada em um modelo de negócio que oferece suporte completo aos franqueados, desde o treinamento inicial até o acompanhamento contínuo das operações. As unidades são projetadas para funcionar em locais estratégicos que maximizem a visibilidade e o fluxo de clientes. A lógica operacional inclui a centralização de compras, o que permite a padronização de produtos e a manutenção de uma política de preços competitiva. Os franqueados recebem orientação sobre gestão de estoque, visual merchandising e atendimento ao cliente, garantindo que todos os pontos de venda ofereçam uma experiência consistente e de alta qualidade. Perfil do público atendido O público-alvo da Broomer Men’s Wear inclui homens de diferentes faixas etárias, bem como o segmento infanto-juvenil, que busca produtos de vestuário modernos e confortáveis. Os consumidores da marca são geralmente pessoas que valorizam o estilo e a qualidade das peças, e que estão atentas às tendências da moda. No Brasil, o segmento de moda masculina e infanto-juvenil é relevante devido à crescente demanda por diversidade de estilos e à importância da moda como expressão pessoal. A Broomer atende a essa demanda oferecendo produtos que combinam inovação e tradição. Estrutura da rede Atualmente, a Broomer Men’s Wear possui um total de 12 unidades, sendo 3 próprias e 9 franqueadas. A rede está presente em diversas regiões do Brasil, ampliando seu alcance geográfico e consolidando sua presença no mercado nacional. Esta estrutura permite que a marca mantenha um controle de qualidade rigoroso enquanto continua a expandir sua influência e a conquistar novos clientes. Dados da Franquia",
+  "founded_year": 1998,
+  "franchise_start_year": 2000,
+  "own_units": 3,
+  "franchised_units": 9,
+  "total_units": 12,
+  "min_investment": 450000,
+  "max_investment": 650000,
+  "investment_range_text": "R$ 450.000 / R$ 650.000",
+  "franchise_fee": null,
+  "franchise_fee_text": "Não informado",
+  "working_capital": null,
+  "working_capital_text": "Não informado",
+  "investment_tier": "Até R$ 500 mil",
+  "business_models": [
+    {
+      "tag": "loja",
+      "royalties_text": "15,00%-Compras",
+      "royalties_pct": 15.0,
+      "royalties_base": "Compras",
+      "royalties_is_fixed": false,
+      "ad_fee_text": "Variável Outros",
+      "ad_fee_pct": null,
+      "ad_fee_base": "Variável Outros",
+      "ad_fee_is_fixed": false,
+      "avg_revenue_text": "R$ 120.000",
+      "avg_revenue": 120000,
+      "avg_profit_text": "Não informado",
+      "avg_profit": null,
+      "payback_text": "24 a 36",
+      "payback_min_months": 24,
+      "payback_max_months": 36
+    }
+  ],
+  "_quality_flags": {
+    "has_logo": true,
+    "has_description_long": true,
+    "has_description_short": true,
+    "has_investment": true,
+    "has_units": true,
+    "has_payback": true,
+    "bm_count": 1,
+    "fields_extracted": 13,
+    "fields_total_known": 13,
+    "fields_filled": 9,
+    "fields_not_informed": [
+      "Taxa de franquia",
+      "Capital de giro",
+      "Lucro médio"
+    ],
+    "description_usable": true,
+    "description_appears_templated": true,
+    "layout_unrecognized": false,
+    "has_corruption": false,
+    "parser_flags": [
+      "rate_unparseable"
+    ]
+  },
+  "_raw_fields": {
+    "Fundação": "1998",
+    "Início da franquia": "2000",
+    "Unidades próprias": "3",
+    "Unidades franqueadas": "9",
+    "Investimento total": "R$ 450.000 / R$ 650.000",
+    "Taxa de franquia": "Não informado",
+    "Capital de giro": "Não informado",
+    "Royalties": "15,00%-Compras (loja)",
+    "Taxa de publicidade": "Variável Outros (loja)",
+    "Faturamento médio": "R$ 120.000",
+    "Lucro médio": "Não informado",
+    "Prazo de retorno (meses)": "24 a 36 (loja)",
+    "Faixa de Investimento": "Franquias de Até R$ 500 mil"
+  }
+}
